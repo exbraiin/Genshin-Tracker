@@ -32,7 +32,7 @@ class HomePlayerProgress extends StatelessWidget {
             ),
             _ProgressInfo(
               GsAssets.menuRecipes,
-              context.labels.proficiency(),
+              context.labels.filterProficiency(),
               GsUtils.recipes.mastered,
               GsUtils.recipes.owned,
             ),

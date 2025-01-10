@@ -22,7 +22,7 @@ class EventScreen extends StatelessWidget {
       icon: GsAssets.menuEvent,
       sortOrder: SortOrder.descending,
       childSize: const Size(126 * 2 + 6, 160),
-      title: context.labels.recipeEvent(),
+      title: context.labels.filterEvent(),
       items: (db) => db.infoOf<GsEvent>().items,
       itemBuilder: (context, state) => EventListItem(
         state.item,

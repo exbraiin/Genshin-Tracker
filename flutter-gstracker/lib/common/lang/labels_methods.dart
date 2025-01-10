@@ -174,16 +174,6 @@ final class LabelsMethods {
 		return transformer('constellations');
 	}
 
-	/// Owned
-	String owned() {
-		return transformer('owned');
-	}
-
-	/// Unowned
-	String unowned() {
-		return transformer('unowned');
-	}
-
 	/// Unknown
 	String unknown() {
 		return transformer('unknown');
@@ -207,11 +197,6 @@ final class LabelsMethods {
 	/// {star}★
 	String rarityStar(dynamic star) {
 		return transformer('rarity_star', {'star': star});
-	}
-
-	/// Master
-	String master() {
-		return transformer('master');
 	}
 
 	/// City
@@ -249,16 +234,6 @@ final class LabelsMethods {
 		return transformer('status');
 	}
 
-	/// Obtainable
-	String obtainable() {
-		return transformer('obtainable');
-	}
-
-	/// Ongoing
-	String ongoing() {
-		return transformer('ongoing');
-	}
-
 	/// Name
 	String name() {
 		return transformer('name');
@@ -267,11 +242,6 @@ final class LabelsMethods {
 	/// Version
 	String version() {
 		return transformer('version');
-	}
-
-	/// Proficiency
-	String proficiency() {
-		return transformer('proficiency');
 	}
 
 	/// Progress
@@ -844,14 +814,39 @@ final class LabelsMethods {
 		return transformer('namecard_reputation');
 	}
 
+	/// Proficiency
+	String filterProficiency() {
+		return transformer('filter_proficiency');
+	}
+
 	/// Event
-	String recipeEvent() {
-		return transformer('recipe_event');
+	String filterEvent() {
+		return transformer('filter_event');
 	}
 
 	/// Permanent
-	String recipePermanent() {
-		return transformer('recipe_permanent');
+	String filterPermanent() {
+		return transformer('filter_permanent');
+	}
+
+	/// Complete
+	String filterComplete() {
+		return transformer('filter_complete');
+	}
+
+	/// Incomplete
+	String filterIncomplete() {
+		return transformer('filter_incomplete');
+	}
+
+	/// Obtained
+	String filterObtained() {
+		return transformer('filter_obtained');
+	}
+
+	/// Not Obtained
+	String filterNotObtained() {
+		return transformer('filter_not_obtained');
 	}
 
 	/// No

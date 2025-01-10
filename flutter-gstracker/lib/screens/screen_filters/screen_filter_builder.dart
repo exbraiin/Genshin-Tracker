@@ -153,12 +153,16 @@ class FilterSection<T, I> {
     );
   }
 
-  static FilterSection<bool, I> owned<I>(bool Function(I item) match) {
+  static FilterSection<bool, I> owned<I>(
+    bool Function(I item) match, {
+    bool Function(I item)? filter,
+  }) {
     return FilterSection(
       {true, false},
       match,
       (c) => c.labels.status(),
-      (c, i) => i ? c.labels.owned() : c.labels.unowned(),
+      (c, i) => i ? c.labels.filterObtained() : c.labels.filterNotObtained(),
+      filter: filter,
     );
   }
 
@@ -255,9 +259,10 @@ class ScreenFilters {
           ),
           FilterSection<bool, GsAchievement>(
             {true, false},
-            (item) => GsUtils.achievements.isObtainable(item.id),
+            (item) => !GsUtils.achievements.isObtainable(item.id),
             (c) => c.labels.status(),
-            (c, e) => e ? c.labels.obtainable() : c.labels.owned(),
+            (c, e) =>
+                e ? c.labels.filterObtained() : c.labels.filterNotObtained(),
             key: 'obtain',
           ),
           FilterSection.version((item) => item.version),
@@ -291,25 +296,17 @@ class ScreenFilters {
           ),
           FilterSection.version((item) => item.version),
           FilterSection.owned(
-            (item) {
-              if (item.baseRecipe.isNotEmpty) {
-                final id = _db
-                    .infoOf<GsCharacter>()
-                    .items
-                    .firstOrNullWhere((e) => e.specialDish == item.id)
-                    ?.id;
-                return GsUtils.characters.hasCaracter(id ?? '');
-              }
-              return _db.saveOf<GiRecipe>().exists(item.id);
-            },
+            (item) => _db.saveOf<GiRecipe>().exists(item.id),
+            filter: (item) => item.baseRecipe.isEmpty,
           ),
           FilterSection<bool, GsRecipe>(
             {true, false},
             (item) =>
                 _db.saveOf<GiRecipe>().getItem(item.id)?.proficiency ==
                 item.maxProficiency,
-            (c) => c.labels.proficiency(),
-            (c, e) => e ? c.labels.master() : c.labels.ongoing(),
+            (c) => c.labels.filterProficiency(),
+            (c, e) =>
+                e ? c.labels.filterComplete() : c.labels.filterIncomplete(),
             filter: (i) => _db.saveOf<GiRecipe>().exists(i.id),
           ),
           FilterSection<bool, GsRecipe>(
@@ -403,7 +400,8 @@ class ScreenFilters {
             {true, false},
             (item) => GsUtils.characters.getCharFriendship(item.id) == 10,
             (c) => c.labels.friendship(),
-            (c, i) => i ? c.labels.max() : c.labels.ongoing(),
+            (c, i) =>
+                i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
             filter: (i) => GsUtils.characters.hasCaracter(i.id),
           ),
           FilterSection.owned((e) => GsUtils.characters.hasCaracter(e.id)),
@@ -411,7 +409,8 @@ class ScreenFilters {
             {true, false},
             (item) => GsUtils.characters.isCharMaxAscended(item.id),
             (c) => c.labels.ascension(),
-            (c, i) => i ? c.labels.max() : c.labels.ongoing(),
+            (c, i) =>
+                i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
             filter: (i) => GsUtils.characters.hasCaracter(i.id),
           ),
           FilterSection.rarity((item) => item.rarity, 4),
@@ -427,9 +426,10 @@ class ScreenFilters {
           ),
           FilterSection<bool, GsSereniteaSet>(
             {true, false},
-            (item) => GsUtils.sereniteaSets.isObtainable(item.id),
+            (item) => !GsUtils.sereniteaSets.isObtainable(item.id),
             (c) => c.labels.status(),
-            (c, e) => e ? c.labels.obtainable() : c.labels.owned(),
+            (c, e) =>
+                e ? c.labels.filterObtained() : c.labels.filterNotObtained(),
           ),
         ]),
       const (GsSpincrystal) => ScreenFilter<GsSpincrystal>([

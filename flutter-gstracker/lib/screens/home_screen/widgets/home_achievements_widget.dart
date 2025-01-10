@@ -46,7 +46,7 @@ class HomeAchievementsWidget extends StatelessWidget {
             HomeTable(
               headers: [
                 HomeRow.header(context.labels.type()),
-                HomeRow.header(context.labels.owned()),
+                HomeRow.header(context.labels.filterObtained()),
                 HomeRow.header(context.labels.total()),
               ],
               rows: [

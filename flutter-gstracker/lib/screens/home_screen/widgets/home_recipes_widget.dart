@@ -51,8 +51,8 @@ class HomeRecipesWidget extends StatelessWidget {
             HomeTable(
               headers: [
                 HomeRow.header(context.labels.rarity()),
-                HomeRow.header(context.labels.master()),
-                HomeRow.header(context.labels.owned()),
+                HomeRow.header(context.labels.filterComplete()),
+                HomeRow.header(context.labels.filterObtained()),
                 HomeRow.header(context.labels.total()),
               ],
               rows: [

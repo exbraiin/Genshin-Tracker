@@ -82,7 +82,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                             style: const TextStyle(fontSize: 14),
                           ),
                           Text(
-                            '${context.labels.proficiency()} '
+                            '${context.labels.filterProficiency()} '
                             '${context.labels.maxProficiency(item.maxProficiency.format())}',
                             style: const TextStyle(fontSize: 14),
                           ),

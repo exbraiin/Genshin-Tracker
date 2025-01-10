@@ -206,8 +206,8 @@ extension GeRecipeTypeExt on GeRecipeType {
   String label(BuildContext ctx) {
     return switch (this) {
       GeRecipeType.none => ctx.labels.wsNone(),
-      GeRecipeType.event => ctx.labels.recipeEvent(),
-      GeRecipeType.permanent => ctx.labels.recipePermanent(),
+      GeRecipeType.event => ctx.labels.filterEvent(),
+      GeRecipeType.permanent => ctx.labels.filterPermanent(),
     };
   }
 }

@@ -36,7 +36,7 @@ class HomeSpincrystalsWidget extends StatelessWidget {
           child: HomeTable(
             headers: [
               HomeRow.header(context.labels.source()),
-              HomeRow.header(context.labels.owned()),
+              HomeRow.header(context.labels.filterObtained()),
               HomeRow.header(context.labels.total()),
             ],
             rows: [

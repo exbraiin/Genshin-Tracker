@@ -46,6 +46,10 @@ class Database {
   Future<void> _load() async {
     if (_loaded.hasValue) return;
     _loaded.add(false);
+    
+    final dir = File(_kDataPath).parent;
+    if (!await dir.exists()) await dir.create(recursive: true);
+
     await Future.wait([
       _loadData(),
       _loadSave(),

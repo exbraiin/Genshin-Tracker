@@ -57,7 +57,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            context.labels.owned(),
+            context.labels.filterObtained(),
             style: style.copyWith(fontSize: 14),
           ),
         ),
