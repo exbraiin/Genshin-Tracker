@@ -20,7 +20,7 @@ _Sometimes I fell a bit burned out from genshin so if the data is not up-to-date
 
 Here are some menus of the app.<br>
 
-![app](example.png)
+![app](example.jpg)
 
 ## Known issues
 
