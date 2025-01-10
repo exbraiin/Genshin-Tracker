@@ -1,0 +1,47 @@
+name: tracker
+description: A new Flutter project.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.4 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  bitsdojo_window: ^0.1.5
+  cached_network_image: ^3.2.1
+  cupertino_icons: ^1.0.2
+  dartx: ^1.2.0
+  excel: ^4.0.2
+  flutter_sticky_header: ^0.7.0
+  rxdart: ^0.28.0
+  gsdatabase:
+    path: ../dart-gsdatabase
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/image/rarity/
+    - assets/image/element/
+    - assets/image/icons/
+    - assets/image/backgrounds/
+    - assets/image/recipe_buff/
+    - assets/image/weapon_type/
+    - assets/image/weapon_stat/
+    - assets/image/illustrations/
+    - assets/image/regions/
+    - assets/lang/en.json
+
+  fonts:
+    - family: Bahnschrift
+      fonts:
+        - asset: assets/fonts/Bahnschrift.ttf
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa.ttf
