@@ -98,13 +98,10 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
         final aList = item != null
             ? filter.match(_getAchievements(item, query)).sorted()
             : const <GsAchievement>[];
-        final enabled = filter.sections
-                .firstOrNullWhere((s) => s.key == 'obtain')
-                ?.enabled ??
-            const {};
 
+        final obtainFilter = filter.getFilterSectionByKey('obtain');
         const a = GsUtils.achievements;
-        final aGroup = enabled.length == 1 && enabled.contains(true)
+        final aGroup = (obtainFilter?.enabled.contains(false) ?? false)
             ? groups.where((item) {
                 final saved = a.countSaved((e) => e.group == item.id);
                 final total = a.countTotal((e) => e.group == item.id);

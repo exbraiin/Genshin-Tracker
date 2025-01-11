@@ -191,20 +191,20 @@ class FilterSection<T, I> {
 
 class ScreenFilter<I extends GsModel<I>> {
   final _extras = <String>{};
-  final List<FilterSection<dynamic, I>> sections;
+  final List<FilterSection<dynamic, I>> _sections;
 
-  ScreenFilter(this.sections);
+  ScreenFilter(this._sections);
 
   Iterable<I> match(Iterable<I> items) {
-    return items.where((e) => sections.every((s) => s._filter(e)));
+    return items.where((e) => _sections.every((s) => s._filter(e)));
   }
 
   Iterable<T> matchBy<T>(Iterable<T> list, I Function(T) selector) {
-    return list.where((e) => sections.every((s) => s._filter(selector(e))));
+    return list.where((e) => _sections.every((s) => s._filter(selector(e))));
   }
 
   void reset() {
-    for (final section in sections) {
+    for (final section in _sections) {
       section.enabled.clear();
     }
   }
@@ -214,15 +214,18 @@ class ScreenFilter<I extends GsModel<I>> {
   }
 
   bool isDefault() {
-    return sections
+    return _sections
         .every((e) => e.values.length == e.enabled.length || e.enabled.isEmpty);
   }
+
+  FilterSection<K, I>? getFilterSectionByKey<K>(String key) =>
+      _sections.firstOrNullWhere((e) => e.key == key) as FilterSection<K, I>?;
 
   void toggleExtra(String key) =>
       _extras.contains(key) ? _extras.remove(key) : _extras.add(key);
 
   bool isSectionEmpty(String key) =>
-      sections.firstOrNullWhere((e) => e.key == key)?.enabled.isEmpty ?? true;
+      _sections.firstOrNullWhere((e) => e.key == key)?.enabled.isEmpty ?? true;
 }
 
 class ScreenFilters {
@@ -548,7 +551,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                 child: ValueListenableBuilder<bool>(
                   valueListenable: notifier,
                   builder: (context, value, child) {
-                    final half = widget.filter.sections.length ~/ 2;
+                    final half = widget.filter._sections.length ~/ 2;
                     return SingleChildScrollView(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -556,7 +559,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: widget.filter.sections
+                              children: widget.filter._sections
                                   .take(half)
                                   .map(_filter)
                                   .separate(const SizedBox(height: 12))
@@ -567,7 +570,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: widget.filter.sections
+                              children: widget.filter._sections
                                   .skip(half)
                                   .map(_filter)
                                   .separate(const SizedBox(height: 12))
