@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
@@ -7,6 +8,7 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
+import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -185,7 +187,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
               ? BoxDecoration(
                   borderRadius: kGridRadius,
                   image: DecorationImage(
-                    image: NetworkImage(url),
+                    image: CachedNetworkImageProvider(url).resizeIfNeeded(),
                     fit: BoxFit.cover,
                     opacity: 0.5,
                   ),

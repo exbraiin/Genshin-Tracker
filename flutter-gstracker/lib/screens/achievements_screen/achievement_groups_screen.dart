@@ -222,7 +222,8 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 fit: BoxFit.cover,
                 opacity: 0.4,
                 alignment: Alignment.centerRight,
-                image: CachedNetworkImageProvider(namecard.fullImage),
+                image: CachedNetworkImageProvider(namecard.fullImage)
+                    .resizeIfNeeded(),
               )
             : DecorationImage(
                 fit: BoxFit.cover,

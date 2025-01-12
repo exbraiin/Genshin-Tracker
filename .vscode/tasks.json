@@ -1,0 +1,32 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Open GsDatabase in Code",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"dart-gsdatabase"
+			],
+			"problemMatcher": [],
+		},
+		{
+			"label": "Open GsTracker in Code",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"flutter-gstracker"
+			],
+			"problemMatcher": [],
+		},
+		{
+			"label": "Open GsTrackerEditor in Code",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"flutter-gstrackereditor"
+			],
+			"problemMatcher": [],
+		}
+	]
+}

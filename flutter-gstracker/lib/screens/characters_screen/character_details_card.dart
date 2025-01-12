@@ -9,6 +9,7 @@ import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/ascension_status.dart';
@@ -24,85 +25,89 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   @override
   Widget build(BuildContext context) {
-    final ascension = GsUtils.characters.getCharAscension(item.id);
-    final friendship = GsUtils.characters.getCharFriendship(item.id);
-    final constellation =
-        GsUtils.characters.getTotalCharConstellations(item.id);
-    final hasChar = GsUtils.characters.hasCaracter(item.id);
-
-    return ItemDetailsCard(
-      name: item.name,
-      rarity: item.rarity,
-      image: item.image,
-      contentImage: DecorationImage(
-        fit: BoxFit.cover,
-        image: AssetImage(item.element.assetBgPath),
-      ),
-      info: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            item.title,
-            style: context.themeStyles.label14n,
+    return ValueStreamBuilder(
+      stream: Database.instance.loaded,
+      builder: (context, snapshot) {
+        final utils = GsUtils.characters;
+        final ascension = utils.getCharAscension(item.id);
+        final friendship = utils.getCharFriendship(item.id);
+        final constellation = utils.getTotalCharConstellations(item.id);
+        final hasChar = utils.hasCaracter(item.id);
+        return ItemDetailsCard(
+          name: item.name,
+          rarity: item.rarity,
+          image: item.image,
+          contentImage: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(item.element.assetBgPath),
           ),
-          const SizedBox(height: kSeparator4),
-          Row(
+          info: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GsItemCardLabel(
-                asset: item.element.assetPath,
-                label: constellation != null ? 'C$constellation' : null,
+              Text(
+                item.title,
+                style: context.themeStyles.label14n,
+              ),
+              const SizedBox(height: kSeparator4),
+              Row(
+                children: [
+                  GsItemCardLabel(
+                    asset: item.element.assetPath,
+                    label: constellation != null ? 'C$constellation' : null,
+                  ),
+                  const SizedBox(width: kSeparator4),
+                  if (hasChar)
+                    GsItemCardLabel(
+                      asset: GsAssets.imageXp,
+                      label: friendship.toString(),
+                      onTap: () => GsUtils.characters
+                          .increaseFriendshipCharacter(item.id),
+                    ),
+                ],
               ),
               const SizedBox(width: kSeparator4),
               if (hasChar)
-                GsItemCardLabel(
-                  asset: GsAssets.imageXp,
-                  label: friendship.toString(),
-                  onTap: () =>
-                      GsUtils.characters.increaseFriendshipCharacter(item.id),
+                InkWell(
+                  onTap: () => GsUtils.characters.increaseAscension(item.id),
+                  child: Text(
+                    '${'✦' * ascension}${'✧' * (6 - ascension)}',
+                    style: context.themeStyles.title20n,
+                  ),
                 ),
             ],
           ),
-          const SizedBox(width: kSeparator4),
-          if (hasChar)
-            InkWell(
-              onTap: () => GsUtils.characters.increaseAscension(item.id),
-              child: Text(
-                '${'✦' * ascension}${'✧' * (6 - ascension)}',
-                style: context.themeStyles.title20n,
-              ),
-            ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          if (item.constellationImage.isNotEmpty)
-            Positioned.fill(
-              bottom: null,
-              child: CachedImageWidget(
-                item.constellationImage,
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.center,
-                scaleToSize: false,
-                showPlaceholder: false,
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.only(top: kSeparator6),
-            child: Column(
-              children: [
-                Text(
-                  item.description,
-                  style: context.themeStyles.label12n
-                      .copyWith(color: context.themeColors.almostWhite),
+          child: Stack(
+            children: [
+              if (item.constellationImage.isNotEmpty)
+                Positioned.fill(
+                  bottom: null,
+                  child: CachedImageWidget(
+                    item.constellationImage,
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.center,
+                    scaleToSize: false,
+                    showPlaceholder: false,
+                  ),
                 ),
-                _getAttributes(context, item),
-                _getStats(context, item),
-                _getMaterials(context, item),
-              ].separate(const SizedBox(height: kSeparator8)).toList(),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(top: kSeparator6),
+                child: Column(
+                  children: [
+                    Text(
+                      item.description,
+                      style: context.themeStyles.label12n
+                          .copyWith(color: context.themeColors.almostWhite),
+                    ),
+                    _getAttributes(context, item),
+                    _getStats(context, item),
+                    _getMaterials(context, item),
+                  ].separate(const SizedBox(height: kSeparator8)).toList(),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

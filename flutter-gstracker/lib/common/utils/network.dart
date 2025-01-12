@@ -1,36 +1,38 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 abstract final class Network {
-  static Future<String?> downloadFile(String url) {
+  static Future<T?> _download<T>(
+    String url,
+    Future<T> Function(HttpClientResponse value) transform,
+  ) {
+    late final none = Future.value(null);
     final client = HttpClient();
+
     return client
         .getUrl(Uri.parse(url))
         .then((value) => value.close())
-        .then(
-          (value) => value.statusCode == 200
-              ? value.transform(utf8.decoder).join()
-              : Future.value(null),
-        )
+        .then((v) => v.statusCode == HttpStatus.ok ? transform(v) : none)
+        .catchError((error) => null)
         .whenComplete(client.close);
   }
 
+  static Future<String?> downloadString(String url) {
+    return _download<String>(
+      url,
+      (value) => value.transform(utf8.decoder).join(),
+    );
+  }
+
   static Future<Uint8List?> downloadBytes(String url) {
-    final client = HttpClient();
-
-    Future<Uint8List?> parseResponse(HttpClientResponse value) {
-      if (value.statusCode != 200) return Future.value(null);
-      return value
+    return _download<Uint8List>(
+      url,
+      (value) => value
           .toList()
-          .then((value) => value.expand((l) => l))
-          .then((value) => Uint8List.fromList(value.toList()));
-    }
-
-    return client
-        .getUrl(Uri.parse(url))
-        .then((value) => value.close())
-        .then(parseResponse)
-        .whenComplete(client.close);
+          .then((value) => value.expand((list) => list).toList())
+          .then((value) => Uint8List.fromList(value)),
+    );
   }
 }

@@ -166,7 +166,7 @@ final class _Downloader {
   }
 
   Future<_Version> _downloadVersion(String url) async {
-    final version = await Network.downloadFile(url);
+    final version = await Network.downloadString(url);
     if (version == null) {
       if (kDebugMode) print('Failed to download version...');
       return _Version();

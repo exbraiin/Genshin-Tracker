@@ -16,7 +16,7 @@ class EnkaService {
 
   Future<EnkaPlayerInfo> getPlayerInfo(String uid) async {
     final url = '$_apiBaseUrl/api/uid/$uid?info';
-    final data = await Network.downloadFile(url);
+    final data = await Network.downloadString(url);
     final info = data != null ? jsonDecode(data) : const {};
     return EnkaPlayerInfo._fromMap(info);
   }
@@ -24,7 +24,7 @@ class EnkaService {
   Future<JsonMap> _getCache(String url) async {
     if (cache[url] == null) {
       cache[url] = <String, dynamic>{};
-      final data = await Network.downloadFile(url);
+      final data = await Network.downloadString(url);
       if (data != null) cache[url]?.addAll(jsonDecode(data));
     }
     return cache[url]!;
