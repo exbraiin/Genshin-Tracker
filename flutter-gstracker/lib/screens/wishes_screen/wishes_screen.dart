@@ -165,7 +165,11 @@ class _WishesScreenScreenState extends State<WishesScreen>
                       );
                     },
                     itemCardBuilder: (context, index) {
-                      return BannerDetailsCard(banners[index], filter);
+                      return BannerDetailsCard(
+                        banners[index],
+                        filter,
+                        key: ValueKey(banners[index].id),
+                      );
                     },
                   );
                 }).toList(),

@@ -22,7 +22,7 @@ class AchievementListItem extends StatelessWidget {
     return GsDataBox.info(
       title: Row(
         children: [
-          Text(item.name),
+          SelectableText(item.name),
           const SizedBox(width: kSeparator8),
           const Spacer(),
           if (item.hidden) ...[
