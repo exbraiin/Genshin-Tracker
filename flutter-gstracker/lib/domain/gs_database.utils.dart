@@ -353,32 +353,33 @@ class _Details {
 class _Recipes {
   const _Recipes();
 
-  int get owned {
+  int totalPermanent({bool owned = false}) {
+    bool countTotal(GsRecipe recipe) {
+      return recipe.baseRecipe.isEmpty && recipe.type == GeRecipeType.permanent;
+    }
+
+    late final save = _db.saveOf<GiRecipe>();
+    bool countOwned(GsRecipe recipe) {
+      return countTotal(recipe) && save.exists(recipe.id);
+    }
+
     final info = _db.infoOf<GsRecipe>();
-    final save = _db.saveOf<GiRecipe>();
-    return info.items.count(
-      (e) =>
-          e.baseRecipe.isEmpty &&
-          e.type == GeRecipeType.permanent &&
-          save.getItem(e.id) != null,
-    );
+    return info.items.count(owned ? countOwned : countTotal);
   }
 
-  int get mastered {
-    final info = _db.infoOf<GsRecipe>();
+  int totalMastered({bool owned = false}) {
     final save = _db.saveOf<GiRecipe>();
-    return info.items.count(
-      (e) =>
-          e.baseRecipe.isEmpty &&
-          e.type == GeRecipeType.permanent &&
-          (save.getItem(e.id)?.proficiency ?? 0) >= e.maxProficiency,
-    );
-  }
+    bool countTotal(GsRecipe recipe) {
+      return recipe.baseRecipe.isEmpty && save.exists(recipe.id);
+    }
 
-  int get total {
+    bool countOwned(GsRecipe recipe) {
+      return countTotal(recipe) &&
+          (save.getItem(recipe.id)?.proficiency ?? 0) >= recipe.maxProficiency;
+    }
+
     final info = _db.infoOf<GsRecipe>();
-    return info.items
-        .count((e) => e.baseRecipe.isEmpty && e.type == GeRecipeType.permanent);
+    return info.items.count(owned ? countOwned : countTotal);
   }
 
   /// Updates the recipe as [own] or the recipe [proficiency].

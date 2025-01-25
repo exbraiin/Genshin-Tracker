@@ -27,14 +27,14 @@ class HomePlayerProgress extends StatelessWidget {
             _ProgressInfo(
               GsAssets.menuRecipes,
               context.labels.recipes(),
-              GsUtils.recipes.owned,
-              GsUtils.recipes.total,
+              GsUtils.recipes.totalPermanent(owned: true),
+              GsUtils.recipes.totalPermanent(),
             ),
             _ProgressInfo(
               GsAssets.menuRecipes,
               context.labels.filterProficiency(),
-              GsUtils.recipes.mastered,
-              GsUtils.recipes.owned,
+              GsUtils.recipes.totalMastered(owned: true),
+              GsUtils.recipes.totalMastered(),
             ),
             _ProgressInfo(
               GsAssets.menuMap,
