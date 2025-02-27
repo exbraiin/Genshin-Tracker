@@ -68,7 +68,11 @@ class HomeCalendarWidget extends StatelessWidget {
           .separate(const SizedBox(width: kGridSeparator))
           .toList(),
     );
-    final weeks = (now.daysInMonth / DateTime.daysPerWeek).ceil();
+
+    final date = DateTime(now.year, now.month, 2 - weekday);
+    final last = now.firstDayOfMonth;
+    final diff = last.difference(date).inDays;
+    final weeks = ((now.daysInMonth + diff) / DateTime.daysPerWeek).ceil();
 
     final src = now.firstDayOfMonth
         .subtract(const Duration(days: DateTime.daysPerWeek));
