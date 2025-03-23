@@ -29,18 +29,20 @@ class HomeTalentsWidget extends StatelessWidget {
             .map((c) => chars.getCharInfo(c.id))
             .whereNotNull()
             .where((data) {
-              final hasMissingTalents = (data.talent1 ?? 10) < 9 &&
-                  (data.talent2 ?? 10) < 9 &&
+              final hasMissingTalents = (data.talent1 ?? 10) < 9 ||
+                  (data.talent2 ?? 10) < 9 ||
                   (data.talent3 ?? 10) < 9;
 
-              final talentMaterial = iMats.getItem(data.item.talentMaterial);
-              final hasWeekdayTalents = talentMaterial != null &&
-                  talentMaterial.weekdays.contains(today);
+              late final talentMaterial =
+                  iMats.getItem(data.item.talentMaterial);
+              final hasWeekdayTalents = today == GeWeekdayType.sunday ||
+                  talentMaterial != null &&
+                      talentMaterial.weekdays.contains(today);
 
               return hasMissingTalents && hasWeekdayTalents;
             })
-            .sortedByDescending((c) => c.talents ?? 0)
-            .thenByDescending((c) => c.item.rarity)
+            .sortedByDescending((c) => c.item.rarity)
+            .thenByDescending((c) => c.talents ?? 0)
             .thenBy((c) => c.item.releaseDate)
             .thenBy((c) => c.item.id);
 
