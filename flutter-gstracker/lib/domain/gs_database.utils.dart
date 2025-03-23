@@ -460,6 +460,8 @@ class _Materials {
 }
 
 class CharInfo {
+  final GsCharacter item;
+  final GiCharacter info;
   final bool isOwned;
   final bool hasOutfit;
   final int ascension;
@@ -468,6 +470,7 @@ class CharInfo {
   final String iconImage;
   final String wishImage;
   final int _talent1, _talent2, _talent3;
+  final int _talent1Extra, _talent2Extra, _talent3Extra;
 
   bool get isMaxAscension => ascension >= 6;
   bool get isAscendable => isOwned && !isMaxAscension;
@@ -478,21 +481,41 @@ class CharInfo {
   int? get talent2 => isOwned ? _talent2 : null;
   int? get talent3 => isOwned ? _talent3 : null;
   int? get talents => isOwned ? (_talent1 + _talent2 + _talent3) : null;
+  bool get hasExtra1 => isOwned && _talent1Extra != 0;
+  bool get hasExtra2 => isOwned && _talent2Extra != 0;
+  bool get hasExtra3 => isOwned && _talent3Extra != 0;
+  int? get talent1Extra => isOwned ? _talent1 + _talent1Extra : null;
+  int? get talent2Extra => isOwned ? _talent2 + _talent2Extra : null;
+  int? get talent3Extra => isOwned ? _talent3 + _talent3Extra : null;
 
   CharInfo._({
+    required this.item,
+    required this.info,
     required this.isOwned,
     required this.hasOutfit,
-    required this.ascension,
-    required this.friendship,
     required this.totalConstellations,
-    required this.iconImage,
-    required this.wishImage,
-    required int talent1,
-    required int talent2,
-    required int talent3,
-  })  : _talent1 = talent1.clamp(1, 10),
-        _talent2 = talent2.clamp(1, 13),
-        _talent3 = talent3.clamp(1, 13);
+  })  : iconImage = item.image,
+        wishImage = item.fullImage,
+        ascension = info.ascension.clamp(0, 6),
+        friendship = info.friendship.clamp(1, 10),
+        _talent1 = info.talent1.clamp(1, 10),
+        _talent2 = info.talent2.clamp(1, 10),
+        _talent3 = info.talent3.clamp(1, 10),
+        _talent1Extra = _talExtra(
+          totalConstellations,
+          item.talentAConstellation,
+        ),
+        _talent2Extra = _talExtra(
+          totalConstellations,
+          item.talentEConstellation,
+        ),
+        _talent3Extra = _talExtra(
+          totalConstellations,
+          item.talentQConstellation,
+        );
+
+  static int _talExtra(int cons, int talCons) =>
+      cons >= talCons && talCons != 0 ? 3 : 0;
 }
 
 class _Characters {
@@ -546,25 +569,23 @@ class _Characters {
     return sum > 0 ? (sum - 1) : null;
   }
 
-  CharInfo getCharInfo(String id) {
+  CharInfo? getCharInfo(String id) {
     final item = _ifCharacters.getItem(id);
+    if (item == null) return null;
+
     final info = _svCharacter.getItem(id) ?? GiCharacter(id: id);
+    final hasOutfit = _ifCharactersSkin.items.any((e) => e.character == id);
 
     final wishes = GsUtils.wishes.countItem(id);
     final owned = wishes + eventCharacters(id);
     final constellations = owned > 0 ? (owned - 1) : 0;
 
     return CharInfo._(
+      item: item,
+      info: info,
       isOwned: owned > 0,
-      hasOutfit: _ifCharactersSkin.items.any((e) => e.character == id),
-      ascension: info.ascension.clamp(0, 6),
-      friendship: info.friendship.clamp(1, 10),
+      hasOutfit: hasOutfit,
       totalConstellations: constellations,
-      iconImage: item?.image ?? '',
-      wishImage: item?.fullImage ?? '',
-      talent1: info.talent1,
-      talent2: info.talent2,
-      talent3: info.talent3,
     );
   }
 
@@ -605,12 +626,11 @@ class _Characters {
 
   void _increaseTalent(
     String id, {
-    int cap = 13,
     required int Function(GiCharacter char) getTalent,
     required GiCharacter Function(GiCharacter char, int tal) setTalent,
   }) {
     final char = _svCharacter.getItem(id) ?? GiCharacter(id: id);
-    final cTalent = ((getTalent(char) + 1) % (cap + 1)).coerceAtLeast(1);
+    final cTalent = ((getTalent(char) + 1) % (10 + 1)).coerceAtLeast(1);
     _svCharacter.setItem(setTalent(char, cTalent));
   }
 
@@ -620,7 +640,6 @@ class _Characters {
   void increaseTalent1(String id) {
     _increaseTalent(
       id,
-      cap: 10,
       getTalent: (char) => char.talent1,
       setTalent: (char, tal) => char.copyWith(talent1: tal),
     );

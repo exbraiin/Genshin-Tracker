@@ -65,6 +65,12 @@ abstract class _GsCharacter extends GsModel<GsCharacter> {
   int get ascDefValue;
   @BuilderWire('asc_stat_value')
   double get ascStatValue;
+  @BuilderWire('tal_a_const')
+  int get talentAConstellation;
+  @BuilderWire('tal_e_const')
+  int get talentEConstellation;
+  @BuilderWire('tal_q_const')
+  int get talentQConstellation;
 
   @override
   Iterable<Comparable Function(GsCharacter e)> get sorters => [

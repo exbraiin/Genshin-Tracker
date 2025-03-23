@@ -11,6 +11,7 @@ import 'package:tracker/screens/home_screen/widgets/home_friends_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_last_banner_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_player_info_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_player_progress.dart';
+import 'package:tracker/screens/home_screen/widgets/home_talents_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_wish_values.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
@@ -127,6 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               const HomePlayerInfoWidget(),
               const HomePlayerProgress(),
+              const HomeTalentsWidget(),
               const HomeFriendsWidget(),
               const HomeAscensionWidget(),
               const HomeLastBannerWidget(),

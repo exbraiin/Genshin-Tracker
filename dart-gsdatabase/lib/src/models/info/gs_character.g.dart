@@ -69,6 +69,12 @@ class GsCharacter extends _GsCharacter {
   final int ascDefValue;
   @override
   final double ascStatValue;
+  @override
+  final int talentAConstellation;
+  @override
+  final int talentEConstellation;
+  @override
+  final int talentQConstellation;
 
   /// Creates a new [GsCharacter] instance.
   GsCharacter({
@@ -103,6 +109,9 @@ class GsCharacter extends _GsCharacter {
     required this.ascAtkValue,
     required this.ascDefValue,
     required this.ascStatValue,
+    required this.talentAConstellation,
+    required this.talentEConstellation,
+    required this.talentQConstellation,
   });
 
   /// Creates a new [GsCharacter] instance from the given map.
@@ -138,7 +147,10 @@ class GsCharacter extends _GsCharacter {
         ascHpValue = m['asc_hp_value'] as int? ?? 0,
         ascAtkValue = m['asc_atk_value'] as int? ?? 0,
         ascDefValue = m['asc_def_value'] as int? ?? 0,
-        ascStatValue = m['asc_stat_value'] as double? ?? 0;
+        ascStatValue = m['asc_stat_value'] as double? ?? 0,
+        talentAConstellation = m['tal_a_const'] as int? ?? 0,
+        talentEConstellation = m['tal_e_const'] as int? ?? 0,
+        talentQConstellation = m['tal_q_const'] as int? ?? 0;
 
   /// Copies this model with the given parameters.
   @override
@@ -174,6 +186,9 @@ class GsCharacter extends _GsCharacter {
     int? ascAtkValue,
     int? ascDefValue,
     double? ascStatValue,
+    int? talentAConstellation,
+    int? talentEConstellation,
+    int? talentQConstellation,
   }) {
     return GsCharacter(
       id: id ?? this.id,
@@ -207,6 +222,9 @@ class GsCharacter extends _GsCharacter {
       ascAtkValue: ascAtkValue ?? this.ascAtkValue,
       ascDefValue: ascDefValue ?? this.ascDefValue,
       ascStatValue: ascStatValue ?? this.ascStatValue,
+      talentAConstellation: talentAConstellation ?? this.talentAConstellation,
+      talentEConstellation: talentEConstellation ?? this.talentEConstellation,
+      talentQConstellation: talentQConstellation ?? this.talentQConstellation,
     );
   }
 
@@ -245,6 +263,9 @@ class GsCharacter extends _GsCharacter {
       'asc_atk_value': ascAtkValue,
       'asc_def_value': ascDefValue,
       'asc_stat_value': ascStatValue,
+      'tal_a_const': talentAConstellation,
+      'tal_e_const': talentEConstellation,
+      'tal_q_const': talentQConstellation,
     };
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db/external/gs_ambr/gs_ambr_importer_dialog.dart';
+import 'package:data_editor/db/external/gs_ambr/src/import_api.dart';
 import 'package:data_editor/db/ge_enums.dart';
 import 'package:data_editor/db/model_ext.dart';
 import 'package:data_editor/db_ext/data_validator.dart' as vd;
@@ -20,7 +21,6 @@ import 'package:gsdatabase/gsdatabase.dart';
 
 const _fandomBaseUrl = 'https://static.wikia.nocookie.net/gensin-impact';
 const _fandomUrl = '$_fandomBaseUrl/images/4/4a/Site-favicon.ico';
-final _ambrIcon = Image.network('https://ambr.top/favicon.ico');
 final _fandomIcon = Image.network(_fandomUrl);
 
 class GsConfigs<T extends GsModel<T>> {
@@ -113,9 +113,9 @@ class GsConfigs<T extends GsModel<T>> {
       ),
       import: [
         DataButton(
-          'Import from Ambr',
-          icon: _ambrIcon,
-          GsAmbrImporterDialog.i.fetchArtifact,
+          'Import from ${ImportApi.i.name}',
+          icon: ImportApi.i.icon,
+          GsImportDialog.i.fetchArtifact,
         ),
       ],
       filters: [
@@ -173,9 +173,9 @@ class GsConfigs<T extends GsModel<T>> {
       ),
       import: [
         DataButton(
-          'Import from Ambr',
-          icon: _ambrIcon,
-          GsAmbrImporterDialog.i.fetchCharacter,
+          'Import from ${ImportApi.i.name}',
+          icon: ImportApi.i.icon,
+          GsImportDialog.i.fetchCharacter,
         ),
         DataButton(
           'Import from fandom URL',
@@ -284,9 +284,9 @@ class GsConfigs<T extends GsModel<T>> {
       ),
       import: [
         DataButton(
-          'Import from Ambr',
-          icon: _ambrIcon,
-          GsAmbrImporterDialog.i.fetchNamecard,
+          'Import from ${ImportApi.i.name}',
+          icon: ImportApi.i.icon,
+          GsImportDialog.i.fetchNamecard,
         ),
       ],
       filters: [
@@ -314,9 +314,9 @@ class GsConfigs<T extends GsModel<T>> {
       ),
       import: [
         DataButton(
-          'Import from Ambr',
-          icon: _ambrIcon,
-          GsAmbrImporterDialog.i.fetchRecipe,
+          'Import from ${ImportApi.i.name}',
+          icon: ImportApi.i.icon,
+          GsImportDialog.i.fetchRecipe,
         ),
       ],
       filters: [
@@ -480,9 +480,9 @@ class GsConfigs<T extends GsModel<T>> {
       ),
       import: [
         DataButton(
-          'Import from Ambr',
-          icon: _ambrIcon,
-          GsAmbrImporterDialog.i.fetchWeapon,
+          'Import from ${ImportApi.i.name}',
+          icon: ImportApi.i.icon,
+          GsImportDialog.i.fetchWeapon,
         ),
       ],
       filters: [

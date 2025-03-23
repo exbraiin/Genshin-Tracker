@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db/external/gs_enka.dart';
 import 'package:data_editor/db/ge_enums.dart';
@@ -285,6 +286,39 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
         (item, value) => item.copyWith(ascStatValue: value),
         range: (1, null),
       ),
+      DataField.singleSelectOf<GsCharacter, int>(
+        'Talent A Constellation',
+        List.generate(6, (i) => GsSelectItem(i + 1, 'C${i + 1}')),
+        (item) => item.talentAConstellation,
+        (item, value) => item.copyWith(talentAConstellation: value ?? 0),
+        validator: _vdTalentConstellation,
+      ),
+      DataField.singleSelectOf<GsCharacter, int>(
+        'Talent E Constellation',
+        List.generate(6, (i) => GsSelectItem(i + 1, 'C${i + 1}')),
+        (item) => item.talentEConstellation,
+        (item, value) => item.copyWith(talentEConstellation: value ?? 0),
+        validator: _vdTalentConstellation,
+      ),
+      DataField.singleSelectOf<GsCharacter, int>(
+        'Talent Q Constellation',
+        List.generate(6, (i) => GsSelectItem(i + 1, 'C${i + 1}')),
+        (item) => item.talentQConstellation,
+        (item, value) => item.copyWith(talentQConstellation: value ?? 0),
+        validator: _vdTalentConstellation,
+      ),
     ];
+  }
+
+  static GsValidLevel _vdTalentConstellation(GsCharacter char) {
+    final tals = [
+      char.talentAConstellation,
+      char.talentEConstellation,
+      char.talentQConstellation,
+    ];
+    if (tals.count((e) => e == 0) > 1) {
+      return GsValidLevel.warn2;
+    }
+    return GsValidLevel.none;
   }
 }

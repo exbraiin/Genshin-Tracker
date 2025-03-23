@@ -36,12 +36,17 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.teal,
           foregroundColor: Colors.black,
         ),
+        dialogTheme: DialogTheme(
+          backgroundColor: Color(0xFF424242),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {PointerDeviceKind.mouse},
         scrollbars: false,
-        physics: const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(
+          decelerationRate: ScrollDecelerationRate.fast,
+        ),
       ),
       home: const Home(),
     );

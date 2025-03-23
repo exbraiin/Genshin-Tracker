@@ -1,22 +1,22 @@
 import 'dart:async';
 
 import 'package:dartx/dartx.dart';
-import 'package:data_editor/db/external/gs_ambr/gs_ambr_importer.dart';
+import 'package:data_editor/db/external/gs_ambr/src/import_api.dart';
 import 'package:data_editor/style/style.dart';
 import 'package:data_editor/widgets/gs_selector/src/gs_select_chip.dart';
 import 'package:data_editor/widgets/gs_selector/src/gs_single_select.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
-final class GsAmbrImporterDialog {
-  static final i = GsAmbrImporterDialog._();
-  GsAmbrImporterDialog._();
+final class GsImportDialog {
+  static const i = GsImportDialog._();
+  const GsImportDialog._();
 
   Future<T> _fetch<T>(
     BuildContext context,
     T item,
     String title,
-    Future<List<AmbrItem>> Function() fetchAll,
+    Future<List<ImportItem>> Function() fetchAll,
     Future<T?> Function(String id, [T? other]) fetch, {
     String? searchText,
   }) async {
@@ -42,8 +42,8 @@ final class GsAmbrImporterDialog {
       ctx,
       item,
       'Artifacts',
-      GsAmbrImporter.i.fetchArtifacts,
-      GsAmbrImporter.i.fetchArtifact,
+      ImportApi.i.fetchArtifacts,
+      ImportApi.i.fetchArtifact,
     );
   }
 
@@ -52,8 +52,8 @@ final class GsAmbrImporterDialog {
       ctx,
       item,
       'Characters',
-      GsAmbrImporter.i.fetchCharacters,
-      GsAmbrImporter.i.fetchCharacter,
+      ImportApi.i.fetchCharacters,
+      ImportApi.i.fetchCharacter,
       searchText: item.name,
     );
   }
@@ -63,8 +63,8 @@ final class GsAmbrImporterDialog {
       ctx,
       item,
       'Namecards',
-      GsAmbrImporter.i.fetchNamecards,
-      GsAmbrImporter.i.fetchNamecard,
+      ImportApi.i.fetchNamecards,
+      ImportApi.i.fetchNamecard,
     );
   }
 
@@ -73,8 +73,8 @@ final class GsAmbrImporterDialog {
       context,
       item,
       'Recipes',
-      GsAmbrImporter.i.fetchRecipes,
-      GsAmbrImporter.i.fetchRecipe,
+      ImportApi.i.fetchRecipes,
+      ImportApi.i.fetchRecipe,
     );
   }
 
@@ -83,14 +83,14 @@ final class GsAmbrImporterDialog {
       ctx,
       item,
       'Weapons',
-      GsAmbrImporter.i.fetchWeapons,
-      GsAmbrImporter.i.fetchWeapon,
+      ImportApi.i.fetchWeapons,
+      ImportApi.i.fetchWeapon,
       searchText: item.name,
     );
   }
 }
 
-extension on AmbrItem {
+extension on ImportItem {
   GsSelectItem<String> toSelect() {
     final color = GsStyle.getRarityColor(level);
     return GsSelectItem<String>(id, name, image: icon, color: color);

@@ -96,7 +96,7 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).dialogBackgroundColor,
+              color: DialogTheme.of(context).backgroundColor,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
