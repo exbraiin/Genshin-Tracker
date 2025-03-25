@@ -44,6 +44,7 @@ final class GsImportDialog {
       'Artifacts',
       ImportApi.i.fetchArtifacts,
       ImportApi.i.fetchArtifact,
+      searchText: item.name,
     );
   }
 
@@ -65,6 +66,7 @@ final class GsImportDialog {
       'Namecards',
       ImportApi.i.fetchNamecards,
       ImportApi.i.fetchNamecard,
+      searchText: item.name,
     );
   }
 
@@ -75,6 +77,7 @@ final class GsImportDialog {
       'Recipes',
       ImportApi.i.fetchRecipes,
       ImportApi.i.fetchRecipe,
+      searchText: item.name,
     );
   }
 

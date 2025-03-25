@@ -121,7 +121,18 @@ final class YattaImporter implements ImportApi {
 
     final fetter = data.getJsonMap('fetter');
     final info = data.getJsonMap('other');
-    final prop = data.getString('specialProp');
+
+    final props = [
+      'FIGHT_PROP_BASE_HP',
+      'FIGHT_PROP_BASE_DEFENSE',
+      'FIGHT_PROP_BASE_ATTACK',
+    ];
+    final prop = data
+        .getJsonMap('upgrade')
+        .getJsonMapList('promote')
+        .expand((e) => e.getJsonMap('addProps').keys)
+        .toSet()
+        .firstWhere((e) => !props.contains(e));
 
     final element = switch (data.getString('element')) {
       'Wind' => GeElementType.anemo,
@@ -328,7 +339,7 @@ final class YattaImporter implements ImportApi {
     final data = await _fetchPage('food');
     final items = data['items'] as Map<String, dynamic>;
 
-    return items.values.where((e) => e['recipe'] ?? false).map((m) {
+    return items.values.map((m) {
       return ImportItem(
         m['id'].toString(),
         m['name'],
