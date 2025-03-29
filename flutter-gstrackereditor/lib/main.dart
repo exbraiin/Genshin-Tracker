@@ -1,6 +1,6 @@
 import 'package:data_editor/configs.dart';
 import 'package:data_editor/db/database.dart';
-import 'package:data_editor/importer.dart';
+import 'package:data_editor/db/external/importer.dart';
 import 'package:data_editor/screens/info_screen.dart';
 import 'package:data_editor/style/style.dart';
 import 'package:data_editor/style/utils.dart';
@@ -119,7 +119,7 @@ class Home extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     final bgColor = Theme.of(context).scaffoldBackgroundColor;
     try {
-      final c = await Importer.importAchievementsFromPaimonMoe();
+      final c = await PaimonMoeImporter.importAchievements();
       if (c == null) return;
 
       messenger.showSnackBar(

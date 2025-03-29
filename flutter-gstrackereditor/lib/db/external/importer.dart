@@ -50,8 +50,8 @@ class Changes {
   }
 }
 
-abstract final class Importer {
-  static Future<Changes?> importAchievementsFromPaimonMoe() async {
+abstract final class PaimonMoeImporter {
+  static Future<Changes?> importAchievements() async {
     const url = 'https://raw.githubusercontent.com/MadeBaruna/'
         'paimon-moe/main/src/data/achievement/en.json';
     final responseJson = await _getUrl(url);
@@ -131,8 +131,10 @@ abstract final class Importer {
 
     return Changes.fromData(inDbGrps, impGrps, inDbAchs, impAchs);
   }
+}
 
-  static Future<GsCharacter> importCharacterFromFandom(
+abstract final class FandomImporter {
+  static Future<GsCharacter> importCharacter(
     GsCharacter item, {
     String? url,
     bool useFile = false,
@@ -232,7 +234,7 @@ abstract final class Importer {
     );
   }
 
-  static Future<GsFurnishing> importFurnishingFromFandom(
+  static Future<GsFurnishing> importFurnishing(
     GsFurnishing item, {
     String? url,
     bool useFile = false,
@@ -273,7 +275,7 @@ abstract final class Importer {
     );
   }
 
-  static Future<GsSereniteaSet> importSereniteaFromFandom(
+  static Future<GsSereniteaSet> importSereniteaSet(
     GsSereniteaSet item, {
     String? url,
     bool useFile = false,
@@ -313,6 +315,8 @@ abstract final class Importer {
     const itemDivSel = 'div[class="card-container"]';
     const itemsSel = 'div[class="new_genshin_recipe_body"] $itemDivSel';
     final items = document.querySelectorAll(itemsSel);
+
+    final db = Database.i.of<GsFurnishing>();
     final furnishing = items.map((e) {
       const nameSel = 'span[class="card-caption"]';
       final name = e.querySelector(nameSel)?.text.trim() ?? '';
@@ -322,27 +326,28 @@ abstract final class Importer {
       final rarity = e.getElementsByClassName('card-image');
       final key = rarity.firstOrNull?.className;
       final match = reg.firstMatch(key ?? '');
-      final rarityInt = int.tryParse(match?.group(1) ?? '') ?? 0;
+      final rarityInt = int.tryParse(match?.group(1) ?? '');
 
       const imageSel = 'span[class="card-body"] img';
-      final image = e.querySelector(imageSel)?.attributes['data-src'] ?? '';
+      final image = e.querySelector(imageSel)?.attributes['data-src'];
 
       final amount =
           e.getElementsByClassName('card-text').firstOrNull?.text ?? '';
       final amountInt = int.tryParse(amount) ?? 0;
 
+      final item = db.getItem(id) ?? GsFurnishing.fromJson({});
       return (
-        GsFurnishing(
+        item.copyWith(
           id: id,
           name: name,
-          image: _processImage(image),
+          image: image != null ? _processImage(image) : null,
           rarity: rarityInt,
         ),
         GsFurnishingAmount(id: id, amount: amountInt),
       );
     });
 
-    Database.i.of<GsFurnishing>().updateAll(furnishing.map((e) => e.$1));
+    db.updateAll(furnishing.map((e) => e.$1));
 
     return item.copyWith(
       id: id,

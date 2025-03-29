@@ -8,7 +8,7 @@ import 'package:data_editor/db_ext/data_validator.dart' as vd;
 import 'package:data_editor/db_ext/datafield.dart';
 import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
-import 'package:data_editor/importer.dart';
+import 'package:data_editor/db/external/importer.dart';
 import 'package:data_editor/screens/item_edit_screen.dart';
 import 'package:data_editor/screens/items_list_screen.dart';
 import 'package:data_editor/style/style.dart';
@@ -180,7 +180,7 @@ class GsConfigs<T extends GsModel<T>> {
         DataButton(
           'Import from fandom URL',
           icon: _fandomIcon,
-          (ctx, item) => Importer.importCharacterFromFandom(item),
+          (ctx, item) => FandomImporter.importCharacter(item),
         ),
       ],
       filters: [
@@ -391,7 +391,7 @@ class GsConfigs<T extends GsModel<T>> {
         DataButton(
           'Import from fandom URL',
           icon: _fandomIcon,
-          (ctx, item) => Importer.importSereniteaFromFandom(item),
+          (ctx, item) => FandomImporter.importSereniteaSet(item),
         ),
       ],
     ),
@@ -411,7 +411,7 @@ class GsConfigs<T extends GsModel<T>> {
         DataButton(
           'Import from fandom URL',
           icon: _fandomIcon,
-          (ctx, item) => Importer.importFurnishingFromFandom(item),
+          (ctx, item) => FandomImporter.importFurnishing(item),
         ),
       ],
     ),
