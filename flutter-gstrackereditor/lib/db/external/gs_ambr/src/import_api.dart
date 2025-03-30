@@ -33,6 +33,9 @@ abstract class ImportApi {
 
   Future<GsWeapon> fetchWeapon(String id, [GsWeapon? other]);
   Future<List<ImportItem>> fetchWeapons();
+
+  Future<GsSereniteaSet> fetchSereniteaSet(String id, [GsSereniteaSet? other]);
+  Future<List<ImportItem>> fetchSereniteaSets();
 }
 
 class ImportCache {
@@ -117,6 +120,7 @@ extension JsonMapExt on JsonMap {
   }
 
   int getInt(String key) => getOr(key, 0);
+  int? getIntOrNull(String key) => getOr<int?>(key, null);
   String getString(String key) => getOr(key, '');
   String? getStringOrNull(String key) => getOr<String?>(key, null);
   JsonMap getJsonMap(String key) => getOr(key, const {});

@@ -91,6 +91,20 @@ final class GsImportDialog {
       searchText: item.name,
     );
   }
+
+  Future<GsSereniteaSet> fetchSereniteaSet(
+    BuildContext ctx,
+    GsSereniteaSet item,
+  ) {
+    return _fetch(
+      ctx,
+      item,
+      'FurnishingSets',
+      ImportApi.i.fetchSereniteaSets,
+      ImportApi.i.fetchSereniteaSet,
+      searchText: item.name,
+    );
+  }
 }
 
 extension on ImportItem {

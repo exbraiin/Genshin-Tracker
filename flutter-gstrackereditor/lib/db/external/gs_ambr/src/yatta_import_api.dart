@@ -576,6 +576,76 @@ final class YattaImporter implements ImportApi {
       matElite: matElite ?? '',
     );
   }
+
+  @override
+  Future<List<ImportItem>> fetchSereniteaSets() async {
+    const url = '$_kBaseUrl/assets/UI';
+    final data = await _fetchPage('furnitureSuite');
+    final items = data['items'] as Map<String, dynamic>;
+
+    return items.values
+        .cast<JsonMap>()
+        .where((e) => e.getList('types').contains('giftSet'))
+        .map((e) {
+      final id = e.getInt('id').toString();
+      final name = e.getString('name');
+      final icon = '$url/furnitureSuite/${e.getString('icon')}.png';
+      final categories = e.getList('categories');
+      final level = switch (categories) {
+        _ when categories.contains('indoorSet') => 4,
+        _ when categories.contains('outdoorSet') => 5,
+        _ => 0,
+      };
+      return ImportItem(id, name, icon, level);
+    }).toList();
+  }
+
+  @override
+  Future<GsSereniteaSet> fetchSereniteaSet(
+    String id, [
+    GsSereniteaSet? other,
+  ]) async {
+    final data = await _fetchPage('furnitureSuite/$id');
+    final name = data.getStringOrNull('name');
+    final categories = data.getList('categories');
+    final category = switch (categories) {
+      _ when categories.contains('Indoor Set') => GeSereniteaSetType.indoor,
+      _ when categories.contains('Outdoor Set') => GeSereniteaSetType.outdoor,
+      _ => null,
+    };
+    final db = Database.i.of<GsFurnishing>();
+    final furnishing =
+        data.getJsonMap('suiteItemList').values.cast<JsonMap>().map((e) {
+      final name = e.getString('name');
+      final id = name.toDbId();
+      final old = db.getItem(id);
+      final rarity = e.getIntOrNull('rank');
+      final amount = e.getInt('count');
+      final item = (old ?? GsFurnishing.fromJson({})).copyWith(
+        id: id,
+        name: name,
+        rarity: rarity,
+      );
+      return (item: item, amount: amount);
+    });
+
+    final toUpdate = furnishing.map((e) => e.item);
+    db.updateAll(toUpdate);
+
+    return (other ?? GsSereniteaSet.fromJson({})).copyWith(
+      id: name?.toDbId(),
+      name: name,
+      version: null,
+      category: category,
+      image: null,
+      rarity: 4,
+      energy: null,
+      chars: null,
+      furnishing: furnishing
+          .map((e) => GsFurnishingAmount(id: e.item.id, amount: e.amount))
+          .toList(),
+    );
+  }
 }
 
 class CharacterCurves {

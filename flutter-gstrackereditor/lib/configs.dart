@@ -2,13 +2,13 @@ import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db/external/gs_ambr/gs_ambr_importer_dialog.dart';
 import 'package:data_editor/db/external/gs_ambr/src/import_api.dart';
+import 'package:data_editor/db/external/importer.dart';
 import 'package:data_editor/db/ge_enums.dart';
 import 'package:data_editor/db/model_ext.dart';
 import 'package:data_editor/db_ext/data_validator.dart' as vd;
 import 'package:data_editor/db_ext/datafield.dart';
 import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
-import 'package:data_editor/db/external/importer.dart';
 import 'package:data_editor/screens/item_edit_screen.dart';
 import 'package:data_editor/screens/items_list_screen.dart';
 import 'package:data_editor/style/style.dart';
@@ -388,6 +388,11 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       import: [
+        DataButton(
+          'Import from ${ImportApi.i.name}',
+          icon: ImportApi.i.icon,
+          GsImportDialog.i.fetchSereniteaSet,
+        ),
         DataButton(
           'Import from fandom URL',
           icon: _fandomIcon,
