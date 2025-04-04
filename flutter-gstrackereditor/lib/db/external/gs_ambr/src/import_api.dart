@@ -41,9 +41,8 @@ abstract class ImportApi {
 class ImportCache {
   final String baseUrl;
   final _cache = <String, JsonMap>{};
-  final JsonMap Function(JsonMap data)? proccess;
 
-  ImportCache(this.baseUrl, {this.proccess});
+  ImportCache(this.baseUrl);
 
   Future<JsonMap> fetchPage(
     String endpoint, {
@@ -58,7 +57,7 @@ class ImportCache {
       final data = _cache[endpoint];
       if (data != null) {
         if (kDebugMode) print('Reading from cache!');
-        return proccess?.call(data) ?? data;
+        return data;
       }
 
       if (file != null && await file.exists()) {
@@ -81,34 +80,7 @@ class ImportCache {
         await file.writeAsString(jsonEncode(data));
       }
     }
-    return proccess?.call(data) ?? data;
-  }
-}
-
-abstract final class ImportUtils {
-  static int rarityNameToLevel(String name, [int? fallback]) {
-    return switch (name) {
-      'QUALITY_ORANGE_SP' => 5,
-      'QUALITY_ORANGE' => 5,
-      'QUALITY_PURPLE' => 4,
-      _ => fallback ?? 0,
-    };
-  }
-
-  static GeElementType elementNameToType(
-    String name, [
-    GeElementType? fallback,
-  ]) {
-    return switch (name) {
-      'Wind' => GeElementType.anemo,
-      'Rock' => GeElementType.geo,
-      'Electric' => GeElementType.electro,
-      'Grass' => GeElementType.dendro,
-      'Water' => GeElementType.hydro,
-      'Fire' => GeElementType.pyro,
-      'Ice' => GeElementType.cryo,
-      _ => fallback ?? GeElementType.anemo,
-    };
+    return data;
   }
 }
 

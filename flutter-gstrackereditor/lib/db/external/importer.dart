@@ -234,47 +234,6 @@ abstract final class FandomImporter {
     );
   }
 
-  static Future<GsFurnishing> importFurnishing(
-    GsFurnishing item, {
-    String? url,
-    bool useFile = false,
-  }) async {
-    const format = Clipboard.kTextPlain;
-    url ??= (await Clipboard.getData(format))?.text ?? '';
-
-    late final String raw;
-    if (useFile) {
-      final file = File('temp.html');
-      if (!await file.exists()) {
-        raw = await _getUrl(url);
-        await file.writeAsString(raw);
-      } else {
-        raw = await file.readAsString();
-      }
-    } else {
-      raw = await _getUrl(url);
-    }
-    final document = html.parse(raw);
-
-    const nameSel = 'h2[data-source="title"]';
-    final name = document.querySelector(nameSel)?.text;
-    final id = name?.toDbId();
-
-    const imageSel = 'figure[data-source="image"] img';
-    final image = document.querySelector(imageSel)?.attributes['src'] ?? '';
-
-    const raritySel = 'div[data-source="quality"] img';
-    final rarity = document.querySelector(raritySel)?.attributes['title'] ?? '';
-    final rarityInt = int.tryParse(rarity.split(' ').first);
-
-    return item.copyWith(
-      id: id,
-      name: name,
-      image: _processImage(image),
-      rarity: rarityInt,
-    );
-  }
-
   static Future<GsSereniteaSet> importSereniteaSet(
     GsSereniteaSet item, {
     String? url,
@@ -312,50 +271,12 @@ abstract final class FandomImporter {
     final energy = document.querySelector(energySel)?.text ?? '';
     final energyInt = int.tryParse(energy) ?? 0;
 
-    const itemDivSel = 'div[class="card-container"]';
-    const itemsSel = 'div[class="new_genshin_recipe_body"] $itemDivSel';
-    final items = document.querySelectorAll(itemsSel);
-
-    final db = Database.i.of<GsFurnishing>();
-    final furnishing = items.map((e) {
-      const nameSel = 'span[class="card-caption"]';
-      final name = e.querySelector(nameSel)?.text.trim() ?? '';
-      final id = name.toDbId();
-
-      final reg = RegExp('card-rarity-(\\d+)');
-      final rarity = e.getElementsByClassName('card-image');
-      final key = rarity.firstOrNull?.className;
-      final match = reg.firstMatch(key ?? '');
-      final rarityInt = int.tryParse(match?.group(1) ?? '');
-
-      const imageSel = 'span[class="card-body"] img';
-      final image = e.querySelector(imageSel)?.attributes['data-src'];
-
-      final amount =
-          e.getElementsByClassName('card-text').firstOrNull?.text ?? '';
-      final amountInt = int.tryParse(amount) ?? 0;
-
-      final item = db.getItem(id) ?? GsFurnishing.fromJson({});
-      return (
-        item.copyWith(
-          id: id,
-          name: name,
-          image: image != null ? _processImage(image) : null,
-          rarity: rarityInt,
-        ),
-        GsFurnishingAmount(id: id, amount: amountInt),
-      );
-    });
-
-    db.updateAll(furnishing.map((e) => e.$1));
-
     return item.copyWith(
       id: id,
       name: name,
       image: _processImage(image),
       rarity: rarityInt,
       energy: energyInt,
-      furnishing: furnishing.map((e) => e.$2).toList(),
     );
   }
 }

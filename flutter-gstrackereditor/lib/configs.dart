@@ -1,6 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/database.dart';
-import 'package:data_editor/db/external/gs_ambr/gs_ambr_importer_dialog.dart';
+import 'package:data_editor/db/external/gs_ambr/gs_import_dialog.dart';
 import 'package:data_editor/db/external/gs_ambr/src/import_api.dart';
 import 'package:data_editor/db/external/importer.dart';
 import 'package:data_editor/db/ge_enums.dart';
@@ -397,26 +397,6 @@ class GsConfigs<T extends GsModel<T>> {
           'Import from fandom URL',
           icon: _fandomIcon,
           (ctx, item) => FandomImporter.importSereniteaSet(item),
-        ),
-      ],
-    ),
-    GsFurnishing: GsConfigs<GsFurnishing>._(
-      title: 'Furnishing',
-      pageBuilder: const vd.GsFurnishingExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: item.name,
-        version: '',
-        rarity: item.rarity,
-        image: item.image,
-      ),
-      filters: [
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity),
-      ],
-      import: [
-        DataButton(
-          'Import from fandom URL',
-          icon: _fandomIcon,
-          (ctx, item) => FandomImporter.importFurnishing(item),
         ),
       ],
     ),

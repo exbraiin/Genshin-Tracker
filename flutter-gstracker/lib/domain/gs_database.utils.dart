@@ -853,13 +853,6 @@ class _SereniteaSets {
     }
     _svSereniteaSet.setItem(sv);
   }
-
-  bool isCraftable(String id) {
-    final item = _ifSereniteas.getItem(id);
-    if (item == null) return false;
-    int getAmount(String id) => _svFurnishing.getItem(id)?.amount ?? 0;
-    return item.furnishing.all((e) => getAmount(e.id) >= e.amount);
-  }
 }
 
 class _WeaponMaterials {

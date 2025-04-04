@@ -184,7 +184,6 @@ class _InfoScreenState extends State<InfoScreen> {
           _getByVersion<GsRecipe>(version.id),
           _getByVersion<GsFurnitureChest>(version.id),
           _getByVersion<GsSereniteaSet>(version.id),
-          _getByVersion<GsFurnishing>(version.id),
           _getByVersion<GsSpincrystal>(version.id),
           _getByVersion<GsEvent>(version.id),
           _getByVersion<GsWeapon>(version.id),

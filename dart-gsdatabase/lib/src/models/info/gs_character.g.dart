@@ -109,9 +109,9 @@ class GsCharacter extends _GsCharacter {
     required this.ascAtkValue,
     required this.ascDefValue,
     required this.ascStatValue,
-    required this.talentAConstellation,
-    required this.talentEConstellation,
-    required this.talentQConstellation,
+    this.talentAConstellation = -1,
+    this.talentEConstellation = -1,
+    this.talentQConstellation = -1,
   });
 
   /// Creates a new [GsCharacter] instance from the given map.
@@ -148,9 +148,9 @@ class GsCharacter extends _GsCharacter {
         ascAtkValue = m['asc_atk_value'] as int? ?? 0,
         ascDefValue = m['asc_def_value'] as int? ?? 0,
         ascStatValue = m['asc_stat_value'] as double? ?? 0,
-        talentAConstellation = m['tal_a_const'] as int? ?? 0,
-        talentEConstellation = m['tal_e_const'] as int? ?? 0,
-        talentQConstellation = m['tal_q_const'] as int? ?? 0;
+        talentAConstellation = m['tal_a_const'] as int? ?? -1,
+        talentEConstellation = m['tal_e_const'] as int? ?? -1,
+        talentQConstellation = m['tal_q_const'] as int? ?? -1;
 
   /// Copies this model with the given parameters.
   @override

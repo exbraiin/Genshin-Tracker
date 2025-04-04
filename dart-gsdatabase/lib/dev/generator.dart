@@ -102,56 +102,60 @@ class BuilderGeneratorGen extends GeneratorForAnnotation<BuilderGenerator> {
 
   ({String getter, String setter}) _getJsonGetter(PropertyAccessorElement e) {
     final type = e.returnType;
-    final wire = _getBuilderWire(e).wire;
+    final builder = _getBuilderWire(e);
+    final value = builder.value != null ? _getConstString(builder.value) : null;
+    final wire = builder.wire;
     final typeName = type.getDisplayString();
     if (type.isDartCoreInt) {
       return (
         setter: e.displayName,
-        getter: 'm[\'$wire\'] as int? ?? 0',
+        getter: 'm[\'$wire\'] as int? ?? ${value ?? '0'}',
       );
     }
     if (type.isDartCoreBool) {
       return (
         setter: e.displayName,
-        getter: 'm[\'$wire\'] as bool? ?? false',
+        getter: 'm[\'$wire\'] as bool? ?? ${value ?? 'false'}',
       );
     }
 
     if (type.isDartCoreDouble) {
       return (
         setter: e.displayName,
-        getter: 'm[\'$wire\'] as double? ?? 0',
+        getter: 'm[\'$wire\'] as double? ?? ${value ?? 0}',
       );
     }
     if (type.isDartCoreString) {
       return (
         setter: e.displayName,
-        getter: 'm[\'$wire\'] as String? ?? \'\'',
+        getter: 'm[\'$wire\'] as String? ?? ${value ?? '\'\''}',
       );
     }
     if (type.isDartCoreList) {
+      final list = value ?? '[]';
       if (typeName == 'List<int>') {
         return (
           setter: e.displayName,
-          getter: '(m[\'$wire\'] as List? ?? const []).cast<int>()',
+          getter: '(m[\'$wire\'] as List? ?? const $list).cast<int>()',
         );
       }
       if (typeName == 'List<double>') {
         return (
           setter: e.displayName,
-          getter: '(m[\'$wire\'] as List? ?? const []).cast<double>()',
+          getter: '(m[\'$wire\'] as List? ?? const $list).cast<double>()',
         );
       }
       if (typeName == 'List<String>') {
         return (
           setter: e.displayName,
-          getter: '(m[\'$wire\'] as List? ?? const []).cast<String>()',
+          getter: '(m[\'$wire\'] as List? ?? const $list).cast<String>()',
         );
       }
       if (typeName == 'List<DateTime>') {
         return (
           setter: '${e.displayName}.map((e) => ${_dateToString('e')}).toList()',
-          getter: '((m[\'$wire\'] as List? ?? const []).cast<String>())'
+          getter:
+              '((m[\'$wire\'] as List? ?? ${value ?? 'const []'}).cast<String>())'
               '.map((e) => DateTime.tryParse(e) ?? DateTime(0)).toList()',
         );
       }

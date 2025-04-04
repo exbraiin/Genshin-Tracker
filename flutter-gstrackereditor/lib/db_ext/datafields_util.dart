@@ -284,11 +284,6 @@ class GsModelDecorator<T extends GsModel<T>> {
           image: (item) => item.image,
           color: (i) => GsStyle.getRarityColor(i.rarity),
         ),
-      const (GsFurnishing) => GsModelDecorator<GsFurnishing>(
-          label: (item) => item.name,
-          image: (item) => item.image,
-          color: (item) => GsStyle.getRarityColor(item.rarity),
-        ),
       const (GsWeapon) => GsModelDecorator<GsWeapon>(
           label: (item) => item.name,
           image: (item) => item.image,

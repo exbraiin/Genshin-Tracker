@@ -65,11 +65,11 @@ abstract class _GsCharacter extends GsModel<GsCharacter> {
   int get ascDefValue;
   @BuilderWire('asc_stat_value')
   double get ascStatValue;
-  @BuilderWire('tal_a_const')
+  @BuilderWire('tal_a_const', value: -1)
   int get talentAConstellation;
-  @BuilderWire('tal_e_const')
+  @BuilderWire('tal_e_const', value: -1)
   int get talentEConstellation;
-  @BuilderWire('tal_q_const')
+  @BuilderWire('tal_q_const', value: -1)
   int get talentQConstellation;
 
   @override

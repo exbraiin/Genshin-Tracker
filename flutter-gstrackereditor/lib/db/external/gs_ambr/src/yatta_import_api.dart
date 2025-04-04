@@ -16,10 +16,7 @@ final class YattaImporter implements ImportApi {
   @override
   final name = 'Yatta';
 
-  final _cache = ImportCache(
-    _kBaseUrl,
-    proccess: (data) => data.getJsonMap('data'),
-  );
+  final _cache = ImportCache(_kBaseUrl);
   YattaImporter._();
 
   Future<JsonMap> _fetchPage(
@@ -27,10 +24,9 @@ final class YattaImporter implements ImportApi {
     bool isStatic = false,
     bool useCache = true,
   }) async {
-    const kLanguage = 'en';
-    final url =
-        isStatic ? '/api/v2/static/$endpoint' : '/api/v2/$kLanguage/$endpoint';
-    return _cache.fetchPage(url, useCache: useCache);
+    final url = isStatic ? '/api/v2/static/$endpoint' : '/api/v2/en/$endpoint';
+    final page = await _cache.fetchPage(url, useCache: useCache);
+    return page.getJsonMap('data');
   }
 
   @override
@@ -613,24 +609,6 @@ final class YattaImporter implements ImportApi {
       _ when categories.contains('Outdoor Set') => GeSereniteaSetType.outdoor,
       _ => null,
     };
-    final db = Database.i.of<GsFurnishing>();
-    final furnishing =
-        data.getJsonMap('suiteItemList').values.cast<JsonMap>().map((e) {
-      final name = e.getString('name');
-      final id = name.toDbId();
-      final old = db.getItem(id);
-      final rarity = e.getIntOrNull('rank');
-      final amount = e.getInt('count');
-      final item = (old ?? GsFurnishing.fromJson({})).copyWith(
-        id: id,
-        name: name,
-        rarity: rarity,
-      );
-      return (item: item, amount: amount);
-    });
-
-    final toUpdate = furnishing.map((e) => e.item);
-    db.updateAll(toUpdate);
 
     return (other ?? GsSereniteaSet.fromJson({})).copyWith(
       id: name?.toDbId(),
@@ -641,9 +619,6 @@ final class YattaImporter implements ImportApi {
       rarity: 4,
       energy: null,
       chars: null,
-      furnishing: furnishing
-          .map((e) => GsFurnishingAmount(id: e.item.id, amount: e.amount))
-          .toList(),
     );
   }
 }

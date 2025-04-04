@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dartx/dartx.dart';
-import 'package:data_editor/db/external/gs_ambr/src/import_api.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,6 +39,31 @@ class GsEnkaChar {
         icon = (map['SideIconName'] ?? '').isNotEmpty
             ? 'https://enka.network/ui/${map['SideIconName']}.png'
             : '',
-        rarity = ImportUtils.rarityNameToLevel(map['QualityType']),
-        element = ImportUtils.elementNameToType(map['Element']);
+        rarity = rarityNameToLevel(map['QualityType']),
+        element = elementNameToType(map['Element']);
+
+  static int rarityNameToLevel(String name, [int? fallback]) {
+    return switch (name) {
+      'QUALITY_ORANGE_SP' => 5,
+      'QUALITY_ORANGE' => 5,
+      'QUALITY_PURPLE' => 4,
+      _ => fallback ?? 0,
+    };
+  }
+
+  static GeElementType elementNameToType(
+    String name, [
+    GeElementType? fallback,
+  ]) {
+    return switch (name) {
+      'Wind' => GeElementType.anemo,
+      'Rock' => GeElementType.geo,
+      'Electric' => GeElementType.electro,
+      'Grass' => GeElementType.dendro,
+      'Water' => GeElementType.hydro,
+      'Fire' => GeElementType.pyro,
+      'Ice' => GeElementType.cryo,
+      _ => fallback ?? GeElementType.anemo,
+    };
+  }
 }

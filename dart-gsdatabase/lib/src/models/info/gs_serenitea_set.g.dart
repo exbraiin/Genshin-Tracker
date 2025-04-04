@@ -23,8 +23,6 @@ class GsSereniteaSet extends _GsSereniteaSet {
   final int energy;
   @override
   final List<String> chars;
-  @override
-  final List<GsFurnishingAmount> furnishing;
 
   /// Creates a new [GsSereniteaSet] instance.
   GsSereniteaSet({
@@ -36,7 +34,6 @@ class GsSereniteaSet extends _GsSereniteaSet {
     required this.rarity,
     required this.energy,
     required this.chars,
-    required this.furnishing,
   });
 
   /// Creates a new [GsSereniteaSet] instance from the given map.
@@ -48,10 +45,7 @@ class GsSereniteaSet extends _GsSereniteaSet {
         image = m['image'] as String? ?? '',
         rarity = m['rarity'] as int? ?? 0,
         energy = m['energy'] as int? ?? 0,
-        chars = (m['chars'] as List? ?? const []).cast<String>(),
-        furnishing = (m['furnishing'] as List? ?? const [])
-            .map((e) => GsFurnishingAmount.fromJson(e))
-            .toList();
+        chars = (m['chars'] as List? ?? const []).cast<String>();
 
   /// Copies this model with the given parameters.
   @override
@@ -64,7 +58,6 @@ class GsSereniteaSet extends _GsSereniteaSet {
     int? rarity,
     int? energy,
     List<String>? chars,
-    List<GsFurnishingAmount>? furnishing,
   }) {
     return GsSereniteaSet(
       id: id ?? this.id,
@@ -75,7 +68,6 @@ class GsSereniteaSet extends _GsSereniteaSet {
       rarity: rarity ?? this.rarity,
       energy: energy ?? this.energy,
       chars: chars ?? this.chars,
-      furnishing: furnishing ?? this.furnishing,
     );
   }
 
@@ -91,46 +83,6 @@ class GsSereniteaSet extends _GsSereniteaSet {
       'rarity': rarity,
       'energy': energy,
       'chars': chars,
-      'furnishing': furnishing.map((e) => e.toMap()).toList(),
-    };
-  }
-}
-
-class GsFurnishingAmount extends _GsFurnishingAmount {
-  @override
-  final String id;
-  @override
-  final int amount;
-
-  /// Creates a new [GsFurnishingAmount] instance.
-  GsFurnishingAmount({
-    required this.id,
-    required this.amount,
-  });
-
-  /// Creates a new [GsFurnishingAmount] instance from the given map.
-  GsFurnishingAmount.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        amount = m['amount'] as int? ?? 0;
-
-  /// Copies this model with the given parameters.
-  @override
-  GsFurnishingAmount copyWith({
-    String? id,
-    int? amount,
-  }) {
-    return GsFurnishingAmount(
-      id: id ?? this.id,
-      amount: amount ?? this.amount,
-    );
-  }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {
-      'id': id,
-      'amount': amount,
     };
   }
 }

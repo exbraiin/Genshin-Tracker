@@ -12,7 +12,6 @@ class GsSereniteaSetExt extends GsModelExt<GsSereniteaSet> {
   List<DataField<GsSereniteaSet>> getFields(String? editId) {
     final vd = ValidateModels<GsSereniteaSet>();
     final vdVersion = ValidateModels.versions();
-    final vldFurnishing = ValidateModels<GsFurnishing>();
     final vdCharacters = ValidateModels<GsCharacter>();
 
     return [
@@ -69,29 +68,6 @@ class GsSereniteaSetExt extends GsModelExt<GsSereniteaSet> {
         validator: (item) => item.chars.isEmpty
             ? GsValidLevel.warn1
             : vdCharacters.validateAll(item.chars),
-      ),
-      DataField.buildList(
-        'Furnishing',
-        (item) => item.furnishing,
-        (index, item, child) => [
-          DataField.singleSelect(
-            'Id',
-            (item) => item.id,
-            (item) => vldFurnishing.filters,
-            (item, value) => item.copyWith(id: value),
-            validator: (subItem) =>
-                validateBuildId(item.furnishing, subItem, (i) => i.id),
-          ),
-          DataField.intField(
-            'Amount',
-            (item) => item.amount,
-            (item, value) => item.copyWith(amount: value),
-            range: (1, null),
-          ),
-        ],
-        () => GsFurnishingAmount.fromJson({}),
-        (item, list) => item.copyWith(furnishing: list),
-        emptyLevel: GsValidLevel.warn2,
       ),
     ];
   }

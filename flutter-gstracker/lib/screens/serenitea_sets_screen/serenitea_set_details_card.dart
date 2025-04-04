@@ -121,42 +121,6 @@ class SereniteaSetDetailsCard extends StatelessWidget
             },
           ),
         ),
-      if (item.furnishing.isNotEmpty)
-        ItemDetailsCardContent(
-          label: context.labels.matFurnishing(),
-          content: ValueStreamBuilder<bool>(
-            stream: Database.instance.loaded,
-            builder: (context, snapshot) {
-              final db = Database.instance.infoOf<GsFurnishing>();
-              return Wrap(
-                spacing: kSeparator4,
-                runSpacing: kSeparator4,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: item.furnishing.map((e) {
-                  final item = db.getItem(e.id);
-                  if (item == null) return const ItemGridWidget();
-
-                  const utils = GsUtils.sereniteaSets;
-                  final owned = utils.getFurnishingAmount(item.id);
-                  final hasFurnishing = owned > 0;
-
-                  return ItemGridWidget(
-                    label: hasFurnishing
-                        ? '${owned.compact()}/${e.amount.compact()}'
-                        : e.amount.compact(),
-                    urlImage: item.image,
-                    rarity: item.rarity,
-                    tooltip: item.name,
-                    onRemove: hasFurnishing
-                        ? (ctx) => utils.decreaseFurnishingAmount(item.id)
-                        : null,
-                    onTap: (ctx) => utils.increaseFurnishingAmount(item.id),
-                  );
-                }).toList(),
-              );
-            },
-          ),
-        ),
     ]);
   }
 }

@@ -19,18 +19,10 @@ abstract class _GsSereniteaSet extends GsModel<GsSereniteaSet> {
   int get energy;
   @BuilderWire('chars')
   List<String> get chars;
-  @BuilderWire('furnishing')
-  List<_GsFurnishingAmount> get furnishing;
 
   @override
   Iterable<Comparable Function(GsSereniteaSet e)> get sorters => [
         (e) => e.category.index,
         (e) => e.version,
       ];
-}
-
-@BuilderGenerator()
-abstract class _GsFurnishingAmount extends GsModel<GsFurnishingAmount> {
-  @BuilderWire('amount')
-  int get amount;
 }
