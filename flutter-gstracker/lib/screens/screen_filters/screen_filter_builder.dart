@@ -261,14 +261,15 @@ class ScreenFilter<I extends GsModel<I>> {
   }
 
   Iterable<T> matchBy<T>(Iterable<T> list, I Function(T) selector) {
-    bool matchQuery(I item) =>
-        queryMatcher?.call(item).toLowerCase().contains(_query) ?? false;
-
-    return list.where((e) {
-      final item = selector(e);
-      if (!matchQuery(item)) return false;
-      return sections.every((s) => s._filter(item));
-    });
+    if (queryMatcher != null) {
+      return list.where((e) {
+        final item = selector(e);
+        return queryMatcher!(item).toLowerCase().contains(_query) &&
+            sections.every((s) => s._filter(item));
+      });
+    } else {
+      return list.where((e) => sections.every((s) => s._filter(selector(e))));
+    }
   }
 
   void reset() {
