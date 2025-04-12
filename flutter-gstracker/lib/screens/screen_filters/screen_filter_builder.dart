@@ -186,6 +186,7 @@ class FilterSection<T, I> {
       title,
       label,
       key: key,
+      filter: filter,
       singleValue: true,
     );
   }
