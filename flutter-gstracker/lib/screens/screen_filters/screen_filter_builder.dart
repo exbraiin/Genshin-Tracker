@@ -13,7 +13,7 @@ typedef FilterBuilder<T extends GsModel<T>> = Widget Function(
   BuildContext context,
   ScreenFilter<T> filter,
   Widget button,
-  void Function(String extra) toggle,
+  void Function(FilterExtras extra) toggle,
 );
 
 class ScreenFilterBuilder<T extends GsModel<T>> extends StatelessWidget {
@@ -45,10 +45,15 @@ class ScreenFilterBuilder<T extends GsModel<T>> extends StatelessWidget {
   }
 }
 
+enum FilterKey { none, weekdays, obtain }
+
+enum FilterExtras { info, table, hide, versionSort }
+
 class FilterSection<T, I> {
-  final String? key;
+  final FilterKey key;
   final Set<T> values;
   final Set<T> enabled;
+  final bool singleValue;
   final bool Function(I item)? filter;
   final IconData? Function(T i)? _icon;
   final String? Function(T i)? _asset;
@@ -61,8 +66,9 @@ class FilterSection<T, I> {
     T Function(I item) match,
     this.title,
     this._label, {
-    this.key,
+    this.key = FilterKey.none,
     this.filter,
+    this.singleValue = false,
     String? Function(T i)? asset,
     IconData? Function(T i)? icon,
   })  : enabled = {},
@@ -75,8 +81,9 @@ class FilterSection<T, I> {
     this.match,
     this.title,
     this._label, {
-    this.key,
+    this.key = FilterKey.none,
     this.filter,
+    this.singleValue = false,
     String? Function(T i)? asset,
     IconData? Function(T i)? icon,
   })  : enabled = {},
@@ -120,7 +127,7 @@ class FilterSection<T, I> {
     );
   }
 
-  static FilterSection<GeWeaponType, I> weapon<I>(
+  static FilterSection<GeWeaponType, I> weaponType<I>(
     GeWeaponType Function(I item) match,
   ) {
     return FilterSection(
@@ -144,9 +151,8 @@ class FilterSection<T, I> {
     );
   }
 
-  static FilterSection<bool, I> item<I>(bool Function(I item) match) {
-    return FilterSection(
-      {true, false},
+  static FilterSection<bool, I> itemType<I>(bool Function(I item) match) {
+    return FilterSection.state(
       match,
       (c) => c.labels.type(),
       (c, i) => i ? c.labels.weapon() : c.labels.character(),
@@ -156,13 +162,52 @@ class FilterSection<T, I> {
   static FilterSection<bool, I> owned<I>(
     bool Function(I item) match, {
     bool Function(I item)? filter,
+    FilterKey key = FilterKey.none,
   }) {
-    return FilterSection(
-      {true, false},
+    return FilterSection.state(
       match,
       (c) => c.labels.status(),
       (c, i) => i ? c.labels.filterObtained() : c.labels.filterNotObtained(),
       filter: filter,
+      key: key,
+    );
+  }
+
+  static FilterSection<bool, I> state<I>(
+    bool Function(I item) match,
+    String Function(BuildContext c) title,
+    String Function(BuildContext c, bool i) label, {
+    bool Function(I item)? filter,
+    FilterKey key = FilterKey.none,
+  }) {
+    return FilterSection(
+      const {true, false},
+      match,
+      title,
+      label,
+      key: key,
+      singleValue: true,
+    );
+  }
+
+  static FilterSection<GeWeekdayType, I> weekdaysMaterials<I>(
+    Set<String> Function(I item) materialIds,
+  ) {
+    const sunday = GeWeekdayType.sunday;
+    final weekdays = GeWeekdayType.values.exceptElement(sunday).toSet();
+    return FilterSection<GeWeekdayType, I>.raw(
+      weekdays,
+      (item, enabled) {
+        final t = Database.instance.infoOf<GsMaterial>().items;
+        final eMats = t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
+        final iMats = materialIds(item);
+        return eMats.any((e) => iMats.contains(e.id));
+      },
+      (c) => c.labels.materials(),
+      (c, i) => i == GeWeekdayType.values.today
+          ? '✦ ${i.getLabel(c)}'
+          : i.getLabel(c),
+      key: FilterKey.weekdays,
     );
   }
 
@@ -170,10 +215,11 @@ class FilterSection<T, I> {
     GeSereniteaSetType Function(I item) match,
   ) {
     return FilterSection(
-      GeSereniteaSetType.values.toSet(),
+      GeSereniteaSetType.values.exceptElement(GeSereniteaSetType.none).toSet(),
       match,
       (c) => c.labels.category(),
       (c, i) => i.label(c),
+      singleValue: true,
     );
   }
 
@@ -186,277 +232,309 @@ class FilterSection<T, I> {
     return (filter?.call(e) ?? true) && match.call(e, enabled);
   }
 
-  void toggle(T v) => enabled.contains(v) ? enabled.remove(v) : enabled.add(v);
+  void toggle(T v) {
+    if (singleValue) {
+      final contained = enabled.contains(v);
+      enabled.clear();
+      if (!contained) enabled.add(v);
+      return;
+    }
+
+    enabled.contains(v) ? enabled.remove(v) : enabled.add(v);
+  }
 }
 
 class ScreenFilter<I extends GsModel<I>> {
-  final _extras = <String>{};
-  final List<FilterSection<dynamic, I>> _sections;
+  var _query = '';
+  final _extras = <FilterExtras>{};
+  final List<FilterSection<dynamic, I>> sections;
+  final String Function(I item)? queryMatcher;
 
-  ScreenFilter(this._sections);
+  String get query => _query;
+  set query(String value) => _query = value.toLowerCase();
 
-  Iterable<I> match(Iterable<I> items) {
-    return items.where((e) => _sections.every((s) => s._filter(e)));
+  ScreenFilter({required this.sections, this.queryMatcher});
+
+  Iterable<I> match(Iterable<I> list) {
+    return matchBy(list, (e) => e);
   }
 
   Iterable<T> matchBy<T>(Iterable<T> list, I Function(T) selector) {
-    return list.where((e) => _sections.every((s) => s._filter(selector(e))));
+    bool matchQuery(I item) =>
+        queryMatcher?.call(item).toLowerCase().contains(_query) ?? false;
+
+    return list.where((e) {
+      final item = selector(e);
+      if (!matchQuery(item)) return false;
+      return sections.every((s) => s._filter(item));
+    });
   }
 
   void reset() {
-    for (final section in _sections) {
+    _query = '';
+    for (final section in sections) {
       section.enabled.clear();
     }
   }
 
-  bool hasExtra(String key) {
+  bool hasQuery() {
+    return queryMatcher != null;
+  }
+
+  bool hasExtra(FilterExtras key) {
     return _extras.contains(key);
   }
 
-  bool isDefault() {
-    return _sections
-        .every((e) => e.values.length == e.enabled.length || e.enabled.isEmpty);
-  }
+  FilterSection<K, I>? getFilterSectionByKey<K>(FilterKey key) =>
+      sections.firstOrNullWhere((e) => e.key == key) as FilterSection<K, I>?;
 
-  FilterSection<K, I>? getFilterSectionByKey<K>(String key) =>
-      _sections.firstOrNullWhere((e) => e.key == key) as FilterSection<K, I>?;
-
-  void toggleExtra(String key) =>
+  void toggleExtra(FilterExtras key) =>
       _extras.contains(key) ? _extras.remove(key) : _extras.add(key);
 
-  bool isSectionEmpty(String key) =>
-      _sections.firstOrNullWhere((e) => e.key == key)?.enabled.isEmpty ?? true;
+  bool isSectionEmpty(FilterKey key) =>
+      sections.firstOrNullWhere((e) => e.key == key)?.enabled.isEmpty ?? true;
 }
 
 class ScreenFilters {
   static final _db = Database.instance;
-
-  static final _weekdays =
-      GeWeekdayType.values.exceptElement(GeWeekdayType.sunday).toSet();
   static final _getItem = GsUtils.items.getItemData;
-
   static final _filters = <Type, ScreenFilter?>{};
 
   static ScreenFilter<T>? of<T extends GsModel<T>>() {
     late final filter = switch (T) {
-      const (GsWish) => ScreenFilter<GsWish>([
-          FilterSection.item((item) => item.isWeapon),
-          FilterSection.rarity((item) => item.rarity, 3),
-        ]),
-      const (GiWish) => ScreenFilter<GiWish>([
-          FilterSection.item((item) => _getItem(item.itemId).isWeapon),
-          FilterSection.rarity((item) => _getItem(item.itemId).rarity, 3),
-        ]),
-      const (GsAchievement) => ScreenFilter<GsAchievement>([
-          FilterSection<bool, GsAchievement>(
-            {true, false},
-            (item) => item.hidden,
-            (c) => c.labels.achHidden(),
-            (c, e) => e ? c.labels.achHidden() : c.labels.achVisible(),
-          ),
-          FilterSection<GeAchievementType, GsAchievement>(
-            GeAchievementType.values.toSet(),
-            (item) => item.type,
-            (c) => c.labels.type(),
-            (c, e) => e.label(c),
-          ),
-          FilterSection<bool, GsAchievement>(
-            {true, false},
-            (item) => !GsUtils.achievements.isObtainable(item.id),
-            (c) => c.labels.status(),
-            (c, e) =>
-                e ? c.labels.filterObtained() : c.labels.filterNotObtained(),
-            key: 'obtain',
-          ),
-          FilterSection.version((item) => item.version),
-        ]),
-      const (GsEvent) => ScreenFilter<GsEvent>([
-          FilterSection.version((item) => item.version),
-          FilterSection<GeEventType, GsEvent>(
-            GeEventType.values.toSet(),
-            (item) => item.type,
-            (c) => c.labels.type(),
-            (c, i) => i.label(c),
-          ),
-        ]),
-      const (GsNamecard) => ScreenFilter<GsNamecard>([
-          FilterSection<GeNamecardType, GsNamecard>(
-            GeNamecardType.values.toSet(),
-            (item) => item.type,
-            (c) => c.labels.type(),
-            (c, e) => e.label(c),
-          ),
-          FilterSection.version((item) => item.version),
-        ]),
-      const (GsRecipe) => ScreenFilter<GsRecipe>([
-          FilterSection.rarity((item) => item.rarity),
-          FilterSection<GeRecipeEffectType, GsRecipe>(
-            GeRecipeEffectType.values.toSet(),
-            (item) => item.effect,
-            (c) => c.labels.status(),
-            (c, i) => i.label(c),
-            asset: (i) => i.assetPath,
-          ),
-          FilterSection.version((item) => item.version),
-          FilterSection.owned(
-            (item) => _db.saveOf<GiRecipe>().exists(item.id),
-            filter: (item) => item.baseRecipe.isEmpty,
-          ),
-          FilterSection<bool, GsRecipe>(
-            {true, false},
-            (item) =>
-                _db.saveOf<GiRecipe>().getItem(item.id)?.proficiency ==
-                item.maxProficiency,
-            (c) => c.labels.filterProficiency(),
-            (c, e) =>
-                e ? c.labels.filterComplete() : c.labels.filterIncomplete(),
-            filter: (i) => _db.saveOf<GiRecipe>().exists(i.id),
-          ),
-          FilterSection<bool, GsRecipe>(
-            {true, false},
-            (item) => item.baseRecipe.isNotEmpty,
-            (c) => c.labels.specialDish(),
-            (c, e) => e ? c.labels.specialDish() : c.labels.wsNone(),
-          ),
-          FilterSection<GeRecipeType, GsRecipe>(
-            GeRecipeType.values.toSet(),
-            (item) => item.type,
-            (c) => c.labels.type(),
-            (c, i) => i.label(c),
-          ),
-        ]),
-      const (GsFurnitureChest) => ScreenFilter<GsFurnitureChest>([
-          FilterSection.rarity((item) => item.rarity),
-          FilterSection.version((item) => item.version),
-          FilterSection.region((item) => item.region),
-          FilterSection.setCategory((item) => item.type),
-          FilterSection.owned(
-            (item) => _db.saveOf<GiFurnitureChest>().exists(item.id),
-          ),
-        ]),
-      const (GsWeapon) => ScreenFilter<GsWeapon>([
-          FilterSection.weapon((item) => item.type),
-          FilterSection.rarity((item) => item.rarity),
-          FilterSection.version((item) => item.version),
-          FilterSection.owned((item) => GsUtils.weapons.hasWeapon(item.id)),
-          FilterSection<GeWeekdayType, GsWeapon>.raw(
-            _weekdays,
-            (item, enabled) {
-              final t = _db.infoOf<GsMaterial>().items;
-              final m =
-                  t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
-              final i = GsUtils.weaponMaterials.getAscensionMaterials(item.id);
-              return m.any((e) => i.containsKey(e.id));
-            },
-            (c) => c.labels.materials(),
-            (c, i) => i.getLabel(c),
-            key: 'weekdays',
-          ),
-          FilterSection<GeWeaponAscStatType, GsWeapon>(
-            GeWeaponAscStatType.values.toSet(),
-            (item) => item.statType,
-            (c) => c.labels.ndStat(),
-            (c, i) => i.label(c),
-            asset: (e) => e.assetPath,
-          ),
-          FilterSection<GeItemSourceType, GsWeapon>(
-            Database.instance
-                .infoOf<GsWeapon>()
-                .items
-                .map((e) => e.source)
-                .toSet(),
-            (item) => item.source,
-            (c) => c.labels.source(),
-            (c, i) => i.name.capitalize(),
-          ),
-        ]),
-      const (GsArtifact) => ScreenFilter<GsArtifact>([
-          FilterSection.rarity((item) => item.rarity, 3),
-          FilterSection.version((item) => item.version),
-        ]),
-      const (GsCharacter) => ScreenFilter<GsCharacter>([
-          FilterSection.element((item) => item.element),
-          FilterSection.weapon((item) => item.weapon),
-          FilterSection<GeWeekdayType, GsCharacter>.raw(
-            _weekdays,
-            (item, enabled) {
-              final t = _db.infoOf<GsMaterial>().items;
-              final m =
-                  t.where((e) => e.weekdays.intersect(enabled).isNotEmpty);
-              final i = GsUtils.characterMaterials.getTalentMaterials(item.id);
-              return m.any((e) => i.containsKey(e.id));
-            },
-            (c) => c.labels.materials(),
-            (c, i) => i.getLabel(c),
-            key: 'weekdays',
-          ),
-          FilterSection.version((item) => item.version),
-          FilterSection.region((item) => item.region),
-          FilterSection<GeCharacterAscStatType, GsCharacter>(
-            GeCharacterAscStatType.values.toSet(),
-            (item) => item.ascStatType,
-            (c) => 'Special Stat',
-            (c, i) => i.label(c),
-            asset: (i) => i.assetPath,
-          ),
-          FilterSection<bool, GsCharacter>(
-            {true, false},
-            (item) => GsUtils.characters.getCharFriendship(item.id) == 10,
-            (c) => c.labels.friendship(),
-            (c, i) =>
-                i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
-            filter: (i) => GsUtils.characters.hasCaracter(i.id),
-          ),
-          FilterSection.owned((e) => GsUtils.characters.hasCaracter(e.id)),
-          FilterSection<bool, GsCharacter>(
-            {true, false},
-            (item) => GsUtils.characters.isCharMaxAscended(item.id),
-            (c) => c.labels.ascension(),
-            (c, i) =>
-                i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
-            filter: (i) => GsUtils.characters.hasCaracter(i.id),
-          ),
-          FilterSection.rarity((item) => item.rarity, 4),
-        ]),
-      const (GsSereniteaSet) => ScreenFilter<GsSereniteaSet>([
-          FilterSection.version((item) => item.version),
-          FilterSection.setCategory((item) => item.category),
-          FilterSection<bool, GsSereniteaSet>(
-            {true, false},
-            (item) => !GsUtils.sereniteaSets.isObtainable(item.id),
-            (c) => c.labels.status(),
-            (c, e) =>
-                e ? c.labels.filterObtained() : c.labels.filterNotObtained(),
-          ),
-        ]),
-      const (GsSpincrystal) => ScreenFilter<GsSpincrystal>([
-          FilterSection.owned(
-            (item) => _db.saveOf<GiSpincrystal>().exists(item.id),
-          ),
-          FilterSection.version((item) => item.version),
-          FilterSection(
-            {true, false},
-            (item) => item.fromChubby,
-            (c) => c.labels.source(),
-            (c, i) => i ? c.labels.chubby() : c.labels.world(),
-          ),
-        ]),
-      const (GsMaterial) => ScreenFilter<GsMaterial>([
-          FilterSection.rarity((item) => item.rarity),
-          FilterSection.version((item) => item.version),
-          FilterSection(
-            {true},
-            (item) => item.ingredient,
-            (c) => c.labels.ingredients(),
-            (c, i) => c.labels.buttonYes(),
-          ),
-          FilterSection<GeMaterialType, GsMaterial>(
-            GeMaterialType.values.toSet(),
-            (item) => item.group,
-            (c) => c.labels.category(),
-            (c, i) => i.label(c),
-          ),
-        ]),
+      const (GsWish) => ScreenFilter<GsWish>(
+          sections: [
+            FilterSection.itemType((item) => item.isWeapon),
+            FilterSection.rarity((item) => item.rarity, 3),
+          ],
+        ),
+      const (GiWish) => ScreenFilter<GiWish>(
+          sections: [
+            FilterSection.itemType((item) => _getItem(item.itemId).isWeapon),
+            FilterSection.rarity((item) => _getItem(item.itemId).rarity, 3),
+          ],
+        ),
+      const (GsAchievement) => ScreenFilter<GsAchievement>(
+          sections: [
+            FilterSection.state(
+              (item) => item.hidden,
+              (c) => c.labels.achHidden(),
+              (c, e) => e ? c.labels.achHidden() : c.labels.achVisible(),
+            ),
+            FilterSection<GeAchievementType, GsAchievement>(
+              GeAchievementType.values.toSet(),
+              (item) => item.type,
+              (c) => c.labels.type(),
+              (c, e) => e.label(c),
+            ),
+            FilterSection.state(
+              (item) => !GsUtils.achievements.isObtainable(item.id),
+              (c) => c.labels.status(),
+              (c, e) =>
+                  e ? c.labels.filterObtained() : c.labels.filterNotObtained(),
+              key: FilterKey.obtain,
+            ),
+            FilterSection.version((item) => item.version),
+          ],
+        ),
+      const (GsEvent) => ScreenFilter<GsEvent>(
+          sections: [
+            FilterSection.version((item) => item.version),
+            FilterSection<GeEventType, GsEvent>(
+              GeEventType.values.toSet(),
+              (item) => item.type,
+              (c) => c.labels.type(),
+              (c, i) => i.label(c),
+            ),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsNamecard) => ScreenFilter<GsNamecard>(
+          sections: [
+            FilterSection<GeNamecardType, GsNamecard>(
+              GeNamecardType.values.toSet(),
+              (item) => item.type,
+              (c) => c.labels.type(),
+              (c, e) => e.label(c),
+            ),
+            FilterSection.version((item) => item.version),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsRecipe) => ScreenFilter<GsRecipe>(
+          sections: [
+            FilterSection.rarity((item) => item.rarity),
+            FilterSection<GeRecipeEffectType, GsRecipe>(
+              GeRecipeEffectType.values.toSet(),
+              (item) => item.effect,
+              (c) => c.labels.status(),
+              (c, i) => i.label(c),
+              asset: (i) => i.assetPath,
+            ),
+            FilterSection.version((item) => item.version),
+            FilterSection.owned(
+              (item) => _db.saveOf<GiRecipe>().exists(item.id),
+              filter: (item) => item.baseRecipe.isEmpty,
+              key: FilterKey.obtain,
+            ),
+            FilterSection.state(
+              (item) =>
+                  _db.saveOf<GiRecipe>().getItem(item.id)?.proficiency ==
+                  item.maxProficiency,
+              (c) => c.labels.filterProficiency(),
+              (c, e) =>
+                  e ? c.labels.filterComplete() : c.labels.filterIncomplete(),
+              filter: (i) => _db.saveOf<GiRecipe>().exists(i.id),
+            ),
+            FilterSection.state(
+              (item) => item.baseRecipe.isNotEmpty,
+              (c) => c.labels.specialDish(),
+              (c, e) => e ? c.labels.specialDish() : c.labels.wsNone(),
+            ),
+            FilterSection<GeRecipeType, GsRecipe>(
+              GeRecipeType.values.toSet(),
+              (item) => item.type,
+              (c) => c.labels.type(),
+              (c, i) => i.label(c),
+            ),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsFurnitureChest) => ScreenFilter<GsFurnitureChest>(
+          sections: [
+            FilterSection.rarity((item) => item.rarity),
+            FilterSection.version((item) => item.version),
+            FilterSection.region((item) => item.region),
+            FilterSection.setCategory((item) => item.type),
+            FilterSection.owned(
+              (item) => _db.saveOf<GiFurnitureChest>().exists(item.id),
+            ),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsWeapon) => ScreenFilter<GsWeapon>(
+          sections: [
+            FilterSection.weaponType((item) => item.type),
+            FilterSection.rarity((item) => item.rarity),
+            FilterSection.version((item) => item.version),
+            FilterSection.owned((item) => GsUtils.weapons.hasWeapon(item.id)),
+            FilterSection.weekdaysMaterials(
+              (item) => GsUtils.weaponMaterials
+                  .getAscensionMaterials(item.id)
+                  .keys
+                  .toSet(),
+            ),
+            FilterSection<GeWeaponAscStatType, GsWeapon>(
+              GeWeaponAscStatType.values.toSet(),
+              (item) => item.statType,
+              (c) => c.labels.ndStat(),
+              (c, i) => i.label(c),
+              asset: (e) => e.assetPath,
+            ),
+            FilterSection<GeItemSourceType, GsWeapon>(
+              Database.instance
+                  .infoOf<GsWeapon>()
+                  .items
+                  .map((e) => e.source)
+                  .toSet(),
+              (item) => item.source,
+              (c) => c.labels.source(),
+              (c, i) => i.name.capitalize(),
+            ),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsArtifact) => ScreenFilter<GsArtifact>(
+          sections: [
+            FilterSection.rarity((item) => item.rarity, 3),
+            FilterSection.version((item) => item.version),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsCharacter) => ScreenFilter<GsCharacter>(
+          sections: [
+            FilterSection.element((item) => item.element),
+            FilterSection.weaponType((item) => item.weapon),
+            FilterSection.weekdaysMaterials((item) {
+              return GsUtils.characterMaterials
+                  .getTalentMaterials(item.id)
+                  .keys
+                  .toSet();
+            }),
+            FilterSection.version((item) => item.version),
+            FilterSection.region((item) => item.region),
+            FilterSection<GeCharacterAscStatType, GsCharacter>(
+              GeCharacterAscStatType.values.toSet(),
+              (item) => item.ascStatType,
+              (c) => 'Special Stat',
+              (c, i) => i.label(c),
+              asset: (i) => i.assetPath,
+            ),
+            FilterSection.state(
+              (item) => GsUtils.characters.getCharFriendship(item.id) == 10,
+              (c) => c.labels.friendship(),
+              (c, i) =>
+                  i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
+              filter: (i) => GsUtils.characters.hasCaracter(i.id),
+            ),
+            FilterSection.owned((e) => GsUtils.characters.hasCaracter(e.id)),
+            FilterSection.state(
+              (item) => GsUtils.characters.isCharMaxAscended(item.id),
+              (c) => c.labels.ascension(),
+              (c, i) =>
+                  i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
+              filter: (i) => GsUtils.characters.hasCaracter(i.id),
+            ),
+            FilterSection.rarity((item) => item.rarity, 4),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsSereniteaSet) => ScreenFilter<GsSereniteaSet>(
+          sections: [
+            FilterSection.version((item) => item.version),
+            FilterSection.setCategory((item) => item.category),
+            FilterSection.state(
+              (item) => !GsUtils.sereniteaSets.isObtainable(item.id),
+              (c) => c.labels.status(),
+              (c, e) =>
+                  e ? c.labels.filterObtained() : c.labels.filterNotObtained(),
+            ),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsSpincrystal) => ScreenFilter<GsSpincrystal>(
+          sections: [
+            FilterSection.owned(
+              (item) => _db.saveOf<GiSpincrystal>().exists(item.id),
+            ),
+            FilterSection.version((item) => item.version),
+            FilterSection.state(
+              (item) => item.fromChubby,
+              (c) => c.labels.source(),
+              (c, i) => i ? c.labels.chubby() : c.labels.world(),
+            ),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
+      const (GsMaterial) => ScreenFilter<GsMaterial>(
+          sections: [
+            FilterSection.rarity((item) => item.rarity),
+            FilterSection.version((item) => item.version),
+            FilterSection(
+              {true},
+              (item) => item.ingredient,
+              (c) => c.labels.ingredients(),
+              (c, i) => c.labels.buttonYes(),
+            ),
+            FilterSection<GeMaterialType, GsMaterial>(
+              GeMaterialType.values.toSet(),
+              (item) => item.group,
+              (c) => c.labels.category(),
+              (c, i) => i.label(c),
+            ),
+          ],
+          queryMatcher: (item) => item.name,
+        ),
       _ => null,
     } as ScreenFilter<T>?;
 
@@ -482,9 +560,17 @@ class _GsFilterDialog extends StatefulWidget {
 
 class _GsFilterDialogState extends State<_GsFilterDialog> {
   final notifier = ValueNotifier(false);
+  final _queryController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _queryController.text = widget.filter.query;
+  }
 
   @override
   void dispose() {
+    _queryController.dispose();
     notifier.dispose();
     super.dispose();
   }
@@ -524,6 +610,39 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                       strutStyle: context.themeStyles.title18n.toStrut(),
                     ),
                   ),
+                  if (widget.filter.hasQuery())
+                    Expanded(
+                      child: TextField(
+                        autofocus: true,
+                        controller: _queryController,
+                        style: context.themeStyles.label14n,
+                        decoration: InputDecoration(
+                          isCollapsed: true,
+                          focusColor: context.themeColors.mainColor1,
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: kSeparator8,
+                            horizontal: kSeparator8 + kSeparator4,
+                          ),
+                          border: _getInputBorder(),
+                          enabledBorder: _getInputBorder(),
+                          focusedBorder: _getInputBorder(true),
+                          hintText: context.labels.hintSearch(),
+                          hintStyle: context.themeStyles.label14n.copyWith(
+                            color: context.themeColors.almostWhite
+                                .withValues(alpha: kDisableOpacity),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          widget.filter.query = value;
+                          notifier.value = !notifier.value;
+                        },
+                        onSubmitted: (value) {
+                          widget.filter.query = value;
+                          notifier.value = !notifier.value;
+                          Navigator.of(context).maybePop();
+                        },
+                      ),
+                    ),
                   IconButton(
                     icon: const Icon(
                       Icons.restart_alt_rounded,
@@ -545,7 +664,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                 child: ValueListenableBuilder<bool>(
                   valueListenable: notifier,
                   builder: (context, value, child) {
-                    final half = widget.filter._sections.length ~/ 2;
+                    final half = widget.filter.sections.length ~/ 2;
                     return SingleChildScrollView(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -553,7 +672,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: widget.filter._sections
+                              children: widget.filter.sections
                                   .take(half)
                                   .map(_filter)
                                   .separate(const SizedBox(height: 12))
@@ -564,7 +683,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: widget.filter._sections
+                              children: widget.filter.sections
                                   .skip(half)
                                   .map(_filter)
                                   .separate(const SizedBox(height: 12))
@@ -581,6 +700,17 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
           ],
         ),
       ),
+    );
+  }
+
+  InputBorder _getInputBorder([bool selected = false]) {
+    final color = context.themeColors.almostWhite;
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        color: selected ? color : color.withValues(alpha: kDisableOpacity),
+        width: selected ? 2 : 1,
+      ),
+      borderRadius: BorderRadius.circular(100),
     );
   }
 
@@ -603,7 +733,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
           children: section.values.map((v) {
             return MainButton(
               selected: section.enabled.contains(v),
-              label: section.label(context, v),
+              child: Text(section.label(context, v)),
               onPress: () {
                 section.toggle(v);
                 notifier.value = !notifier.value;

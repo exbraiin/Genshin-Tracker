@@ -29,10 +29,11 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
         final utils = GsUtils.characters;
-        final ascension = utils.getCharAscension(item.id);
-        final friendship = utils.getCharFriendship(item.id);
-        final constellation = utils.getTotalCharConstellations(item.id);
+        final info = utils.getCharInfo(item.id);
         final hasChar = utils.hasCaracter(item.id);
+        final ascension = info?.ascension ?? 0;
+        final friendship = info?.friendship ?? 1;
+        final constellation = info?.totalConstellations;
         return ItemDetailsCard(
           name: item.name,
           rarity: item.rarity,
@@ -65,7 +66,34 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     ),
                 ],
               ),
-              const SizedBox(width: kSeparator4),
+              const SizedBox(height: kSeparator4),
+              if (hasChar)
+                Row(
+                  spacing: kGridSeparator,
+                  children: [
+                    GsItemCardLabel(
+                      label: info?.talent1Extra?.toString() ?? '-',
+                      onTap: () => GsUtils.characters.increaseTalent1(item.id),
+                      fgColor: (c) => info?.hasExtra1 ?? false
+                          ? Colors.lightBlue
+                          : Colors.white,
+                    ),
+                    GsItemCardLabel(
+                      label: info?.talent2Extra?.toString() ?? '-',
+                      onTap: () => GsUtils.characters.increaseTalent2(item.id),
+                      fgColor: (c) => info?.hasExtra2 ?? false
+                          ? Colors.lightBlue
+                          : Colors.white,
+                    ),
+                    GsItemCardLabel(
+                      label: info?.talent3Extra?.toString() ?? '-',
+                      onTap: () => GsUtils.characters.increaseTalent3(item.id),
+                      fgColor: (c) => info?.hasExtra3 ?? false
+                          ? Colors.lightBlue
+                          : Colors.white,
+                    ),
+                  ],
+                ),
               if (hasChar)
                 InkWell(
                   onTap: () => GsUtils.characters.increaseAscension(item.id),

@@ -38,14 +38,10 @@ class MainButton extends StatelessWidget {
         ),
         child: InkWell(
           onTap: onPress,
-          child: label != null
-              ? Text(
-                  label!,
-                  style: context.textTheme.titleSmall!
-                      .copyWith(color: Colors.white),
-                  strutStyle: context.textTheme.titleSmall!.toStrut(),
-                )
-              : child,
+          child: DefaultTextStyle(
+            style: context.textTheme.titleSmall!.copyWith(color: Colors.white),
+            child: label != null ? Text(label!) : (child ?? SizedBox()),
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_card.dart';
 import 'package:tracker/screens/weapons_screen/weapon_list_item.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
@@ -19,8 +20,8 @@ class WeaponsScreen extends StatelessWidget {
       items: (db) => db.infoOf<GsWeapon>().items,
       versionSort: (item) => item.version,
       itemBuilder: (context, state) => WeaponListItem(
-        showItem: !state.filter!.isSectionEmpty('weekdays'),
-        showExtra: state.filter!.hasExtra('info'),
+        showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
+        showExtra: state.filter!.hasExtra(FilterExtras.info),
         item: state.item,
         selected: state.selected,
         onTap: state.onSelect,
@@ -34,12 +35,12 @@ class WeaponsScreen extends StatelessWidget {
           message: context.labels.showExtraInfo(),
           child: IconButton(
             icon: Icon(
-              hasExtra('info')
+              hasExtra(FilterExtras.info)
                   ? Icons.visibility_rounded
                   : Icons.visibility_off_rounded,
               color: Colors.white.withValues(alpha: 0.5),
             ),
-            onPressed: () => toggle('info'),
+            onPressed: () => toggle(FilterExtras.info),
           ),
         ),
       ],

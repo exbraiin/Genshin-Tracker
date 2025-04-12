@@ -32,8 +32,8 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final SortOrder sortOrder;
   final Iterable<T> Function(Database db) items;
   final List<Widget> Function(
-    bool Function(String) hasExtra,
-    void Function(String label) toggle,
+    bool Function(FilterExtras extra) hasExtra,
+    void Function(FilterExtras extra) toggle,
   )? actions;
   final Widget? itemCardFooter;
   final Comparable<String> Function(T item)? versionSort;
@@ -42,7 +42,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final Widget Function(
     BuildContext context,
     List<T> state,
-    bool Function(String),
+    bool Function(FilterExtras extra),
   )? tableBuilder;
 
   const InventoryListPage({
@@ -82,7 +82,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
 
             final items = _sortedItems(
               this.items(db),
-              hasExtra('__version_sort') ? versionSort : null,
+              hasExtra(FilterExtras.versionSort) ? versionSort : null,
             );
 
             final sorted = filter.match(items).toList();
@@ -90,8 +90,8 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
             final buttons = [
               if (tableBuilder != null)
                 IconButton(
-                  onPressed: () => toggle('__table'),
-                  icon: hasExtra('__table')
+                  onPressed: () => toggle(FilterExtras.table),
+                  icon: hasExtra(FilterExtras.table)
                       ? const Icon(Icons.grid_view_rounded)
                       : const Icon(Icons.view_list_rounded),
                   color: Colors.white.withValues(alpha: 0.5),
@@ -99,12 +99,12 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
               ...other,
               if (versionSort != null)
                 Tooltip(
-                  message: hasExtra('__version_sort')
+                  message: hasExtra(FilterExtras.versionSort)
                       ? context.labels.sortByDefault()
                       : context.labels.sortByVersion(),
                   child: IconButton(
-                    onPressed: () => toggle('__version_sort'),
-                    icon: hasExtra('__version_sort')
+                    onPressed: () => toggle(FilterExtras.versionSort),
+                    icon: hasExtra(FilterExtras.versionSort)
                         ? const Icon(Icons.remove_circle_outline_rounded)
                         : const Icon(Icons.arrow_circle_up_rounded),
                     color: Colors.white.withValues(alpha: 0.5),
@@ -113,7 +113,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
               button,
             ];
 
-            if (filter.hasExtra('__table') && tableBuilder != null) {
+            if (filter.hasExtra(FilterExtras.table) && tableBuilder != null) {
               return InventoryPage(
                 appBar: InventoryAppBar(
                   label: title,

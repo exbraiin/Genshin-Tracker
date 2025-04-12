@@ -37,6 +37,7 @@ class ItemGridWidget extends StatelessWidget {
   final ItemSize size;
   final bool disabled;
   final String label;
+  final Widget? labelWidget;
   final String tooltip;
   final String urlImage;
   final String assetImage;
@@ -48,6 +49,7 @@ class ItemGridWidget extends StatelessWidget {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
+    this.labelWidget,
     this.rarity = 1,
     this.tooltip = '',
     this.urlImage = '',
@@ -63,6 +65,7 @@ class ItemGridWidget extends StatelessWidget {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
+    this.labelWidget,
     this.disabled = false,
     this.onAdd,
     this.onRemove,
@@ -78,6 +81,7 @@ class ItemGridWidget extends StatelessWidget {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
+    this.labelWidget,
     this.disabled = false,
     this.onAdd,
     this.onRemove,
@@ -94,6 +98,7 @@ class ItemGridWidget extends StatelessWidget {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
+    this.labelWidget,
     this.disabled = false,
     this.onAdd,
     this.onRemove,
@@ -109,6 +114,7 @@ class ItemGridWidget extends StatelessWidget {
     super.key,
     this.size = ItemSize.small,
     this.label = '',
+    this.labelWidget,
     this.disabled = false,
     this.onAdd,
     this.onRemove,
@@ -127,7 +133,27 @@ class ItemGridWidget extends StatelessWidget {
             ? Image.asset(assetImage)
             : const SizedBox();
 
-    if (label.isNotEmpty) {
+    if (labelWidget != null) {
+      child = Stack(
+        children: [
+          Positioned.fill(child: child),
+          Positioned.fill(
+            top: null,
+            left: -1,
+            right: -1,
+            bottom: -1,
+            child: Container(
+              color: context.themeColors.mainColor1.withValues(alpha: 0.8),
+              alignment: Alignment.center,
+              child: DefaultTextStyle(
+                style: context.themeStyles.label14n,
+                child: labelWidget!,
+              ),
+            ),
+          ),
+        ],
+      );
+    } else if (label.isNotEmpty) {
       child = Stack(
         children: [
           Positioned.fill(child: child),

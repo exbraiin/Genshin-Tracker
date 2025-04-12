@@ -60,12 +60,12 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   message: context.labels.hideEmptyBanners(),
                   child: IconButton(
                     icon: Icon(
-                      filter.hasExtra('hide_banners')
+                      filter.hasExtra(FilterExtras.hide)
                           ? Icons.visibility_off_rounded
                           : Icons.visibility_rounded,
                       color: Colors.white.withValues(alpha: 0.5),
                     ),
-                    onPressed: () => toggle('hide_banners'),
+                    onPressed: () => toggle(FilterExtras.hide),
                   ),
                 ),
                 const SizedBox(width: kSeparator2),
@@ -142,7 +142,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
                       .thenBy((e) => e.subtype)
                       .toList();
 
-                  final hide = filter.hasExtra('hide_banners');
+                  final hide = filter.hasExtra(FilterExtras.hide);
                   if (hide) {
                     banners.removeWhere(
                       (e) => !GsUtils.wishes.bannerHasWishes(e.id),

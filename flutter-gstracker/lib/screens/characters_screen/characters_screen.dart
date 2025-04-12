@@ -5,6 +5,7 @@ import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
 import 'package:tracker/screens/characters_screen/character_list_item.dart';
 import 'package:tracker/screens/characters_screen/characters_table.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 class CharactersScreen extends StatelessWidget {
@@ -21,14 +22,14 @@ class CharactersScreen extends StatelessWidget {
       versionSort: (item) => item.version,
       itemBuilder: (context, state) => CharacterListItem(
         state.item,
-        showItem: !state.filter!.isSectionEmpty('weekdays'),
+        showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
         onTap: state.onSelect,
         selected: state.selected,
       ),
       itemCardBuilder: (context, item) => CharacterDetailsCard(item),
       tableBuilder: (context, list, hasExtra) => CharactersTable(
         characters: list,
-        showTodo: hasExtra('info'),
+        showTodo: hasExtra(FilterExtras.info),
       ),
     );
   }
