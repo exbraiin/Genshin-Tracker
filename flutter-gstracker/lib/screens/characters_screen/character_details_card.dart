@@ -70,29 +70,9 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               if (hasChar)
                 Row(
                   spacing: kGridSeparator,
-                  children: [
-                    GsItemCardLabel(
-                      label: info?.talent1Extra?.toString() ?? '-',
-                      onTap: () => GsUtils.characters.increaseTalent1(item.id),
-                      fgColor: (c) => info?.hasExtra1 ?? false
-                          ? Colors.lightBlue
-                          : Colors.white,
-                    ),
-                    GsItemCardLabel(
-                      label: info?.talent2Extra?.toString() ?? '-',
-                      onTap: () => GsUtils.characters.increaseTalent2(item.id),
-                      fgColor: (c) => info?.hasExtra2 ?? false
-                          ? Colors.lightBlue
-                          : Colors.white,
-                    ),
-                    GsItemCardLabel(
-                      label: info?.talent3Extra?.toString() ?? '-',
-                      onTap: () => GsUtils.characters.increaseTalent3(item.id),
-                      fgColor: (c) => info?.hasExtra3 ?? false
-                          ? Colors.lightBlue
-                          : Colors.white,
-                    ),
-                  ],
+                  children: CharTalentType.values
+                      .map((e) => _talentLabel(info, e))
+                      .toList(),
                 ),
               if (hasChar)
                 InkWell(
@@ -136,6 +116,16 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
         );
       },
+    );
+  }
+
+  Widget _talentLabel(CharInfo? info, CharTalentType tal) {
+    return GsItemCardLabel(
+      label: info?.talents?.talentWithExtra(tal).toString() ?? '-',
+      onTap: () => GsUtils.characters.increaseTalent(item.id, tal),
+      fgColor: (c) => info?.talents?.hasExtra(tal) ?? false
+          ? Colors.lightBlue
+          : Colors.white,
     );
   }
 

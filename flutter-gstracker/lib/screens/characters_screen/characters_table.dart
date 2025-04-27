@@ -194,63 +194,23 @@ class _CharactersTableState extends State<CharactersTable> {
           textAlign: TextAlign.center,
         ),
       ),
-      _TableItem(
-        label: 'Tal. A',
-        sortBy: (e) => e.talent1 ?? unowned(),
-        builder: (info) {
-          return Text(
-            info.talent1Extra?.toString() ?? '-',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: info.hasExtra1 ? Colors.lightBlue : null,
-            ),
-          );
-        },
-        onTap: (info) => GsUtils.characters.increaseTalent1(info.item.id),
-      ),
-      _TableItem(
-        label: 'Tal. E',
-        sortBy: (e) => e.talent2 ?? unowned(),
-        builder: (info) {
-          return Text(
-            info.talent2Extra?.toString() ?? '-',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: info.hasExtra2 ? Colors.lightBlue : null,
-            ),
-          );
-        },
-        onTap: (info) => GsUtils.characters.increaseTalent2(info.item.id),
-      ),
-      _TableItem(
-        label: 'Tal. Q',
-        sortBy: (e) => e.talent3 ?? unowned(),
-        builder: (info) {
-          return Text(
-            info.talent3Extra?.toString() ?? '-',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: info.hasExtra3 ? Colors.lightBlue : null,
-            ),
-          );
-        },
-        onTap: (info) => GsUtils.characters.increaseTalent3(info.item.id),
-      ),
+      ...CharTalentType.values.map((e) => _talentTableItem(e)),
       _TableItem(
         label: 'Tal. T',
-        sortBy: (e) => e.talents ?? unowned(),
+        sortBy: (e) => e.talents?.total ?? unowned(),
         builder: (info) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                info.talents?.toString() ?? '-',
+                info.talents?.total.toString() ?? '-',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: (info.talents ?? 0) >= 30 ? Colors.yellow : null,
+                  color:
+                      (info.talents?.total ?? 0) >= 30 ? Colors.yellow : null,
                 ),
               ),
-              if ((info.talents ?? 0) >= 30)
+              if ((info.talents?.total ?? 0) >= 30)
                 const Padding(
                   padding: EdgeInsets.only(left: kSeparator2),
                   child: Icon(
@@ -263,6 +223,34 @@ class _CharactersTableState extends State<CharactersTable> {
         },
       ),
     ];
+  }
+
+  _TableItem _talentTableItem(CharTalentType tal) {
+    double unowned() => _sorter ? double.infinity : double.negativeInfinity;
+
+    /// TODO: Localize labels...
+    final label = switch (tal) {
+      CharTalentType.attack => 'Tal. A',
+      CharTalentType.skill => 'Tal. E',
+      CharTalentType.burst => 'Tal. Q',
+    };
+
+    return _TableItem(
+      label: label,
+      sortBy: (e) => e.talents?.talent(tal) ?? unowned(),
+      builder: (info) {
+        final value = info.talents?.talentWithExtra(tal);
+        final hasExtra = info.talents?.hasExtra(tal) ?? false;
+        return Text(
+          value?.toString() ?? '-',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: hasExtra ? Colors.lightBlue : null,
+          ),
+        );
+      },
+      onTap: (info) => GsUtils.characters.increaseTalent(info.item.id, tal),
+    );
   }
 
   Iterable<CharInfo> _getCharsSorted() {

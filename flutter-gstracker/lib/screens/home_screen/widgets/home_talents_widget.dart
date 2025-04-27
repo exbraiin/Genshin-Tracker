@@ -29,9 +29,7 @@ class HomeTalentsWidget extends StatelessWidget {
             .map((c) => chars.getCharInfo(c.id))
             .whereNotNull()
             .where((data) {
-          final hasMissingTalents = (data.talent1 ?? 10) < 9 ||
-              (data.talent2 ?? 10) < 9 ||
-              (data.talent3 ?? 10) < 9;
+          final hasMissingTalents = data.talents?.isMissing() ?? false;
 
           late final talentMaterial = iMats.getItem(data.item.talentMaterial);
           final hasWeekdayTalents = today == GeWeekdayType.sunday ||
@@ -53,7 +51,7 @@ class HomeTalentsWidget extends StatelessWidget {
           builder: (context, notifier, child) {
             final asc = notifier.value;
             final characters = list
-                .sortedByOrder((c) => c.talentsWithoutCrown, asc)
+                .sortedByOrder((c) => c.talents?.totalCrownless ?? 0, asc)
                 .thenByDescending((c) => c.item.rarity)
                 .thenBy((c) => c.item.releaseDate)
                 .thenBy((c) => c.item.id);
@@ -83,9 +81,6 @@ class HomeTalentsWidget extends StatelessWidget {
                   final width = layout.maxWidth;
                   final items = (width ~/ itemSize).coerceAtMost(8) * 2;
 
-                  final style = context.themeStyles.label14n;
-                  final strut = style.toStrut();
-
                   return Center(
                     child: Wrap(
                       spacing: kGridSeparator,
@@ -97,32 +92,9 @@ class HomeTalentsWidget extends StatelessWidget {
                           info.item,
                           labelWidget: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${info.talent1Extra ?? '-'} ',
-                                style: style.copyWith(
-                                  color:
-                                      info.hasExtra1 ? Colors.lightBlue : null,
-                                ),
-                                strutStyle: strut,
-                              ),
-                              Text(
-                                '${info.talent2Extra ?? '-'} ',
-                                style: style.copyWith(
-                                  color:
-                                      info.hasExtra2 ? Colors.lightBlue : null,
-                                ),
-                                strutStyle: strut,
-                              ),
-                              Text(
-                                '${info.talent3Extra ?? '-'}',
-                                style: style.copyWith(
-                                  color:
-                                      info.hasExtra3 ? Colors.lightBlue : null,
-                                ),
-                                strutStyle: strut,
-                              ),
-                            ],
+                            children: CharTalentType.values
+                                .map((e) => _talentLabel(context, info, e))
+                                .toList(),
                           ),
                         );
                       }).toList(),
@@ -136,13 +108,20 @@ class HomeTalentsWidget extends StatelessWidget {
       },
     );
   }
-}
 
-extension on CharInfo {
-  int get talentsWithoutCrown =>
-      (talent1?.coerceAtMost(9) ?? 0) +
-      (talent2?.coerceAtMost(9) ?? 0) +
-      (talent3?.coerceAtMost(9) ?? 0);
+  Widget _talentLabel(BuildContext context, CharInfo info, CharTalentType tal) {
+    final value = info.talents?.talentWithExtra(tal);
+    final hasExtra = info.talents?.hasExtra(tal) ?? false;
+    final style = context.themeStyles.label14n;
+    final strut = style.toStrut();
+    return Text(
+      '${value ?? '-'} ',
+      style: style.copyWith(
+        color: hasExtra ? Colors.lightBlue : null,
+      ),
+      strutStyle: strut,
+    );
+  }
 }
 
 extension<E> on Iterable<E> {

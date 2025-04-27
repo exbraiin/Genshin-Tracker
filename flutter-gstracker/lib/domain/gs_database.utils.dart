@@ -459,7 +459,7 @@ class _Materials {
   }
 }
 
-class CharInfo {
+final class CharInfo {
   final GsCharacter item;
   final GiCharacter info;
   final bool isOwned;
@@ -469,24 +469,12 @@ class CharInfo {
   final int totalConstellations;
   final String iconImage;
   final String wishImage;
-  final int _talent1, _talent2, _talent3;
-  final int _talent1Extra, _talent2Extra, _talent3Extra;
+  final CharTalents? talents;
 
   bool get isMaxAscension => ascension >= 6;
   bool get isAscendable => isOwned && !isMaxAscension;
   int get constellations => totalConstellations.clamp(0, 6);
   int get extraConstellations => totalConstellations - constellations;
-
-  int? get talent1 => isOwned ? _talent1 : null;
-  int? get talent2 => isOwned ? _talent2 : null;
-  int? get talent3 => isOwned ? _talent3 : null;
-  int? get talents => isOwned ? (_talent1 + _talent2 + _talent3) : null;
-  bool get hasExtra1 => isOwned && _talent1Extra != 0;
-  bool get hasExtra2 => isOwned && _talent2Extra != 0;
-  bool get hasExtra3 => isOwned && _talent3Extra != 0;
-  int? get talent1Extra => isOwned ? _talent1 + _talent1Extra : null;
-  int? get talent2Extra => isOwned ? _talent2 + _talent2Extra : null;
-  int? get talent3Extra => isOwned ? _talent3 + _talent3Extra : null;
 
   CharInfo._({
     required this.item,
@@ -498,24 +486,55 @@ class CharInfo {
         wishImage = item.fullImage,
         ascension = info.ascension.clamp(0, 6),
         friendship = info.friendship.clamp(1, 10),
-        _talent1 = info.talent1.clamp(1, 10),
-        _talent2 = info.talent2.clamp(1, 10),
-        _talent3 = info.talent3.clamp(1, 10),
-        _talent1Extra = _talExtra(
-          totalConstellations,
-          item.talentAConstellation,
-        ),
-        _talent2Extra = _talExtra(
-          totalConstellations,
-          item.talentEConstellation,
-        ),
-        _talent3Extra = _talExtra(
-          totalConstellations,
-          item.talentQConstellation,
-        );
+        talents = isOwned ? CharTalents(item, info, totalConstellations) : null;
+}
 
-  static int _talExtra(int cons, int talCons) =>
-      cons >= talCons && talCons != 0 ? 3 : 0;
+enum CharTalentType { attack, skill, burst }
+
+final class CharTalents {
+  final Map<CharTalentType, (int, int)> _data;
+
+  int get total => _data.values.sumBy((e) => e.$1);
+  int get totalCrownless => _data.values.sumBy((e) => e.$1.coerceAtMost(9));
+
+  CharTalents(GsCharacter item, GiCharacter info, int cons)
+      : _data = CharTalentType.values
+            .toMap((tal) => tal, (tal) => _parseTalent(item, info, tal, cons));
+
+  static (int, int) _parseTalent(
+    GsCharacter item,
+    GiCharacter info,
+    CharTalentType tal,
+    int cons,
+  ) {
+    final (value, talCons) = switch (tal) {
+      CharTalentType.attack => (info.talent1, item.talentAConstellation),
+      CharTalentType.skill => (info.talent2, item.talentEConstellation),
+      CharTalentType.burst => (info.talent3, item.talentQConstellation),
+    };
+
+    final extra = cons >= talCons && talCons != 0 ? 3 : 0;
+    return (value.clamp(1, 10), extra);
+  }
+
+  int talent(CharTalentType tal) {
+    final (value, _) = _data[tal]!;
+    return value;
+  }
+
+  int talentWithExtra(CharTalentType tal) {
+    final (value, extra) = _data[tal]!;
+    return value + extra;
+  }
+
+  bool hasExtra(CharTalentType tal) {
+    final (_, extra) = _data[tal]!;
+    return extra != 0;
+  }
+
+  bool isMissing() {
+    return _data.values.any((e) => e.$1 < 9);
+  }
 }
 
 class _Characters {
@@ -624,47 +643,24 @@ class _Characters {
     _svCharacter.setItem(item);
   }
 
-  void _increaseTalent(
-    String id, {
-    required int Function(GiCharacter char) getTalent,
-    required GiCharacter Function(GiCharacter char, int tal) setTalent,
-  }) {
+  /// Increases the character talent
+  ///
+  /// {@macro db_update}
+  void increaseTalent(String id, CharTalentType tal) {
     final char = _svCharacter.getItem(id) ?? GiCharacter(id: id);
-    final cTalent = ((getTalent(char) + 1) % (10 + 1)).coerceAtLeast(1);
-    _svCharacter.setItem(setTalent(char, cTalent));
-  }
+    final talent = switch (tal) {
+      CharTalentType.attack => char.talent1,
+      CharTalentType.skill => char.talent2,
+      CharTalentType.burst => char.talent3,
+    };
 
-  /// Increases the character 1st talent
-  ///
-  /// {@macro db_update}
-  void increaseTalent1(String id) {
-    _increaseTalent(
-      id,
-      getTalent: (char) => char.talent1,
-      setTalent: (char, tal) => char.copyWith(talent1: tal),
-    );
-  }
-
-  /// Increases the character 2nd talent
-  ///
-  /// {@macro db_update}
-  void increaseTalent2(String id) {
-    _increaseTalent(
-      id,
-      getTalent: (char) => char.talent2,
-      setTalent: (char, tal) => char.copyWith(talent2: tal),
-    );
-  }
-
-  /// Increases the character 3rd talent
-  ///
-  /// {@macro db_update}
-  void increaseTalent3(String id) {
-    _increaseTalent(
-      id,
-      getTalent: (char) => char.talent3,
-      setTalent: (char, tal) => char.copyWith(talent3: tal),
-    );
+    final cTalent = ((talent + 1) % (10 + 1)).coerceAtLeast(1);
+    final item = switch (tal) {
+      CharTalentType.attack => char.copyWith(talent1: cTalent),
+      CharTalentType.skill => char.copyWith(talent2: cTalent),
+      CharTalentType.burst => char.copyWith(talent3: cTalent),
+    };
+    _svCharacter.setItem(item);
   }
 }
 
