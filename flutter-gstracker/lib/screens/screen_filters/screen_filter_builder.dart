@@ -6,7 +6,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/widgets/button.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
 typedef FilterBuilder<T extends GsModel<T>> = Widget Function(
@@ -365,15 +364,6 @@ class ScreenFilters {
         ),
       const (GsRecipe) => ScreenFilter<GsRecipe>(
           sections: [
-            FilterSection.rarity((item) => item.rarity),
-            FilterSection<GeRecipeEffectType, GsRecipe>(
-              GeRecipeEffectType.values.toSet(),
-              (item) => item.effect,
-              (c) => c.labels.status(),
-              (c, i) => i.label(c),
-              asset: (i) => i.assetPath,
-            ),
-            FilterSection.version((item) => item.version),
             FilterSection.owned(
               (item) => _db.saveOf<GiRecipe>().exists(item.id),
               filter: (item) => item.baseRecipe.isEmpty,
@@ -393,6 +383,15 @@ class ScreenFilters {
               (c) => c.labels.specialDish(),
               (c, e) => e ? c.labels.specialDish() : c.labels.wsNone(),
             ),
+            FilterSection.rarity((item) => item.rarity),
+            FilterSection<GeRecipeEffectType, GsRecipe>(
+              GeRecipeEffectType.values.toSet(),
+              (item) => item.effect,
+              (c) => c.labels.status(),
+              (c, i) => i.label(c),
+              asset: (i) => i.assetPath,
+            ),
+            FilterSection.version((item) => item.version),
             FilterSection<GeRecipeType, GsRecipe>(
               GeRecipeType.values.toSet(),
               (item) => item.type,
@@ -416,10 +415,10 @@ class ScreenFilters {
         ),
       const (GsWeapon) => ScreenFilter<GsWeapon>(
           sections: [
+            FilterSection.owned((item) => GsUtils.weapons.hasWeapon(item.id)),
             FilterSection.weaponType((item) => item.type),
             FilterSection.rarity((item) => item.rarity),
             FilterSection.version((item) => item.version),
-            FilterSection.owned((item) => GsUtils.weapons.hasWeapon(item.id)),
             FilterSection.weekdaysMaterials(
               (item) => GsUtils.weaponMaterials
                   .getAscensionMaterials(item.id)
@@ -455,6 +454,22 @@ class ScreenFilters {
         ),
       const (GsCharacter) => ScreenFilter<GsCharacter>(
           sections: [
+            FilterSection.owned((e) => GsUtils.characters.hasCaracter(e.id)),
+            FilterSection.state(
+              (item) => GsUtils.characters.isCharMaxAscended(item.id),
+              (c) => c.labels.ascension(),
+              (c, i) =>
+                  i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
+              filter: (i) => GsUtils.characters.hasCaracter(i.id),
+            ),
+            FilterSection.state(
+              (item) => GsUtils.characters.getCharFriendship(item.id) == 10,
+              (c) => c.labels.friendship(),
+              (c, i) =>
+                  i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
+              filter: (i) => GsUtils.characters.hasCaracter(i.id),
+            ),
+            FilterSection.rarity((item) => item.rarity, 4),
             FilterSection.element((item) => item.element),
             FilterSection.weaponType((item) => item.weapon),
             FilterSection.weekdaysMaterials((item) {
@@ -472,22 +487,6 @@ class ScreenFilters {
               (c, i) => i.label(c),
               asset: (i) => i.assetPath,
             ),
-            FilterSection.state(
-              (item) => GsUtils.characters.getCharFriendship(item.id) == 10,
-              (c) => c.labels.friendship(),
-              (c, i) =>
-                  i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
-              filter: (i) => GsUtils.characters.hasCaracter(i.id),
-            ),
-            FilterSection.owned((e) => GsUtils.characters.hasCaracter(e.id)),
-            FilterSection.state(
-              (item) => GsUtils.characters.isCharMaxAscended(item.id),
-              (c) => c.labels.ascension(),
-              (c, i) =>
-                  i ? c.labels.filterComplete() : c.labels.filterIncomplete(),
-              filter: (i) => GsUtils.characters.hasCaracter(i.id),
-            ),
-            FilterSection.rarity((item) => item.rarity, 4),
           ],
           queryMatcher: (item) => item.name,
         ),
@@ -545,15 +544,24 @@ class ScreenFilters {
 }
 
 class _GsFilterDialog extends StatefulWidget {
-  static Future<void> show(BuildContext context, ScreenFilter filter) async {
-    return showDialog(
+  static Future<T?> show<T>(BuildContext context, ScreenFilter filter) {
+    return showGeneralDialog(
       context: context,
-      builder: (_) => _GsFilterDialog(filter),
+      barrierLabel: '',
+      barrierDismissible: true,
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (context, animation, _) => _GsFilterDialog(filter),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        final dx = Curves.easeOut.transform(animation.value);
+        return FractionalTranslation(
+          translation: Offset(1 - dx, 0),
+          child: child,
+        );
+      },
     );
   }
 
   final ScreenFilter filter;
-
   const _GsFilterDialog(this.filter);
 
   @override
@@ -561,7 +569,7 @@ class _GsFilterDialog extends StatefulWidget {
 }
 
 class _GsFilterDialogState extends State<_GsFilterDialog> {
-  final notifier = ValueNotifier(false);
+  final _changeNotifier = ValueNotifier(false);
   final _queryController = TextEditingController();
 
   @override
@@ -573,49 +581,64 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
   @override
   void dispose() {
     _queryController.dispose();
-    notifier.dispose();
+    _changeNotifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: size.height / 4,
-        horizontal: size.width / 4,
-      ),
-      padding: kListPadding,
-      decoration: BoxDecoration(
-        color: context.themeColors.mainColor0,
-        borderRadius: kGridRadius,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 10,
-            offset: Offset(0, 4),
-            color: Colors.black,
-          ),
-        ],
-      ),
+    return Align(
+      alignment: Alignment.centerRight,
       child: Material(
-        color: Colors.transparent,
-        child: Column(
-          children: [
-            InventoryBox(
-              child: Row(
-                children: [
-                  const SizedBox(width: kGridSeparator),
-                  Expanded(
-                    child: Text(
-                      context.labels.filter(),
-                      style: context.themeStyles.title18n,
-                      strutStyle: context.themeStyles.title18n.toStrut(),
+        type: MaterialType.transparency,
+        child: Container(
+          width: 360,
+          margin: EdgeInsets.only(right: 60),
+          height: double.infinity,
+          decoration: BoxDecoration(
+            color: context.themeColors.mainColor0,
+            boxShadow: const [
+              BoxShadow(
+                blurRadius: 10,
+                offset: Offset(4, 10),
+                color: Colors.black,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InventoryBox(
+                margin: kListPadding.copyWith(bottom: 0),
+                padding: EdgeInsets.all(kSeparator8),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            context.labels.hintSearch(),
+                            style: context.themeStyles.label16n
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.restart_alt_rounded,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            widget.filter.reset();
+                            _changeNotifier.value = !_changeNotifier.value;
+                            Navigator.of(context).maybePop();
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                  if (widget.filter.hasQuery())
-                    Expanded(
-                      child: TextField(
-                        autofocus: true,
+                    if (widget.filter.hasQuery())
+                      const SizedBox(height: kGridSeparator * 2),
+                    if (widget.filter.hasQuery())
+                      TextField(
                         controller: _queryController,
                         style: context.themeStyles.label14n,
                         decoration: InputDecoration(
@@ -625,9 +648,9 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                             vertical: kSeparator8,
                             horizontal: kSeparator8 + kSeparator4,
                           ),
-                          border: _getInputBorder(),
-                          enabledBorder: _getInputBorder(),
-                          focusedBorder: _getInputBorder(true),
+                          border: _getInputBorder(context),
+                          enabledBorder: _getInputBorder(context),
+                          focusedBorder: _getInputBorder(context, true),
                           hintText: context.labels.hintSearch(),
                           hintStyle: context.themeStyles.label14n.copyWith(
                             color: context.themeColors.almostWhite
@@ -636,76 +659,134 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                         ),
                         onChanged: (value) {
                           widget.filter.query = value;
-                          notifier.value = !notifier.value;
+                          _changeNotifier.value = !_changeNotifier.value;
                         },
                         onSubmitted: (value) {
                           widget.filter.query = value;
-                          notifier.value = !notifier.value;
+                          _changeNotifier.value = !_changeNotifier.value;
                           Navigator.of(context).maybePop();
                         },
                       ),
-                    ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.restart_alt_rounded,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      widget.filter.reset();
-                      notifier.value = !notifier.value;
-                      Navigator.of(context).maybePop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: kGridSeparator),
-            Expanded(
-              child: InventoryBox(
-                padding: const EdgeInsets.all(kGridSeparator * 2),
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: notifier,
-                  builder: (context, value, child) {
-                    final half = widget.filter.sections.length ~/ 2;
-                    return SingleChildScrollView(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: widget.filter.sections
-                                  .take(half)
-                                  .map(_filter)
-                                  .separate(const SizedBox(height: 12))
-                                  .toList(),
-                            ),
-                          ),
-                          const SizedBox(width: kSeparator8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: widget.filter.sections
-                                  .skip(half)
-                                  .map(_filter)
-                                  .separate(const SizedBox(height: 12))
-                                  .toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                  ],
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: InventoryBox(
+                  margin: kListPadding,
+                  padding: EdgeInsets.all(kSeparator8),
+                  child: ValueListenableBuilder(
+                    valueListenable: _changeNotifier,
+                    builder: (context, value, child) {
+                      return ListView(
+                        children: widget.filter.sections
+                            .map((section) => _layoutSection(section))
+                            .spaced(kSeparator8 * 2)
+                            .toList(),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  InputBorder _getInputBorder([bool selected = false]) {
+  Widget _layoutSection(FilterSection section) {
+    Widget expandedButton(Object? value) {
+      if (value == null) return Spacer();
+      return Expanded(
+        child: _filterButton(
+          selected: section.enabled.contains(value),
+          label: section.label(context, value),
+          onTap: () {
+            section.toggle(value);
+            _changeNotifier.value = !_changeNotifier.value;
+          },
+        ),
+      );
+    }
+
+    final buttons = Column(
+      children: section.values
+          .chunked(2)
+          .map((e) {
+            return Row(
+              children: [
+                expandedButton(e.elementAtOrNull(0)),
+                SizedBox(width: kListSeparator),
+                expandedButton(e.elementAtOrNull(1)),
+              ],
+            );
+          })
+          .spaced(kListSeparator)
+          .toList(),
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          section.title(context),
+          style: context.themeStyles.label16n
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: kGridSeparator * 2),
+        buttons,
+      ],
+    );
+  }
+
+  Widget _filterButton<T>({
+    required bool selected,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          constraints: BoxConstraints(minHeight: 26),
+          padding: EdgeInsets.symmetric(
+            vertical: kSeparator4,
+            horizontal: kSeparator8,
+          ),
+          margin: selected ? null : EdgeInsets.all(1),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: selected
+                  ? context.themeColors.almostWhite
+                  : context.themeColors.divider,
+              width: selected ? 2 : 1,
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                selected
+                    ? Icons.radio_button_on_rounded
+                    : Icons.radio_button_off_rounded,
+                size: 16,
+              ),
+              SizedBox(width: kGridSeparator * 2),
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(label),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  InputBorder _getInputBorder(BuildContext context, [bool selected = false]) {
     final color = context.themeColors.almostWhite;
     return OutlineInputBorder(
       borderSide: BorderSide(
@@ -713,37 +794,6 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
         width: selected ? 2 : 1,
       ),
       borderRadius: BorderRadius.circular(100),
-    );
-  }
-
-  Widget _filter(FilterSection section) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          section.title(context),
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: kGridSeparator * 2),
-        Wrap(
-          spacing: kGridSeparator,
-          runSpacing: kGridSeparator,
-          children: section.values.map((v) {
-            return MainButton(
-              selected: section.enabled.contains(v),
-              child: Text(section.label(context, v)),
-              onPress: () {
-                section.toggle(v);
-                notifier.value = !notifier.value;
-              },
-            );
-          }).toList(),
-        ),
-      ],
     );
   }
 }

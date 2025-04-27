@@ -1,3 +1,11 @@
+import 'package:flutter/material.dart';
+
+extension IterableWidgetExt on Iterable<Widget> {
+  Iterable<Widget> spaced(double space) {
+    return separate(SizedBox(width: space, height: space));
+  }
+}
+
 extension IterableExt<T> on Iterable<T> {
   Iterable<T> separate(T separator) sync* {
     final it = iterator;
