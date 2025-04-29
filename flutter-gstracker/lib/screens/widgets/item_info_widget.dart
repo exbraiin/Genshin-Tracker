@@ -334,18 +334,6 @@ class ItemCircleWidget extends StatelessWidget {
     this.asset = '',
   });
 
-  factory ItemCircleWidget.element(
-    GeElementType element, {
-    ItemSize size = ItemSize.small,
-    String label = '',
-  }) {
-    return ItemCircleWidget(
-      size: size,
-      asset: element.assetPath,
-      label: label,
-    );
-  }
-
   factory ItemCircleWidget.material(
     GsMaterial info, {
     ItemSize size = ItemSize.medium,
@@ -366,18 +354,6 @@ class ItemCircleWidget extends StatelessWidget {
       size: size,
       asset: GsAssets.iconRegionType(type),
       bgColor: type.color,
-    );
-  }
-
-  factory ItemCircleWidget.setCategory(
-    GeSereniteaSetType info, {
-    ItemSize size = ItemSize.medium,
-  }) {
-    return ItemCircleWidget(
-      rarity: 1,
-      size: size,
-      asset: GsAssets.iconSetType(info),
-      bgColor: info.color,
     );
   }
 
@@ -454,5 +430,57 @@ class ItemCircleWidget extends StatelessWidget {
     }
 
     return child;
+  }
+}
+
+class ItemIconWidget extends StatelessWidget {
+  final BoxFit fit;
+  final ItemSize size;
+  final EdgeInsetsGeometry margin;
+  final ImageProvider provider;
+
+  const ItemIconWidget({
+    super.key,
+    this.fit = BoxFit.contain,
+    this.size = ItemSize.small,
+    this.margin = const EdgeInsets.all(kSeparator2),
+    required this.provider,
+  });
+
+  ItemIconWidget.asset(
+    String assetName, {
+    super.key,
+    this.fit = BoxFit.contain,
+    this.size = ItemSize.small,
+    this.margin = const EdgeInsets.all(kSeparator2),
+  }) : provider = AssetImage(assetName);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: margin,
+      child: SizedBox(
+        width: size.circleSize,
+        height: size.circleSize,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Transform.translate(
+              offset: Offset(2, 2),
+              child: Image(
+                image: provider,
+                fit: fit,
+                colorBlendMode: BlendMode.srcIn,
+                color: Colors.black38,
+              ),
+            ),
+            Image(
+              image: provider,
+              fit: fit,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

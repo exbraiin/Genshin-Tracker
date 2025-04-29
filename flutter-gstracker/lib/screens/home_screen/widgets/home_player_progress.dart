@@ -60,7 +60,7 @@ class HomePlayerProgress extends StatelessWidget {
               GsUtils.sereniteaSets.owned,
               GsUtils.sereniteaSets.total,
             ),
-          ].separate(const SizedBox(height: kSeparator8 * 2)).toList(),
+          ].separate(const SizedBox(height: kSeparator16)).toList(),
         );
       },
     );

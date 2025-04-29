@@ -62,6 +62,9 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color mainColor0;
   final Color mainColor1;
 
+  final Color sectionTitle;
+  final Color sectionContent;
+
   final Color divider;
   final Color badValue;
   final Color goodValue;
@@ -77,6 +80,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.almostWhite,
     required this.mainColor0,
     required this.mainColor1,
+    required this.sectionTitle,
+    required this.sectionContent,
     required this.divider,
     required this.badValue,
     required this.goodValue,
@@ -90,6 +95,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         almostWhite = const Color(0xFFEEEEEE),
         mainColor0 = const Color(0xFF0C122E),
         mainColor1 = const Color(0xFF1E2240),
+        sectionTitle = const Color(0xFF495366),
+        sectionContent = Color(0xFF717782),
         divider = Colors.grey.withValues(alpha: 0.2),
         badValue = Colors.orange,
         goodValue = Colors.lightGreen,
@@ -102,24 +109,31 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         almostWhite = const Color(0xFFEEEEEE),
         mainColor0 = const Color(0xFF1E1F22),
         mainColor1 = const Color(0xFF2B2D31),
+        sectionTitle = const Color(0xFF495366),
+        sectionContent = Color(0xFF717782),
         divider = Colors.grey.withValues(alpha: 0.2),
         badValue = Colors.orange,
         goodValue = Colors.lightGreen,
         setIndoor = const Color(0xFFA01F2E),
         setOutdoor = const Color(0xFF303671);
 
-  Color getPityColor(int pity, [int max = 90]) {
+  Color colorByPity(int pity, [int max = 90]) {
     final h = (1 - (pity / max)) * 120;
     return HSLColor.fromAHSL(1, h, 1, 0.6).toColor();
   }
 
-  Color getRarityColor(int rarity) {
+  Color colorByRarity(int rarity) {
     return switch (rarity) {
-      1 => const Color(0xFF828E98),
-      2 => const Color(0xFF5C956B),
-      3 => const Color(0xFF51A2B4),
-      4 => const Color(0xFFB783C8),
-      5 => const Color(0xFFE2AA52),
+      // 1 => const Color(0xFF828E98),
+      // 2 => const Color(0xFF5C956B),
+      // 3 => const Color(0xFF51A2B4),
+      // 4 => const Color(0xFFB783C8),
+      // 5 => const Color(0xFFE2AA52),
+      1 => const Color(0xFF72778b),
+      2 => const Color(0xFF2a9072),
+      3 => const Color(0xFF5180cc),
+      4 => const Color(0xFFa256e1),
+      5 => const Color(0xFFbd6932),
       _ => Colors.transparent,
     };
   }
@@ -132,6 +146,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? mainColor0,
     Color? mainColor1,
     Color? mainColor2,
+    Color? sectionTitle,
+    Color? sectionContent,
     Color? divider,
     Color? badValue,
     Color? goodValue,
@@ -144,6 +160,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       almostWhite: almostWhite ?? this.almostWhite,
       mainColor0: mainColor0 ?? this.mainColor0,
       mainColor1: mainColor1 ?? this.mainColor1,
+      sectionTitle: sectionTitle ?? this.sectionTitle,
+      sectionContent: sectionContent ?? this.sectionContent,
       divider: divider ?? this.divider,
       badValue: badValue ?? this.badValue,
       goodValue: goodValue ?? this.goodValue,
@@ -168,6 +186,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       almostWhite: clerp((c) => c.almostWhite),
       mainColor0: clerp((c) => c.mainColor0),
       mainColor1: clerp((c) => c.mainColor1),
+      sectionTitle: clerp((c) => c.sectionTitle),
+      sectionContent: clerp((c) => c.sectionContent),
       divider: clerp((c) => c.divider),
       badValue: clerp((c) => c.badValue),
       goodValue: clerp((c) => c.goodValue),

@@ -22,7 +22,7 @@ class AddWishWishListItem extends StatelessWidget {
       height: 32,
       decoration: BoxDecoration(
         borderRadius: kListRadius,
-        color: context.themeColors.getRarityColor(item.rarity),
+        color: context.themeColors.colorByRarity(item.rarity),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(

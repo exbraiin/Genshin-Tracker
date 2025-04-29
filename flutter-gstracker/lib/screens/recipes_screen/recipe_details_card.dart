@@ -26,8 +26,16 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final owned = Database.instance.saveOf<GiRecipe>().exists(item.id);
-        final saved = Database.instance.saveOf<GiRecipe>().getItem(item.id);
+        final db = Database.instance;
+        final owned = db.saveOf<GiRecipe>().exists(item.id);
+        final saved = db.saveOf<GiRecipe>().getItem(item.id);
+
+        late final baseRecipe = db.infoOf<GsRecipe>().getItem(item.baseRecipe);
+        late final char = db
+            .infoOf<GsCharacter>()
+            .items
+            .firstOrNullWhere((e) => e.specialDish == item.id);
+
         return ItemDetailsCard(
           name: item.name,
           rarity: item.rarity,
@@ -112,7 +120,49 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               ],
             ),
           ),
-          child: _content(context),
+          contentPadding: EdgeInsets.all(kSeparator16),
+          child: Column(
+            spacing: kSeparator16,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ItemDetailsCardInfo.description(text: Text(item.desc)),
+              ItemDetailsCardInfo.section(
+                title: Text(item.effect.label(context)),
+                content: Text(item.effectDesc),
+              ),
+              if (item.ingredients.isNotEmpty)
+                ItemDetailsCardInfo.section(
+                  title: Text(context.labels.ingredients()),
+                  content: Wrap(
+                    spacing: kSeparator4,
+                    runSpacing: kSeparator4,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      ...item.ingredients.map((e) {
+                        final item = db.infoOf<GsMaterial>().getItem(e.id);
+                        if (item == null) return const SizedBox();
+                        return ItemGridWidget.material(
+                          item,
+                          label: e.amount.format(),
+                        );
+                      }),
+                      if (baseRecipe != null) ...[
+                        Icon(
+                          Icons.add_rounded,
+                          color: context.themeColors.mainColor1,
+                        ),
+                        ItemGridWidget.recipe(baseRecipe, onTap: null),
+                        if (char != null)
+                          ItemGridWidget.character(
+                            char,
+                            onTap: null,
+                          ),
+                      ],
+                    ],
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );
@@ -128,50 +178,5 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     final current = _getProficiency();
     if (amount == current) return;
     GsUtils.recipes.update(item.id, proficiency: amount);
-  }
-
-  Widget _content(BuildContext context) {
-    final db = Database.instance;
-    late final baseRecipe = db.infoOf<GsRecipe>().getItem(item.baseRecipe);
-    late final char = db
-        .infoOf<GsCharacter>()
-        .items
-        .firstOrNullWhere((e) => e.specialDish == item.id);
-
-    return ItemDetailsCardContent.generate(context, [
-      ItemDetailsCardContent(
-        label: item.effect.label(context),
-        description: item.effectDesc,
-      ),
-      ItemDetailsCardContent(description: item.desc),
-      if (item.ingredients.isNotEmpty)
-        ItemDetailsCardContent(
-          label: context.labels.ingredients(),
-          content: Wrap(
-            spacing: kSeparator4,
-            runSpacing: kSeparator4,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              ...item.ingredients.map((e) {
-                final item = db.infoOf<GsMaterial>().getItem(e.id);
-                if (item == null) return const SizedBox();
-                return ItemGridWidget.material(item, label: e.amount.format());
-              }),
-              if (baseRecipe != null) ...[
-                Icon(
-                  Icons.add_rounded,
-                  color: context.themeColors.mainColor1,
-                ),
-                ItemGridWidget.recipe(baseRecipe, onTap: null),
-                if (char != null)
-                  ItemGridWidget.character(
-                    char,
-                    onTap: null,
-                  ),
-              ],
-            ],
-          ),
-        ),
-    ]);
   }
 }

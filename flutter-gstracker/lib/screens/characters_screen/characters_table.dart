@@ -2,6 +2,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
@@ -142,8 +143,8 @@ class _CharactersTableState extends State<CharactersTable> {
       _TableItem(
         label: 'Element',
         sortBy: (e) => e.item.element.index,
-        builder: (info) => ItemCircleWidget.element(
-          info.item.element,
+        builder: (info) => ItemIconWidget.asset(
+          info.item.element.assetPath,
           size: ItemSize.medium,
         ),
       ),

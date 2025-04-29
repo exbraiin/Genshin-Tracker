@@ -33,7 +33,7 @@ class WishListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final item = GsUtils.items.getItemData(wish.itemId);
-    final color = context.themeColors.getRarityColor(item.rarity);
+    final color = context.themeColors.colorByRarity(item.rarity);
     final style = context.textTheme.titleSmall!.copyWith(color: Colors.white);
 
     Widget wishPity() {

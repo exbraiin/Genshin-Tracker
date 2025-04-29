@@ -100,7 +100,7 @@ class EventsScrollView extends StatelessWidget {
                       margin: EdgeInsets.only(left: daySize * offset + 4),
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        color: context.themeColors.getRarityColor(
+                        color: context.themeColors.colorByRarity(
                           e.type == GeEventType.flagship ? 5 : 4,
                         ),
                         borderRadius: BorderRadius.circular(daySize),

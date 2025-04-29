@@ -340,14 +340,8 @@ class _Events {
 
 class _Details {
   const _Details();
-  final cityXpPerWeek = 420;
   final primogemsPerWish = 160;
   final primogemsPerCharSet = 20;
-  final ascHerosWit = const [0, 6, 28, 29, 42, 59, 80, 0];
-  final standardChar = 'keqing';
-  final beginnerChar = 'noelle';
-  final imgUnknown =
-      'https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Item_Unknown.png';
 }
 
 class _Recipes {
@@ -406,6 +400,11 @@ class _Recipes {
 
 class _Weapons {
   const _Weapons();
+
+  int obtainedAmount(String id) {
+    return _svWish.items.count((e) => e.itemId == id) + eventWeapons(id);
+  }
+
   bool hasWeapon(String id) {
     return _svWish.items.any((e) => e.itemId == id) || eventWeapons(id) > 0;
   }

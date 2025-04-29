@@ -36,71 +36,26 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       rarity: item.type == GeEventType.flagship ? 5 : 4,
       fgImage: item.image,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
-      child: ItemDetailsCardContent.generate(context, [
-        ItemDetailsCardContent(
-          label: context.labels.duration(),
-          description: item.dateStart.year != 0 && item.dateEnd.year != 0
-              ? '${DateTimeUtils.format(context, item.dateStart, item.dateEnd)} '
-                  '(${item.dateEnd.difference(item.dateStart).toShortTime(context)})'
-              : context.labels.itemUpcoming(),
-        ),
-        ItemDetailsCardContent(
-          label: context.labels.version(),
-          description: item.version,
-        ),
-        if (weapons.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.weapons(),
-            content: ValueStreamBuilder(
-              stream: Database.instance.loaded,
-              builder: (context, snapshot) {
-                return Wrap(
-                  spacing: kSeparator4,
-                  runSpacing: kSeparator4,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: weapons.map((weapon) {
-                    final marked =
-                        GsUtils.events.ownsWeapon(item.id, weapon.id);
-                    return _item(
-                      child: ItemGridWidget.weapon(
-                        weapon,
-                        onTap: (context, weapon) => GsUtils.events
-                            .toggleObtainedtWeapon(item.id, weapon.id),
-                      ),
-                      marked: marked,
-                    );
-                  }).toList(),
-                );
-              },
-            ),
+      contentPadding: EdgeInsets.all(kSeparator16),
+      child: Column(
+        spacing: kSeparator16,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ItemDetailsCardInfo.section(
+            title: Text(context.labels.duration()),
+            content: Text(_eventDuration(context)),
           ),
-        if (characters.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.characters(),
-            content: ValueStreamBuilder(
-              stream: Database.instance.loaded,
-              builder: (context, snapshot) {
-                return Wrap(
-                  spacing: kSeparator4,
-                  runSpacing: kSeparator4,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: characters.map((char) {
-                    final marked =
-                        GsUtils.events.ownsCharacter(item.id, char.id);
-                    return _item(
-                      child: ItemGridWidget.character(
-                        char,
-                        onTap: (context, char) => GsUtils.events
-                            .toggleObtainedCharacter(item.id, char.id),
-                      ),
-                      marked: marked,
-                    );
-                  }).toList(),
-                );
-              },
-            ),
+          ItemDetailsCardInfo.section(
+            title: Text(context.labels.version()),
+            content: Text(item.version),
           ),
-      ]),
+          if (weapons.isNotEmpty || characters.isNotEmpty)
+            ItemDetailsCardInfo.section(
+              title: Text(context.labels.rewards()),
+              content: _getRewards(context, weapons, characters),
+            ),
+        ],
+      ),
     );
   }
 
@@ -128,6 +83,54 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             ),
           ),
       ],
+    );
+  }
+
+  String _eventDuration(BuildContext context) {
+    return item.dateStart.year != 0 && item.dateEnd.year != 0
+        ? '${DateTimeUtils.format(context, item.dateStart, item.dateEnd)} '
+            '(${item.dateEnd.difference(item.dateStart).toShortTime(context)})'
+        : context.labels.itemUpcoming();
+  }
+
+  Widget _getRewards(
+    BuildContext context,
+    List<GsWeapon> weapons,
+    List<GsCharacter> characters,
+  ) {
+    return ValueStreamBuilder(
+      stream: Database.instance.loaded,
+      builder: (context, snapshot) {
+        return Wrap(
+          spacing: kSeparator4,
+          runSpacing: kSeparator4,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            ...characters.map((char) {
+              final marked = GsUtils.events.ownsCharacter(item.id, char.id);
+              return _item(
+                child: ItemGridWidget.character(
+                  char,
+                  onTap: (context, char) =>
+                      GsUtils.events.toggleObtainedCharacter(item.id, char.id),
+                ),
+                marked: marked,
+              );
+            }),
+            ...weapons.map((weapon) {
+              final marked = GsUtils.events.ownsWeapon(item.id, weapon.id);
+              return _item(
+                child: ItemGridWidget.weapon(
+                  weapon,
+                  onTap: (context, weapon) =>
+                      GsUtils.events.toggleObtainedtWeapon(item.id, weapon.id),
+                ),
+                marked: marked,
+              );
+            }),
+          ],
+        );
+      },
     );
   }
 }

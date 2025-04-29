@@ -4,7 +4,6 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
-import 'package:tracker/common/widgets/text_style_parser.dart';
 
 class ItemDetailsCard extends StatelessWidget {
   final int rarity;
@@ -51,7 +50,7 @@ class ItemDetailsCard extends StatelessWidget {
 
   Widget _headerTitle(BuildContext context) {
     final rarity = this.rarity.coerceAtLeast(1);
-    final color = context.themeColors.getRarityColor(rarity);
+    final color = context.themeColors.colorByRarity(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
     return Container(
       height: 56,
@@ -80,6 +79,7 @@ class ItemDetailsCard extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -116,7 +116,7 @@ class ItemDetailsCard extends StatelessWidget {
   Widget _headerInfo(BuildContext context) {
     final banner = this.banner;
     final rarity = this.rarity.coerceAtLeast(1);
-    final color = context.themeColors.getRarityColor(rarity);
+    final color = context.themeColors.colorByRarity(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
     return Stack(
       children: [
@@ -263,80 +263,48 @@ class ItemDetailsCard extends StatelessWidget {
   }
 }
 
-class ItemDetailsCardContent {
-  final String? label;
-  final Widget? content;
-  final bool useMarkdown;
-  final TextStyle? style;
-  final String? description;
-
-  ItemDetailsCardContent({
-    this.label,
-    this.content,
-    this.style,
-    this.description,
-    this.useMarkdown = false,
-  });
-
-  static Widget generate(
-    BuildContext context,
-    List<ItemDetailsCardContent> items,
-  ) {
-    final texts = <InlineSpan>[];
-
-    final labelStyle = TextStyle(
-      fontSize: 18,
-      color: context.themeColors.primary80,
-      fontWeight: FontWeight.bold,
+abstract class ItemDetailsCardInfo {
+  static Widget description({required Widget text}) {
+    return Builder(
+      builder: (context) {
+        return DefaultTextStyle(
+          style: context.themeStyles.label12b.copyWith(
+            color: context.themeColors.sectionContent,
+            height: 1.2,
+          ),
+          child: text,
+        );
+      },
     );
+  }
 
-    final gstyle = TextStyle(fontSize: 14, color: Colors.grey[600]);
-    for (final item in items) {
-      final style = item.style ?? gstyle;
-      if (item.label != null) {
-        if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
-        texts.add(TextSpan(text: '${item.label}\n', style: labelStyle));
-
-        if (item.description != null) {
-          if (item.useMarkdown) {
-            final parser = TextParserWidget(item.description!, style: style);
-            texts.addAll(parser.getChildren(context));
-          } else {
-            texts.add(TextSpan(text: item.description, style: style));
-          }
-        }
-        if (item.content != null) {
-          texts.add(
-            WidgetSpan(
-              child: Padding(
-                padding: const EdgeInsets.only(top: kSeparator4),
-                child: item.content!,
+  static Widget section({required Widget title, required Widget content}) {
+    return Builder(
+      builder: (context) {
+        return Column(
+          spacing: kSeparator4,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DefaultTextStyle(
+              style: context.themeStyles.label14n.copyWith(
+                fontSize: 16,
+                color: context.themeColors.sectionTitle,
+                fontWeight: FontWeight.bold,
               ),
+              child: title,
             ),
-          );
-        }
-      } else if (item.description != null) {
-        if (texts.isNotEmpty) texts.add(const TextSpan(text: '\n\n'));
-
-        if (item.useMarkdown) {
-          final parser = TextParserWidget(item.description!, style: style);
-          texts.addAll(parser.getChildren(context));
-        } else {
-          texts.add(TextSpan(text: item.description, style: style));
-        }
-      }
-    }
-
-    return DefaultTextStyle(
-      style: TextStyle(
-        fontSize: 16,
-        color: Colors.black.withValues(alpha: 0.75),
-        fontWeight: FontWeight.w600,
-      ),
-      child: Text.rich(
-        TextSpan(children: texts),
-        style: const TextStyle(fontSize: 16),
-      ),
+            DefaultTextStyle(
+              style: context.themeStyles.label12n.copyWith(
+                color: context.themeColors.sectionContent,
+                fontWeight: FontWeight.bold,
+                height: 1.3,
+              ),
+              child: content,
+            ),
+          ],
+        );
+      },
     );
   }
 }

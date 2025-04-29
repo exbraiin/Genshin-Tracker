@@ -309,6 +309,11 @@ final class LabelsMethods {
 		return transformer('weekly_tasks');
 	}
 
+	/// Obtained {amount}
+	String amountObtained(dynamic amount) {
+		return transformer('amount_obtained', {'amount': amount});
+	}
+
 	/// Friend
 	String friend() {
 		return transformer('friend');
@@ -1297,5 +1302,10 @@ final class LabelsMethods {
 	/// Sort by Version
 	String sortByVersion() {
 		return transformer('sort_by_version');
+	}
+
+	/// Rewards
+	String rewards() {
+		return transformer('rewards');
 	}
 }

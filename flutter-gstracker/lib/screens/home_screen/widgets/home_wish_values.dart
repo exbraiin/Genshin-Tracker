@@ -101,7 +101,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info5,
             context.labels.rarityStar(5),
-            context.themeColors.getRarityColor(5),
+            context.themeColors.colorByRarity(5),
           ),
           if (banner == GeBannerType.standard) ...[
             Divider(
@@ -113,7 +113,7 @@ class HomeWishesValues extends StatelessWidget {
               context,
               summary.info5Character,
               '   $_arrow ${context.labels.character()}',
-              context.themeColors.getRarityColor(5),
+              context.themeColors.colorByRarity(5),
             ),
             Divider(
               color: context.themeColors.divider,
@@ -124,7 +124,7 @@ class HomeWishesValues extends StatelessWidget {
               context,
               summary.info5Weapon,
               '   $_arrow ${context.labels.weapon()}',
-              context.themeColors.getRarityColor(5),
+              context.themeColors.colorByRarity(5),
             ),
           ],
           if (banner == GeBannerType.character) ...[
@@ -137,7 +137,7 @@ class HomeWishesValues extends StatelessWidget {
               context,
               summary.info5,
               '   $_arrow ${banner.getWonLabel(context, 5)}',
-              context.themeColors.getRarityColor(5),
+              context.themeColors.colorByRarity(5),
             ),
           ],
           Divider(
@@ -149,7 +149,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info4,
             context.labels.rarityStar(4),
-            context.themeColors.getRarityColor(4),
+            context.themeColors.colorByRarity(4),
           ),
           Divider(
             color: context.themeColors.divider,
@@ -160,7 +160,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info4Character,
             '   $_arrow ${context.labels.character()}',
-            context.themeColors.getRarityColor(4),
+            context.themeColors.colorByRarity(4),
           ),
           Divider(
             color: context.themeColors.divider,
@@ -171,7 +171,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info4Weapon,
             '   $_arrow ${context.labels.weapon()}',
-            context.themeColors.getRarityColor(4),
+            context.themeColors.colorByRarity(4),
           ),
           _getWishesList(
             style: style,
@@ -186,7 +186,7 @@ class HomeWishesValues extends StatelessWidget {
   Row _summary(BuildContext context, WishesSummary summary, int maxPity) {
     final last = summary.info5.last;
     final show = banner == GeBannerType.character;
-    final pityColor = context.themeColors.getPityColor(last, maxPity);
+    final pityColor = context.themeColors.colorByPity(last, maxPity);
     return Row(
       children: [
         Expanded(
@@ -211,7 +211,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info4.last.format(),
             context.labels.l4sPity(),
-            valueColor: context.themeColors.getRarityColor(4),
+            valueColor: context.themeColors.colorByRarity(4),
             wasGuaranteed: show && summary.isNext4Guaranteed,
           ),
         ),
@@ -251,7 +251,7 @@ class HomeWishesValues extends StatelessWidget {
                 children: List<Widget>.generate(maxPity, (index) {
                   final pity = index + 1;
                   final amount = map[pity] ?? 0;
-                  final color = context.themeColors.getPityColor(pity, maxPity);
+                  final color = context.themeColors.colorByPity(pity, maxPity);
                   late final radius = (width - 2) / 2;
                   return Stack(
                     children: [
@@ -348,7 +348,7 @@ class HomeWishesValues extends StatelessWidget {
                     final pity = wish.pity;
                     final state = wish.state;
                     final pityColor =
-                        context.themeColors.getPityColor(pity, maxPity);
+                        context.themeColors.colorByPity(pity, maxPity);
 
                     return Column(
                       children: [

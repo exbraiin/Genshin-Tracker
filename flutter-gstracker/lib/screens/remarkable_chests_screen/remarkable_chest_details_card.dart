@@ -72,18 +72,19 @@ class RemarkableChestDetailsCard extends StatelessWidget
               ),
             ],
           ),
-          child: _content(context),
+          contentPadding: EdgeInsets.all(kSeparator16),
+          child: Column(
+            spacing: kSeparator16,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ItemDetailsCardInfo.section(
+                title: Text(item.type.label(context)),
+                content: Text(context.labels.energyN(item.energy.format())),
+              ),
+            ],
+          ),
         );
       },
     );
-  }
-
-  Widget _content(BuildContext context) {
-    return ItemDetailsCardContent.generate(context, [
-      ItemDetailsCardContent(
-        label: item.type.label(context),
-        description: context.labels.energyN(item.energy.format()),
-      ),
-    ]);
   }
 }

@@ -47,16 +47,8 @@ class RecipesListItem extends StatelessWidget {
       imageUrlPath: recipe.image,
       onTap: onTap,
       child: Stack(
-        fit: StackFit.expand,
         children: [
-          Positioned(
-            top: kSeparator2,
-            left: kSeparator2,
-            child: ItemCircleWidget(
-              asset: recipe.effect.assetPath,
-              size: ItemSize.small,
-            ),
-          ),
+          ItemIconWidget.asset(recipe.effect.assetPath),
           if (isSpecial)
             Positioned(
               right: kSeparator2,

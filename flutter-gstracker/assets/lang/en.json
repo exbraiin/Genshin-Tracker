@@ -60,6 +60,7 @@
     "l4s_pity": "4★ Pity",
     "l5s_pity": "5★ Pity",
     "weekly_tasks": "Weekly Tasks",
+    "amount_obtained": "Obtained {amount}",
     "friend": "Friend",
     "friendship": "Friendship",
     "indoor": "Indoor",
@@ -257,5 +258,6 @@
     "arkhe_ousia": "Ousia",
     "arkhe_pneuma": "Pneuma",
     "sort_by_default": "Sort by Default",
-    "sort_by_version": "Sort by Version"
+    "sort_by_version": "Sort by Version",
+    "rewards": "Rewards"
 }

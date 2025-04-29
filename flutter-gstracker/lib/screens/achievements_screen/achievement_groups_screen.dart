@@ -214,7 +214,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
       padding:
-          const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator8 * 2),
+          const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator16),
       decoration: BoxDecoration(
         color: selected ? context.themeColors.mainColor1 : Colors.transparent,
         image: namecard != null && namecard.fullImage.isNotEmpty

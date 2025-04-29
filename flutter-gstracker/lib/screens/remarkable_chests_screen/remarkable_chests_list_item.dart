@@ -32,14 +32,7 @@ class RemarkableChestListItem extends StatelessWidget {
       imageUrlPath: item.image,
       child: Stack(
         children: [
-          Positioned(
-            top: kSeparator2,
-            left: kSeparator2,
-            child: ItemCircleWidget.setCategory(
-              item.type,
-              size: ItemSize.small,
-            ),
-          ),
+          ItemIconWidget.asset(GsAssets.iconSetType(item.type)),
           if (item.region != GeRegionType.none)
             Positioned(
               right: kSeparator2,

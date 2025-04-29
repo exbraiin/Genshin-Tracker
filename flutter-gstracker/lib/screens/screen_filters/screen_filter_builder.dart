@@ -646,7 +646,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                           focusColor: context.themeColors.mainColor1,
                           contentPadding: EdgeInsets.symmetric(
                             vertical: kSeparator8,
-                            horizontal: kSeparator8 + kSeparator4,
+                            horizontal: kSeparator16,
                           ),
                           border: _getInputBorder(context),
                           enabledBorder: _getInputBorder(context),
@@ -680,7 +680,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                       return ListView(
                         children: widget.filter.sections
                             .map((section) => _layoutSection(section))
-                            .spaced(kSeparator8 * 2)
+                            .spaced(kSeparator16)
                             .toList(),
                       );
                     },

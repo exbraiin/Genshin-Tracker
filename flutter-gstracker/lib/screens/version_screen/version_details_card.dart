@@ -28,6 +28,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             alignment: Alignment.topLeft,
             child: Text(item.id),
           ),
+          contentPadding: EdgeInsets.all(kSeparator16),
           child: _content(context),
         );
       },
@@ -94,164 +95,104 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         .where((element) => element.version == item.id)
         .sortedByDescending((element) => element.rarity)
         .thenBy((element) => element.name);
-    return ItemDetailsCardContent.generate(
-      context,
-      [
-        ItemDetailsCardContent(
-          label: context.labels.version(),
-          description: item.id,
+
+    Widget? mapItems<T>(
+      List<T> items,
+      String label,
+      ItemCircleWidget Function(T e) toElement,
+    ) {
+      if (items.isEmpty) return null;
+      return ItemDetailsCardInfo.section(
+        title: Text(label),
+        content: Wrap(
+          spacing: kSeparator2,
+          runSpacing: kSeparator2,
+          children: items.map(toElement).toList(),
         ),
-        if (characters.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.characters(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: characters.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                  padding: EdgeInsets.zero,
-                );
-              }).toList(),
-            ),
-          ),
-        if (outfits.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.outfits(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: outfits.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
-        if (weapons.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.weapons(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: weapons.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                  padding: EdgeInsets.zero,
-                );
-              }).toList(),
-            ),
-          ),
-        if (materials.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.materials(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: materials.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
-        if (recipes.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.recipes(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: recipes.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
-        if (sets.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.sereniteaSets(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: sets.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
-        if (crystals.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.spincrystals(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: crystals.map((e) {
-                return ItemCircleWidget(
-                  asset: GsAssets.spincrystal,
-                  rarity: 4,
-                  label: '${e.number} ${e.name}',
-                );
-              }).toList(),
-            ),
-          ),
-        if (banners.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.wishes(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: banners.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
-        if (chests.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.remarkableChests(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: chests.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
-        if (namecards.isNotEmpty)
-          ItemDetailsCardContent(
-            label: context.labels.namecards(),
-            content: Wrap(
-              spacing: kSeparator2,
-              runSpacing: kSeparator2,
-              children: namecards.map((e) {
-                return ItemCircleWidget(
-                  image: e.image,
-                  rarity: e.rarity,
-                  tooltip: e.name,
-                );
-              }).toList(),
-            ),
-          ),
+      );
+    }
+
+    return Column(
+      spacing: kSeparator16,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ItemDetailsCardInfo.section(
+          title: Text(context.labels.version()),
+          content: Text(item.id),
+        ),
+        ...<Widget?>[
+          mapItems(characters, context.labels.characters(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              rarity: e.rarity,
+              tooltip: e.name,
+              padding: EdgeInsets.zero,
+            );
+          }),
+          mapItems(outfits, context.labels.outfits(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              rarity: e.rarity,
+              tooltip: e.name,
+            );
+          }),
+          mapItems(weapons, context.labels.weapons(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              rarity: e.rarity,
+              tooltip: e.name,
+              padding: EdgeInsets.zero,
+            );
+          }),
+          mapItems(materials, context.labels.materials(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              rarity: e.rarity,
+              tooltip: e.name,
+            );
+          }),
+          mapItems(recipes, context.labels.recipes(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              rarity: e.rarity,
+              tooltip: e.name,
+            );
+          }),
+          mapItems(sets, context.labels.sereniteaSets(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              rarity: e.rarity,
+              tooltip: e.name,
+            );
+          }),
+          mapItems(crystals, context.labels.spincrystals(), (e) {
+            return ItemCircleWidget(
+              asset: GsAssets.spincrystal,
+              rarity: 4,
+              label: '${e.number} ${e.name}',
+            );
+          }),
+          mapItems(banners, context.labels.wishes(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              tooltip: e.name,
+            );
+          }),
+          mapItems(chests, context.labels.remarkableChests(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              rarity: e.rarity,
+              tooltip: e.name,
+            );
+          }),
+          mapItems(namecards, context.labels.namecards(), (e) {
+            return ItemCircleWidget(
+              image: e.image,
+              rarity: e.rarity,
+              tooltip: e.name,
+            );
+          }),
+        ].whereNotNull(),
       ],
     );
   }

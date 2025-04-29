@@ -1,7 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
@@ -40,7 +39,6 @@ class WeaponListItem extends StatelessWidget {
   }
 
   Widget _getContent(BuildContext context) {
-    late final amount = GsUtils.wishes.countItem(item.id);
     late final material = GsUtils.weaponMaterials
         .getAscensionMaterials(item.id)
         .entries
@@ -51,15 +49,7 @@ class WeaponListItem extends StatelessWidget {
       padding: const EdgeInsets.all(kSeparator2),
       child: Stack(
         children: [
-          Positioned(
-            top: kSeparator2,
-            left: kSeparator2,
-            child: ItemCircleWidget(
-              size: ItemSize.small,
-              asset: item.type.assetPath,
-              label: showExtra && amount > 1 ? amount.compact() : '',
-            ),
-          ),
+          ItemIconWidget.asset(item.type.assetPath),
           if (showExtra)
             Positioned.fill(
               child: Column(

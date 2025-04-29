@@ -24,6 +24,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return ValueNotifierBuilder<bool>(
       value: false,
       builder: (context, nd, child) {
+        final obtained = GsUtils.weapons.obtainedAmount(item.id);
         return ItemDetailsCard(
           name: item.name,
           rarity: item.rarity,
@@ -62,49 +63,58 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               ),
             ],
           ),
-          child: ItemDetailsCardContent.generate(context, [
-            ItemDetailsCardContent(description: item.desc),
-            if (item.effectName.isNotEmpty) _getInfoEffect(context, item),
-            if (item.rarity.between(1, 5)) _getWeaponMats(context, item),
-          ]),
+          contentPadding: EdgeInsets.all(kSeparator16),
+          child: Column(
+            spacing: kSeparator16,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ItemDetailsCardInfo.description(text: Text(item.desc)),
+              if (item.effectName.isNotEmpty)
+                ItemDetailsCardInfo.section(
+                  title: Text(item.effectName),
+                  content: TextParserWidget(_getEffectTextAll(item.effectDesc)),
+                ),
+              if (item.rarity.between(1, 5))
+                ItemDetailsCardInfo.section(
+                  title: Text(context.labels.materials()),
+                  content: _materialsList(item),
+                ),
+              if (obtained > 0)
+                ItemDetailsCardInfo.description(
+                  text: Center(
+                    child: Text(
+                      context.labels.amountObtained(obtained),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );
   }
 
-  ItemDetailsCardContent _getInfoEffect(
-    BuildContext context,
-    GsWeapon info,
-  ) {
-    return ItemDetailsCardContent(
-      label: info.effectName,
-      content: TextParserWidget(_getEffectTextAll(info.effectDesc)),
-    );
-  }
-
-  ItemDetailsCardContent _getWeaponMats(
-    BuildContext context,
-    GsWeapon info,
-  ) {
+  Widget _materialsList(GsWeapon info) {
     final im = Database.instance.infoOf<GsMaterial>();
     const iw = GsUtils.weaponMaterials;
     final mats = iw.getAscensionMaterials(info.id);
-    return ItemDetailsCardContent(
-      label: context.labels.materials(),
-      content: Wrap(
-        spacing: kGridSeparator,
-        runSpacing: kGridSeparator,
-        children: mats.entries
-            .map((e) => MapEntry(im.getItem(e.key), e.value))
-            .where((e) => e.key != null)
-            .sortedWith((a, b) => a.key!.compareTo(b.key!))
-            .map((e) {
-          return ItemGridWidget.material(
-            e.key!,
-            label: e.value.compact(),
-          );
-        }).toList(),
-      ),
+    return Wrap(
+      spacing: kGridSeparator,
+      runSpacing: kGridSeparator,
+      children: mats.entries
+          .map((e) => MapEntry(im.getItem(e.key), e.value))
+          .where((e) => e.key != null)
+          .sortedWith((a, b) => a.key!.compareTo(b.key!))
+          .map((e) {
+        return ItemGridWidget.material(
+          e.key!,
+          label: e.value.compact(),
+        );
+      }).toList(),
     );
   }
 

@@ -34,6 +34,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         final ascension = info?.ascension ?? 0;
         final friendship = info?.friendship ?? 1;
         final constellation = info?.totalConstellations;
+        late final owned = (constellation ?? 0) + 1;
         return ItemDetailsCard(
           name: item.name,
           rarity: item.rarity,
@@ -109,6 +110,11 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     _getAttributes(context, item),
                     _getStats(context, item),
                     _getMaterials(context, item),
+                    if (hasChar)
+                      Text(
+                        context.labels.amountObtained(owned),
+                        style: context.themeStyles.label12i,
+                      ),
                   ].separate(const SizedBox(height: kSeparator8)).toList(),
                 ),
               ),

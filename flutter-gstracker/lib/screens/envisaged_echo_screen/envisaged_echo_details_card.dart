@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
+import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
@@ -41,9 +42,14 @@ class EnvisagedEchoDetailsCard extends StatelessWidget {
           ),
         ],
       ),
-      child: ItemDetailsCardContent.generate(context, [
-        ItemDetailsCardContent(description: item.description),
-      ]),
+      contentPadding: EdgeInsets.all(kSeparator16),
+      child: Column(
+        spacing: kSeparator16,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ItemDetailsCardInfo.description(text: Text(item.description)),
+        ],
+      ),
     );
   }
 }

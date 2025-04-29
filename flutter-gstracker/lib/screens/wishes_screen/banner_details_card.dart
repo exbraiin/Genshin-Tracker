@@ -175,8 +175,7 @@ class BannerDetailsCard extends StatelessWidget {
 
   Widget _bannerInfo(BuildContext context, int rolls) {
     return Padding(
-      padding: const EdgeInsets.all(kSeparator8)
-          .copyWith(bottom: kSeparator8 + kSeparator4),
+      padding: const EdgeInsets.all(kSeparator8).copyWith(bottom: kSeparator16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

@@ -52,43 +52,53 @@ class SpincrystalDetailsCard extends StatelessWidget
               ),
             ],
           ),
-          child: ItemDetailsCardContent.generate(context, [
-            ItemDetailsCardContent(
-              label: context.labels.region(),
-              description: item.region.label(context),
-            ),
-            ItemDetailsCardContent(
-              label: context.labels.source(),
-              description: item.source,
-              content: Center(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Container(
-                    width: 256,
-                    height: 256,
-                    margin: const EdgeInsets.all(kSeparator8),
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: context.themeColors.mainColor1,
-                        width: kSeparator4,
-                      ),
-                      borderRadius: kGridRadius,
-                      color: item.region.color,
-                      image: DecorationImage(
-                        image: AssetImage(GsAssets.getRarityBgImage(1)),
-                        colorFilter: ColorFilter.mode(
-                          item.region.color,
-                          BlendMode.softLight,
+          contentPadding: EdgeInsets.all(kSeparator16),
+          child: Column(
+            spacing: kSeparator16,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ItemDetailsCardInfo.section(
+                title: Text(context.labels.region()),
+                content: Text(item.region.label(context)),
+              ),
+              ItemDetailsCardInfo.section(
+                title: Text(context.labels.source()),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item.source),
+                    Center(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Container(
+                          width: 256,
+                          height: 256,
+                          margin: const EdgeInsets.all(kSeparator8),
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: context.themeColors.mainColor1,
+                              width: kSeparator4,
+                            ),
+                            borderRadius: kGridRadius,
+                            color: item.region.color,
+                            image: DecorationImage(
+                              image: AssetImage(GsAssets.getRarityBgImage(1)),
+                              colorFilter: ColorFilter.mode(
+                                item.region.color,
+                                BlendMode.softLight,
+                              ),
+                            ),
+                          ),
+                          child: CachedImageWidget(item.imageSource),
                         ),
                       ),
                     ),
-                    child: CachedImageWidget(item.imageSource),
-                  ),
+                  ],
                 ),
               ),
-            ),
-          ]),
+            ],
+          ),
         );
       },
     );

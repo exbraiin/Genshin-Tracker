@@ -25,4 +25,5 @@ const double kSeparator2 = 2;
 const double kSeparator4 = 4;
 const double kSeparator6 = 6;
 const double kSeparator8 = 8;
+const double kSeparator16 = 16;
 const double kDisableOpacity = 0.4;
