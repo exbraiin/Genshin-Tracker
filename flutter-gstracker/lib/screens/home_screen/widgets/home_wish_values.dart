@@ -101,7 +101,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info5,
             context.labels.rarityStar(5),
-            context.themeColors.colorByRarity(5),
+            context.themeColors.colorByRarityFg(5),
           ),
           if (banner == GeBannerType.standard) ...[
             Divider(
@@ -113,7 +113,7 @@ class HomeWishesValues extends StatelessWidget {
               context,
               summary.info5Character,
               '   $_arrow ${context.labels.character()}',
-              context.themeColors.colorByRarity(5),
+              context.themeColors.colorByRarityFg(5),
             ),
             Divider(
               color: context.themeColors.divider,
@@ -124,7 +124,7 @@ class HomeWishesValues extends StatelessWidget {
               context,
               summary.info5Weapon,
               '   $_arrow ${context.labels.weapon()}',
-              context.themeColors.colorByRarity(5),
+              context.themeColors.colorByRarityFg(5),
             ),
           ],
           if (banner == GeBannerType.character) ...[
@@ -137,7 +137,7 @@ class HomeWishesValues extends StatelessWidget {
               context,
               summary.info5,
               '   $_arrow ${banner.getWonLabel(context, 5)}',
-              context.themeColors.colorByRarity(5),
+              context.themeColors.colorByRarityFg(5),
             ),
           ],
           Divider(
@@ -149,7 +149,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info4,
             context.labels.rarityStar(4),
-            context.themeColors.colorByRarity(4),
+            context.themeColors.colorByRarityFg(4),
           ),
           Divider(
             color: context.themeColors.divider,
@@ -160,7 +160,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info4Character,
             '   $_arrow ${context.labels.character()}',
-            context.themeColors.colorByRarity(4),
+            context.themeColors.colorByRarityFg(4),
           ),
           Divider(
             color: context.themeColors.divider,
@@ -171,7 +171,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info4Weapon,
             '   $_arrow ${context.labels.weapon()}',
-            context.themeColors.colorByRarity(4),
+            context.themeColors.colorByRarityFg(4),
           ),
           _getWishesList(
             style: style,
@@ -211,7 +211,7 @@ class HomeWishesValues extends StatelessWidget {
             context,
             summary.info4.last.format(),
             context.labels.l4sPity(),
-            valueColor: context.themeColors.colorByRarity(4),
+            valueColor: context.themeColors.colorByRarityFg(4),
             wasGuaranteed: show && summary.isNext4Guaranteed,
           ),
         ),

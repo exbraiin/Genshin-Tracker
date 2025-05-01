@@ -50,7 +50,7 @@ class ItemDetailsCard extends StatelessWidget {
 
   Widget _headerTitle(BuildContext context) {
     final rarity = this.rarity.coerceAtLeast(1);
-    final color = context.themeColors.colorByRarity(rarity);
+    final color = context.themeColors.colorByRarityBg(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
     return Container(
       height: 56,
@@ -116,7 +116,7 @@ class ItemDetailsCard extends StatelessWidget {
   Widget _headerInfo(BuildContext context) {
     final banner = this.banner;
     final rarity = this.rarity.coerceAtLeast(1);
-    final color = context.themeColors.colorByRarity(rarity);
+    final color = context.themeColors.colorByRarityBg(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
     return Stack(
       children: [
