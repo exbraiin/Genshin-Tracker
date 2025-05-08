@@ -271,12 +271,18 @@ class GsItemCardLabel extends StatelessWidget {
 
     return Container(
       height: 24,
+      constraints: BoxConstraints(minWidth: 24),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(24),
       ),
       padding: const EdgeInsets.all(kSeparator4),
-      child: onTap != null ? InkWell(onTap: onTap, child: child) : child,
+      child: Align(
+        widthFactor: 1,
+        heightFactor: 1,
+        alignment: Alignment.center,
+        child: onTap != null ? InkWell(onTap: onTap, child: child) : child,
+      ),
     );
   }
 }

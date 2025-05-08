@@ -33,11 +33,14 @@ class SpincrystalListItem extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: kSeparator2,
-            left: kSeparator2,
-            child: ItemCircleWidget(
-              size: ItemSize.small,
-              child: Center(child: Text(item.number.toString())),
+            top: kSeparator6,
+            left: kSeparator6,
+            child: Text(
+              item.number.toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                shadows: kMainShadowText,
+              ),
             ),
           ),
           if (item.region != GeRegionType.none)

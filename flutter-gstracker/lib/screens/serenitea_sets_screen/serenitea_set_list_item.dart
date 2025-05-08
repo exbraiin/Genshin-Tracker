@@ -31,7 +31,10 @@ class SereniteaSetListItem extends StatelessWidget {
       onTap: onTap,
       child: Stack(
         children: [
-          ItemIconWidget.asset(GsAssets.iconSetType(item.category)),
+          ItemIconWidget.asset(
+            GsAssets.iconSetType(item.category),
+            size: kSize44,
+          ),
           ...item.chars
               .map(Database.instance.infoOf<GsCharacter>().getItem)
               .whereNotNull()

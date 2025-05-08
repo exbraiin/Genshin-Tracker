@@ -99,7 +99,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     Widget? mapItems<T>(
       List<T> items,
       String label,
-      ItemCircleWidget Function(T e) toElement,
+      Widget Function(T e) toElement,
     ) {
       if (items.isEmpty) return null;
       return ItemDetailsCardInfo.section(
@@ -121,77 +121,67 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           content: Text(item.id),
         ),
         ...<Widget?>[
-          mapItems(characters, context.labels.characters(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
+          mapItems(
+            characters,
+            context.labels.characters(),
+            (e) => ItemGridWidget.character(e, onTap: null),
+          ),
+          mapItems(
+            outfits,
+            context.labels.outfits(),
+            (e) => ItemGridWidget(
+              urlImage: e.image,
               rarity: e.rarity,
               tooltip: e.name,
-              padding: EdgeInsets.zero,
-            );
-          }),
-          mapItems(outfits, context.labels.outfits(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
-              rarity: e.rarity,
-              tooltip: e.name,
-            );
-          }),
-          mapItems(weapons, context.labels.weapons(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
-              rarity: e.rarity,
-              tooltip: e.name,
-              padding: EdgeInsets.zero,
-            );
-          }),
-          mapItems(materials, context.labels.materials(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
-              rarity: e.rarity,
-              tooltip: e.name,
-            );
-          }),
-          mapItems(recipes, context.labels.recipes(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
-              rarity: e.rarity,
-              tooltip: e.name,
-            );
-          }),
-          mapItems(sets, context.labels.sereniteaSets(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
-              rarity: e.rarity,
-              tooltip: e.name,
-            );
-          }),
-          mapItems(crystals, context.labels.spincrystals(), (e) {
-            return ItemCircleWidget(
-              asset: GsAssets.spincrystal,
+            ),
+          ),
+          mapItems(
+            weapons,
+            context.labels.weapons(),
+            (e) => ItemGridWidget.weapon(e, onTap: null),
+          ),
+          mapItems(
+            materials,
+            context.labels.materials(),
+            (e) => ItemGridWidget.material(e, onTap: null),
+          ),
+          mapItems(
+            recipes,
+            context.labels.recipes(),
+            (e) => ItemGridWidget.recipe(e, onTap: null),
+          ),
+          mapItems(
+            sets,
+            context.labels.sereniteaSets(),
+            (e) => ItemGridWidget.serenitea(e, onTap: null),
+          ),
+          mapItems(
+            crystals,
+            context.labels.spincrystals(),
+            (e) => ItemGridWidget(
+              assetImage: GsAssets.spincrystal,
               rarity: 4,
-              label: '${e.number} ${e.name}',
-            );
-          }),
-          mapItems(banners, context.labels.wishes(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
+              label: e.number.toString(),
+            ),
+          ),
+          mapItems(
+            banners,
+            context.labels.wishes(),
+            (e) => ItemGridWidget(
+              urlImage: e.image,
               tooltip: e.name,
-            );
-          }),
-          mapItems(chests, context.labels.remarkableChests(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
-              rarity: e.rarity,
-              tooltip: e.name,
-            );
-          }),
-          mapItems(namecards, context.labels.namecards(), (e) {
-            return ItemCircleWidget(
-              image: e.image,
-              rarity: e.rarity,
-              tooltip: e.name,
-            );
-          }),
+            ),
+          ),
+          mapItems(
+            chests,
+            context.labels.remarkableChests(),
+            (e) => ItemGridWidget.remarkableChest(e),
+          ),
+          mapItems(
+            namecards,
+            context.labels.namecards(),
+            (e) => ItemGridWidget.namecard(e),
+          ),
         ].whereNotNull(),
       ],
     );

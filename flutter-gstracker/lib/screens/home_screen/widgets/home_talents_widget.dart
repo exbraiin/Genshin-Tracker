@@ -45,7 +45,7 @@ class HomeTalentsWidget extends StatelessWidget {
           );
         }
 
-        const kItemSize = ItemSize.medium;
+        const kItemSize = kSize56;
         return ValueNotifierBuilder(
           value: false,
           builder: (context, notifier, child) {
@@ -77,7 +77,7 @@ class HomeTalentsWidget extends StatelessWidget {
               ),
               child: LayoutBuilder(
                 builder: (context, layout) {
-                  final itemSize = kItemSize.gridSize + kGridSeparator;
+                  final itemSize = kItemSize + kGridSeparator;
                   final width = layout.maxWidth;
                   final items = (width ~/ itemSize).coerceAtMost(8) * 2;
 

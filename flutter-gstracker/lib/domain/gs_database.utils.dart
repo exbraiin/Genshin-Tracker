@@ -512,7 +512,7 @@ final class CharTalents {
       CharTalentType.burst => (info.talent3, item.talentQConstellation),
     };
 
-    final extra = cons >= talCons && talCons != 0 ? 3 : 0;
+    final extra = cons >= talCons && talCons > 0 ? 3 : 0;
     return (value.clamp(1, 10), extra);
   }
 

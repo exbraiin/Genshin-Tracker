@@ -17,7 +17,7 @@ abstract final class GsAssets {
   static const imageOutdoorSet = 'assets/image/icons/icon_outdoor_set.png';
 
   static const spincrystal = 'assets/image/illustrations/spincrystal.png';
-  static const fischlEmote = 'assets/image/illustrations/fischl.webp';
+  static const emptyEmote = 'assets/image/illustrations/empty.webp';
   static const imagePrimogem = 'assets/image/icons/3.0x/primogem.png';
   static const atkIcon = 'assets/image/weapon_stat/atk.png';
   static const imageXp = 'assets/image/icons/Companion_xp.png';

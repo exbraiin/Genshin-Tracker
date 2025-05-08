@@ -27,7 +27,7 @@ class HomeLastBannerWidget extends StatelessWidget {
       title: Text(context.labels.lastBanner()),
       child: LayoutBuilder(
         builder: (context, layout) {
-          final itemSize = ItemSize.small.gridSize + kGridSeparator;
+          final itemSize = kSize50 + kGridSeparator;
           final width = layout.maxWidth;
           final items = (width ~/ itemSize).coerceAtMost(8);
           return Row(

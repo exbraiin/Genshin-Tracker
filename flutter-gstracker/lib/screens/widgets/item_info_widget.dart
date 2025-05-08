@@ -7,7 +7,10 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
 import 'package:tracker/screens/materials_screen/material_details_card.dart';
+import 'package:tracker/screens/namecard_screen/namecard_details_card.dart';
 import 'package:tracker/screens/recipes_screen/recipe_details_card.dart';
+import 'package:tracker/screens/remarkable_chests_screen/remarkable_chest_details_card.dart';
+import 'package:tracker/screens/serenitea_sets_screen/serenitea_set_details_card.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_card.dart';
 
 typedef ContextCallback<T> = void Function(BuildContext context, T item);
@@ -20,21 +23,16 @@ void _callWeapon(BuildContext ctx, GsWeapon info) =>
     WeaponDetailsCard(info).show(ctx);
 void _callCharacter(BuildContext ctx, GsCharacter info) =>
     CharacterDetailsCard(info).show(ctx);
-
-enum ItemSize {
-  small(50, 30),
-  medium(56, 44),
-  large(70, 56);
-
-  final double gridSize;
-  final double circleSize;
-
-  const ItemSize(this.gridSize, this.circleSize);
-}
+void _callSerenitea(BuildContext ctx, GsSereniteaSet info) =>
+    SereniteaSetDetailsCard(info).show(ctx);
+void _callFurnitureChest(BuildContext ctx, GsFurnitureChest info) =>
+    RemarkableChestDetailsCard(info).show(ctx);
+void _callNamecard(BuildContext ctx, GsNamecard info) =>
+    NamecardDetailsCard(info).show(ctx);
 
 class ItemGridWidget extends StatelessWidget {
   final int rarity;
-  final ItemSize size;
+  final double size;
   final bool disabled;
   final String label;
   final Widget? labelWidget;
@@ -47,7 +45,7 @@ class ItemGridWidget extends StatelessWidget {
 
   const ItemGridWidget({
     super.key,
-    this.size = ItemSize.small,
+    this.size = kSize50,
     this.label = '',
     this.labelWidget,
     this.rarity = 1,
@@ -63,7 +61,7 @@ class ItemGridWidget extends StatelessWidget {
   ItemGridWidget.material(
     GsMaterial info, {
     super.key,
-    this.size = ItemSize.small,
+    this.size = kSize50,
     this.label = '',
     this.labelWidget,
     this.disabled = false,
@@ -79,7 +77,7 @@ class ItemGridWidget extends StatelessWidget {
   ItemGridWidget.recipe(
     GsRecipe info, {
     super.key,
-    this.size = ItemSize.small,
+    this.size = kSize50,
     this.label = '',
     this.labelWidget,
     this.disabled = false,
@@ -96,7 +94,7 @@ class ItemGridWidget extends StatelessWidget {
   ItemGridWidget.weapon(
     GsWeapon info, {
     super.key,
-    this.size = ItemSize.small,
+    this.size = kSize50,
     this.label = '',
     this.labelWidget,
     this.disabled = false,
@@ -112,13 +110,61 @@ class ItemGridWidget extends StatelessWidget {
   ItemGridWidget.character(
     GsCharacter info, {
     super.key,
-    this.size = ItemSize.small,
+    this.size = kSize50,
     this.label = '',
     this.labelWidget,
     this.disabled = false,
     this.onAdd,
     this.onRemove,
     ContextCallback<GsCharacter>? onTap = _callCharacter,
+  })  : rarity = info.rarity,
+        tooltip = info.name,
+        urlImage = info.image,
+        assetImage = '',
+        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+
+  ItemGridWidget.serenitea(
+    GsSereniteaSet info, {
+    super.key,
+    this.size = kSize50,
+    this.label = '',
+    this.labelWidget,
+    this.disabled = false,
+    this.onAdd,
+    this.onRemove,
+    ContextCallback<GsSereniteaSet>? onTap = _callSerenitea,
+  })  : rarity = info.rarity,
+        tooltip = info.name,
+        urlImage = info.image,
+        assetImage = '',
+        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+
+  ItemGridWidget.remarkableChest(
+    GsFurnitureChest info, {
+    super.key,
+    this.size = kSize50,
+    this.label = '',
+    this.labelWidget,
+    this.disabled = false,
+    this.onAdd,
+    this.onRemove,
+    ContextCallback<GsFurnitureChest>? onTap = _callFurnitureChest,
+  })  : rarity = info.rarity,
+        tooltip = info.name,
+        urlImage = info.image,
+        assetImage = '',
+        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+
+  ItemGridWidget.namecard(
+    GsNamecard info, {
+    super.key,
+    this.size = kSize50,
+    this.label = '',
+    this.labelWidget,
+    this.disabled = false,
+    this.onAdd,
+    this.onRemove,
+    ContextCallback<GsNamecard>? onTap = _callNamecard,
   })  : rarity = info.rarity,
         tooltip = info.name,
         urlImage = info.image,
@@ -178,8 +224,8 @@ class ItemGridWidget extends StatelessWidget {
     }
 
     child = Container(
-      width: size.gridSize,
-      height: size.gridSize,
+      width: size,
+      height: size,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
@@ -311,7 +357,7 @@ class ItemGridWidget extends StatelessWidget {
 }
 
 class ItemCircleWidget extends StatelessWidget {
-  final ItemSize size;
+  final double size;
   final Color? bgColor;
   final int rarity;
   final Widget? child;
@@ -323,7 +369,7 @@ class ItemCircleWidget extends StatelessWidget {
 
   const ItemCircleWidget({
     super.key,
-    this.size = ItemSize.medium,
+    this.size = kSize44,
     this.padding = const EdgeInsets.all(2),
     this.child,
     this.bgColor,
@@ -334,24 +380,17 @@ class ItemCircleWidget extends StatelessWidget {
     this.asset = '',
   });
 
-  factory ItemCircleWidget.material(
-    GsMaterial info, {
-    ItemSize size = ItemSize.medium,
-  }) {
+  factory ItemCircleWidget.material(GsMaterial info) {
     return ItemCircleWidget(
-      size: size,
       image: info.image,
       rarity: info.rarity,
+      padding: EdgeInsets.zero,
     );
   }
 
-  factory ItemCircleWidget.region(
-    GeRegionType type, {
-    ItemSize size = ItemSize.medium,
-  }) {
+  factory ItemCircleWidget.region(GeRegionType type) {
     return ItemCircleWidget(
       rarity: 1,
-      size: size,
       asset: GsAssets.iconRegionType(type),
       bgColor: type.color,
     );
@@ -399,8 +438,8 @@ class ItemCircleWidget extends StatelessWidget {
     );
 
     child = Container(
-      width: size.circleSize,
-      height: size.circleSize,
+      width: size,
+      height: size,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: bgColor ?? context.themeColors.mainColor0.withValues(alpha: 0.4),
@@ -435,14 +474,16 @@ class ItemCircleWidget extends StatelessWidget {
 
 class ItemIconWidget extends StatelessWidget {
   final BoxFit fit;
-  final ItemSize size;
+  final double size;
+  final Color shadowColor;
   final EdgeInsetsGeometry margin;
   final ImageProvider provider;
 
   const ItemIconWidget({
     super.key,
     this.fit = BoxFit.contain,
-    this.size = ItemSize.small,
+    this.size = 30,
+    this.shadowColor = Colors.black38,
     this.margin = const EdgeInsets.all(kSeparator2),
     required this.provider,
   });
@@ -451,27 +492,37 @@ class ItemIconWidget extends StatelessWidget {
     String assetName, {
     super.key,
     this.fit = BoxFit.contain,
-    this.size = ItemSize.small,
+    this.size = 30,
+    this.shadowColor = Colors.black38,
     this.margin = const EdgeInsets.all(kSeparator2),
   }) : provider = AssetImage(assetName);
+
+  ItemIconWidget.network(
+    String url, {
+    super.key,
+    this.fit = BoxFit.contain,
+    this.size = 30,
+    this.shadowColor = Colors.black38,
+    this.margin = const EdgeInsets.all(kSeparator2),
+  }) : provider = NetworkImage(url);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: margin,
       child: SizedBox(
-        width: size.circleSize,
-        height: size.circleSize,
+        width: size,
+        height: size,
         child: Stack(
           fit: StackFit.expand,
           children: [
             Transform.translate(
-              offset: Offset(2, 2),
+              offset: Offset(4, 4),
               child: Image(
                 image: provider,
                 fit: fit,
                 colorBlendMode: BlendMode.srcIn,
-                color: Colors.black38,
+                color: shadowColor,
               ),
             ),
             Image(

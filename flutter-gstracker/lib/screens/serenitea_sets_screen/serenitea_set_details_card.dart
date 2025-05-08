@@ -34,10 +34,9 @@ class SereniteaSetDetailsCard extends StatelessWidget
         alignment: Alignment.topLeft,
         child: Row(
           children: [
-            Image.asset(
+            ItemIconWidget.asset(
               GsAssets.iconSetType(item.category),
-              width: 32,
-              height: 32,
+              size: 32,
             ),
             const SizedBox(width: kSeparator4),
             Text(item.category.label(context)),

@@ -50,7 +50,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
           title: Text(context.labels.ascension()),
           child: LayoutBuilder(
             builder: (context, layout) {
-              final itemSize = ItemSize.small.gridSize + kGridSeparator;
+              final itemSize = kSize50 + kGridSeparator;
               final width = layout.maxWidth;
               final items = (width ~/ itemSize).coerceAtMost(8);
               final list = characters.take(items);

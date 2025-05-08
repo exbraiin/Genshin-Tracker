@@ -8,7 +8,6 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/swap_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeCalendarWidget extends StatelessWidget {
   const HomeCalendarWidget({super.key});
@@ -45,7 +44,7 @@ class HomeCalendarWidget extends StatelessWidget {
       DateTime.sunday,
     ];
 
-    final itemSize = ItemSize.medium.gridSize;
+    final itemSize = kSize50;
     yield Row(
       mainAxisSize: MainAxisSize.min,
       children: week

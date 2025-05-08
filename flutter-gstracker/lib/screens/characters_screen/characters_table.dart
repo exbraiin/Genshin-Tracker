@@ -134,7 +134,7 @@ class _CharactersTableState extends State<CharactersTable> {
         label: 'Icon',
         builder: (info) => ItemCircleWidget(
           image: info.iconImage,
-          size: ItemSize.large,
+          size: kSize56,
           rarity: info.item.rarity,
         ),
         allowTap: true,
@@ -145,7 +145,7 @@ class _CharactersTableState extends State<CharactersTable> {
         sortBy: (e) => e.item.element.index,
         builder: (info) => ItemIconWidget.asset(
           info.item.element.assetPath,
-          size: ItemSize.medium,
+          size: kSize44,
         ),
       ),
       _TableItem(

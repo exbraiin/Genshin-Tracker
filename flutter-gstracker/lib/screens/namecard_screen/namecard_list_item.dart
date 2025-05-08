@@ -28,10 +28,10 @@ class NamecardListItem extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            right: kSeparator2,
-            bottom: kSeparator2,
-            child: ItemCircleWidget(
-              asset: GsAssets.iconNamecardType(item.type),
+            top: kSeparator2,
+            left: kSeparator2,
+            child: ItemIconWidget.asset(
+              GsAssets.iconNamecardType(item.type),
             ),
           ),
         ],

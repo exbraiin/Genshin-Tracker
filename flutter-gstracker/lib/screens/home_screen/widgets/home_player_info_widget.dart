@@ -111,7 +111,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                     ),
                     child: ItemGridWidget(
                       rarity: 0,
-                      size: ItemSize.large,
+                      size: kSize70,
                       urlImage: snapshot.data ?? '',
                     ),
                   );
@@ -167,7 +167,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                     if (char == null) return const SizedBox();
                     return ItemGridWidget.character(
                       char,
-                      size: ItemSize.medium,
+                      size: kSize56,
                     );
                   })
                   .separate(const SizedBox(width: kGridSeparator))

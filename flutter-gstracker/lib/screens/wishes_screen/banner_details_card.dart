@@ -13,6 +13,7 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
+import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 import 'package:tracker/screens/wishes_screen/remove_dialog.dart';
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
@@ -101,7 +102,7 @@ class BannerDetailsCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(GsAssets.fischlEmote, width: 60, height: 60),
+                  ItemIconWidget.asset(GsAssets.emptyEmote, size: 100),
                   const SizedBox(height: kSeparator4),
                   Text(
                     context.labels.noWishes(),
