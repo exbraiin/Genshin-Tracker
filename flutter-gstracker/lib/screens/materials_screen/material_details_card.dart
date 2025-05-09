@@ -4,7 +4,6 @@ import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
-import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
@@ -33,7 +32,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       name: item.name,
       image: item.image,
       rarity: item.rarity,
-      banner: GsItemBanner.isNewOrUpcoming(context, item.version),
+      version: item.version,
       info: Text(_getLabel(context)),
       contentPadding: EdgeInsets.all(kSeparator16),
       child: Column(

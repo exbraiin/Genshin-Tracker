@@ -39,6 +39,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           name: item.name,
           rarity: item.rarity,
           image: item.image,
+          version: item.version,
           contentImage: DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage(item.element.assetBgPath),
@@ -51,31 +52,29 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 style: context.themeStyles.label14n,
               ),
               const SizedBox(height: kSeparator4),
-              Row(
-                children: [
-                  GsItemCardLabel(
-                    asset: item.element.assetPath,
-                    label: constellation != null ? 'C$constellation' : null,
-                  ),
-                  const SizedBox(width: kSeparator4),
-                  if (hasChar)
+              if (hasChar) ...[
+                Row(
+                  children: [
+                    GsItemCardLabel(
+                      asset: item.element.assetPath,
+                      label: constellation != null ? 'C$constellation' : null,
+                    ),
+                    const SizedBox(width: kSeparator4),
                     GsItemCardLabel(
                       asset: GsAssets.imageXp,
                       label: friendship.toString(),
                       onTap: () => GsUtils.characters
                           .increaseFriendshipCharacter(item.id),
                     ),
-                ],
-              ),
-              const SizedBox(height: kSeparator4),
-              if (hasChar)
+                  ],
+                ),
+                const SizedBox(height: kSeparator4),
                 Row(
                   spacing: kGridSeparator,
                   children: CharTalentType.values
                       .map((e) => _talentLabel(info, e))
                       .toList(),
                 ),
-              if (hasChar)
                 InkWell(
                   onTap: () => GsUtils.characters.increaseAscension(item.id),
                   child: Text(
@@ -83,6 +82,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     style: context.themeStyles.title20n,
                   ),
                 ),
+              ],
             ],
           ),
           child: Stack(

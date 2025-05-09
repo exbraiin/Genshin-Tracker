@@ -29,6 +29,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           name: item.name,
           rarity: item.rarity,
           image: !nd.value ? item.image : item.imageAsc,
+          version: item.version,
           info: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

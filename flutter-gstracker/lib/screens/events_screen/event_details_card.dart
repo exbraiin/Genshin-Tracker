@@ -4,7 +4,6 @@ import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
-import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/circle_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
@@ -35,7 +34,7 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       ),
       rarity: item.type == GeEventType.flagship ? 5 : 4,
       fgImage: item.image,
-      banner: GsItemBanner.isNewOrUpcoming(context, item.version),
+      version: item.version,
       contentPadding: EdgeInsets.all(kSeparator16),
       child: Column(
         spacing: kSeparator16,

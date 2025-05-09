@@ -39,11 +39,6 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final Comparable<String> Function(T item)? versionSort;
   final Widget Function(BuildContext context, T item)? itemCardBuilder;
   final Widget Function(BuildContext context, ItemState<T> state) itemBuilder;
-  final Widget Function(
-    BuildContext context,
-    List<T> state,
-    bool Function(FilterExtras extra),
-  )? tableBuilder;
 
   const InventoryListPage({
     super.key,
@@ -57,7 +52,6 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
     required this.title,
     required this.items,
     required this.itemBuilder,
-    this.tableBuilder,
   });
 
   @override
@@ -67,13 +61,6 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.data != true) return const SizedBox();
         final db = Database.instance;
-
-        final filter = ScreenFilters.of<T>();
-        if (filter == null) {
-          final items = _sortedItems(this.items(db)).toList();
-          final buttons = actions?.call((t) => false, (t) => 0) ?? [];
-          return _list(items, buttons, null);
-        }
 
         return ScreenFilterBuilder<T>(
           builder: (context, filter, button, toggle) {
@@ -88,14 +75,6 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
             final sorted = filter.match(items).toList();
 
             final buttons = [
-              if (tableBuilder != null)
-                IconButton(
-                  onPressed: () => toggle(FilterExtras.table),
-                  icon: hasExtra(FilterExtras.table)
-                      ? const Icon(Icons.grid_view_rounded)
-                      : const Icon(Icons.view_list_rounded),
-                  color: Colors.white.withValues(alpha: 0.5),
-                ),
               ...other,
               if (versionSort != null)
                 Tooltip(
@@ -112,19 +91,6 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
                 ),
               button,
             ];
-
-            if (filter.hasExtra(FilterExtras.table) && tableBuilder != null) {
-              return InventoryPage(
-                appBar: InventoryAppBar(
-                  label: title,
-                  iconAsset: icon,
-                  actions: buttons.separate(const SizedBox(width: 2)),
-                ),
-                child: InventoryBox(
-                  child: tableBuilder!(context, sorted, hasExtra),
-                ),
-              );
-            }
 
             return _list(sorted, buttons, filter);
           },
@@ -377,6 +343,8 @@ class InventoryAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final parentRoute = ModalRoute.of(context);
+    final impliesDismissal = parentRoute?.impliesAppBarDismissal ?? false;
     return Row(
       children: [
         if (icon != null)
@@ -397,7 +365,7 @@ class InventoryAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         ...actions,
-        if (Navigator.of(context).canPop()) ...[
+        if (impliesDismissal && Navigator.of(context).canPop()) ...[
           const VerticalDivider(),
           IconButton(
             icon: const Icon(Icons.close_rounded),

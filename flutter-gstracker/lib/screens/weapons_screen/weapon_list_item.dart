@@ -9,7 +9,6 @@ import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class WeaponListItem extends StatelessWidget {
   final bool showItem;
-  final bool showExtra;
   final bool selected;
   final GsWeapon item;
   final VoidCallback? onTap;
@@ -19,7 +18,6 @@ class WeaponListItem extends StatelessWidget {
     this.showItem = false,
     this.selected = false,
     this.onTap,
-    required this.showExtra,
     required this.item,
   });
 
@@ -50,30 +48,6 @@ class WeaponListItem extends StatelessWidget {
       child: Stack(
         children: [
           ItemIconWidget.asset(item.type.assetPath),
-          if (showExtra)
-            Positioned.fill(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  GsItemCardLabel(
-                    label: '${item.ascAtkValue}',
-                    asset: GsAssets.atkIcon,
-                  ),
-                  if (item.statType != GeWeaponAscStatType.none)
-                    Padding(
-                      padding: const EdgeInsets.only(top: kSeparator2),
-                      child: Tooltip(
-                        message: item.statType.label(context),
-                        child: GsItemCardLabel(
-                          label: item.statType
-                              .toIntOrPercentage(item.ascStatValue),
-                          asset: item.statType.assetPath,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
           if (showItem && material != null)
             Positioned(
               right: kSeparator2,

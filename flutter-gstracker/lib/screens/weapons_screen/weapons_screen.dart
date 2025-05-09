@@ -21,7 +21,6 @@ class WeaponsScreen extends StatelessWidget {
       versionSort: (item) => item.version,
       itemBuilder: (context, state) => WeaponListItem(
         showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
-        showExtra: state.filter!.hasExtra(FilterExtras.info),
         item: state.item,
         selected: state.selected,
         onTap: state.onSelect,
@@ -30,20 +29,6 @@ class WeaponsScreen extends StatelessWidget {
         item,
         key: ValueKey(item.id),
       ),
-      actions: (hasExtra, toggle) => [
-        Tooltip(
-          message: context.labels.showExtraInfo(),
-          child: IconButton(
-            icon: Icon(
-              hasExtra(FilterExtras.info)
-                  ? Icons.visibility_rounded
-                  : Icons.visibility_off_rounded,
-              color: Colors.white.withValues(alpha: 0.5),
-            ),
-            onPressed: () => toggle(FilterExtras.info),
-          ),
-        ),
-      ],
     );
   }
 }

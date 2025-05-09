@@ -13,18 +13,18 @@ class ItemDetailsCard extends StatelessWidget {
   final EdgeInsetsGeometry contentPadding;
   final bool flexContent;
   final bool showRarityStars;
-  final GsItemBanner? banner;
   final Widget? info;
   final String? asset;
   final String? image;
   final String? fgImage;
+  final String version;
   final Widget? child;
 
   const ItemDetailsCard({
     super.key,
     this.name = '',
     this.rarity = 0,
-    this.banner,
+    this.version = '',
     this.contentImage,
     this.flexContent = false,
     this.showRarityStars = true,
@@ -114,7 +114,7 @@ class ItemDetailsCard extends StatelessWidget {
   }
 
   Widget _headerInfo(BuildContext context) {
-    final banner = this.banner;
+    final banner = GsItemBanner.version(context, version);
     final rarity = this.rarity.coerceAtLeast(1);
     final color = context.themeColors.colorByRarityBg(rarity);
     final color1 = Color.lerp(Colors.black, color, 0.8)!;
@@ -232,7 +232,7 @@ class ItemDetailsCard extends StatelessWidget {
             ],
           ),
         ),
-        if (banner != null && banner.text.isNotEmpty)
+        if (banner.text.isNotEmpty)
           Positioned.fill(
             child: ClipRect(
               child: Banner(

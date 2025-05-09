@@ -5,6 +5,10 @@ import 'package:tracker/screens/main_screen/main_screen.dart';
 import 'package:tracker/theme/theme.dart';
 import 'package:tracker/theme/windows_bar.dart';
 
+// TODO:
+// - Move hide empty banners to filters
+// - Make spincrystal sort by version sort by descending number
+
 void main() {
   runApp(const MyApp());
 }
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
         ),
         Expanded(
           child: MaterialApp(
-            debugShowCheckedModeBanner: true,
+            debugShowCheckedModeBanner: false,
             scrollBehavior: const MaterialScrollBehavior().copyWith(
               dragDevices: {PointerDeviceKind.mouse},
               scrollbars: false,

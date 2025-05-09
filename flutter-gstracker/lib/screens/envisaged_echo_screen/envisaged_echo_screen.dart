@@ -17,6 +17,7 @@ class EnvisagedEchoScreen extends StatelessWidget {
       icon: GsAssets.menuMap,
       title: context.labels.envisagedEchoes(),
       items: (db) => db.infoOf<GsEnvisagedEcho>().items,
+      versionSort: (item) => item.version,
       itemBuilder: (context, state) => EnvisagedEchoListItem(
         state.item,
         selected: state.selected,

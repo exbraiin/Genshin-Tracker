@@ -4,7 +4,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
 import 'package:tracker/screens/characters_screen/character_list_item.dart';
-import 'package:tracker/screens/characters_screen/characters_table.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 
@@ -27,10 +26,6 @@ class CharactersScreen extends StatelessWidget {
         selected: state.selected,
       ),
       itemCardBuilder: (context, item) => CharacterDetailsCard(item),
-      tableBuilder: (context, list, hasExtra) => CharactersTable(
-        characters: list,
-        showTodo: hasExtra(FilterExtras.info),
-      ),
     );
   }
 }

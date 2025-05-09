@@ -2,26 +2,24 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
-class CharactersTable extends StatefulWidget {
-  final bool showTodo;
-  final List<GsCharacter> characters;
+class CharactersTableScreen extends StatefulWidget {
+  static const id = 'characters_table_screen';
 
-  const CharactersTable({
-    super.key,
-    this.showTodo = false,
-    required this.characters,
-  });
+  const CharactersTableScreen({super.key});
 
   @override
-  State<CharactersTable> createState() => _CharactersTableState();
+  State<CharactersTableScreen> createState() => _CharactersTableScreenState();
 }
 
-class _CharactersTableState extends State<CharactersTable> {
+class _CharactersTableScreenState extends State<CharactersTableScreen> {
   var _sorter = false;
   _TableItem? _sortItem;
   var _idSortedList = <String>[];
@@ -35,6 +33,22 @@ class _CharactersTableState extends State<CharactersTable> {
 
   @override
   Widget build(BuildContext context) {
+    return ValueStreamBuilder(
+      stream: Database.instance.loaded,
+      builder: (context, snapshot) {
+        final items = Database.instance.infoOf<GsCharacter>().items;
+        return InventoryPage(
+          appBar: InventoryAppBar(
+            label: context.labels.characters(),
+            iconAsset: GsAssets.menuCharacters,
+          ),
+          child: InventoryBox(child: _getList(context, items)),
+        );
+      },
+    );
+  }
+
+  Widget _getList(BuildContext context, Iterable<GsCharacter> characters) {
     return SingleChildScrollView(
       child: Table(
         columnWidths: Map.fromEntries(
@@ -67,7 +81,7 @@ class _CharactersTableState extends State<CharactersTable> {
                             _sorter = true;
                             _sortItem = null;
                           }
-                          _idSortedList = _getCharsIdsSorted();
+                          _idSortedList = _getCharsIdsSorted(characters);
                         });
                       }
                     : null,
@@ -97,7 +111,7 @@ class _CharactersTableState extends State<CharactersTable> {
               );
             }).toList(),
           ),
-          ..._getCharsSorted().map((item) {
+          ..._getCharsSorted(characters).map((item) {
             return TableRow(
               children: _builders.map<Widget>((e) {
                 final child = Padding(
@@ -254,20 +268,20 @@ class _CharactersTableState extends State<CharactersTable> {
     );
   }
 
-  Iterable<CharInfo> _getCharsSorted() {
+  Iterable<CharInfo> _getCharsSorted(Iterable<GsCharacter> characters) {
     final info = GsUtils.characters.getCharInfo;
-    var chars = widget.characters.map((e) => info(e.id)).whereNotNull();
+    var chars = characters.map((e) => info(e.id)).whereNotNull();
     if (_idSortedList.isNotEmpty) {
       chars = chars.sortedBy((e) => _idSortedList.indexOf(e.item.id));
     }
     return chars;
   }
 
-  List<String> _getCharsIdsSorted() {
+  List<String> _getCharsIdsSorted(Iterable<GsCharacter> characters) {
     if (_sortItem == null) return const [];
 
     final info = GsUtils.characters.getCharInfo;
-    final chars = widget.characters.map((e) => info(e.id)).whereNotNull();
+    final chars = characters.map((e) => info(e.id)).whereNotNull();
     final sorted = _sorter ? chars.sortedBy : chars.sortedByDescending;
 
     return sorted((e) => _sortItem!.sortBy?.call(e) ?? 0)

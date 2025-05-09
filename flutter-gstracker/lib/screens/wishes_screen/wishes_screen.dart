@@ -90,14 +90,20 @@ class _WishesScreenScreenState extends State<WishesScreen>
                 width: 100,
                 height: 56,
                 clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius: kListRadius,
                   color: Color(0x11FFFFFF),
+                  image: DecorationImage(
+                    image: AssetImage(GsAssets.getRarityBgImage(1)),
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 margin: const EdgeInsets.only(bottom: 4),
                 child: CachedImageWidget(
                   banner?.image,
+                  fit: BoxFit.cover,
                   alignment: Alignment.bottomCenter,
+                  imageAspectRatio: 2,
                 ),
               );
             });

@@ -6,7 +6,6 @@ import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
-import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
@@ -40,7 +39,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           name: item.name,
           rarity: item.rarity,
           image: item.image,
-          banner: GsItemBanner.isNewOrUpcoming(context, item.version),
+          version: item.version,
           info: Align(
             alignment: Alignment.topLeft,
             child: Column(

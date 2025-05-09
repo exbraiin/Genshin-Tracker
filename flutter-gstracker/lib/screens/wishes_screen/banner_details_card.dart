@@ -41,7 +41,7 @@ class BannerDetailsCard extends StatelessWidget {
       contentPadding: kListPadding,
       showRarityStars: false,
       flexContent: bannerWishes.isNotEmpty,
-      banner: GsItemBanner.version(context, item.version),
+      version: item.version,
       info: Stack(
         children: [
           Positioned.fill(

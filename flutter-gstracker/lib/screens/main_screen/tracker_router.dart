@@ -3,6 +3,7 @@ import 'package:tracker/screens/achievements_screen/achievement_groups_screen.da
 import 'package:tracker/screens/add_wish_screen/add_wish_screen.dart';
 import 'package:tracker/screens/artifacts_screen/artifacts_screen.dart';
 import 'package:tracker/screens/characters_screen/characters_screen.dart';
+import 'package:tracker/screens/characters_screen/characters_table_screen.dart';
 import 'package:tracker/screens/envisaged_echo_screen/envisaged_echo_screen.dart';
 import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
@@ -36,6 +37,7 @@ class TrackerRouter {
     SpincrystalsScreen.id: () => const SpincrystalsScreen(),
     VersionScreen.id: () => const VersionScreen(),
     AchievementGroupsScreen.id: () => const AchievementGroupsScreen(),
+    CharactersTableScreen.id: () => CharactersTableScreen(),
   };
 
   static Route? onGenerate(RouteSettings settings) {

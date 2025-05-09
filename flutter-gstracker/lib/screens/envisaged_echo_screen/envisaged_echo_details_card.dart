@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
-import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/theme/theme.dart';
@@ -21,7 +20,7 @@ class EnvisagedEchoDetailsCard extends StatelessWidget {
       name: item.name,
       image: item.icon,
       rarity: item.rarity,
-      banner: GsItemBanner.isNewOrUpcoming(context, item.version),
+      version: item.version,
       info: Column(
         children: [
           Align(

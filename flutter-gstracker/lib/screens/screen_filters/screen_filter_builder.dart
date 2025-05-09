@@ -26,7 +26,7 @@ class ScreenFilterBuilder<T extends GsModel<T>> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filter = ScreenFilters.of<T>()!;
+    final filter = ScreenFilters._of<T>() ?? ScreenFilter(sections: []);
     return ValueListenableBuilder<bool>(
       valueListenable: notifier,
       builder: (context, value, child) {
@@ -46,7 +46,7 @@ class ScreenFilterBuilder<T extends GsModel<T>> extends StatelessWidget {
 
 enum FilterKey { none, weekdays, obtain }
 
-enum FilterExtras { info, table, hide, versionSort }
+enum FilterExtras { hide, versionSort }
 
 class FilterSection<T, I> {
   final FilterKey key;
@@ -301,7 +301,7 @@ class ScreenFilters {
   static final _getItem = GsUtils.items.getItemData;
   static final _filters = <Type, ScreenFilter?>{};
 
-  static ScreenFilter<T>? of<T extends GsModel<T>>() {
+  static ScreenFilter<T>? _of<T extends GsModel<T>>() {
     late final filter = switch (T) {
       const (GsWish) => ScreenFilter<GsWish>(
           sections: [
@@ -318,9 +318,11 @@ class ScreenFilters {
       const (GsAchievement) => ScreenFilter<GsAchievement>(
           sections: [
             FilterSection.state(
-              (item) => item.hidden,
-              (c) => c.labels.achHidden(),
-              (c, e) => e ? c.labels.achHidden() : c.labels.achVisible(),
+              (item) => !GsUtils.achievements.isObtainable(item.id),
+              (c) => c.labels.status(),
+              (c, e) =>
+                  e ? c.labels.filterObtained() : c.labels.filterNotObtained(),
+              key: FilterKey.obtain,
             ),
             FilterSection<GeAchievementType, GsAchievement>(
               GeAchievementType.values.toSet(),
@@ -329,11 +331,9 @@ class ScreenFilters {
               (c, e) => e.label(c),
             ),
             FilterSection.state(
-              (item) => !GsUtils.achievements.isObtainable(item.id),
-              (c) => c.labels.status(),
-              (c, e) =>
-                  e ? c.labels.filterObtained() : c.labels.filterNotObtained(),
-              key: FilterKey.obtain,
+              (item) => item.hidden,
+              (c) => c.labels.achHidden(),
+              (c, e) => e ? c.labels.achHidden() : c.labels.achVisible(),
             ),
             FilterSection.version((item) => item.version),
           ],

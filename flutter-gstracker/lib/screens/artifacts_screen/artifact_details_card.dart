@@ -3,7 +3,6 @@ import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
-import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 
@@ -19,7 +18,7 @@ class ArtifactDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       image: item.pieces.firstOrNull?.icon,
       info: Text(item.domain),
       rarity: item.rarity,
-      banner: GsItemBanner.isNewOrUpcoming(context, item.version),
+      version: item.version,
       contentPadding: EdgeInsets.all(kSeparator16),
       child: Column(
         spacing: kSeparator16,

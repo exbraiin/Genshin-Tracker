@@ -18,6 +18,7 @@ class SereniteaSetsScreen extends StatelessWidget {
       icon: GsAssets.menuPot,
       title: context.labels.sereniteaSets(),
       items: (db) => db.infoOf<GsSereniteaSet>().items,
+      versionSort: (item) => item.version,
       itemBuilder: (context, state) => SereniteaSetListItem(
         state.item,
         onTap: state.onSelect,

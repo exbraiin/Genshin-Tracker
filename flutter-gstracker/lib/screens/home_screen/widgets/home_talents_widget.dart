@@ -9,6 +9,7 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/screens/characters_screen/characters_table_screen.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 
 class HomeTalentsWidget extends StatelessWidget {
@@ -63,6 +64,16 @@ class HomeTalentsWidget extends StatelessWidget {
                       '${context.labels.talents()} - ${today.getLabel(context)}',
                     ),
                   ),
+                  SizedBox(width: kSeparator4),
+                  IconButton(
+                    padding: EdgeInsets.all(2),
+                    constraints: BoxConstraints.tightFor(),
+                    onPressed: () => Navigator.of(context)
+                        .pushNamed(CharactersTableScreen.id),
+                    icon: const Icon(Icons.list),
+                    color: Colors.white.withValues(alpha: 0.5),
+                  ),
+                  SizedBox(width: kSeparator4),
                   IconButton(
                     padding: EdgeInsets.all(2),
                     constraints: BoxConstraints.tightFor(),
