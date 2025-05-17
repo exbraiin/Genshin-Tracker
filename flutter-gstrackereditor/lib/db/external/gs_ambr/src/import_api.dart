@@ -36,6 +36,9 @@ abstract class ImportApi {
 
   Future<GsSereniteaSet> fetchSereniteaSet(String id, [GsSereniteaSet? other]);
   Future<List<ImportItem>> fetchSereniteaSets();
+
+  Future<GsFurnitureChest> fetchFurniture(String id, [GsFurnitureChest? other]);
+  Future<List<ImportItem>> fetchFurnitures();
 }
 
 class ImportCache {
@@ -69,6 +72,7 @@ class ImportCache {
 
     if (kDebugMode) print('Downloading: $url');
     final response = await http.get(Uri.parse(url));
+    if (kDebugMode) print('Downloaded: ${response.bodyBytes.length} bytes');
 
     final data = jsonDecode(response.body) as JsonMap;
     if (useCache) {

@@ -71,6 +71,7 @@ class SelectDialog<T> extends StatefulWidget {
 
 class _SelectDialogState<T> extends State<SelectDialog<T>> {
   late final TextEditingController _searching;
+  final _controller = ScrollController();
 
   @override
   void initState() {
@@ -81,6 +82,7 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
 
   @override
   void dispose() {
+    _controller.dispose();
     _searching.dispose();
     super.dispose();
   }
@@ -119,18 +121,29 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
                   child: ValueListenableBuilder(
                     valueListenable: _searching,
                     builder: (context, controller, child) {
-                      return SingleChildScrollView(
-                        padding: const EdgeInsets.all(8),
-                        child: Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: widget.items.where((item) {
-                            final hide = controller.text.isNotEmpty &&
-                                !item.label
-                                    .toLowerCase()
-                                    .contains(controller.text.toLowerCase());
-                            return !hide;
-                          }).map((item) {
+                      final items = widget.items.where((item) {
+                        final hide = controller.text.isNotEmpty &&
+                            !item.label
+                                .toLowerCase()
+                                .contains(controller.text.toLowerCase());
+                        return !hide;
+                      }).toList();
+
+                      return Scrollbar(
+                        controller: _controller,
+                        child: GridView.builder(
+                          controller: _controller,
+                          padding: const EdgeInsets.all(8),
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 100,
+                            mainAxisSpacing: 6,
+                            crossAxisSpacing: 6,
+                            childAspectRatio: 1.15,
+                          ),
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            final item = items[index];
                             return GsSelectChip(
                               item,
                               selected: widget.selected == item.value,
@@ -140,7 +153,7 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
                                 Navigator.of(context).maybePop();
                               },
                             );
-                          }).toList(),
+                          },
                         ),
                       );
                     },

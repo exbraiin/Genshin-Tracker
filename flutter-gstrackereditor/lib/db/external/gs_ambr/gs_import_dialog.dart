@@ -105,6 +105,20 @@ final class GsImportDialog {
       searchText: item.name,
     );
   }
+
+  Future<GsFurnitureChest> fetchFurniture(
+    BuildContext ctx,
+    GsFurnitureChest item,
+  ) {
+    return _fetch(
+      ctx,
+      item,
+      'Furnitures',
+      ImportApi.i.fetchFurnitures,
+      ImportApi.i.fetchFurniture,
+      searchText: item.name,
+    );
+  }
 }
 
 extension on ImportItem {

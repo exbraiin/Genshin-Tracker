@@ -621,6 +621,48 @@ final class YattaImporter implements ImportApi {
       chars: null,
     );
   }
+
+  @override
+  Future<GsFurnitureChest> fetchFurniture(
+    String id, [
+    GsFurnitureChest? other,
+  ]) async {
+    final data = await _fetchPage('furniture/$id');
+    final name = data.getString('name');
+    return GsFurnitureChest(
+      id: name.toDbId(),
+      name: name,
+      type: other?.type ?? GeSereniteaSetType.none,
+      image: other?.image ?? '',
+      rarity: data.getInt('rank'),
+      energy: data.getInt('comfort'),
+      region: other?.region ?? GeRegionType.none,
+      version: other?.version ?? '',
+    );
+  }
+
+  @override
+  Future<List<ImportItem>> fetchFurnitures() async {
+    final data = await _fetchPage('furniture');
+    final items = data['items'] as Map<String, dynamic>;
+    const url = '$_kBaseUrl/assets/UI';
+
+    return items.values.cast<JsonMap>().map((e) {
+      final categories = e.getList<String>('categories');
+      final iconName = e.getString('icon');
+
+      final icon = switch (true) {
+        _ when categories.contains('companion') => '$url/$iconName.png',
+        _ when categories.contains('animal') => '$url/monster/$iconName.png',
+        _ => '$url/furniture/$iconName.png',
+      };
+
+      final id = e.getInt('id').toString();
+      final name = e.getString('route');
+      final level = e.getInt('rank');
+      return ImportItem(id, name, icon, level);
+    }).toList();
+  }
 }
 
 class CharacterCurves {

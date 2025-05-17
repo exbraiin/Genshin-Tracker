@@ -366,6 +366,13 @@ class GsConfigs<T extends GsModel<T>> {
           (i) => i.type,
         ),
       ],
+      import: [
+        DataButton(
+          'Import from ${ImportApi.i.name}',
+          icon: ImportApi.i.icon,
+          GsImportDialog.i.fetchFurniture,
+        ),
+      ],
     ),
     GsSereniteaSet: GsConfigs<GsSereniteaSet>._(
       title: 'Sereniteas',
