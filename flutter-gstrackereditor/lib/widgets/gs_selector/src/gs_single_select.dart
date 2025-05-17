@@ -121,17 +121,32 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
                   child: ValueListenableBuilder(
                     valueListenable: _searching,
                     builder: (context, controller, child) {
-                      final items = widget.items.where((item) {
-                        final hide = controller.text.isNotEmpty &&
-                            !item.label
-                                .toLowerCase()
-                                .contains(controller.text.toLowerCase());
-                        return !hide;
-                      }).toList();
+                      final items = _filterItems(controller.text);
 
+                      final hasImage = items.any((e) => e.image != null);
+                      if (!hasImage) {
+                        return Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: items.map((item) {
+                            return GsSelectChip(
+                              item,
+                              selected: widget.selected == item.value,
+                              onTap: (id) {
+                                final v = widget.selected == id ? null : id;
+                                widget.onConfirm(v);
+                                Navigator.of(context).maybePop();
+                              },
+                            );
+                          }).toList(),
+                        );
+                      }
+
+                      final list = items.toList();
                       return Scrollbar(
                         controller: _controller,
                         child: GridView.builder(
+                          shrinkWrap: true,
                           controller: _controller,
                           padding: const EdgeInsets.all(8),
                           gridDelegate:
@@ -141,9 +156,9 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
                             crossAxisSpacing: 6,
                             childAspectRatio: 1.15,
                           ),
-                          itemCount: items.length,
+                          itemCount: list.length,
                           itemBuilder: (context, index) {
-                            final item = items[index];
+                            final item = list[index];
                             return GsSelectChip(
                               item,
                               selected: widget.selected == item.value,
@@ -165,5 +180,12 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
         ),
       ),
     );
+  }
+
+  Iterable<GsSelectItem<T>> _filterItems(String query) {
+    query = query.toLowerCase();
+    return widget.items
+        .where((i) => query.isEmpty || i.label.toLowerCase().contains(query))
+        .toList();
   }
 }
