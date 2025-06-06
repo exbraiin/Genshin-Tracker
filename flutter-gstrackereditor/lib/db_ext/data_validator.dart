@@ -73,6 +73,7 @@ class DataValidator {
       checkItems<GsFurnitureChest>(),
       checkItems<GsSereniteaSet>(),
       checkItems<GsSpincrystal>(),
+      checkItems<GsEnvisagedEcho>(),
       checkItems<GsVersion>(),
       checkItems<GsEvent>(),
       checkItems<GsBattlepass>(),
