@@ -234,6 +234,7 @@ class GsItemDecor {
   final String label;
   final String version;
   final String? image;
+  final Duration? duration;
   final Color? regionColor;
   final Widget? child;
 
@@ -243,6 +244,7 @@ class GsItemDecor {
     required this.color,
     this.image,
     this.child,
+    this.duration,
     this.regionColor,
   }) : rarity = 1;
 
@@ -252,6 +254,7 @@ class GsItemDecor {
     required this.rarity,
     this.child,
     this.image,
+    this.duration,
     this.regionColor,
   }) : color = null;
 }

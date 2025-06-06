@@ -15,6 +15,7 @@ class GsGridItem extends StatelessWidget {
   final String image;
   final String version;
   final Widget? child;
+  final Duration? duration;
   final GsValidLevel validLevel;
   final VoidCallback? onTap;
 
@@ -22,6 +23,7 @@ class GsGridItem extends StatelessWidget {
     super.key,
     this.onTap,
     this.child,
+    this.duration,
     this.circleColor,
     this.rarity = 1,
     this.image = '',
@@ -41,6 +43,7 @@ class GsGridItem extends StatelessWidget {
         rarity = decor.rarity,
         image = decor.image ?? '',
         version = decor.version,
+        duration = decor.duration,
         color = decor.color,
         label = decor.label;
 
@@ -108,7 +111,7 @@ class GsGridItem extends StatelessWidget {
             ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 2),
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
               child: AutoSizeText(
                 label,
                 style: const TextStyle(
@@ -145,11 +148,24 @@ class GsGridItem extends StatelessWidget {
                 ),
               ),
             ),
+          _getDurationBanner(),
           _getVersionBanner(),
           if (child != null) child!,
           _getStateBanner(),
           _getInvalidBanner(),
         ],
+      ),
+    );
+  }
+
+  Widget _getDurationBanner() {
+    if (duration == null) return const SizedBox();
+    return Transform.translate(
+      offset: const Offset(-10, 10),
+      child: Banner(
+        message: duration!.inDays.toString(),
+        color: Colors.black,
+        location: BannerLocation.bottomStart,
       ),
     );
   }

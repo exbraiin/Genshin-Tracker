@@ -146,6 +146,10 @@ class GsConfigs<T extends GsModel<T>> {
           version: item.version,
           color: item.type.color,
           image: image,
+          duration: item.type == GeBannerType.beginner ||
+                  item.type == GeBannerType.standard
+              ? null
+              : item.dateStart.difference(item.dateEnd).abs(),
         );
       },
       filters: [
