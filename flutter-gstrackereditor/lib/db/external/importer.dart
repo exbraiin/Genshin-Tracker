@@ -279,6 +279,70 @@ abstract final class FandomImporter {
       energy: energyInt,
     );
   }
+
+  static Future<GsThespianTrick> importThespianTrick(
+    GsThespianTrick item, {
+    String? url,
+    bool useFile = false,
+  }) async {
+    const format = Clipboard.kTextPlain;
+    url ??= (await Clipboard.getData(format))?.text ?? '';
+
+    late final String raw;
+    if (useFile) {
+      final file = File('temp.html');
+      if (!await file.exists()) {
+        raw = await _getUrl(url);
+        await file.writeAsString(raw);
+      } else {
+        raw = await file.readAsString();
+      }
+    } else {
+      raw = await _getUrl(url);
+    }
+
+    final document = html.parse(raw);
+
+    final name = document.querySelector('h2.pi-title')?.text ?? '';
+
+    final characterName = document
+            .querySelector('section.pi-group span.character')
+            ?.text
+            .trim() ??
+        '';
+    final character = characterName.toDbId();
+
+    final seasonEl = document
+        .querySelectorAll('section.pi-group > div')
+        .firstOrNullWhere((e) => e.attributes['data-source'] == 'date');
+    final seasonText = seasonEl?.querySelectorAll('a').firstOrNull?.text ?? '';
+    final season = seasonText
+            .split(' ')
+            .map((e) => int.tryParse(e))
+            .whereNotNull()
+            .firstOrNull ??
+        0;
+
+    final thumb = document.querySelector('img.pi-image-thumbnail');
+    final thumbSrc = thumb?.attributes['src'] ?? '';
+
+    final versionEl = document.querySelector('div.change-history-header > div');
+    final version = versionEl?.text
+        .split(' ')
+        .skipWhile((e) => e.toLowerCase() != 'version')
+        .skip(1)
+        .firstOrNull;
+
+    return item.copyWith(
+      id: '${name}_$character'.toDbId(),
+      name: name,
+      character: character,
+      rarity: 4,
+      season: season,
+      image: _processImage(thumbSrc),
+      version: version,
+    );
+  }
 }
 
 final _cache = <String, String>{};

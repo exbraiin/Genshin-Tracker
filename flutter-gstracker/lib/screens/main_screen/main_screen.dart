@@ -18,6 +18,7 @@ import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
+import 'package:tracker/screens/thespian_tricks_screen/thespian_tricks_screen.dart';
 import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
@@ -189,7 +190,11 @@ final _menus = [
     initialPage: EnvisagedEchoScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuInventory,
+    icon: GsAssets.menuThespianTricks,
+    initialPage: ThespianTricksScreen.id,
+  ),
+  _Menu(
+    icon: GsAssets.menuSpincrystal,
     initialPage: SpincrystalsScreen.id,
   ),
   _Menu(

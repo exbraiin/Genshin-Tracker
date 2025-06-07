@@ -14,7 +14,7 @@ class SpincrystalsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsSpincrystal>(
-      icon: GsAssets.menuInventory,
+      icon: GsAssets.menuSpincrystal,
       title: context.labels.spincrystals(),
       items: (db) => db.infoOf<GsSpincrystal>().items,
       versionSort: (item) => item.version,

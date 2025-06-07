@@ -14,7 +14,7 @@ class EnvisagedEchoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsEnvisagedEcho>(
-      icon: GsAssets.menuMap,
+      icon: GsAssets.menuEchos,
       title: context.labels.envisagedEchoes(),
       items: (db) => db.infoOf<GsEnvisagedEcho>().items,
       versionSort: (item) => item.version,

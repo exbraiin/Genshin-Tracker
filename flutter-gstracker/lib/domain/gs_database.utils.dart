@@ -28,6 +28,7 @@ final _svCharacter = _db.saveOf<GiCharacter>();
 final _svSereniteaSet = _db.saveOf<GiSereniteaSet>();
 final _svFurnishing = _db.saveOf<GiFurnishing>();
 final _svSpincrystal = _db.saveOf<GiSpincrystal>();
+final _svThespianTricks = _db.saveOf<GiThespianTrick>();
 final _svPlayerInfo = _db.saveOf<GiPlayerInfo>();
 final _svAccountInfo = _db.saveOf<GiAccountInfo>();
 final _svEvents = _db.saveOf<GiEventRewards>();
@@ -49,6 +50,7 @@ class GsUtils {
   static const spincrystals = _Spincrystals();
   static const playerConfigs = _PlayerConfigs();
   static const sereniteaSets = _SereniteaSets();
+  static const thespianTricks = _ThespianTricks();
   static const weaponMaterials = _WeaponMaterials();
   static const remarkableChests = _RemarkableChests();
   static const characterMaterials = _CharactersMaterials();
@@ -847,6 +849,33 @@ class _SereniteaSets {
       sv.chars.remove(char);
     }
     _svSereniteaSet.setItem(sv);
+  }
+}
+
+class _ThespianTricks {
+  const _ThespianTricks();
+
+  int get owned {
+    final info = _db.infoOf<GsThespianTrick>();
+    final save = _db.saveOf<GiThespianTrick>();
+    return info.items.count((e) => save.exists(e.id));
+  }
+
+  int get total {
+    final info = _db.infoOf<GsThespianTrick>();
+    return info.length;
+  }
+
+  /// Updates the thespian trick as owned or not.
+  ///
+  /// {@macro db_update}
+  void update(String id, {required bool obtained}) {
+    if (obtained) {
+      final trick = GiThespianTrick(id: id);
+      _svThespianTricks.setItem(trick);
+    } else {
+      _svThespianTricks.removeItem(id);
+    }
   }
 }
 

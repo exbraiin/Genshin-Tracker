@@ -443,6 +443,22 @@ class GsConfigs<T extends GsModel<T>> {
         color: GsStyle.getRarityColor(4),
       ),
     ),
+    GsThespianTrick: GsConfigs<GsThespianTrick>._(
+      title: 'Thespian Trick',
+      pageBuilder: const vd.GsThespianTrickExt(),
+      itemDecoration: (item) => GsItemDecor.rarity(
+        label: item.name,
+        version: item.version,
+        rarity: item.rarity,
+      ),
+      import: [
+        DataButton(
+          'Import from fandom URL',
+          icon: _fandomIcon,
+          (ctx, item) => FandomImporter.importThespianTrick(item),
+        ),
+      ],
+    ),
     GsEvent: GsConfigs<GsEvent>._(
       title: 'Events',
       pageBuilder: const vd.GsEventExt(),

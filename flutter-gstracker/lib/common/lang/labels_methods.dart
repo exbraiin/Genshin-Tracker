@@ -114,6 +114,16 @@ final class LabelsMethods {
 		return transformer('outfits');
 	}
 
+	/// Preview
+	String preview() {
+		return transformer('preview');
+	}
+
+	/// Thespian Tricks
+	String thespianTricks() {
+		return transformer('thespian_tricks');
+	}
+
 	/// Spincrystals
 	String spincrystals() {
 		return transformer('spincrystals');

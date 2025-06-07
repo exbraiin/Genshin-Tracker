@@ -23,7 +23,7 @@ abstract final class GsAssets {
   static const imageXp = 'assets/image/icons/Companion_xp.png';
 
   static const menuArtifacts = 'assets/image/icons/menu_icon_artifacts.png';
-  static const menuInventory = 'assets/image/icons/menu_icon_bag.png';
+  static const menuSpincrystal = spincrystal;
   static const menuWish = 'assets/image/icons/menu_icon_wish.png';
   static const menuRecipes = 'assets/image/icons/menu_icon_recipes.png';
   static const menuMaterials = 'assets/image/icons/menu_icon_materials.png';
@@ -37,7 +37,8 @@ abstract final class GsAssets {
   static const menuAchvmnt = 'assets/image/icons/menu_icon_achievements.webp';
   static const menuFeedback = 'assets/image/icons/menu_icon_feedback.webp';
   static const menuMap = 'assets/image/icons/menu_icon_map.webp';
-  static const menuEchos = 'assets/image/icons/menu_envisaged_echoes.webp';
+  static const menuEchos = 'assets/image/icons/Item_Key_of_Echoes.png';
+  static const menuThespianTricks = 'assets/image/icons/Item_Toy_Medal.png';
   static const menuEvent = 'assets/image/icons/menu_icon_event.webp';
 
   static String iconSetType(GeSereniteaSetType type) {

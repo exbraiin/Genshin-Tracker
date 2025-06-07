@@ -37,6 +37,7 @@ String expectedId(GsModel item) {
     final GsEvent item => '${item.name}_${item.version}'.toDbId(),
     final GsAchievement item => '${item.group}_${item.name}'.toDbId(),
     final GsSpincrystal item => item.number.toString(),
+    final GsThespianTrick item => '${item.name}_${item.character}'.toDbId(),
     _ => (((item as dynamic)?.name as String?) ?? '').toDbId(),
   };
 }

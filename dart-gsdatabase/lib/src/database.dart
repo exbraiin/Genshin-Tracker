@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:gsdatabase/src/exporter.dart';
+import 'package:gsdatabase/src/models/info/gs_thespian_trick.dart';
+import 'package:gsdatabase/src/models/save/gi_thespian_trick.dart';
 
 Iterable<Items> get _infoCollections {
   const kCategories = 'achievement_categories';
@@ -16,6 +18,7 @@ Iterable<Items> get _infoCollections {
     Items<GsCharacterSkin>('characters_outfits', GsCharacterSkin.fromJson),
     Items<GsEvent>('events', GsEvent.fromJson),
     Items<GsEnvisagedEcho>('echos', GsEnvisagedEcho.fromJson),
+    Items<GsThespianTrick>('thespian', GsThespianTrick.fromJson),
     Items<GsMaterial>('materials', GsMaterial.fromJson),
     Items<GsNamecard>('namecards', GsNamecard.fromJson),
     Items<GsRecipe>('recipes', GsRecipe.fromJson),
@@ -34,6 +37,7 @@ Iterable<Items> get _saveCollections {
     Items<GiWish>('wishes', GiWish.fromJson),
     Items<GiRecipe>('recipes', GiRecipe.fromJson),
     Items<GiEnvisagedEcho>('echoes', GiEnvisagedEcho.fromJson),
+    Items<GiThespianTrick>('thespian', GiThespianTrick.fromJson),
     Items<GiFurnitureChest>('remarkable_chests', GiFurnitureChest.fromJson),
     Items<GiCharacter>('characters', GiCharacter.fromJson),
     Items<GiSereniteaSet>('serenitea_sets', GiSereniteaSet.fromJson),

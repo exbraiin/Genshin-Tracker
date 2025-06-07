@@ -21,6 +21,7 @@ export 'src/gs_recipe_ext.dart';
 export 'src/gs_remarkable_chest_ext.dart';
 export 'src/gs_serenitea_ext.dart';
 export 'src/gs_spincrystal_ext.dart';
+export 'src/gs_thespian_trick.dart';
 export 'src/gs_version_ext.dart';
 export 'src/gs_weapon_ext.dart';
 
@@ -74,6 +75,7 @@ class DataValidator {
       checkItems<GsSereniteaSet>(),
       checkItems<GsSpincrystal>(),
       checkItems<GsEnvisagedEcho>(),
+      checkItems<GsThespianTrick>(),
       checkItems<GsVersion>(),
       checkItems<GsEvent>(),
       checkItems<GsBattlepass>(),

@@ -49,7 +49,13 @@ class HomePlayerProgress extends StatelessWidget {
               GsUtils.echos.total,
             ),
             _ProgressInfo(
-              GsAssets.menuInventory,
+              GsAssets.menuThespianTricks,
+              context.labels.thespianTricks(),
+              GsUtils.thespianTricks.owned,
+              GsUtils.thespianTricks.total,
+            ),
+            _ProgressInfo(
+              GsAssets.menuSpincrystal,
               context.labels.spincrystals(),
               GsUtils.spincrystals.owned,
               GsUtils.spincrystals.total,

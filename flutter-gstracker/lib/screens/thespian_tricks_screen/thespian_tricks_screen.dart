@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/screens/thespian_tricks_screen/thespian_trick_details_card.dart';
+import 'package:tracker/screens/thespian_tricks_screen/thespian_trick_list_item.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
+
+class ThespianTricksScreen extends StatelessWidget {
+  static const id = 'thespian_tricks_screen';
+
+  const ThespianTricksScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InventoryListPage<GsThespianTrick>(
+      icon: GsAssets.menuThespianTricks,
+      title: context.labels.thespianTricks(),
+      items: (db) => db.infoOf<GsThespianTrick>().items,
+      versionSort: (item) => item.version,
+      itemBuilder: (context, state) {
+        return ThespianTrickListItem(
+          state.item,
+          onTap: state.onSelect,
+          selected: state.selected,
+        );
+      },
+      itemCardBuilder: (context, item) => ThespianTrickDetailsCard(
+        item,
+        key: ValueKey(item.id),
+      ),
+    );
+  }
+}

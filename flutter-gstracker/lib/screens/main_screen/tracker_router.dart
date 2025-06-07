@@ -13,6 +13,7 @@ import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chests_screen.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_sets_screen.dart';
 import 'package:tracker/screens/spincrystals_screen/spincrystals_screen.dart';
+import 'package:tracker/screens/thespian_tricks_screen/thespian_tricks_screen.dart';
 import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
@@ -27,6 +28,7 @@ class TrackerRouter {
     RecipesScreen.id: () => const RecipesScreen(),
     RemarkableChestsScreen.id: () => const RemarkableChestsScreen(),
     EnvisagedEchoScreen.id: () => const EnvisagedEchoScreen(),
+    ThespianTricksScreen.id: () => const ThespianTricksScreen(),
     WeaponsScreen.id: () => const WeaponsScreen(),
     ArtifactsScreen.id: () => const ArtifactsScreen(),
     CharactersScreen.id: () => const CharactersScreen(),
