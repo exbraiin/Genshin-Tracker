@@ -54,33 +54,15 @@ class DataValidator {
 
   Future<void> checkItems<T extends GsModel<T>>() {
     final models = Database.i.of<T>().items.toList();
-    final validator = _getValidator<T>();
+    final validator = _GsValidator.of<T>();
     final data = _ComputeData(models.toList(), validator);
     return compute(_validateModels<T>, data)
         .then((value) => _levels[T] = value);
   }
 
   Future<void> checkAll() async {
-    await Future.wait([
-      checkItems<GsAchievementGroup>(),
-      checkItems<GsAchievement>(),
-      checkItems<GsArtifact>(),
-      checkItems<GsBanner>(),
-      checkItems<GsCharacter>(),
-      checkItems<GsCharacterSkin>(),
-      checkItems<GsMaterial>(),
-      checkItems<GsNamecard>(),
-      checkItems<GsRecipe>(),
-      checkItems<GsFurnitureChest>(),
-      checkItems<GsSereniteaSet>(),
-      checkItems<GsSpincrystal>(),
-      checkItems<GsEnvisagedEcho>(),
-      checkItems<GsThespianTrick>(),
-      checkItems<GsVersion>(),
-      checkItems<GsEvent>(),
-      checkItems<GsBattlepass>(),
-      checkItems<GsWeapon>(),
-    ]);
+    final configs = GsConfigs.getAllConfigs();
+    await Future.wait(configs.map((e) => e.checkItems(this)));
   }
 
   /// Gets the level for the given [id].
@@ -99,7 +81,7 @@ class DataValidator {
     if (model == null) {
       _levels[T]?.remove(id);
     } else {
-      final validator = _getValidator<T>();
+      final validator = _GsValidator.of<T>();
       (_levels[T] ??= {})[model.id] = validator.validate(model);
     }
     return getLevel<T>(id);
@@ -116,12 +98,6 @@ Map<String, GsValidLevel> _validateModels<T extends GsModel<T>>(
   return valid;
 }
 
-_GsValidator<T> _getValidator<T extends GsModel<T>>() {
-  // We send an empty id so the "validate id" method can reassign the id.
-  final fields = GsConfigs.of<T>()?.pageBuilder.getFields('') ?? [];
-  return _GsValidator(fields.map((e) => e.validator));
-}
-
 class _ComputeData<T extends GsModel<T>> {
   final Iterable<T> models;
   final _GsValidator validator;
@@ -132,11 +108,17 @@ class _ComputeData<T extends GsModel<T>> {
 class _GsValidator<T extends GsModel<T>> {
   final Iterable<DValidator<T>> _validators;
 
-  _GsValidator(this._validators);
+  _GsValidator._(this._validators);
+
+  static _GsValidator<T> of<T extends GsModel<T>>() {
+    // We send an empty id so the "validate id" method can reassign the id.
+    final fields = GsConfigs.of<T>()?.pageBuilder.getFields('') ?? [];
+    return _GsValidator._(fields.map((e) => e.validator));
+  }
 
   GsValidLevel validate(T item) {
     return _validators
-            .map((e) => e.call(item))
+            .map((element) => element.call(item))
             .maxBy((element) => element.index) ??
         GsValidLevel.good;
   }

@@ -24,7 +24,7 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   void initState() {
     super.initState();
-    _invalid = ValueNotifier(false);
+    _invalid = ValueNotifier(true);
     _notifier = ValueNotifier('');
   }
 

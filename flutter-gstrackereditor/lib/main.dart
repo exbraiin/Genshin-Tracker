@@ -6,17 +6,20 @@ import 'package:data_editor/style/style.dart';
 import 'package:data_editor/style/utils.dart';
 import 'package:data_editor/widgets/gs_grid_view.dart';
 import 'package:data_editor/widgets/gs_progress_indicator.dart';
+import 'package:data_editor/widgets/mouse_listener.dart';
 import 'package:data_editor/widgets/text_style_parser.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final _navKey = GlobalKey<NavigatorState>();
+
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,9 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF202020),
           surfaceTintColor: Colors.transparent,
+        ),
+        actionIconTheme: ActionIconThemeData(
+          backButtonIconBuilder: (context) => Icon(Icons.chevron_left_rounded),
         ),
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.teal,
@@ -49,6 +55,16 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: const Home(),
+      navigatorKey: _navKey,
+      builder: (context, child) {
+        return MouseListener(
+          onButtonDown: (button) {
+            if (button != MouseButton.back) return;
+            _navKey.currentState?.maybePop();
+          },
+          child: child,
+        );
+      },
     );
   }
 }

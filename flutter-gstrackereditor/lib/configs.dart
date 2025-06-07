@@ -550,6 +550,10 @@ class GsConfigs<T extends GsModel<T>> {
     return _map.values;
   }
 
+  Future<void> checkItems(vd.DataValidator validator) {
+    return validator.checkItems<T>();
+  }
+
   Widget toGridItem(BuildContext context) {
     final level = vd.DataValidator.i.getMaxLevel<T>();
     final version = collection.items

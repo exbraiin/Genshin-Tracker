@@ -9,6 +9,7 @@ import 'package:data_editor/style/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:gsdatabase/gsdatabase.dart';
+import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 
 typedef JsonMap = Map<String, dynamic>;
@@ -134,28 +135,8 @@ abstract final class PaimonMoeImporter {
 }
 
 abstract final class FandomImporter {
-  static Future<GsCharacter> importCharacter(
-    GsCharacter item, {
-    String? url,
-    bool useFile = false,
-  }) async {
-    const format = Clipboard.kTextPlain;
-    url ??= (await Clipboard.getData(format))?.text ?? '';
-
-    late final String raw;
-    if (useFile) {
-      final file = File('temp.html');
-      if (!await file.exists()) {
-        raw = await _getUrl(url);
-        await file.writeAsString(raw);
-      } else {
-        raw = await file.readAsString();
-      }
-    } else {
-      raw = await _getUrl(url);
-    }
-
-    final document = html.parse(raw);
+  static Future<GsCharacter> importCharacter(GsCharacter item) async {
+    final document = await _downloadDocument();
 
     const nameSel = 'h2[data-source="name"]';
     final name = document.querySelector(nameSel)?.text;
@@ -234,27 +215,8 @@ abstract final class FandomImporter {
     );
   }
 
-  static Future<GsSereniteaSet> importSereniteaSet(
-    GsSereniteaSet item, {
-    String? url,
-    bool useFile = false,
-  }) async {
-    const format = Clipboard.kTextPlain;
-    url ??= (await Clipboard.getData(format))?.text ?? '';
-
-    late final String raw;
-    if (useFile) {
-      final file = File('temp.html');
-      if (!await file.exists()) {
-        raw = await _getUrl(url);
-        await file.writeAsString(raw);
-      } else {
-        raw = await file.readAsString();
-      }
-    } else {
-      raw = await _getUrl(url);
-    }
-    final document = html.parse(raw);
+  static Future<GsSereniteaSet> importSereniteaSet(GsSereniteaSet item) async {
+    final document = await _downloadDocument();
 
     const nameSel = 'h2[data-source="title"]';
     final name = document.querySelector(nameSel)?.text;
@@ -281,27 +243,9 @@ abstract final class FandomImporter {
   }
 
   static Future<GsThespianTrick> importThespianTrick(
-    GsThespianTrick item, {
-    String? url,
-    bool useFile = false,
-  }) async {
-    const format = Clipboard.kTextPlain;
-    url ??= (await Clipboard.getData(format))?.text ?? '';
-
-    late final String raw;
-    if (useFile) {
-      final file = File('temp.html');
-      if (!await file.exists()) {
-        raw = await _getUrl(url);
-        await file.writeAsString(raw);
-      } else {
-        raw = await file.readAsString();
-      }
-    } else {
-      raw = await _getUrl(url);
-    }
-
-    final document = html.parse(raw);
+    GsThespianTrick item,
+  ) async {
+    final document = await _downloadDocument();
 
     final name = document.querySelector('h2.pi-title')?.text ?? '';
 
@@ -343,16 +287,39 @@ abstract final class FandomImporter {
       version: version,
     );
   }
+
+  static Future<html.Document> _downloadDocument({
+    String? url,
+    bool useFile = kDebugMode,
+  }) async {
+    const format = Clipboard.kTextPlain;
+    url ??= (await Clipboard.getData(format))?.text ?? '';
+
+    late final String raw;
+    if (useFile) {
+      final file = File('temp.html');
+      if (!await file.exists()) {
+        raw = await _getUrl(url);
+        await file.writeAsString(raw);
+      } else {
+        raw = await file.readAsString();
+      }
+    } else {
+      raw = await _getUrl(url);
+    }
+    return html.parse(raw);
+  }
 }
 
 final _cache = <String, String>{};
 Future<String> _getUrl(String url) async {
   if (_cache.containsKey(url)) return _cache[url]!;
   final client = HttpClient();
-  final request = await client.getUrl(Uri.parse(url));
-  final response = await request.close();
-  client.close();
-  return _cache[url] = await response.transform(utf8.decoder).join();
+  return client
+      .getUrl(Uri.parse(url))
+      .then((e) => e.close())
+      .then((e) async => _cache[url] = await e.transform(utf8.decoder).join())
+      .whenComplete(() => client.close());
 }
 
 String _processImage(String value) {
