@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:gsdatabase/src/exporter.dart';
-import 'package:gsdatabase/src/models/info/gs_thespian_trick.dart';
-import 'package:gsdatabase/src/models/save/gi_thespian_trick.dart';
 
 Iterable<Items> get _infoCollections {
   const kCategories = 'achievement_categories';
