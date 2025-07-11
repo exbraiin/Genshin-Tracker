@@ -38,6 +38,10 @@ class GiPlayerInfo extends _GiPlayerInfo {
   @override
   final int theaterStars;
   @override
+  final int stygianIndex;
+  @override
+  final int stygianSeconds;
+  @override
   final Map<String, int> avatars;
 
   /// Creates a new [GiPlayerInfo] instance.
@@ -57,6 +61,8 @@ class GiPlayerInfo extends _GiPlayerInfo {
     required this.theaterAct,
     required this.theaterMode,
     required this.theaterStars,
+    required this.stygianIndex,
+    required this.stygianSeconds,
     required this.avatars,
   });
 
@@ -77,6 +83,8 @@ class GiPlayerInfo extends _GiPlayerInfo {
         theaterAct = m['theater_act'] as int? ?? 0,
         theaterMode = m['theater_mode'] as int? ?? 0,
         theaterStars = m['theater_stars'] as int? ?? 0,
+        stygianIndex = m['stygian_index'] as int? ?? 0,
+        stygianSeconds = m['stygian_seconds'] as int? ?? 0,
         avatars = (m['avatars'] as Map? ?? const {}).cast<String, int>();
 
   /// Copies this model with the given parameters.
@@ -97,6 +105,8 @@ class GiPlayerInfo extends _GiPlayerInfo {
     int? theaterAct,
     int? theaterMode,
     int? theaterStars,
+    int? stygianIndex,
+    int? stygianSeconds,
     Map<String, int>? avatars,
   }) {
     return GiPlayerInfo(
@@ -115,6 +125,8 @@ class GiPlayerInfo extends _GiPlayerInfo {
       theaterAct: theaterAct ?? this.theaterAct,
       theaterMode: theaterMode ?? this.theaterMode,
       theaterStars: theaterStars ?? this.theaterStars,
+      stygianIndex: stygianIndex ?? this.stygianIndex,
+      stygianSeconds: stygianSeconds ?? this.stygianSeconds,
       avatars: avatars ?? this.avatars,
     );
   }
@@ -138,6 +150,8 @@ class GiPlayerInfo extends _GiPlayerInfo {
       'theater_act': theaterAct,
       'theater_mode': theaterMode,
       'theater_stars': theaterStars,
+      'stygian_index': stygianIndex,
+      'stygian_seconds': stygianSeconds,
       'avatars': avatars,
     };
   }

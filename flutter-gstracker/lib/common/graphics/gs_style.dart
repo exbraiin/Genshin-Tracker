@@ -23,7 +23,8 @@ abstract final class GsAssets {
   static const imageXp = 'assets/image/icons/Companion_xp.png';
 
   static const menuArtifacts = 'assets/image/icons/menu_icon_artifacts.png';
-  static const menuSpincrystal = 'assets/image/icons/menu_icon_precious_items.png';
+  static const menuSpincrystal =
+      'assets/image/icons/menu_icon_precious_items.png';
   static const menuWish = 'assets/image/icons/menu_icon_wish.png';
   static const menuRecipes = 'assets/image/icons/menu_icon_recipes.png';
   static const menuMaterials = 'assets/image/icons/menu_icon_materials.png';
@@ -40,6 +41,11 @@ abstract final class GsAssets {
   static const menuEchos = 'assets/image/icons/menu_envisaged_echoes.webp';
   static const menuThespianTricks = 'assets/image/icons/Item_Toy_Medal.png';
   static const menuEvent = 'assets/image/icons/menu_icon_event.webp';
+
+  static const _kPlayer = 'assets/image/icons/player';
+  static const playerAchievements = '$_kPlayer/player_achievements.png';
+  static const playerAbyss = '$_kPlayer/player_abyss.png';
+  static const playerTheater = '$_kPlayer/player_theater.png';
 
   static String iconSetType(GeSereniteaSetType type) {
     return switch (type) {
@@ -77,6 +83,12 @@ abstract final class GsAssets {
   }
 
   static String getRarityBgImage(int rarity) {
-    return 'assets/image/rarity/Item_${rarity.clamp(1, 5).toInt()}_Star.png';
+    final idx = rarity.clamp(1, 5).toInt();
+    return 'assets/image/rarity/Item_${idx}_Star.png';
+  }
+
+  static String getStygianIcon(int index) {
+    final idx = index.clamp(0, 7);
+    return 'assets/image/icons/player/player_stygian_$idx.png';
   }
 }

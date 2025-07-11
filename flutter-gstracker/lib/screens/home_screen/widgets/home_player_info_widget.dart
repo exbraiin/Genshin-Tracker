@@ -3,7 +3,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
+import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
@@ -14,7 +14,6 @@ import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/remote/enka_service.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
-import 'package:tracker/theme/theme.dart';
 
 class HomePlayerInfoWidget extends StatelessWidget {
   const HomePlayerInfoWidget({super.key});
@@ -132,8 +131,8 @@ class HomePlayerInfoWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${context.labels.cardPlayerAr(info.level)}  |  '
-                      '${context.labels.cardPlayerWl(info.worldLevel)}',
+                      context.labels
+                          .cardPlayerArWl(info.level, info.worldLevel),
                       maxLines: 1,
                       style: TextStyle(
                         color: context.themeColors.dimWhite,
@@ -206,65 +205,66 @@ class HomePlayerInfoWidget extends StatelessWidget {
       shadows: [BoxShadow(blurRadius: 2, offset: Offset(2, 2))],
     );
 
+    TableRow row({
+      required String label,
+      required String asset,
+      required String content,
+    }) {
+      return TableRow(
+        children: [
+          Text(
+            content,
+            textAlign: TextAlign.end,
+            style: valueStyle,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+            child: Image.asset(asset, width: 16, height: 16),
+          ),
+          Text(
+            label,
+            textAlign: TextAlign.start,
+            style: labelStyle,
+          ),
+        ],
+      );
+    }
+
     return Table(
       columnWidths: const {
         0: IntrinsicColumnWidth(),
-        1: FixedColumnWidth(kSeparator8),
+        1: IntrinsicColumnWidth(),
         2: IntrinsicColumnWidth(),
       },
       children: [
-        TableRow(
-          children: [
-            Text(
-              context.labels.cardPlayerAchievements(),
-              textAlign: TextAlign.end,
-              style: labelStyle,
-            ),
-            const SizedBox.shrink(),
-            Text(
-              context.labels
-                  .cardPlayerAchievementsValue(info.achievements.format()),
-              textAlign: TextAlign.end,
-              style: valueStyle,
-            ),
-          ],
+        row(
+          label: context.labels.cardPlayerAchievements(),
+          content: context.labels
+              .cardPlayerAchievementsValue(info.achievements.format()),
+          asset: GsAssets.playerAchievements,
         ),
-        TableRow(
-          children: [
-            Text(
-              context.labels.cardPlayerAbyss(),
-              textAlign: TextAlign.end,
-              style: labelStyle,
-            ),
-            const SizedBox.shrink(),
-            Text(
-              context.labels.cardPlayerAbyssValue(
-                info.towerFloor,
-                info.towerChamber,
-                info.towerStars,
-              ),
-              textAlign: TextAlign.end,
-              style: valueStyle,
-            ),
-          ],
+        row(
+          label: context.labels.cardPlayerAbyss(),
+          content: context.labels.cardPlayerAbyssValue(
+            info.towerFloor,
+            info.towerChamber,
+            info.towerStars,
+          ),
+          asset: GsAssets.playerAbyss,
         ),
-        TableRow(
-          children: [
-            Text(
-              context.labels.cardPlayerTheater(),
-              textAlign: TextAlign.end,
-              style: labelStyle,
-            ),
-            const SizedBox.shrink(),
-            Text(
-              context.labels.cardPlayerTheaterValue(
-                info.theaterAct,
-                info.theaterStars,
-              ),
-              textAlign: TextAlign.end,
-              style: valueStyle,
-            ),
-          ],
+        row(
+          label: context.labels.cardPlayerTheater(),
+          content: context.labels.cardPlayerTheaterValue(
+            info.theaterAct,
+            info.theaterStars,
+          ),
+          asset: GsAssets.playerTheater,
+        ),
+        row(
+          label: context.labels.cardPlayerStygian(),
+          content: context.labels
+              .cardPlayerStygianValue(info.stygianSeconds, info.stygianIndex),
+          asset: GsAssets.getStygianIcon(info.stygianIndex),
         ),
       ],
     );
@@ -273,23 +273,6 @@ class HomePlayerInfoWidget extends StatelessWidget {
 
 Future<void> _fetchAndInsert(String uid) async {
   final player = await EnkaService.i.getPlayerInfo(uid);
-  final item = GiPlayerInfo(
-    id: GsUtils.playerConfigs.kPlayerInfo,
-    uid: uid,
-    avatarId: player.pfpId,
-    nickname: player.nickname,
-    signature: player.signature,
-    level: player.level,
-    worldLevel: player.worldLevel,
-    namecardId: player.namecardId,
-    achievements: player.achievements,
-    towerFloor: player.towerFloor,
-    towerChamber: player.towerChamber,
-    towerStars: player.towerStar,
-    theaterAct: player.theaterAct,
-    theaterMode: player.theaterMode,
-    theaterStars: player.theaterStar,
-    avatars: player.avatars,
-  );
+  final item = player.toGiPlayerInfo();
   Database.instance.saveOf<GiPlayerInfo>().setItem(item);
 }

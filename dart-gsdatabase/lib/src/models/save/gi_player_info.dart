@@ -32,6 +32,10 @@ abstract class _GiPlayerInfo extends GsModel<GiPlayerInfo> {
   int get theaterMode;
   @BuilderWire('theater_stars')
   int get theaterStars;
+  @BuilderWire('stygian_index')
+  int get stygianIndex;
+  @BuilderWire('stygian_seconds')
+  int get stygianSeconds;
   @BuilderWire('avatars')
   Map<String, int> get avatars;
 }

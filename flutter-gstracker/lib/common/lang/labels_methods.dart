@@ -1009,14 +1009,9 @@ final class LabelsMethods {
 		return transformer('card_player_info');
 	}
 
-	/// AR {value}
-	String cardPlayerAr(dynamic value) {
-		return transformer('card_player_ar', {'value': value});
-	}
-
-	/// WL {value}
-	String cardPlayerWl(dynamic value) {
-		return transformer('card_player_wl', {'value': value});
+	/// AR {ar} • WL {wl}
+	String cardPlayerArWl(dynamic ar, dynamic wl) {
+		return transformer('card_player_ar_wl', {'ar': ar, 'wl': wl});
 	}
 
 	/// Achievements
@@ -1034,6 +1029,11 @@ final class LabelsMethods {
 		return transformer('card_player_theater');
 	}
 
+	/// Stygian
+	String cardPlayerStygian() {
+		return transformer('card_player_stygian');
+	}
+
 	/// {value}
 	String cardPlayerAchievementsValue(dynamic value) {
 		return transformer('card_player_achievements_value', {'value': value});
@@ -1044,9 +1044,14 @@ final class LabelsMethods {
 		return transformer('card_player_abyss_value', {'floor': floor, 'chamber': chamber, 'stars': stars});
 	}
 
-	/// Act {act} • {stars}★
+	/// {act} • {stars}★
 	String cardPlayerTheaterValue(dynamic act, dynamic stars) {
 		return transformer('card_player_theater_value', {'act': act, 'stars': stars});
+	}
+
+	/// {seconds}s • {index}
+	String cardPlayerStygianValue(dynamic seconds, dynamic index) {
+		return transformer('card_player_stygian_value', {'seconds': seconds, 'index': index});
 	}
 
 	/// Radiant Spincrystal {number}

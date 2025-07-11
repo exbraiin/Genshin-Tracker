@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/utils/network.dart';
+import 'package:tracker/domain/gs_database.utils.dart';
 
 const _apiBaseUrl = 'https://enka.network';
 const _gitBaseUrl = 'https://raw.githubusercontent.com/EnkaNetwork';
@@ -63,6 +64,7 @@ class EnkaPlayerInfo {
   final int achievements;
   final int towerFloor, towerChamber, towerStar;
   final int theaterAct, theaterMode, theaterStar;
+  final int stygianIndex, stygianSeconds;
   final Map<String, int> avatars;
 
   EnkaPlayerInfo._({
@@ -80,6 +82,8 @@ class EnkaPlayerInfo {
     required this.theaterAct,
     required this.theaterMode,
     required this.theaterStar,
+    required this.stygianIndex,
+    required this.stygianSeconds,
     required this.avatars,
   });
 
@@ -105,10 +109,36 @@ class EnkaPlayerInfo {
       theaterAct: info.getInt('theaterActIndex'),
       theaterMode: info.getInt('theaterModeIndex'),
       theaterStar: info.getInt('theaterStarIndex'),
+      stygianIndex: info.getInt('stygianIndex'),
+      stygianSeconds: info.getInt('stygianSeconds'),
       avatars: avatars.toMap(
         (e) => e.getString('avatarId'),
         (e) => e.getInt('level'),
       ),
+    );
+  }
+
+  GiPlayerInfo toGiPlayerInfo() {
+    final id = GsUtils.playerConfigs.kPlayerInfo;
+    return GiPlayerInfo(
+      id: id,
+      uid: uid,
+      avatarId: pfpId,
+      nickname: nickname,
+      signature: signature,
+      level: level,
+      worldLevel: worldLevel,
+      namecardId: namecardId,
+      achievements: achievements,
+      towerFloor: towerFloor,
+      towerChamber: towerChamber,
+      towerStars: towerStar,
+      theaterAct: theaterAct,
+      theaterMode: theaterMode,
+      theaterStars: theaterStar,
+      stygianIndex: stygianIndex,
+      stygianSeconds: stygianSeconds,
+      avatars: avatars,
     );
   }
 }
