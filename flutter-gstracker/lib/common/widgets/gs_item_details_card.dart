@@ -57,57 +57,54 @@ class ItemDetailsCard extends StatelessWidget {
       color: color,
       child: Container(
         margin: const EdgeInsets.all(kSeparator2),
-        padding: const EdgeInsets.all(kSeparator8),
+        padding: const EdgeInsets.all(kSeparator8 + kSeparator2),
         decoration: BoxDecoration(
           border: Border.all(
             color: color1,
             width: kSeparator2,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(2),
-          child: Row(
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: SelectableText(
-                      name.isNotEmpty ? name : ' ',
-                      maxLines: 1,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+        child: Row(
+          children: [
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: SelectableText(
+                    name.isNotEmpty ? name : ' ',
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            if (Navigator.of(context).canPop())
+              Container(
+                margin: const EdgeInsets.only(left: 32),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white60, width: 2),
+                  borderRadius: BorderRadius.circular(48),
+                ),
+                child: Center(
+                  child: InkWell(
+                    onTap: () => Navigator.of(context).maybePop(),
+                    child: const AspectRatio(
+                      aspectRatio: 1,
+                      child: Icon(
+                        Icons.close_rounded,
+                        color: Colors.white60,
+                        size: 20,
                       ),
                     ),
                   ),
                 ),
               ),
-              if (Navigator.of(context).canPop())
-                Container(
-                  margin: const EdgeInsets.only(left: 32),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white60, width: 2),
-                    borderRadius: BorderRadius.circular(48),
-                  ),
-                  child: Center(
-                    child: InkWell(
-                      onTap: () => Navigator.of(context).maybePop(),
-                      child: const AspectRatio(
-                        aspectRatio: 1,
-                        child: Icon(
-                          Icons.close_rounded,
-                          color: Colors.white60,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );

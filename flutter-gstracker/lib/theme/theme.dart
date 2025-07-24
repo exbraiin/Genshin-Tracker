@@ -39,6 +39,7 @@ final theme = ThemeData(
     textStyle: const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,
+      fontFamily: defaultFontFamily,
       color: Colors.black,
     ),
   ),

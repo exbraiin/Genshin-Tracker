@@ -6,6 +6,7 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
+import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/gs_assets.dart';
@@ -37,18 +38,41 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
         final items = Database.instance.infoOf<GsCharacter>().items;
-        return InventoryPage(
-          appBar: InventoryAppBar(
-            label: context.labels.characters(),
-            iconAsset: AppAssets.menuIconCharacters,
-          ),
-          child: InventoryBox(child: _getList(context, items)),
+        return ScreenFilterBuilder<GsCharacter>(
+          builder: (context, filter, button, toggle) {
+            final list = _getCharsSorted(filter.match(items)).where(
+              (e) =>
+                  !filter.hasExtra(FilterExtras.hide) ||
+                  (e.talents?.total ?? 0) < 9 * 3,
+            );
+
+            return InventoryPage(
+              appBar: InventoryAppBar(
+                label: context.labels.characters(),
+                iconAsset: AppAssets.menuIconCharacters,
+                actions: [
+                  IconButton(
+                    tooltip: context.labels.hide999Characters(),
+                    onPressed: () => toggle(FilterExtras.hide),
+                    icon: filter.hasExtra(FilterExtras.hide)
+                        ? Icon(Icons.visibility_off_rounded)
+                        : Icon(Icons.visibility_rounded),
+                    color: Colors.white.withValues(alpha: 0.5),
+                  ),
+                  button,
+                ],
+              ),
+              child: InventoryBox(
+                child: _getList(context, list),
+              ),
+            );
+          },
         );
       },
     );
   }
 
-  Widget _getList(BuildContext context, Iterable<GsCharacter> characters) {
+  Widget _getList(BuildContext context, Iterable<CharInfo> characters) {
     return SingleChildScrollView(
       child: Table(
         columnWidths: Map.fromEntries(
@@ -111,7 +135,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
               );
             }).toList(),
           ),
-          ..._getCharsSorted(characters).map((item) {
+          ...characters.map((item) {
             return TableRow(
               children: _builders.map<Widget>((e) {
                 final child = Padding(
@@ -277,13 +301,10 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
     return chars;
   }
 
-  List<String> _getCharsIdsSorted(Iterable<GsCharacter> characters) {
+  List<String> _getCharsIdsSorted(Iterable<CharInfo> chars) {
     if (_sortItem == null) return const [];
 
-    final info = GsUtils.characters.getCharInfo;
-    final chars = characters.map((e) => info(e.id)).whereNotNull();
     final sorted = _sorter ? chars.sortedBy : chars.sortedByDescending;
-
     return sorted((e) => _sortItem!.sortBy?.call(e) ?? 0)
         .thenBy((e) => e.item.name)
         .map((e) => e.item.id)

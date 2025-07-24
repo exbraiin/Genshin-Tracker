@@ -322,6 +322,9 @@ abstract final class LocalizationKeys {
   /// Hide empty banners!
   static const hideEmptyBanners = 'hide_empty_banners';
 
+  /// Hide 9-9-9 characters
+  static const hide999Characters = 'hide_999_characters';
+
   /// Won 50/50
   static const won5050 = 'won_5050';
 
@@ -1334,6 +1337,11 @@ class LocalizationMethods {
   /// Hide empty banners!
   String hideEmptyBanners() {
     return provider(LocalizationKeys.hideEmptyBanners);
+  }
+
+  /// Hide 9-9-9 characters
+  String hide999Characters() {
+    return provider(LocalizationKeys.hide999Characters);
   }
 
   /// Won 50/50
