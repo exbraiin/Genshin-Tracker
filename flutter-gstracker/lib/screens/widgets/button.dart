@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
-import 'package:tracker/theme/theme.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class MainButton extends StatelessWidget {
   final Color? color;
@@ -26,12 +25,12 @@ class MainButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
         decoration: BoxDecoration(
-          borderRadius: kGridRadius,
+          borderRadius: GsSpacing.kGridRadius,
           color: Color.lerp(color, Colors.black, 0.25) ??
               context.themeColors.mainColor0,
         ),
         foregroundDecoration: BoxDecoration(
-          borderRadius: kGridRadius,
+          borderRadius: GsSpacing.kGridRadius,
           border: selected
               ? Border.all(color: context.themeColors.almostWhite, width: 2)
               : null,

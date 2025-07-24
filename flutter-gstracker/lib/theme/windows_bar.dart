@@ -1,7 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
-import 'package:tracker/theme/theme.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class WindowBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -33,8 +32,9 @@ class WindowBar extends StatelessWidget implements PreferredSizeWidget {
                   child: title != null
                       ? Container(
                           alignment: Alignment.centerLeft,
-                          padding:
-                              const EdgeInsets.only(left: kGridSeparator * 2),
+                          padding: const EdgeInsets.only(
+                            left: GsSpacing.kGridSeparator * 2,
+                          ),
                           child: Text(
                             title!,
                             style: context.themeStyles.label12b,

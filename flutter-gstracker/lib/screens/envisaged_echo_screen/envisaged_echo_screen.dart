@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/envisaged_echo_screen/envisaged_echo_details_card.dart';
 import 'package:tracker/screens/envisaged_echo_screen/envisaged_echo_list_item.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.g.dart';
 
 class EnvisagedEchoScreen extends StatelessWidget {
   static const id = 'envisaged_echo_screen';
@@ -14,7 +14,7 @@ class EnvisagedEchoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsEnvisagedEcho>(
-      icon: GsAssets.menuEchos,
+      icon: AppAssets.menuEnvisagedEchoes,
       title: context.labels.envisagedEchoes(),
       items: (db) => db.infoOf<GsEnvisagedEcho>().items,
       versionSort: (item) => item.version,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class GsNoResultsState extends StatelessWidget {
   final double size;
@@ -18,7 +18,7 @@ class GsNoResultsState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ItemIconWidget.asset(GsAssets.emptyEmote, size: size),
+            ItemIconWidget.asset(AppAssets.empty, size: size),
             const SizedBox(height: kSeparator4),
             Text(
               context.labels.noResults(),

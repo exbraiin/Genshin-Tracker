@@ -1,9 +1,9 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class ItemDetailsCard extends StatelessWidget {
   final int rarity;
@@ -219,7 +219,7 @@ class ItemDetailsCard extends StatelessWidget {
                                   Icons.star_rounded,
                                   size: 30,
                                   color: Colors.yellow,
-                                  shadows: kMainShadow,
+                                  shadows: GsSpacing.kMainShadow,
                                 ),
                               ),
                             ),

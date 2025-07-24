@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class AddWishWishListItem extends StatelessWidget {
   final int roll;
@@ -21,7 +21,7 @@ class AddWishWishListItem extends StatelessWidget {
     return Container(
       height: 32,
       decoration: BoxDecoration(
-        borderRadius: kListRadius,
+        borderRadius: GsSpacing.kListRadius,
         color: context.themeColors.colorByRarityBg(item.rarity),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 4),

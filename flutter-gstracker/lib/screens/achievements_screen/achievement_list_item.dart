@@ -2,12 +2,12 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class AchievementListItem extends StatelessWidget {
   final GsAchievement item;
@@ -68,7 +68,7 @@ class AchievementListItem extends StatelessWidget {
                     ),
                     GsItemCardLabel(
                       label: e.reward.format(),
-                      asset: GsAssets.imagePrimogem,
+                      asset: AppAssets.primogem,
                     ),
                   ],
                 ),

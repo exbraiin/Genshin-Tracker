@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/theme/gs_assets.g.dart';
 
 class PrimogemIcon extends StatelessWidget {
   final double size;
@@ -18,7 +18,7 @@ class PrimogemIcon extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 4),
         child: Image.asset(
-          GsAssets.imagePrimogem,
+          AppAssets.primogem,
           width: size,
           height: size,
           fit: BoxFit.fitHeight,

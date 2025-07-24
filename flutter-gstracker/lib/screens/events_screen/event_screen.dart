@@ -2,7 +2,6 @@ import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
@@ -10,6 +9,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/events_screen/event_details_card.dart';
 import 'package:tracker/screens/events_screen/event_list_item.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class EventScreen extends StatelessWidget {
   static const id = 'events_screen';
@@ -19,7 +19,7 @@ class EventScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsEvent>(
-      icon: GsAssets.menuEvent,
+      icon: AppAssets.menuIconEvent,
       sortOrder: SortOrder.descending,
       childSize: const Size(126 * 2 + 6, 160),
       title: context.labels.filterEvent(),
@@ -88,7 +88,7 @@ class EventsScrollView extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: daySize + kGridSeparator),
+              const SizedBox(height: daySize + GsSpacing.kGridSeparator),
               ...rows.map<Widget>((e) {
                 return Stack(
                   children: e.map((e) {
@@ -150,8 +150,10 @@ class EventsScrollView extends StatelessWidget {
                                     child: Text(
                                       e.name,
                                       maxLines: 2,
-                                      style: context.themeStyles.label14n
-                                          .copyWith(shadows: kMainShadow),
+                                      style:
+                                          context.themeStyles.label14n.copyWith(
+                                        shadows: GsSpacing.kMainShadow,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -169,7 +171,7 @@ class EventsScrollView extends StatelessWidget {
                     );
                   }).toList(),
                 );
-              }).separate(const SizedBox(height: kGridSeparator)),
+              }).separate(const SizedBox(height: GsSpacing.kGridSeparator)),
             ],
           ),
           Row(
@@ -184,7 +186,7 @@ class EventsScrollView extends StatelessWidget {
                         width: daySize,
                         height: daySize +
                             rows.length * daySize +
-                            rows.length * kGridSeparator,
+                            rows.length * GsSpacing.kGridSeparator,
                         alignment: Alignment.center,
                         child: Column(
                           children: [

@@ -1,9 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
-import 'package:tracker/theme/theme.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class TextParserWidget extends StatelessWidget {
   final String text;
@@ -58,7 +57,9 @@ class TextParserWidget extends StatelessWidget {
         fontWeight: bold.peek ?? style.fontWeight,
         fontStyle: italic.peek ?? style.fontStyle,
         decoration: underline.peek ?? style.decoration,
-        shadows: color == context.themeColors.primary ? kMainShadowText : null,
+        shadows: color == context.themeColors.primary
+            ? GsSpacing.kMainShadowText
+            : null,
       );
 
       final tag = idxs.minBy((e) => e.value);

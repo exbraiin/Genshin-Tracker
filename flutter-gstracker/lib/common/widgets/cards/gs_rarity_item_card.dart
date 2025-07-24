@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/hover_detector.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class GsRarityItemCard extends StatelessWidget {
   final int rarity;
@@ -40,7 +40,8 @@ class GsRarityItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = kGridRadius.copyWith(bottomRight: Radius.circular(size / 4));
+    final radius =
+        GsSpacing.kGridRadius.copyWith(bottomRight: Radius.circular(size / 4));
     return ClipRRect(
       borderRadius: radius,
       child: Container(

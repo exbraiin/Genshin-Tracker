@@ -1,7 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
@@ -11,6 +10,7 @@ import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/characters_table_screen.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomeTalentsWidget extends StatelessWidget {
   const HomeTalentsWidget({super.key});
@@ -88,27 +88,42 @@ class HomeTalentsWidget extends StatelessWidget {
               ),
               child: LayoutBuilder(
                 builder: (context, layout) {
-                  final itemSize = kItemSize + kGridSeparator;
+                  final itemSize = kItemSize + GsSpacing.kGridSeparator;
                   final width = layout.maxWidth;
                   final items = (width ~/ itemSize).coerceAtMost(8) * 2;
+                  final take = (items - 1).coerceAtLeast(0);
+
+                  var list = characters.take(take).map<Widget>((info) {
+                    return ItemGridWidget.character(
+                      size: kItemSize,
+                      info.item,
+                      labelWidget: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: CharTalentType.values
+                            .map((e) => _talentLabel(context, info, e))
+                            .toList(),
+                      ),
+                    );
+                  });
+
+                  final remain = characters.length - take;
+                  if (remain > 0) {
+                    list = list.appendElement(
+                      Container(
+                        width: kItemSize,
+                        height: kItemSize,
+                        alignment: Alignment.center,
+                        child: Text('+$remain'),
+                      ),
+                    );
+                  }
 
                   return Center(
                     child: Wrap(
-                      spacing: kGridSeparator,
-                      runSpacing: kGridSeparator,
+                      spacing: GsSpacing.kGridSeparator,
+                      runSpacing: GsSpacing.kGridSeparator,
                       alignment: WrapAlignment.center,
-                      children: characters.take(items).map<Widget>((info) {
-                        return ItemGridWidget.character(
-                          size: kItemSize,
-                          info.item,
-                          labelWidget: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: CharTalentType.values
-                                .map((e) => _talentLabel(context, info, e))
-                                .toList(),
-                          ),
-                        );
-                      }).toList(),
+                      children: list.toList(),
                     ),
                   );
                 },

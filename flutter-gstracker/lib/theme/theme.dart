@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 const defaultFontFamily = 'Comfortaa';
 final _themeColors = ThemeColors.defaultTheme();

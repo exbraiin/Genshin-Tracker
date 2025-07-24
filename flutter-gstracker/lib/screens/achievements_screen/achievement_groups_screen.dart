@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
@@ -11,6 +10,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/achievements_screen/achievement_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class AchievementGroupsScreen extends StatefulWidget {
   static const id = 'achievement_groups_screen';
@@ -72,7 +72,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 final title = context.labels.achievements();
                 return InventoryPage(
                   appBar: InventoryAppBar(
-                    iconAsset: GsAssets.menuAchvmnt,
+                    iconAsset: AppAssets.menuIconAchievements,
                     label: '$title  ($saved/$total)',
                     actions: [button],
                   ),
@@ -115,7 +115,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
               flex: 2,
               child: _getGroupsList(aGroup),
             ),
-            const SizedBox(width: kGridSeparator),
+            const SizedBox(width: GsSpacing.kGridSeparator),
             Expanded(
               flex: 5,
               child: InventoryBox(
@@ -161,7 +161,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
             ),
           ),
         ),
-        const SizedBox(height: kGridSeparator),
+        const SizedBox(height: GsSpacing.kGridSeparator),
         Expanded(
           child: InventoryBox(
             child: ListView.separated(
@@ -176,7 +176,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 );
               },
               separatorBuilder: (context, index) =>
-                  const SizedBox(height: kGridSeparator),
+                  const SizedBox(height: GsSpacing.kGridSeparator),
             ),
           ),
         ),
@@ -194,7 +194,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
       itemCount: list.length,
       itemBuilder: (context, index) => AchievementListItem(list[index]),
       separatorBuilder: (context, index) =>
-          const SizedBox(height: kListSeparator),
+          const SizedBox(height: GsSpacing.kListSeparator),
     );
   }
 
@@ -213,8 +213,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
       height: 86,
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
-      padding:
-          const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator16),
+      padding: const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator16),
       decoration: BoxDecoration(
         color: selected ? context.themeColors.mainColor1 : Colors.transparent,
         image: namecard != null && namecard.fullImage.isNotEmpty
@@ -231,10 +230,10 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 alignment: Alignment.centerRight,
                 image: AssetImage(GsAssets.getRarityBgImage(1)),
               ),
-        borderRadius: kGridRadius,
+        borderRadius: GsSpacing.kGridRadius,
       ),
       foregroundDecoration: BoxDecoration(
-        borderRadius: kGridRadius,
+        borderRadius: GsSpacing.kGridRadius,
         border: Border.all(
           color: selected
               ? const Color(0xFFd8c090).withValues(alpha: 0.8)

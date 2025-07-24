@@ -1,9 +1,9 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomeResourceCalcWidget extends StatefulWidget {
   const HomeResourceCalcWidget({super.key});
@@ -140,7 +140,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1.withValues(alpha: 0.4),
         border: Border.all(color: context.themeColors.mainColor0, width: 0.6),
-        borderRadius: kGridRadius,
+        borderRadius: GsSpacing.kGridRadius,
       ),
       child: Text(
         text,
@@ -155,7 +155,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
       margin: const EdgeInsets.all(kSeparator2),
       padding: const EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
-        borderRadius: kGridRadius,
+        borderRadius: GsSpacing.kGridRadius,
         border: Border.all(
           color: context.themeColors.dimWhite,
           width: 0.6,

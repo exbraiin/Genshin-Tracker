@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/widgets/button.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class RemoveDialog extends StatelessWidget {
   static Future<bool> show(BuildContext context, String name) async {
@@ -24,11 +24,11 @@ class RemoveDialog extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Container(
-          padding: kListPadding,
+          padding: GsSpacing.kListPadding,
           constraints: const BoxConstraints(maxHeight: 200, maxWidth: 300),
           decoration: BoxDecoration(
             color: context.themeColors.mainColor0,
-            borderRadius: kGridRadius,
+            borderRadius: GsSpacing.kGridRadius,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -41,7 +41,7 @@ class RemoveDialog extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: kGridSeparator),
+              const SizedBox(height: GsSpacing.kGridSeparator),
               InventoryBox(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -52,7 +52,7 @@ class RemoveDialog extends StatelessWidget {
                       style: context.textTheme.titleMedium!
                           .copyWith(color: Colors.white),
                     ),
-                    const SizedBox(height: kGridSeparator * 2),
+                    const SizedBox(height: GsSpacing.kGridSeparator * 2),
                     MainButton(
                       color: context.themeColors.setIndoor,
                       label: context.labels.remove().toUpperCase(),

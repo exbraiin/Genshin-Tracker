@@ -1,7 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
@@ -12,6 +11,7 @@ import 'package:tracker/screens/recipes_screen/recipe_details_card.dart';
 import 'package:tracker/screens/remarkable_chests_screen/remarkable_chest_details_card.dart';
 import 'package:tracker/screens/serenitea_sets_screen/serenitea_set_details_card.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_card.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 typedef ContextCallback<T> = void Function(BuildContext context, T item);
 
@@ -229,7 +229,7 @@ class ItemGridWidget extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
-        borderRadius: kGridRadius,
+        borderRadius: GsSpacing.kGridRadius,
         image: rarity.between(1, 5)
             ? DecorationImage(
                 image: AssetImage(GsAssets.getRarityBgImage(rarity)),
@@ -253,7 +253,7 @@ class ItemGridWidget extends StatelessWidget {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             foregroundDecoration: BoxDecoration(
-              borderRadius: kGridRadius,
+              borderRadius: GsSpacing.kGridRadius,
               border: Border.all(
                 color: value
                     ? context.themeColors.almostWhite
@@ -328,7 +328,7 @@ class ItemGridWidget extends StatelessWidget {
             duration: const Duration(milliseconds: 400),
             decoration: BoxDecoration(
               color: value ? iconColor : color,
-              borderRadius: kGridRadius.copyWith(
+              borderRadius: GsSpacing.kGridRadius.copyWith(
                 topLeft: !isTopLeft ? Radius.zero : null,
                 topRight: isTopLeft ? Radius.zero : null,
                 bottomLeft: isTopLeft ? Radius.zero : null,

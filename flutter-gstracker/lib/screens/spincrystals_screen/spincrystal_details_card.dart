@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
@@ -9,6 +8,7 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class SpincrystalDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
@@ -26,7 +26,7 @@ class SpincrystalDetailsCard extends StatelessWidget
         return ItemDetailsCard(
           name: context.labels.radiantSpincrystal(item.number),
           rarity: 4,
-          asset: GsAssets.spincrystal,
+          asset: AppAssets.spincrystal,
           version: item.version,
           info: Column(
             children: [
@@ -79,7 +79,7 @@ class SpincrystalDetailsCard extends StatelessWidget
                               color: context.themeColors.mainColor1,
                               width: kSeparator4,
                             ),
-                            borderRadius: kGridRadius,
+                            borderRadius: GsSpacing.kGridRadius,
                             color: item.region.color,
                             image: DecorationImage(
                               image: AssetImage(GsAssets.getRarityBgImage(1)),

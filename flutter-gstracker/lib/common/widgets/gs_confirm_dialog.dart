@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/widgets/button.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class GsConfirmDialog extends StatelessWidget {
   static Future<bool?> show(
@@ -30,11 +30,11 @@ class GsConfirmDialog extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Container(
-          padding: kListPadding,
+          padding: GsSpacing.kListPadding,
           constraints: const BoxConstraints(maxHeight: 200, maxWidth: 300),
           decoration: BoxDecoration(
             color: context.themeColors.mainColor0,
-            borderRadius: kGridRadius,
+            borderRadius: GsSpacing.kGridRadius,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -48,7 +48,7 @@ class GsConfirmDialog extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: kGridSeparator),
+              const SizedBox(height: GsSpacing.kGridSeparator),
               InventoryBox(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -58,7 +58,7 @@ class GsConfirmDialog extends StatelessWidget {
                       style: style,
                       strutStyle: style.toStrut(),
                     ),
-                    const SizedBox(height: kGridSeparator * 2),
+                    const SizedBox(height: GsSpacing.kGridSeparator * 2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -67,7 +67,7 @@ class GsConfirmDialog extends StatelessWidget {
                           label: context.labels.buttonNo(),
                           onPress: () => Navigator.of(context).maybePop(false),
                         ),
-                        const SizedBox(width: kGridSeparator),
+                        const SizedBox(width: GsSpacing.kGridSeparator),
                         MainButton(
                           color: context.themeColors.goodValue,
                           label: context.labels.buttonYes(),

@@ -1,7 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
@@ -9,6 +8,7 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class CharactersTableScreen extends StatefulWidget {
   static const id = 'characters_table_screen';
@@ -40,7 +40,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
         return InventoryPage(
           appBar: InventoryAppBar(
             label: context.labels.characters(),
-            iconAsset: GsAssets.menuCharacters,
+            iconAsset: AppAssets.menuIconCharacters,
           ),
           child: InventoryBox(child: _getList(context, items)),
         );

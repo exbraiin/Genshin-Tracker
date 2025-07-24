@@ -2,8 +2,8 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/theme/gs_assets.g.dart';
 
 const _wp = 'assets/image/weapon_stat';
 const _ep = 'assets/image/element';
@@ -145,18 +145,18 @@ extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
       GeCharacterAscStatType.hpPercent => ctx.labels.wsHpPercent(),
       GeCharacterAscStatType.atkPercent => ctx.labels.wsAtkPercent(),
       GeCharacterAscStatType.defPercent => ctx.labels.wsDefPercent(),
-      GeCharacterAscStatType.critDmg => ctx.labels.wsCritdmg(),
-      GeCharacterAscStatType.critRate => ctx.labels.wsCritrate(),
+      GeCharacterAscStatType.critDmg => ctx.labels.wsCritDmg(),
+      GeCharacterAscStatType.critRate => ctx.labels.wsCritRate(),
       GeCharacterAscStatType.healing => ctx.labels.wsHealing(),
-      GeCharacterAscStatType.physicalDmg => ctx.labels.wsPhysicaldmg(),
-      GeCharacterAscStatType.energyRecharge => ctx.labels.wsEnergyrecharge(),
+      GeCharacterAscStatType.physicalDmg => ctx.labels.wsPhysicalDmg(),
+      GeCharacterAscStatType.energyRecharge => ctx.labels.wsEnergyRecharge(),
       GeCharacterAscStatType.elementalMastery =>
-        ctx.labels.wsElementalmastery(),
+        ctx.labels.wsElementalMastery(),
     };
   }
 
   String get assetPath => switch (this) {
-        GeCharacterAscStatType.none => GsAssets.iconMissing,
+        GeCharacterAscStatType.none => AppAssets.missingIcon,
         GeCharacterAscStatType.anemoDmgBonus => '$_ep/anemo.png',
         GeCharacterAscStatType.geoDmgBonus => '$_ep/geo.png',
         GeCharacterAscStatType.electroDmgBonus => '$_ep/electro.png',
@@ -286,11 +286,11 @@ extension GeWeaponAscStatTypeExt on GeWeaponAscStatType {
   String label(BuildContext ctx) {
     return switch (this) {
       GeWeaponAscStatType.none => ctx.labels.wsNone(),
-      GeWeaponAscStatType.critDmg => ctx.labels.wsCritdmg(),
-      GeWeaponAscStatType.critRate => ctx.labels.wsCritrate(),
-      GeWeaponAscStatType.physicalDmg => ctx.labels.wsPhysicaldmg(),
-      GeWeaponAscStatType.elementalMastery => ctx.labels.wsElementalmastery(),
-      GeWeaponAscStatType.energyRecharge => ctx.labels.wsEnergyrecharge(),
+      GeWeaponAscStatType.critDmg => ctx.labels.wsCritDmg(),
+      GeWeaponAscStatType.critRate => ctx.labels.wsCritRate(),
+      GeWeaponAscStatType.physicalDmg => ctx.labels.wsPhysicalDmg(),
+      GeWeaponAscStatType.elementalMastery => ctx.labels.wsElementalMastery(),
+      GeWeaponAscStatType.energyRecharge => ctx.labels.wsEnergyRecharge(),
       GeWeaponAscStatType.hpPercent => ctx.labels.wsHpPercent(),
       GeWeaponAscStatType.atkPercent => ctx.labels.wsAtkPercent(),
       GeWeaponAscStatType.defPercent => ctx.labels.wsDefPercent(),

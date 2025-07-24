@@ -2,11 +2,11 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 typedef FilterBuilder<T extends GsModel<T>> = Widget Function(
   BuildContext context,
@@ -609,7 +609,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InventoryBox(
-                margin: kListPadding.copyWith(bottom: 0),
+                margin: GsSpacing.kListPadding.copyWith(bottom: 0),
                 padding: EdgeInsets.all(kSeparator8),
                 child: Column(
                   children: [
@@ -636,7 +636,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                       ],
                     ),
                     if (widget.filter.hasQuery())
-                      const SizedBox(height: kGridSeparator * 2),
+                      const SizedBox(height: GsSpacing.kGridSeparator * 2),
                     if (widget.filter.hasQuery())
                       TextField(
                         controller: _queryController,
@@ -672,7 +672,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
               ),
               Expanded(
                 child: InventoryBox(
-                  margin: kListPadding,
+                  margin: GsSpacing.kListPadding,
                   padding: EdgeInsets.all(kSeparator8),
                   child: ValueListenableBuilder(
                     valueListenable: _changeNotifier,
@@ -716,12 +716,12 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
             return Row(
               children: [
                 expandedButton(e.elementAtOrNull(0)),
-                SizedBox(width: kListSeparator),
+                SizedBox(width: GsSpacing.kListSeparator),
                 expandedButton(e.elementAtOrNull(1)),
               ],
             );
           })
-          .spaced(kListSeparator)
+          .spaced(GsSpacing.kListSeparator)
           .toList(),
     );
 
@@ -733,7 +733,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
           style: context.themeStyles.label16n
               .copyWith(fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: kGridSeparator * 2),
+        const SizedBox(height: GsSpacing.kGridSeparator * 2),
         buttons,
       ],
     );
@@ -771,7 +771,7 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                     : Icons.radio_button_off_rounded,
                 size: 16,
               ),
-              SizedBox(width: kGridSeparator * 2),
+              SizedBox(width: GsSpacing.kGridSeparator * 2),
               Expanded(
                 child: FittedBox(
                   fit: BoxFit.scaleDown,

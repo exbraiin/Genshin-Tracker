@@ -2,7 +2,6 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_button.dart';
@@ -17,6 +16,7 @@ import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 import 'package:tracker/screens/wishes_screen/remove_dialog.dart';
 import 'package:tracker/screens/wishes_screen/wish_list_item.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class BannerDetailsCard extends StatelessWidget {
   final GsBanner item;
@@ -38,7 +38,7 @@ class BannerDetailsCard extends StatelessWidget {
       rarity: 5,
       name: item.name,
       infoPadding: EdgeInsets.zero,
-      contentPadding: kListPadding,
+      contentPadding: GsSpacing.kListPadding,
       showRarityStars: false,
       flexContent: bannerWishes.isNotEmpty,
       version: item.version,
@@ -78,7 +78,7 @@ class BannerDetailsCard extends StatelessWidget {
           ? Column(
               children: [
                 _header(context),
-                const SizedBox(height: kListSeparator),
+                const SizedBox(height: GsSpacing.kListSeparator),
                 Expanded(
                   child: ListView.builder(
                     itemCount: filteredWishes.length,
@@ -102,7 +102,7 @@ class BannerDetailsCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ItemIconWidget.asset(GsAssets.emptyEmote, size: 100),
+                  ItemIconWidget.asset(AppAssets.empty, size: 100),
                   const SizedBox(height: kSeparator4),
                   Text(
                     context.labels.noWishes(),
@@ -112,7 +112,7 @@ class BannerDetailsCard extends StatelessWidget {
                   const SizedBox(height: kSeparator8),
                   GsButton(
                     color: context.themeColors.mainColor1,
-                    borderRadius: kListRadius,
+                    borderRadius: GsSpacing.kListRadius,
                     onPressed: () => Navigator.of(context)
                         .pushNamed(AddWishScreen.id, arguments: item),
                     child: Text(
@@ -199,7 +199,7 @@ class BannerDetailsCard extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                     style: context.themeStyles.label14n
-                        .copyWith(shadows: kMainShadowText),
+                        .copyWith(shadows: GsSpacing.kMainShadowText),
                     children: [
                       TextSpan(
                         text: ' ${context.labels.bannerNRolls(rolls)} - ',

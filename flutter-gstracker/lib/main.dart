@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/lang/localization.dart';
 import 'package:tracker/screens/main_screen/main_screen.dart';
 import 'package:tracker/theme/theme.dart';
 import 'package:tracker/theme/windows_bar.dart';
@@ -35,7 +35,11 @@ class MyApp extends StatelessWidget {
               scrollbars: false,
               physics: const BouncingScrollPhysics(),
             ),
-            localizationsDelegates: [Lang.delegate],
+            localizationsDelegates: [
+              AppLocalization.createDelegate(
+                assets: {Locale('en'): 'assets/lang/en.json'},
+              ),
+            ],
             theme: theme,
             home: const MainScreen(),
           ),

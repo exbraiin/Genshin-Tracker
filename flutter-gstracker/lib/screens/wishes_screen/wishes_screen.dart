@@ -1,7 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
@@ -10,6 +9,7 @@ import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/wishes_screen/banner_details_card.dart';
 import 'package:tracker/screens/wishes_screen/banner_list_item.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 const _bannerType = [
   GeBannerType.character,
@@ -53,7 +53,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
         return ScreenFilterBuilder<GiWish>(
           builder: (context, filter, button, toggle) {
             PreferredSizeWidget appBar = InventoryAppBar(
-              iconAsset: GsAssets.menuWish,
+              iconAsset: AppAssets.menuIconWish,
               label: context.labels.wishes(),
               actions: [
                 Tooltip(
@@ -74,7 +74,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
             );
             appBar = PreferredSize(
               preferredSize: Size.fromHeight(
-                appBar.preferredSize.height + 34 + kGridSeparator,
+                appBar.preferredSize.height + 34 + GsSpacing.kGridSeparator,
               ),
               child: appBar,
             );
@@ -91,7 +91,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
                 height: 56,
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  borderRadius: kListRadius,
+                  borderRadius: GsSpacing.kListRadius,
                   color: Color(0x11FFFFFF),
                   image: DecorationImage(
                     image: AssetImage(GsAssets.getRarityBgImage(1)),

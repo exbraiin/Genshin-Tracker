@@ -1,11 +1,11 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomePlayerProgress extends StatelessWidget {
   const HomePlayerProgress({super.key});
@@ -19,49 +19,49 @@ class HomePlayerProgress extends StatelessWidget {
           title: Text(context.labels.progress()),
           children: <Widget>[
             _ProgressInfo(
-              GsAssets.menuAchvmnt,
+              AppAssets.menuIconAchievements,
               context.labels.achievements(),
               GsUtils.achievements.countSaved(),
               GsUtils.achievements.countTotal(),
             ),
             _ProgressInfo(
-              GsAssets.menuRecipes,
+              AppAssets.menuIconRecipes,
               context.labels.recipes(),
               GsUtils.recipes.totalPermanent(owned: true),
               GsUtils.recipes.totalPermanent(),
             ),
             _ProgressInfo(
-              GsAssets.menuRecipes,
+              AppAssets.menuIconRecipes,
               context.labels.filterProficiency(),
               GsUtils.recipes.totalMastered(owned: true),
               GsUtils.recipes.totalMastered(),
             ),
             _ProgressInfo(
-              GsAssets.menuMap,
+              AppAssets.menuIconMap,
               context.labels.remarkableChests(),
               GsUtils.remarkableChests.owned,
               GsUtils.remarkableChests.total,
             ),
             _ProgressInfo(
-              GsAssets.menuEchos,
+              AppAssets.menuEnvisagedEchoes,
               context.labels.envisagedEchoes(),
               GsUtils.echos.owned,
               GsUtils.echos.total,
             ),
             _ProgressInfo(
-              GsAssets.menuThespianTricks,
+              AppAssets.itemToyMedal,
               context.labels.thespianTricks(),
               GsUtils.thespianTricks.owned,
               GsUtils.thespianTricks.total,
             ),
             _ProgressInfo(
-              GsAssets.menuSpincrystal,
+              AppAssets.menuIconPreciousItems,
               context.labels.spincrystals(),
               GsUtils.spincrystals.owned,
               GsUtils.spincrystals.total,
             ),
             _ProgressInfo(
-              GsAssets.menuPot,
+              AppAssets.menuIconSereniteaSets,
               context.labels.sereniteaSets(),
               GsUtils.sereniteaSets.owned,
               GsUtils.sereniteaSets.total,

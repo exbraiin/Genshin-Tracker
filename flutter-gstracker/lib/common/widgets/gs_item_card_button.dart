@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 const radius = BorderRadius.all(Radius.circular(6));
 
@@ -119,7 +119,7 @@ class GsItemCardButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: radius,
-        boxShadow: shadow ? kMainShadow : null,
+        boxShadow: shadow ? GsSpacing.kMainShadow : null,
       ),
       child: Column(
         children: [

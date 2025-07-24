@@ -2,7 +2,6 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
@@ -12,6 +11,7 @@ import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dar
 import 'package:tracker/screens/add_wish_screen/add_wish_wish_list_item.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class AddWishScreen extends StatefulWidget {
   static const id = 'add_wishes_screen';
@@ -48,7 +48,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
 
         return InventoryPage(
           appBar: InventoryAppBar(
-            iconAsset: GsAssets.menuWish,
+            iconAsset: AppAssets.menuIconWish,
             label: context.labels.addWishes(),
             actions: [button],
           ),
@@ -59,7 +59,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                   child: _getItemsList(context, banner, filter),
                 ),
               ),
-              const SizedBox(width: kGridSeparator),
+              const SizedBox(width: GsSpacing.kGridSeparator),
               InventoryBox(
                 width: 220,
                 child: _getTemporaryList(banner),
@@ -125,7 +125,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
               return ListView.separated(
                 itemCount: list.length,
                 separatorBuilder: (_, index) =>
-                    const SizedBox(height: kListSeparator),
+                    const SizedBox(height: GsSpacing.kListSeparator),
                 itemBuilder: (context, index) {
                   return AddWishWishListItem(
                     item: list[index],
@@ -150,7 +150,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                   height: 44,
                   decoration: BoxDecoration(
                     color: context.themeColors.mainColor0,
-                    borderRadius: kGridRadius,
+                    borderRadius: GsSpacing.kGridRadius,
                   ),
                   child: Center(
                     child: Text(

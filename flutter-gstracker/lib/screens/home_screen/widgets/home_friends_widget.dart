@@ -2,13 +2,13 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomeFriendsWidget extends StatelessWidget {
   const HomeFriendsWidget({super.key});
@@ -38,7 +38,7 @@ class HomeFriendsWidget extends StatelessWidget {
           title: Text(context.labels.friendship()),
           child: LayoutBuilder(
             builder: (context, layout) {
-              final itemSize = kSize50 + kGridSeparator;
+              final itemSize = kSize50 + GsSpacing.kGridSeparator;
               final width = layout.maxWidth;
               final items = (width ~/ itemSize).coerceAtMost(8);
               return Row(
@@ -53,7 +53,7 @@ class HomeFriendsWidget extends StatelessWidget {
                             .increaseFriendshipCharacter(info.id),
                       );
                     })
-                    .separate(const SizedBox(width: kGridSeparator))
+                    .separate(const SizedBox(width: GsSpacing.kGridSeparator))
                     .toList(),
               );
             },

@@ -2,13 +2,13 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomeAscensionWidget extends StatefulWidget {
   const HomeAscensionWidget({super.key});
@@ -50,7 +50,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
           title: Text(context.labels.ascension()),
           child: LayoutBuilder(
             builder: (context, layout) {
-              final itemSize = kSize50 + kGridSeparator;
+              final itemSize = kSize50 + GsSpacing.kGridSeparator;
               final width = layout.maxWidth;
               final items = (width ~/ itemSize).coerceAtMost(8);
               final list = characters.take(items);
@@ -67,7 +67,9 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                                 GsUtils.characters.increaseAscension(info.id),
                           );
                         })
-                        .separate(const SizedBox(width: kGridSeparator))
+                        .separate(
+                          const SizedBox(width: GsSpacing.kGridSeparator),
+                        )
                         .toList(),
                   ),
                   _getMaterialsList(list),

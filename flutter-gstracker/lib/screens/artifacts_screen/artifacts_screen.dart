@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/artifacts_screen/artifact_details_card.dart';
 import 'package:tracker/screens/artifacts_screen/artifact_list_item.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.g.dart';
 
 class ArtifactsScreen extends StatelessWidget {
   static const id = 'artifacts_screen';
@@ -14,7 +14,7 @@ class ArtifactsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsArtifact>(
-      icon: GsAssets.menuArtifacts,
+      icon: AppAssets.menuIconArtifacts,
       title: context.labels.artifacts(),
       items: (db) => db.infoOf<GsArtifact>().items,
       versionSort: (item) => item.version,

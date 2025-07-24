@@ -2,13 +2,13 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_confirm_dialog.dart';
 import 'package:tracker/common/widgets/gs_time_dialog.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 enum ListType { none, top, middle, bottom }
 
@@ -92,10 +92,10 @@ class WishListItem extends StatelessWidget {
 
     return Container(
       height: 44,
-      margin: const EdgeInsets.only(bottom: kListSeparator),
+      margin: const EdgeInsets.only(bottom: GsSpacing.kListSeparator),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.75),
-        borderRadius: kListRadius,
+        borderRadius: GsSpacing.kListRadius,
       ),
       child: Row(
         children: [

@@ -2,13 +2,13 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_grid_view.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 typedef ItemBuilder = Widget Function(BuildContext context, IndexState state);
 typedef IndexState = ({int index, bool selected, VoidCallback onSelect});
@@ -167,7 +167,7 @@ class InventoryPage extends StatelessWidget {
     super.key,
     this.appBar,
     this.child,
-    this.padding = const EdgeInsets.all(kGridSeparator),
+    this.padding = const EdgeInsets.all(GsSpacing.kGridSeparator),
   });
 
   @override
@@ -180,7 +180,7 @@ class InventoryPage extends StatelessWidget {
           if (appBar != null)
             InventoryBox(
               height: appBar!.preferredSize.height,
-              margin: const EdgeInsets.only(bottom: kGridSeparator),
+              margin: const EdgeInsets.only(bottom: GsSpacing.kGridSeparator),
               child: appBar,
             ),
           if (child != null) Expanded(child: child!),
@@ -209,7 +209,7 @@ class InventoryGridPage extends StatefulWidget {
     this.scrollableCard = true,
     this.itemCardBuilder,
     this.itemCardFooter,
-    this.padding = const EdgeInsets.all(kGridSeparator),
+    this.padding = const EdgeInsets.all(GsSpacing.kGridSeparator),
     required this.itemCount,
     required this.itemBuilder,
   });
@@ -267,7 +267,8 @@ class _InventoryGridPageState extends State<InventoryGridPage> {
                   child: InventoryBox(
                     width: 400,
                     height: double.infinity,
-                    margin: const EdgeInsets.only(left: kGridSeparator),
+                    margin:
+                        const EdgeInsets.only(left: GsSpacing.kGridSeparator),
                     child: widget.scrollableCard
                         ? SingleChildScrollView(
                             key: ValueKey('card_$_selectedIndex'),
@@ -281,8 +282,8 @@ class _InventoryGridPageState extends State<InventoryGridPage> {
                   InventoryBox(
                     width: 400,
                     margin: const EdgeInsets.only(
-                      top: kGridSeparator,
-                      left: kGridSeparator,
+                      top: GsSpacing.kGridSeparator,
+                      left: GsSpacing.kGridSeparator,
                     ),
                     child: widget.itemCardFooter!,
                   ),
@@ -316,11 +317,11 @@ class InventoryBox extends StatelessWidget {
       width: width,
       height: height,
       margin: margin,
-      padding: padding ?? kListPadding,
+      padding: padding ?? GsSpacing.kListPadding,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
-        borderRadius: kGridRadius,
+        borderRadius: GsSpacing.kGridRadius,
       ),
       child: child,
     );
@@ -349,12 +350,12 @@ class InventoryAppBar extends StatelessWidget implements PreferredSizeWidget {
       children: [
         if (icon != null)
           Padding(
-            padding: const EdgeInsets.only(right: kGridSeparator),
+            padding: const EdgeInsets.only(right: GsSpacing.kGridSeparator),
             child: icon,
           ),
         if (iconAsset != null)
           Padding(
-            padding: const EdgeInsets.only(right: kGridSeparator),
+            padding: const EdgeInsets.only(right: GsSpacing.kGridSeparator),
             child: Image.asset(iconAsset!, width: 40, height: 40),
           ),
         Expanded(

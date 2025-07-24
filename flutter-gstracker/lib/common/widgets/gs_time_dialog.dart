@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/widgets/button.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class GsTimeDialog extends StatefulWidget {
   final DateTime? date;
@@ -69,11 +69,11 @@ class _GsTimeDialogState extends State<GsTimeDialog>
       child: Material(
         color: Colors.transparent,
         child: Container(
-          padding: kListPadding,
+          padding: GsSpacing.kListPadding,
           constraints: const BoxConstraints(maxHeight: 210, maxWidth: 300),
           decoration: BoxDecoration(
             color: context.themeColors.mainColor0,
-            borderRadius: kGridRadius,
+            borderRadius: GsSpacing.kGridRadius,
           ),
           child: Column(
             children: [
@@ -85,7 +85,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                   ),
                 ),
               ),
-              const SizedBox(height: kGridSeparator),
+              const SizedBox(height: GsSpacing.kGridSeparator),
               Expanded(
                 child: InventoryBox(
                   child: Column(
@@ -115,7 +115,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                           _selector(day, 1, 32, style),
                         ],
                       ),
-                      const SizedBox(height: kGridSeparator),
+                      const SizedBox(height: GsSpacing.kGridSeparator),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -140,7 +140,7 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                           _selector(second, 0, 60, style),
                         ],
                       ),
-                      const SizedBox(height: kGridSeparator),
+                      const SizedBox(height: GsSpacing.kGridSeparator),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -198,10 +198,10 @@ class _GsTimeDialogState extends State<GsTimeDialog>
         height: 44,
         decoration: BoxDecoration(
           color: context.themeColors.mainColor0,
-          borderRadius: kGridRadius,
+          borderRadius: GsSpacing.kGridRadius,
         ),
         foregroundDecoration: BoxDecoration(
-          borderRadius: kGridRadius,
+          borderRadius: GsSpacing.kGridRadius,
           gradient: LinearGradient(
             end: Alignment.bottomCenter,
             begin: Alignment.topCenter,

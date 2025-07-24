@@ -3,7 +3,6 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
@@ -14,6 +13,7 @@ import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/remote/enka_service.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomePlayerInfoWidget extends StatelessWidget {
   const HomePlayerInfoWidget({super.key});
@@ -169,10 +169,10 @@ class HomePlayerInfoWidget extends StatelessWidget {
                       size: kSize56,
                     );
                   })
-                  .separate(const SizedBox(width: kGridSeparator))
+                  .separate(const SizedBox(width: GsSpacing.kGridSeparator))
                   .toList(),
             );
-          }).separate(const SizedBox(height: kGridSeparator)),
+          }).separate(const SizedBox(height: GsSpacing.kGridSeparator)),
         ],
       ),
     );
@@ -184,7 +184,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
         return Container(
           decoration: url != null
               ? BoxDecoration(
-                  borderRadius: kGridRadius,
+                  borderRadius: GsSpacing.kGridRadius,
                   image: DecorationImage(
                     image: CachedNetworkImageProvider(url).resizeIfNeeded(),
                     fit: BoxFit.cover,
@@ -241,7 +241,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
           label: context.labels.cardPlayerAchievements(),
           content: context.labels
               .cardPlayerAchievementsValue(info.achievements.format()),
-          asset: GsAssets.playerAchievements,
+          asset: AppAssets.playerAchievements,
         ),
         row(
           label: context.labels.cardPlayerAbyss(),
@@ -250,7 +250,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
             info.towerChamber,
             info.towerStars,
           ),
-          asset: GsAssets.playerAbyss,
+          asset: AppAssets.playerAbyss,
         ),
         row(
           label: context.labels.cardPlayerTheater(),
@@ -258,7 +258,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
             info.theaterAct,
             info.theaterStars,
           ),
-          asset: GsAssets.playerTheater,
+          asset: AppAssets.playerTheater,
         ),
         row(
           label: context.labels.cardPlayerStygian(),

@@ -1,7 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
@@ -23,6 +22,7 @@ import 'package:tracker/screens/version_screen/version_screen.dart';
 import 'package:tracker/screens/weapons_screen/weapons_screen.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/wishes_screen/wishes_screen.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 const _menuWidth = 80.0;
 
@@ -86,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
           color: idx == 0
               ? context.themeColors.primary
               : context.themeColors.mainColor0,
-          borderRadius: kGridRadius,
+          borderRadius: GsSpacing.kGridRadius,
           border: Border.all(
             color: selected
                 ? context.themeColors.almostWhite.withValues(alpha: 0.4)
@@ -109,15 +109,15 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     return InventoryBox(
-      width: _menuWidth - kGridSeparator,
-      margin: const EdgeInsets.all(kGridSeparator),
+      width: _menuWidth - GsSpacing.kGridSeparator,
+      margin: const EdgeInsets.all(GsSpacing.kGridSeparator),
       child: ValueListenableBuilder(
         valueListenable: _page,
         builder: (context, value, child) {
           return ListView(
             children: _menus
                 .mapIndexed(button)
-                .separate(const SizedBox(height: kListSeparator))
+                .separate(const SizedBox(height: GsSpacing.kListSeparator))
                 .toList(),
           );
         },
@@ -158,67 +158,67 @@ class _MainScreenState extends State<MainScreen> {
 
 final _menus = [
   _Menu(
-    icon: GsAssets.imageAppIconSmall,
+    icon: AppAssets.appIcon40px,
     initialPage: HomeScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuWish,
+    icon: AppAssets.menuIconWish,
     initialPage: WishesScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuAchvmnt,
+    icon: AppAssets.menuIconAchievements,
     initialPage: AchievementGroupsScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuCharacters,
+    icon: AppAssets.menuIconCharacters,
     initialPage: CharactersScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuWeapons,
+    icon: AppAssets.menuIconWeapons,
     initialPage: WeaponsScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuRecipes,
+    icon: AppAssets.menuIconRecipes,
     initialPage: RecipesScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuMap,
+    icon: AppAssets.menuIconMap,
     initialPage: RemarkableChestsScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuEchos,
+    icon: AppAssets.menuEnvisagedEchoes,
     initialPage: EnvisagedEchoScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuThespianTricks,
+    icon: AppAssets.itemToyMedal,
     initialPage: ThespianTricksScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuSpincrystal,
+    icon: AppAssets.menuIconPreciousItems,
     initialPage: SpincrystalsScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuPot,
+    icon: AppAssets.menuIconSereniteaSets,
     initialPage: SereniteaSetsScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuArtifacts,
+    icon: AppAssets.menuIconArtifacts,
     initialPage: ArtifactsScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuArchive,
+    icon: AppAssets.menuIconArchive,
     initialPage: NamecardScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuMaterials,
+    icon: AppAssets.menuIconMaterials,
     initialPage: MaterialsScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuEvent,
+    icon: AppAssets.menuIconEvent,
     initialPage: EventScreen.id,
   ),
   _Menu(
-    icon: GsAssets.menuFeedback,
+    icon: AppAssets.menuIconFeedback,
     initialPage: VersionScreen.id,
   ),
 ];

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -14,6 +13,7 @@ import 'package:tracker/screens/home_screen/widgets/home_player_progress.dart';
 import 'package:tracker/screens/home_screen/widgets/home_talents_widget.dart';
 import 'package:tracker/screens/home_screen/widgets/home_wish_values.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = 'home_screen';
@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return InventoryPage(
       appBar: InventoryAppBar(
-        iconAsset: GsAssets.imageAppIcon,
+        iconAsset: AppAssets.appIcon,
         label: context.labels.home(),
         actions: [
           ValueListenableBuilder<bool>(
@@ -109,20 +109,24 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeWishesValues(banner: GeBannerType.character),
               const HomeWishesValues(banner: GeBannerType.chronicled),
               const HomeWishesValues(banner: GeBannerType.beginner),
-            ].separate(const SizedBox(height: kGridSeparator)).toList(),
+            ]
+                .separate(const SizedBox(height: GsSpacing.kGridSeparator))
+                .toList(),
           ),
         ),
-        const SizedBox(width: kGridSeparator),
+        const SizedBox(width: GsSpacing.kGridSeparator),
         Expanded(
           child: Column(
             children: <Widget>[
               const HomeWishesValues(banner: GeBannerType.weapon),
               const HomeWishesValues(banner: GeBannerType.standard),
               const HomeCalendarWidget(),
-            ].separate(const SizedBox(height: kGridSeparator)).toList(),
+            ]
+                .separate(const SizedBox(height: GsSpacing.kGridSeparator))
+                .toList(),
           ),
         ),
-        const SizedBox(width: kGridSeparator),
+        const SizedBox(width: GsSpacing.kGridSeparator),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -132,7 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
               const HomeFriendsWidget(),
               const HomeAscensionWidget(),
               const HomeLastBannerWidget(),
-            ].separate(const SizedBox(height: kGridSeparator)).toList(),
+            ]
+                .separate(const SizedBox(height: GsSpacing.kGridSeparator))
+                .toList(),
           ),
         ),
       ],

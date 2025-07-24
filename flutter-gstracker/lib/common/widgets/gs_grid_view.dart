@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/static/sliver_grid_fixed_size_delegate.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class GsGridView extends StatelessWidget {
   final double childWidth;
@@ -32,13 +32,13 @@ class GsGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.custom(
       childrenDelegate: delegate,
-      padding: padding ?? kListPadding,
+      padding: padding ?? GsSpacing.kListPadding,
       scrollDirection: Axis.vertical,
       gridDelegate: SliverGridDelegateWithFixedChildSize(
         childWidth: childWidth,
         childHeight: childHeight,
-        mainAxisSpacing: kGridSeparator,
-        crossAxisSpacing: kGridSeparator,
+        mainAxisSpacing: GsSpacing.kGridSeparator,
+        crossAxisSpacing: GsSpacing.kGridSeparator,
         alignment: CrossAxisAlignment.center,
       ),
     );

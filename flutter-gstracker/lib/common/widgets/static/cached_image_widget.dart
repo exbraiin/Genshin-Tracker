@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/theme/gs_assets.g.dart';
 
 final _emptyPixelBytes = base64Decode(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
@@ -29,7 +29,7 @@ class CachedImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late final placeholder = showPlaceholder
-        ? Image.asset(GsAssets.iconMissing, fit: BoxFit.contain)
+        ? Image.asset(AppAssets.missingIcon, fit: BoxFit.contain)
         : SizedBox();
     if (imageUrl == null || imageUrl!.isEmpty) return placeholder;
 
@@ -39,7 +39,7 @@ class CachedImageWidget extends StatelessWidget {
         return FadeInImage(
           image: CachedNetworkImageProvider(url).resizeIfNeeded(),
           placeholder: showPlaceholder
-              ? AssetImage(GsAssets.iconMissing).resizeIfNeeded()
+              ? AssetImage(AppAssets.missingIcon).resizeIfNeeded()
               : MemoryImage(_emptyPixelBytes),
           fit: fit,
           alignment: alignment,

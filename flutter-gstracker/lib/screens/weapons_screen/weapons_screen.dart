@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/weapons_screen/weapon_details_card.dart';
 import 'package:tracker/screens/weapons_screen/weapon_list_item.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.g.dart';
 
 class WeaponsScreen extends StatelessWidget {
   static const id = 'weapons_screen';
@@ -15,7 +15,7 @@ class WeaponsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsWeapon>(
-      icon: GsAssets.menuWeapons,
+      icon: AppAssets.menuIconWeapons,
       title: context.labels.weapons(),
       items: (db) => db.infoOf<GsWeapon>().items,
       versionSort: (item) => item.version,

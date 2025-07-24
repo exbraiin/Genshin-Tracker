@@ -2,12 +2,12 @@ import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/swap_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomeCalendarWidget extends StatelessWidget {
   const HomeCalendarWidget({super.key});
@@ -52,9 +52,9 @@ class HomeCalendarWidget extends StatelessWidget {
             return Container(
               width: itemSize,
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(bottom: kGridSeparator),
+              margin: const EdgeInsets.only(bottom: GsSpacing.kGridSeparator),
               decoration: BoxDecoration(
-                borderRadius: kListRadius,
+                borderRadius: GsSpacing.kListRadius,
                 color: context.themeColors.mainColor1,
               ),
               child: Text(
@@ -64,7 +64,7 @@ class HomeCalendarWidget extends StatelessWidget {
               ),
             );
           })
-          .separate(const SizedBox(width: kGridSeparator))
+          .separate(const SizedBox(width: GsSpacing.kGridSeparator))
           .toList(),
     );
 
@@ -129,12 +129,12 @@ class HomeCalendarWidget extends StatelessWidget {
                 height: itemSize,
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  borderRadius: kGridRadius,
+                  borderRadius: GsSpacing.kGridRadius,
                   color: context.themeColors.mainColor1,
                 ),
                 foregroundDecoration: now.isAtSameDayAs(date)
                     ? BoxDecoration(
-                        borderRadius: kGridRadius,
+                        borderRadius: GsSpacing.kGridRadius,
                         border: Border.all(
                           color: context.themeColors.almostWhite,
                           width: 2,
@@ -282,9 +282,9 @@ class HomeCalendarWidget extends StatelessWidget {
               ),
             );
           },
-        ).separate(const SizedBox(width: kGridSeparator)).toList(),
+        ).separate(const SizedBox(width: GsSpacing.kGridSeparator)).toList(),
       ),
-    ).separate(const SizedBox(height: kGridSeparator));
+    ).separate(const SizedBox(height: GsSpacing.kGridSeparator));
   }
 }
 

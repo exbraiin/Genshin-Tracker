@@ -4,13 +4,18 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Generate labels",
+            "label": "Generate assets",
             "type": "dart",
             "command": "dart",
             "args": [
-                "${workspaceFolder}/assets/lang/generate.dart"
+                "run",
+                "asset_gen",
+                "run",
+                "-g",
+                "-t",
+                "${workspaceFolder}/tasks_example.yaml"
             ],
             "problemMatcher": []
-        },
+        }
     ]
 }

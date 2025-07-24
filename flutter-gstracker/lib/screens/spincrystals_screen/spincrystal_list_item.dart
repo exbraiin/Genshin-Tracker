@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class SpincrystalListItem extends StatelessWidget {
   final bool selected;
@@ -29,7 +29,7 @@ class SpincrystalListItem extends StatelessWidget {
       disable: !owned,
       selected: selected,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
-      imageAssetPath: GsAssets.spincrystal,
+      imageAssetPath: AppAssets.spincrystal,
       child: Stack(
         children: [
           Positioned(
@@ -39,7 +39,7 @@ class SpincrystalListItem extends StatelessWidget {
               item.number.toString(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                shadows: kMainShadowText,
+                shadows: GsSpacing.kMainShadowText,
               ),
             ),
           ),

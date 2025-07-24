@@ -2,7 +2,6 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
@@ -12,7 +11,7 @@ import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
-import 'package:tracker/theme/theme.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final GsWeapon item;
@@ -104,8 +103,8 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     const iw = GsUtils.weaponMaterials;
     final mats = iw.getAscensionMaterials(info.id);
     return Wrap(
-      spacing: kGridSeparator,
-      runSpacing: kGridSeparator,
+      spacing: GsSpacing.kGridSeparator,
+      runSpacing: GsSpacing.kGridSeparator,
       children: mats.entries
           .map((e) => MapEntry(im.getItem(e.key), e.value))
           .where((e) => e.key != null)

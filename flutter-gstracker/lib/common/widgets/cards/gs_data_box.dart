@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/common/widgets/gs_divider.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class GsDataBox extends StatelessWidget {
   final Widget? title;
@@ -20,7 +21,7 @@ class GsDataBox extends StatelessWidget {
         decoration = ((ctx) {
           return BoxDecoration(
             color: bgColor ?? ctx.themeColors.mainColor0,
-            borderRadius: kGridRadius,
+            borderRadius: GsSpacing.kGridRadius,
           );
         });
 
@@ -38,7 +39,7 @@ class GsDataBox extends StatelessWidget {
               style: context.themeStyles.title18n,
               child: title!,
             ),
-            Divider(color: context.themeColors.divider, thickness: 0.5),
+            GsDivider(),
           ],
           if (child != null) child!,
           ...children,

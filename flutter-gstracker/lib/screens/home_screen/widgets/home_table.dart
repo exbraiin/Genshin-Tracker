@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class HomeTable extends StatelessWidget {
   final List<Widget> headers;

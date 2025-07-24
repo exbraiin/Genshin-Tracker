@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/version_screen/version_details_card.dart';
 import 'package:tracker/screens/version_screen/version_list_item.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class VersionScreen extends StatelessWidget {
   static const id = 'version_screen';
@@ -16,7 +16,7 @@ class VersionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InventoryListPage<GsVersion>(
       childSize: const Size(126 * 2 + 6, 160),
-      icon: GsAssets.menuBook,
+      icon: AppAssets.menuIconBook,
       sortOrder: SortOrder.descending,
       title: context.labels.version(),
       items: (db) => db.infoOf<GsVersion>().items,

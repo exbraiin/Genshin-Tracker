@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/graphics/gs_spacing.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 mixin GsDetailedDialogMixin on Widget {
   Future<void> show(BuildContext context) => showDialog(
@@ -27,7 +27,7 @@ class GsDetailedDialog extends StatelessWidget {
       padding: EdgeInsets.all(pad),
       child: SingleChildScrollView(
         child: Container(
-          decoration: const BoxDecoration(boxShadow: kMainShadow),
+          decoration: const BoxDecoration(boxShadow: GsSpacing.kMainShadow),
           width: cardWidth,
           child: Material(
             color: Colors.transparent,

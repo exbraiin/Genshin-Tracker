@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/src/int_ext.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class AscensionStatus extends StatelessWidget {
   final Map<String, String> Function(BuildContext context) _data;

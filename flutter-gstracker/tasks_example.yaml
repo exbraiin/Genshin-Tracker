@@ -1,0 +1,12 @@
+assets:
+  - path: lib/theme/gs_assets.g.dart
+    classes:
+      - name: AppAssets
+        paths:
+          - assets/**/*.png
+          - assets/**/*.gif
+          - assets/**/*.webp
+
+localization:
+  dst: lib/common/lang/localization.g.dart
+  src: assets/lang/en.json

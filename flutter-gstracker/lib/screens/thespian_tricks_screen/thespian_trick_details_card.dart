@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/graphics/gs_style.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_detailed_dialog.dart';
 import 'package:tracker/common/widgets/gs_icon_button.dart';
@@ -8,6 +7,7 @@ import 'package:tracker/common/widgets/gs_item_details_card.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/theme/gs_assets.dart';
 
 class ThespianTrickDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
@@ -71,7 +71,7 @@ class ThespianTrickDetailsCard extends StatelessWidget
                           color: context.themeColors.mainColor1,
                           width: kSeparator4,
                         ),
-                        borderRadius: kGridRadius,
+                        borderRadius: GsSpacing.kGridRadius,
                         image: DecorationImage(
                           image: AssetImage(GsAssets.getRarityBgImage(1)),
                           colorFilter: ColorFilter.mode(
