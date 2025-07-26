@@ -6,6 +6,7 @@ assets:
           - assets/**/*.png
           - assets/**/*.gif
           - assets/**/*.webp
+          - assets/**/*.json
 
 localization:
   dst: lib/common/lang/localization.g.dart

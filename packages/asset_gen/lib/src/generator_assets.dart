@@ -15,8 +15,9 @@ Future<void> generateAssets(
     final buffer = StringBuffer()..writeGenHeader();
 
     for (final aClass in config.classes) {
-      buffer.writeln(await _assetsClass(aClass.name, aClass.paths));
-      if (!silent) missing.addAll(await _assetsMissing(aClass.paths));
+      final paths = await _listFiles(aClass.paths);
+      buffer.writeln(await _assetsClass(aClass.name, paths));
+      if (!silent) missing.addAll(await _assetsMissing(paths));
     }
     final fileOut = File(config.path);
     if (!await fileOut.parent.exists()) {
@@ -40,10 +41,9 @@ Future<String> _assetsClass(String name, Iterable<String> paths) async {
   buffer.writeln('/// $name');
   buffer.writeln('abstract final class ${_toVarName(name).capitalize()} {');
   final amount = <String, int>{};
-  final files = await _listFiles(paths);
-  final filesToWrite = files
-      .where((e) => !e.contains('.0x'))
-      .sortedBy((e) => File(e).nameWithoutExtension);
+  final filesToWrite = paths
+      .where((file) => !file.contains('.0x'))
+      .sortedBy((file) => File(file).path);
   for (final path in filesToWrite) {
     final file = File(path);
     final fieldName = _toVarName(file.nameWithoutExtension);
@@ -74,9 +74,8 @@ Future<Iterable<String>> _assetsMissing(Iterable<String> paths) async {
   // JPEG, PNG, GIF, Animated GIF, WebP, Animated WebP, BMP, and WBMP
   const imgs = ['.jpeg', '.png', '.gif', '.webp', '.bmp', '.wbmp'];
 
-  final list = await _listFiles(paths);
   final missing = <String>{};
-  for (final path in list) {
+  for (final path in paths) {
     if (path.contains('.0x')) continue;
     final file = File(path);
     if (!imgs.contains(file.extension.toLowerCase())) continue;

@@ -43,7 +43,8 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
             final list = _getCharsSorted(filter.match(items)).where(
               (e) =>
                   !filter.hasExtra(FilterExtras.hide) ||
-                  (e.talents?.total ?? 0) < CharTalents.kTotalCrownless,
+                  (e.talents?.total ?? 0) < CharTalents.kTotalCrownless &&
+                      e.isOwned,
             );
 
             return InventoryPage(
@@ -174,43 +175,45 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
     double unowned() => _ascending ? double.infinity : double.negativeInfinity;
     return [
       _TableItem(
-        label: 'Icon',
+        label: context.labels.tableTitleCharacter(),
         sortBy: (e) => e.item.element.index,
         builder: (info) {
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              ItemCircleWidget(
-                image: info.item.image,
-                rarity: info.item.rarity,
-                size: kSize50,
-              ),
-              Positioned(
-                right: -6,
-                bottom: -6,
-                child: ItemIconWidget.asset(
-                  info.item.element.assetPath,
-                  size: 24,
+          return Center(
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                ItemCircleWidget(
+                  image: info.item.image,
+                  rarity: info.item.rarity,
+                  size: kSize50,
                 ),
-              ),
-            ],
+                Positioned(
+                  right: -6,
+                  bottom: -6,
+                  child: ItemIconWidget.asset(
+                    info.item.element.assetPath,
+                    size: 24,
+                  ),
+                ),
+              ],
+            ),
           );
         },
         allowTap: true,
         onTap: (info) => CharacterDetailsCard(info.item).show(context),
       ),
       _TableItem(
-        label: 'Name',
+        label: context.labels.tableTitleName(),
         sortBy: (e) => e.item.name,
         builder: (info) => Text(info.item.name),
         expand: true,
       ),
       _TableItem(
-        label: 'Friendship',
+        label: context.labels.tableTitleFriendship(),
         sortBy: (e) => e.isOwned ? e.friendship : unowned(),
         builder:
             (info) => Text(
-              info.isOwned ? '${info.friendship}' : '-',
+              info.isOwned ? '${info.friendship}' : context.labels.tableEmpty(),
               textAlign: TextAlign.center,
               style: TextStyle(color: getGoodColor(info.friendship, 10)),
             ),
@@ -219,25 +222,29 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                 GsUtils.characters.increaseFriendshipCharacter(info.item.id),
       ),
       _TableItem(
-        label: 'Asc.',
+        label: context.labels.tableTitleAscension(),
         sortBy: (e) => e.isOwned ? e.ascension : unowned(),
         builder:
             (info) => Text(
-              info.isOwned ? '${info.ascension} ✦' : '-',
+              info.isOwned
+                  ? context.labels.tableNumAsc(info.ascension)
+                  : context.labels.tableEmpty(),
               textAlign: TextAlign.center,
               style: TextStyle(color: getGoodColor(info.ascension, 6)),
             ),
         onTap: (info) => GsUtils.characters.increaseAscension(info.item.id),
       ),
       _TableItem(
-        label: 'Cons.',
+        label: context.labels.tableTitleConstellation(),
         sortBy: (e) => e.isOwned ? e.totalConstellations : unowned(),
         builder:
             (info) => Text.rich(
               info.isOwned
                   ? TextSpan(
                     children: [
-                      TextSpan(text: 'C${info.constellations}'),
+                      TextSpan(
+                        text: context.labels.tableNumCons(info.constellations),
+                      ),
                       if (info.extraConstellations > 0)
                         TextSpan(
                           text: ' +${info.extraConstellations}',
@@ -247,20 +254,20 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                         ),
                     ],
                   )
-                  : const TextSpan(text: '-'),
+                  : TextSpan(text: context.labels.tableEmpty()),
               textAlign: TextAlign.center,
             ),
       ),
       ...CharTalentType.values.map((e) => _talentTableItem(e)),
       _TableItem(
-        label: 'Tal. T',
+        label: context.labels.tableTitleTalTotal(),
         sortBy: (e) => e.talents?.total ?? unowned(),
         builder: (info) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                info.talents?.total.toString() ?? '-',
+                info.talents?.total.toString() ?? context.labels.tableEmpty(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color:
@@ -287,11 +294,10 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
   _TableItem _talentTableItem(CharTalentType tal) {
     double unowned() => _ascending ? double.infinity : double.negativeInfinity;
 
-    /// TODO: Localize labels...
     final label = switch (tal) {
-      CharTalentType.attack => 'Tal. A',
-      CharTalentType.skill => 'Tal. E',
-      CharTalentType.burst => 'Tal. Q',
+      CharTalentType.attack => context.labels.tableTitleTalAttack(),
+      CharTalentType.skill => context.labels.tableTitleTalSkill(),
+      CharTalentType.burst => context.labels.tableTitleTalBurst(),
     };
 
     return _TableItem(
@@ -301,7 +307,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
         final value = info.talents?.talentWithExtra(tal);
         final hasExtra = info.talents?.hasExtra(tal) ?? false;
         return Text(
-          value?.toString() ?? '-',
+          value?.toString() ?? context.labels.tableEmpty(),
           textAlign: TextAlign.center,
           style: TextStyle(color: hasExtra ? Colors.lightBlue : null),
         );

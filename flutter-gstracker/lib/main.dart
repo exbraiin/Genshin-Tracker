@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/localization.dart';
 import 'package:tracker/screens/main_screen/main_screen.dart';
-import 'package:tracker/theme/theme.dart';
+import 'package:tracker/theme/gs_assets.dart';
 import 'package:tracker/theme/windows_bar.dart';
 
 // TODO:
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             ),
             localizationsDelegates: [
               AppLocalization.createDelegate(
-                assets: {Locale('en'): 'assets/lang/en.json'},
+                assets: {Locale('en'): AppAssets.en},
               ),
             ],
             theme: theme,

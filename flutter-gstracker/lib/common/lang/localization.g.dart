@@ -640,6 +640,42 @@ abstract final class LocalizationKeys {
   /// Radiant Spincrystal {number}
   static const radiantSpincrystal = 'radiant_spincrystal';
 
+  /// Char.
+  static const tableTitleCharacter = 'table_title_character';
+
+  /// Name
+  static const tableTitleName = 'table_title_name';
+
+  /// Friendship
+  static const tableTitleFriendship = 'table_title_friendship';
+
+  /// Asc.
+  static const tableTitleAscension = 'table_title_ascension';
+
+  /// Cons.
+  static const tableTitleConstellation = 'table_title_constellation';
+
+  /// Tal. A
+  static const tableTitleTalAttack = 'table_title_tal_attack';
+
+  /// Tal. E
+  static const tableTitleTalSkill = 'table_title_tal_skill';
+
+  /// Tal. Q
+  static const tableTitleTalBurst = 'table_title_tal_burst';
+
+  /// Tal. Sum
+  static const tableTitleTalTotal = 'table_title_tal_total';
+
+  /// {asc} ✦
+  static const tableNumAsc = 'table_num_asc';
+
+  /// C{cons}
+  static const tableNumCons = 'table_num_cons';
+
+  /// -
+  static const tableEmpty = 'table_empty';
+
   /// January
   static const month1 = 'month_1';
 
@@ -1867,6 +1903,66 @@ class LocalizationMethods {
   /// Radiant Spincrystal {number}
   String radiantSpincrystal(Object? number) {
     return provider(LocalizationKeys.radiantSpincrystal, params: {'number': number});
+  }
+
+  /// Char.
+  String tableTitleCharacter() {
+    return provider(LocalizationKeys.tableTitleCharacter);
+  }
+
+  /// Name
+  String tableTitleName() {
+    return provider(LocalizationKeys.tableTitleName);
+  }
+
+  /// Friendship
+  String tableTitleFriendship() {
+    return provider(LocalizationKeys.tableTitleFriendship);
+  }
+
+  /// Asc.
+  String tableTitleAscension() {
+    return provider(LocalizationKeys.tableTitleAscension);
+  }
+
+  /// Cons.
+  String tableTitleConstellation() {
+    return provider(LocalizationKeys.tableTitleConstellation);
+  }
+
+  /// Tal. A
+  String tableTitleTalAttack() {
+    return provider(LocalizationKeys.tableTitleTalAttack);
+  }
+
+  /// Tal. E
+  String tableTitleTalSkill() {
+    return provider(LocalizationKeys.tableTitleTalSkill);
+  }
+
+  /// Tal. Q
+  String tableTitleTalBurst() {
+    return provider(LocalizationKeys.tableTitleTalBurst);
+  }
+
+  /// Tal. Sum
+  String tableTitleTalTotal() {
+    return provider(LocalizationKeys.tableTitleTalTotal);
+  }
+
+  /// {asc} ✦
+  String tableNumAsc(Object? asc) {
+    return provider(LocalizationKeys.tableNumAsc, params: {'asc': asc});
+  }
+
+  /// C{cons}
+  String tableNumCons(Object? cons) {
+    return provider(LocalizationKeys.tableNumCons, params: {'cons': cons});
+  }
+
+  /// -
+  String tableEmpty() {
+    return provider(LocalizationKeys.tableEmpty);
   }
 
   /// January
