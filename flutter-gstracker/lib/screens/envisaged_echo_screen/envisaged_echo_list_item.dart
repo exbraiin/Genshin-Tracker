@@ -19,9 +19,9 @@ class EnvisagedEchoListItem extends StatelessWidget {
   });
 
   EnvisagedEchoListItem.fromState(ItemState<GsEnvisagedEcho> state, {super.key})
-      : item = state.item,
-        selected = state.selected,
-        onTap = state.onSelect;
+    : item = state.item,
+      selected = state.selected,
+      onTap = state.onSelect;
 
   @override
   Widget build(BuildContext context) {

@@ -18,15 +18,14 @@ class ArtifactsScreen extends StatelessWidget {
       title: context.labels.artifacts(),
       items: (db) => db.infoOf<GsArtifact>().items,
       versionSort: (item) => item.version,
-      itemBuilder: (context, state) => ArtifactListItem(
-        state.item,
-        onTap: state.onSelect,
-        selected: state.selected,
-      ),
-      itemCardBuilder: (context, item) => ArtifactDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemBuilder:
+          (context, state) => ArtifactListItem(
+            state.item,
+            onTap: state.onSelect,
+            selected: state.selected,
+          ),
+      itemCardBuilder:
+          (context, item) => ArtifactDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

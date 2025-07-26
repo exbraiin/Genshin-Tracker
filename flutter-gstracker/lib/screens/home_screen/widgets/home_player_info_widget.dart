@@ -54,32 +54,34 @@ class HomePlayerInfoWidget extends StatelessWidget {
                   ),
                   busy
                       ? Container(
-                          width: 24,
-                          height: 24,
-                          margin: const EdgeInsets.all(8),
-                          child: const CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : IconButton(
+                        width: 24,
+                        height: 24,
+                        margin: const EdgeInsets.all(8),
+                        child: const CircularProgressIndicator(
                           color: Colors.white,
-                          disabledColor: context.themeColors.dimWhite,
-                          onPressed: info != null && hasValidId
-                              ? () {
-                                  notifier.value = true;
-                                  _fetchAndInsert(info.uid).whenComplete(
-                                    () => notifier.value = false,
-                                  );
-                                }
-                              : null,
-                          icon: const Icon(Icons.refresh_rounded),
+                          strokeWidth: 2,
                         ),
+                      )
+                      : IconButton(
+                        color: Colors.white,
+                        disabledColor: context.themeColors.dimWhite,
+                        onPressed:
+                            info != null && hasValidId
+                                ? () {
+                                  notifier.value = true;
+                                  _fetchAndInsert(
+                                    info.uid,
+                                  ).whenComplete(() => notifier.value = false);
+                                }
+                                : null,
+                        icon: const Icon(Icons.refresh_rounded),
+                      ),
                 ],
               ),
-              child: info == null || info.nickname.isEmpty
-                  ? const GsNoResultsState.small()
-                  : _getWidgetContent(context, info),
+              child:
+                  info == null || info.nickname.isEmpty
+                      ? const GsNoResultsState.small()
+                      : _getWidgetContent(context, info),
             );
           },
         );
@@ -89,7 +91,8 @@ class HomePlayerInfoWidget extends StatelessWidget {
 
   Widget _getWidgetContent(BuildContext context, GiPlayerInfo info) {
     final child = DefaultTextStyle(
-      style: context.textTheme.bodyMedium?.copyWith(color: Colors.white) ??
+      style:
+          context.textTheme.bodyMedium?.copyWith(color: Colors.white) ??
           const TextStyle(color: Colors.white),
       child: Column(
         children: [
@@ -131,19 +134,17 @@ class HomePlayerInfoWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      context.labels
-                          .cardPlayerArWl(info.level, info.worldLevel),
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: context.themeColors.dimWhite,
+                      context.labels.cardPlayerArWl(
+                        info.level,
+                        info.worldLevel,
                       ),
+                      maxLines: 1,
+                      style: TextStyle(color: context.themeColors.dimWhite),
                     ),
                     Text(
                       info.signature,
                       maxLines: 1,
-                      style: TextStyle(
-                        color: context.themeColors.dimWhite,
-                      ),
+                      style: TextStyle(color: context.themeColors.dimWhite),
                     ),
                   ],
                 ),
@@ -153,26 +154,32 @@ class HomePlayerInfoWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: kSeparator8),
-          ...info.avatars.entries.chunked(6).map<Widget>((list) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: list
-                  .map((e) {
-                    final char = Database.instance
-                        .infoOf<GsCharacter>()
-                        .items
-                        .firstOrNullWhere((c) => c.enkaId == e.key);
-                    if (char == null) return const SizedBox();
-                    return ItemGridWidget.character(
-                      char,
-                      size: kSize56,
-                    );
-                  })
-                  .separate(const SizedBox(width: GsSpacing.kGridSeparator))
-                  .toList(),
-            );
-          }).separate(const SizedBox(height: GsSpacing.kGridSeparator)),
+          ...info.avatars.entries
+              .chunked(6)
+              .map<Widget>((list) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:
+                      list
+                          .map((e) {
+                            final char = Database.instance
+                                .infoOf<GsCharacter>()
+                                .items
+                                .firstOrNullWhere((c) => c.enkaId == e.key);
+                            if (char == null) return const SizedBox();
+                            return ItemGridWidget.character(
+                              char,
+                              size: kSize56,
+                            );
+                          })
+                          .separate(
+                            const SizedBox(width: GsSpacing.kGridSeparator),
+                          )
+                          .toList(),
+                );
+              })
+              .separate(const SizedBox(height: GsSpacing.kGridSeparator)),
         ],
       ),
     );
@@ -182,16 +189,17 @@ class HomePlayerInfoWidget extends StatelessWidget {
       builder: (context, snaphot) {
         final url = snaphot.data;
         return Container(
-          decoration: url != null
-              ? BoxDecoration(
-                  borderRadius: GsSpacing.kGridRadius,
-                  image: DecorationImage(
-                    image: CachedNetworkImageProvider(url).resizeIfNeeded(),
-                    fit: BoxFit.cover,
-                    opacity: 0.5,
-                  ),
-                )
-              : null,
+          decoration:
+              url != null
+                  ? BoxDecoration(
+                    borderRadius: GsSpacing.kGridRadius,
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(url).resizeIfNeeded(),
+                      fit: BoxFit.cover,
+                      opacity: 0.5,
+                    ),
+                  )
+                  : null,
           padding: const EdgeInsets.all(kSeparator4),
           child: child,
         );
@@ -212,20 +220,12 @@ class HomePlayerInfoWidget extends StatelessWidget {
     }) {
       return TableRow(
         children: [
-          Text(
-            content,
-            textAlign: TextAlign.end,
-            style: valueStyle,
-          ),
+          Text(content, textAlign: TextAlign.end, style: valueStyle),
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
             child: Image.asset(asset, width: 16, height: 16),
           ),
-          Text(
-            label,
-            textAlign: TextAlign.start,
-            style: labelStyle,
-          ),
+          Text(label, textAlign: TextAlign.start, style: labelStyle),
         ],
       );
     }
@@ -239,8 +239,9 @@ class HomePlayerInfoWidget extends StatelessWidget {
       children: [
         row(
           label: context.labels.cardPlayerAchievements(),
-          content: context.labels
-              .cardPlayerAchievementsValue(info.achievements.format()),
+          content: context.labels.cardPlayerAchievementsValue(
+            info.achievements.format(),
+          ),
           asset: AppAssets.playerAchievements,
         ),
         row(
@@ -262,8 +263,10 @@ class HomePlayerInfoWidget extends StatelessWidget {
         ),
         row(
           label: context.labels.cardPlayerStygian(),
-          content: context.labels
-              .cardPlayerStygianValue(info.stygianSeconds, info.stygianIndex),
+          content: context.labels.cardPlayerStygianValue(
+            info.stygianSeconds,
+            info.stygianIndex,
+          ),
           asset: GsAssets.getStygianIcon(info.stygianIndex),
         ),
       ],

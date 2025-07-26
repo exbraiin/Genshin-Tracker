@@ -26,10 +26,7 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       info: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            item.type.label(context),
-            style: context.themeStyles.title18n,
-          ),
+          Text(item.type.label(context), style: context.themeStyles.title18n),
         ],
       ),
       rarity: item.type == GeEventType.flagship ? 5 : 4,
@@ -110,8 +107,11 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               return _item(
                 child: ItemGridWidget.character(
                   char,
-                  onTap: (context, char) =>
-                      GsUtils.events.toggleObtainedCharacter(item.id, char.id),
+                  onTap:
+                      (context, char) => GsUtils.events.toggleObtainedCharacter(
+                        item.id,
+                        char.id,
+                      ),
                 ),
                 marked: marked,
               );
@@ -121,8 +121,11 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               return _item(
                 child: ItemGridWidget.weapon(
                   weapon,
-                  onTap: (context, weapon) =>
-                      GsUtils.events.toggleObtainedtWeapon(item.id, weapon.id),
+                  onTap:
+                      (context, weapon) => GsUtils.events.toggleObtainedtWeapon(
+                        item.id,
+                        weapon.id,
+                      ),
                 ),
                 marked: marked,
               );

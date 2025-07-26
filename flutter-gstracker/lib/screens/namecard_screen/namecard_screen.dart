@@ -18,15 +18,14 @@ class NamecardScreen extends StatelessWidget {
       title: context.labels.namecards(),
       items: (db) => db.infoOf<GsNamecard>().items,
       versionSort: (item) => item.version,
-      itemBuilder: (context, state) => NamecardListItem(
-        state.item,
-        onTap: state.onSelect,
-        selected: state.selected,
-      ),
-      itemCardBuilder: (context, item) => NamecardDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemBuilder:
+          (context, state) => NamecardListItem(
+            state.item,
+            onTap: state.onSelect,
+            selected: state.selected,
+          ),
+      itemCardBuilder:
+          (context, item) => NamecardDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

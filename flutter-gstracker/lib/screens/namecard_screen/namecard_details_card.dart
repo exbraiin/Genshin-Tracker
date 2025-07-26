@@ -32,9 +32,7 @@ class NamecardDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       child: Column(
         spacing: kSeparator16,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ItemDetailsCardInfo.description(text: Text(item.desc)),
-        ],
+        children: [ItemDetailsCardInfo.description(text: Text(item.desc))],
       ),
     );
   }

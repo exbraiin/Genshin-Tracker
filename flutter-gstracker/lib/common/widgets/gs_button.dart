@@ -34,10 +34,7 @@ class GsButton extends StatelessWidget {
         borderRadius: borderRadius,
         child: Container(
           padding: padding,
-          decoration: BoxDecoration(
-            border: border,
-            borderRadius: borderRadius,
-          ),
+          decoration: BoxDecoration(border: border, borderRadius: borderRadius),
           child: child,
         ),
       ),

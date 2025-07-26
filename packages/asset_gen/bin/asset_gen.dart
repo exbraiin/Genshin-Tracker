@@ -26,6 +26,12 @@ void main(List<String> arguments) async {
       help: 'Shows help',
       negatable: false,
     )
+    ..addFlag(
+      'missing',
+      abbr: 'm',
+      help: 'Shows missing assets',
+      negatable: false,
+    )
     ..addOption(
       'tasks',
       abbr: 't',
@@ -61,14 +67,18 @@ void main(List<String> arguments) async {
 
     final assetYaml = yamlMap['assets'] as YamlList?;
     if (assetYaml != null) {
+      print('Generating Assets');
+      final showMissing = args.flag('missing');
       final assetConfig = parseAssetsConfig(assetYaml);
-      await generateAssets(assetConfig);
+      await generateAssets(assetConfig, !showMissing);
     }
 
     final langYaml = yamlMap['localization'] as YamlMap?;
     if (langYaml != null) {
+      print('Generating Localization');
       final langConfig = parseLangConfig(langYaml);
       await generateLocalization(langConfig);
     }
+    print('Assets & Localization complete!');
   }
 }

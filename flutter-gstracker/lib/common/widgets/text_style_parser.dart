@@ -16,11 +16,7 @@ class TextParserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        children: getChildren(context).toList(),
-      ),
-    );
+    return Text.rich(TextSpan(children: getChildren(context).toList()));
   }
 
   Iterable<TextSpan> getChildren(BuildContext context) sync* {
@@ -46,7 +42,7 @@ class TextParserWidget extends StatelessWidget {
       '<color=electro>': () => colorQueue.add(GeElementType.electro.color),
       '</color>': colorQueue.pop,
     };
-    for (var p = 0;;) {
+    for (var p = 0; ;) {
       final idxs = tags.keys
           .map((t) => MapEntry(t, text.indexOf(t, p)))
           .where((t) => t.value != -1);
@@ -57,9 +53,10 @@ class TextParserWidget extends StatelessWidget {
         fontWeight: bold.peek ?? style.fontWeight,
         fontStyle: italic.peek ?? style.fontStyle,
         decoration: underline.peek ?? style.decoration,
-        shadows: color == context.themeColors.primary
-            ? GsSpacing.kMainShadowText
-            : null,
+        shadows:
+            color == context.themeColors.primary
+                ? GsSpacing.kMainShadowText
+                : null,
       );
 
       final tag = idxs.minBy((e) => e.value);

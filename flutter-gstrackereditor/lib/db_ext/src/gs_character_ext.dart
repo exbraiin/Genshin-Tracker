@@ -19,9 +19,10 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
   @override
   List<DataField<GsCharacter>> getFields(String? editId) {
     late final savedItem = Database.i.of<GsCharacter>().getItem(editId!);
-    final (recipeId, namecardId) = editId != null
-        ? (savedItem?.specialDish, savedItem?.namecardId)
-        : ('', '');
+    final (recipeId, namecardId) =
+        editId != null
+            ? (savedItem?.specialDish, savedItem?.namecardId)
+            : ('', '');
 
     final vd = ValidateModels<GsCharacter>();
     final vdVersion = ValidateModels.versions();
@@ -58,34 +59,30 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
         'Enka ID',
         (item) => item.enkaId,
         (item, value) => item.copyWith(enkaId: value),
-        import: DataButton(
-          'Select from Enka API',
-          (context, item) async {
-            await GsEnka.i.load();
-            final completer = Completer<GsCharacter>();
-            if (!context.mounted) {
-              completer.completeError('Could not open dialog!');
-              return completer.future;
-            }
-            SelectDialog(
-              title: 'Select',
-              items: GsEnka.i.characters.map(
-                (e) => GsSelectItem(
-                  e.id,
-                  e.id.toTitle(),
-                  image: e.icon,
-                  color: GsStyle.getRarityColor(e.rarity),
-                ),
-              ),
-              selected: item.enkaId,
-              onConfirm: (value) {
-                completer.complete(item.copyWith(enkaId: value));
-              },
-            ).show(context);
+        import: DataButton('Select from Enka API', (context, item) async {
+          await GsEnka.i.load();
+          final completer = Completer<GsCharacter>();
+          if (!context.mounted) {
+            completer.completeError('Could not open dialog!');
             return completer.future;
-          },
-          icon: const Icon(Icons.select_all_rounded),
-        ),
+          }
+          SelectDialog(
+            title: 'Select',
+            items: GsEnka.i.characters.map(
+              (e) => GsSelectItem(
+                e.id,
+                e.id.toTitle(),
+                image: e.icon,
+                color: GsStyle.getRarityColor(e.rarity),
+              ),
+            ),
+            selected: item.enkaId,
+            onConfirm: (value) {
+              completer.complete(item.copyWith(enkaId: value));
+            },
+          ).show(context);
+          return completer.future;
+        }, icon: const Icon(Icons.select_all_rounded)),
         empty: GsValidLevel.warn2,
       ),
       DataField.textField(
@@ -186,10 +183,8 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
         'Release Date',
         (item) => item.releaseDate,
         (item, value) => item.copyWith(releaseDate: value),
-        validator: (item) => vdVersion.validateDates(
-          item.version,
-          item.releaseDate,
-        ),
+        validator:
+            (item) => vdVersion.validateDates(item.version, item.releaseDate),
       ),
       DataField.textImage(
         'Image',
@@ -232,20 +227,18 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
         (item) => item.regionMaterial,
         (item) => vldMatReg.filters,
         (item, value) => item.copyWith(regionMaterial: value),
-        validator: (item) => vldMatReg.validateWithRegion(
-          item.regionMaterial,
-          item.region,
-        ),
+        validator:
+            (item) =>
+                vldMatReg.validateWithRegion(item.regionMaterial, item.region),
       ),
       DataField.singleSelect(
         'Material Talent',
         (item) => item.talentMaterial,
         (item) => vldMatTal.filters,
         (item, value) => item.copyWith(talentMaterial: value),
-        validator: (item) => vldMatTal.validateWithRegion(
-          item.talentMaterial,
-          item.region,
-        ),
+        validator:
+            (item) =>
+                vldMatTal.validateWithRegion(item.talentMaterial, item.region),
       ),
       DataField.singleSelect(
         'Material Weekly',

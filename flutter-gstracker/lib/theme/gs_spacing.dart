@@ -2,18 +2,11 @@ import 'package:flutter/material.dart';
 
 abstract final class GsSpacing {
   static const kMainShadow = [
-    BoxShadow(
-      color: Color(0x80111111),
-      blurRadius: 1,
-      offset: Offset(1, 1),
-    ),
+    BoxShadow(color: Color(0x80111111), blurRadius: 1, offset: Offset(1, 1)),
   ];
 
   static const kMainShadowText = [
-    BoxShadow(
-      color: Colors.black38,
-      offset: Offset(1, 1),
-    ),
+    BoxShadow(color: Colors.black38, offset: Offset(1, 1)),
   ];
 
   static const kListPadding = EdgeInsets.all(4);

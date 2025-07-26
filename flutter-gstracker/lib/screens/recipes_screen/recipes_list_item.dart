@@ -23,10 +23,9 @@ class RecipesListItem extends StatelessWidget {
 
   bool _hasSpecialDishChar() {
     final db = Database.instance;
-    final char = db
-        .infoOf<GsCharacter>()
-        .items
-        .firstOrNullWhere((e) => e.specialDish == recipe.id);
+    final char = db.infoOf<GsCharacter>().items.firstOrNullWhere(
+      (e) => e.specialDish == recipe.id,
+    );
     return char != null && GsUtils.characters.hasCaracter(char.id);
   }
 

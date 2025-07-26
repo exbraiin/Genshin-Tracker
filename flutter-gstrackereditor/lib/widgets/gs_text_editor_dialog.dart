@@ -24,10 +24,10 @@ class GsTextEditorDialog extends StatefulWidget {
   });
 
   void show(BuildContext context) => showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) => this,
-      );
+    context: context,
+    barrierDismissible: true,
+    builder: (context) => this,
+  );
 
   @override
   State<GsTextEditorDialog> createState() => _GsTextEditorDialogState();
@@ -151,11 +151,7 @@ class _GsTextEditorDialogState<T> extends State<GsTextEditorDialog> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: GsSelectChip(
-            GsSelectItem(
-              value,
-              value.id.toTitle(),
-              color: value.color,
-            ),
+            GsSelectItem(value, value.id.toTitle(), color: value.color),
             onTap: (item) => _insertText((s) => '<color=$item>$s</color>'),
           ),
         );
@@ -165,8 +161,9 @@ class _GsTextEditorDialogState<T> extends State<GsTextEditorDialog> {
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: GsSelectChip(
             const GsSelectItem('auto', 'Auto'),
-            onTap: (item) =>
-                _controller.text = widget.autoFormat!(_controller.text),
+            onTap:
+                (item) =>
+                    _controller.text = widget.autoFormat!(_controller.text),
           ),
         ),
       Padding(
@@ -194,8 +191,10 @@ class _GsTextEditorDialogState<T> extends State<GsTextEditorDialog> {
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: GsSelectChip(
           const GsSelectItem('list', 'List'),
-          onTap: (item) =>
-              _insertText((s) => s.split('\n').map((e) => '● $e').join('\n')),
+          onTap:
+              (item) => _insertText(
+                (s) => s.split('\n').map((e) => '● $e').join('\n'),
+              ),
         ),
       ),
     ];
@@ -208,9 +207,10 @@ class _GsTextEditorDialogState<T> extends State<GsTextEditorDialog> {
     final nSrc = textSelection.start;
     final nDst = textSelection.end;
     if (nSrc == -1 || nDst == -1) return;
-    final vText = nSrc != nDst && nSrc != -1 && nDst != -1
-        ? text.substring(nSrc, nDst)
-        : '';
+    final vText =
+        nSrc != nDst && nSrc != -1 && nDst != -1
+            ? text.substring(nSrc, nDst)
+            : '';
 
     final myText = nText(vText);
     final newText = text.replaceRange(nSrc, nDst, myText);

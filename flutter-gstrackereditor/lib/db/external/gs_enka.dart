@@ -12,18 +12,20 @@ class GsEnka {
 
   Future<void> load() async {
     if (characters.isNotEmpty) return;
-    const url = 'https://raw.githubusercontent.com/EnkaNetwork'
+    const url =
+        'https://raw.githubusercontent.com/EnkaNetwork'
         '/API-docs/master/store/characters.json';
 
     final response = await http.get(Uri.parse(url));
     final json = jsonDecode(response.body) as Map<String, dynamic>;
-    final chars = json.entries
-        .map((e) => GsEnkaChar.fromJson({'id': e.key, ...e.value}))
-        .distinctBy((e) => e.id)
-        .where((e) => !e.id.contains('-'))
-        .sortedByDescending((element) => element.rarity)
-        .thenBy((element) => element.icon.isNotEmpty ? 0 : 1)
-        .toList();
+    final chars =
+        json.entries
+            .map((e) => GsEnkaChar.fromJson({'id': e.key, ...e.value}))
+            .distinctBy((e) => e.id)
+            .where((e) => !e.id.contains('-'))
+            .sortedByDescending((element) => element.rarity)
+            .thenBy((element) => element.icon.isNotEmpty ? 0 : 1)
+            .toList();
     characters.addAll(chars);
   }
 }
@@ -35,12 +37,13 @@ class GsEnkaChar {
   final GeElementType element;
 
   GsEnkaChar.fromJson(Map<String, dynamic> map)
-      : id = map['id'] as String? ?? '',
-        icon = (map['SideIconName'] ?? '').isNotEmpty
-            ? 'https://enka.network/ui/${map['SideIconName']}.png'
-            : '',
-        rarity = rarityNameToLevel(map['QualityType']),
-        element = elementNameToType(map['Element']);
+    : id = map['id'] as String? ?? '',
+      icon =
+          (map['SideIconName'] ?? '').isNotEmpty
+              ? 'https://enka.network/ui/${map['SideIconName']}.png'
+              : '',
+      rarity = rarityNameToLevel(map['QualityType']),
+      element = elementNameToType(map['Element']);
 
   static int rarityNameToLevel(String name, [int? fallback]) {
     return switch (name) {

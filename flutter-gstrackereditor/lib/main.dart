@@ -42,9 +42,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.teal,
           foregroundColor: Colors.black,
         ),
-        dialogTheme: DialogTheme(
-          backgroundColor: Color(0xFF424242),
-        ),
+        dialogTheme: DialogThemeData(backgroundColor: Color(0xFF424242)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       scrollBehavior: const MaterialScrollBehavior().copyWith(
@@ -110,9 +108,7 @@ class Home extends StatelessWidget {
           if (snapshot.connectionState != ConnectionState.done) {
             return Container(
               decoration: GsStyle.kMainDecoration,
-              child: const Center(
-                child: GsProgressIndicator(),
-              ),
+              child: const Center(child: GsProgressIndicator()),
             );
           }
 
@@ -120,9 +116,10 @@ class Home extends StatelessWidget {
             stream: Database.i.modified,
             builder: (context, snapshot) {
               return GsGridView(
-                children: GsConfigs.getAllConfigs()
-                    .map((e) => e.toGridItem(context))
-                    .toList(),
+                children:
+                    GsConfigs.getAllConfigs()
+                        .map((e) => e.toGridItem(context))
+                        .toList(),
               );
             },
           );
@@ -162,10 +159,7 @@ class Home extends StatelessWidget {
         SnackBar(
           content: const Text(
             'Could not import!',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           backgroundColor: bgColor,
         ),
@@ -205,10 +199,7 @@ class _BusyWidgetState extends State<_BusyWidget> {
       builder: (context, value, child) {
         if (value) {
           return const Center(
-            child: IconButton(
-              icon: GsProgressIndicator(),
-              onPressed: null,
-            ),
+            child: IconButton(icon: GsProgressIndicator(), onPressed: null),
           );
         }
 
@@ -223,10 +214,7 @@ class _BusyWidgetState extends State<_BusyWidget> {
         );
 
         if (widget.message != null) {
-          return Tooltip(
-            message: widget.message,
-            child: button,
-          );
+          return Tooltip(message: widget.message, child: button);
         }
 
         return button;

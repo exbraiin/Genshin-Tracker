@@ -13,7 +13,7 @@ class ScrollListenableBuilder extends StatefulWidget {
 
   /// The widget builder.
   final Widget Function(BuildContext context, bool scrolled, Widget? child)?
-      builder;
+  builder;
 
   /// Creates a new [ScrollListenableBuilder] instance.
   const ScrollListenableBuilder({
@@ -53,7 +53,8 @@ class _ScrollListenableBuilderState extends State<ScrollListenableBuilder> {
         widget.notificationPredicate(notification)) {
       final oldScrolledUnder = _scrolledUnder;
       final metrics = notification.metrics;
-      _scrolledUnder = widget.scrollPredicate?.call(metrics) ??
+      _scrolledUnder =
+          widget.scrollPredicate?.call(metrics) ??
           switch (metrics.axisDirection) {
             AxisDirection.up => metrics.extentAfter > 0,
             AxisDirection.down => metrics.extentBefore > 0,

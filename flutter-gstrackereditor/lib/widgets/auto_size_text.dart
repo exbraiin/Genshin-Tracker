@@ -14,16 +14,17 @@ class AutoSizeText extends StatelessWidget {
       builder: (context, layout) {
         return Column(
           mainAxisSize: MainAxisSize.min,
-          children: data.split('\n').map((e) {
-            return FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                _splitText(e, layout.biggest, style),
-                style: style,
-                textAlign: TextAlign.center,
-              ),
-            );
-          }).toList(),
+          children:
+              data.split('\n').map((e) {
+                return FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    _splitText(e, layout.biggest, style),
+                    style: style,
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              }).toList(),
         );
       },
     );

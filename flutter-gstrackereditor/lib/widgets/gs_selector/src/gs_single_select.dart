@@ -18,26 +18,29 @@ class GsSingleSelect<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => SelectDialog<T>(
-        title: title,
-        items: items,
-        selected: selected,
-        onConfirm: onConfirm,
-      ).show(context),
+      onTap:
+          () => SelectDialog<T>(
+            title: title,
+            items: items,
+            selected: selected,
+            onConfirm: onConfirm,
+          ).show(context),
       child: Container(
         padding: const EdgeInsets.all(6),
         constraints: const BoxConstraints(minHeight: 44),
         alignment: Alignment.centerLeft,
-        child: !items.any((e) => e.value == selected)
-            ? Text(selected?.toString() ?? title)
-            : Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: items
-                    .where((e) => e.value == selected)
-                    .map((e) => GsSelectChip(e, disableImage: true))
-                    .toList(),
-              ),
+        child:
+            !items.any((e) => e.value == selected)
+                ? Text(selected?.toString() ?? title)
+                : Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children:
+                      items
+                          .where((e) => e.value == selected)
+                          .map((e) => GsSelectChip(e, disableImage: true))
+                          .toList(),
+                ),
       ),
     );
   }
@@ -60,10 +63,10 @@ class SelectDialog<T> extends StatefulWidget {
   });
 
   Future<void> show(BuildContext context) => showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) => this,
-      );
+    context: context,
+    barrierDismissible: true,
+    builder: (context) => this,
+  );
 
   @override
   State<SelectDialog<T>> createState() => _SelectDialogState<T>();
@@ -104,10 +107,7 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Select',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+                Text('Select', style: Theme.of(context).textTheme.titleLarge),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextField(
@@ -128,17 +128,18 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
                         return Wrap(
                           spacing: 8,
                           runSpacing: 8,
-                          children: items.map((item) {
-                            return GsSelectChip(
-                              item,
-                              selected: widget.selected == item.value,
-                              onTap: (id) {
-                                final v = widget.selected == id ? null : id;
-                                widget.onConfirm(v);
-                                Navigator.of(context).maybePop();
-                              },
-                            );
-                          }).toList(),
+                          children:
+                              items.map((item) {
+                                return GsSelectChip(
+                                  item,
+                                  selected: widget.selected == item.value,
+                                  onTap: (id) {
+                                    final v = widget.selected == id ? null : id;
+                                    widget.onConfirm(v);
+                                    Navigator.of(context).maybePop();
+                                  },
+                                );
+                              }).toList(),
                         );
                       }
 
@@ -151,11 +152,11 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
                           padding: const EdgeInsets.all(8),
                           gridDelegate:
                               SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 100,
-                            mainAxisSpacing: 6,
-                            crossAxisSpacing: 6,
-                            childAspectRatio: 1.15,
-                          ),
+                                maxCrossAxisExtent: 100,
+                                mainAxisSpacing: 6,
+                                crossAxisSpacing: 6,
+                                childAspectRatio: 1.15,
+                              ),
                           itemCount: list.length,
                           itemBuilder: (context, index) {
                             final item = list[index];

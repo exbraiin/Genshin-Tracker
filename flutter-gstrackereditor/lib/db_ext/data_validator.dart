@@ -56,8 +56,10 @@ class DataValidator {
     final models = Database.i.of<T>().items.toList();
     final validator = _GsValidator.of<T>();
     final data = _ComputeData(models.toList(), validator);
-    return compute(_validateModels<T>, data)
-        .then((value) => _levels[T] = value);
+    return compute(
+      _validateModels<T>,
+      data,
+    ).then((value) => _levels[T] = value);
   }
 
   Future<void> checkAll() async {

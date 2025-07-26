@@ -39,13 +39,13 @@ class GsGridItem extends StatelessWidget {
     this.onTap,
     this.child,
     this.validLevel = GsValidLevel.none,
-  })  : circleColor = decor.regionColor,
-        rarity = decor.rarity,
-        image = decor.image ?? '',
-        version = decor.version,
-        duration = decor.duration,
-        color = decor.color,
-        label = decor.label;
+  }) : circleColor = decor.regionColor,
+       rarity = decor.rarity,
+       image = decor.image ?? '',
+       version = decor.version,
+       duration = decor.duration,
+       color = decor.color,
+       label = decor.label;
 
   @override
   Widget build(BuildContext context) {
@@ -60,31 +60,35 @@ class GsGridItem extends StatelessWidget {
           transformAlignment: Alignment.center,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color: rarityImg.isNotEmpty
-                ? null
-                : color?.withValues(alpha: hover ? 1 : 0.8),
-            image: rarityImg.isNotEmpty
-                ? DecorationImage(
-                    image: AssetImage(rarityImg),
-                    fit: BoxFit.cover,
-                    colorFilter: color != null
-                        ? ColorFilter.mode(
-                            Color.lerp(color, Colors.white, 0.4)!,
-                            BlendMode.modulate,
-                          )
-                        : null,
-                  )
-                : null,
+            color:
+                rarityImg.isNotEmpty
+                    ? null
+                    : color?.withValues(alpha: hover ? 1 : 0.8),
+            image:
+                rarityImg.isNotEmpty
+                    ? DecorationImage(
+                      image: AssetImage(rarityImg),
+                      fit: BoxFit.cover,
+                      colorFilter:
+                          color != null
+                              ? ColorFilter.mode(
+                                Color.lerp(color, Colors.white, 0.4)!,
+                                BlendMode.modulate,
+                              )
+                              : null,
+                    )
+                    : null,
             borderRadius: BorderRadius.circular(8),
-            boxShadow: hover
-                ? const [
-                    BoxShadow(
-                      blurRadius: 8,
-                      color: Colors.black54,
-                      offset: Offset(2, 2),
-                    ),
-                  ]
-                : null,
+            boxShadow:
+                hover
+                    ? const [
+                      BoxShadow(
+                        blurRadius: 8,
+                        color: Colors.black54,
+                        offset: Offset(2, 2),
+                      ),
+                    ]
+                    : null,
           ),
           foregroundDecoration: BoxDecoration(
             border: Border.all(color: Colors.black54, width: 2),
@@ -105,8 +109,9 @@ class GsGridItem extends StatelessWidget {
                 width: 46,
                 height: 46,
                 fit: BoxFit.contain,
-                errorBuilder: (ctx, obj, stc) =>
-                    const Icon(Icons.info_outline_rounded, size: 32),
+                errorBuilder:
+                    (ctx, obj, stc) =>
+                        const Icon(Icons.info_outline_rounded, size: 32),
               ),
             ),
           Center(
@@ -117,12 +122,7 @@ class GsGridItem extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  shadows: [
-                    BoxShadow(
-                      offset: Offset(0, 2),
-                      blurRadius: 2,
-                    ),
-                  ],
+                  shadows: [BoxShadow(offset: Offset(0, 2), blurRadius: 2)],
                 ),
               ),
             ),

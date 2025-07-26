@@ -38,14 +38,14 @@ class HomeRemarkableChestsWidget extends StatelessWidget {
                     .entries
                     .sortedBy((e) => e.key.index)
                     .map((entry) {
-                  final owned = entry.value.count((e) => sc.exists(e.id));
-                  final total = entry.value.length;
-                  return [
-                    HomeRow(entry.key.label(context)),
-                    HomeRow.missing(context, owned, total),
-                    HomeRow(total.format()),
-                  ];
-                }),
+                      final owned = entry.value.count((e) => sc.exists(e.id));
+                      final total = entry.value.length;
+                      return [
+                        HomeRow(entry.key.label(context)),
+                        HomeRow.missing(context, owned, total),
+                        HomeRow(total.format()),
+                      ];
+                    }),
                 List.generate(3, (i) => const Divider()),
                 [
                   HomeRow(context.labels.total()),

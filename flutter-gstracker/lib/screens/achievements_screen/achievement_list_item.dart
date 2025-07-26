@@ -40,46 +40,51 @@ class AchievementListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: kSeparator4),
-          ...item.phases.mapIndexed<Widget>((idx, e) {
-            return InkWell(
-              onTap: () =>
-                  GsUtils.achievements.update(item.id, obtained: idx + 1),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  kSeparator4,
-                  kSeparator4,
-                  0,
-                  kSeparator4,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      obtained > idx
-                          ? Icons.radio_button_checked_rounded
-                          : Icons.radio_button_off_rounded,
-                      color: context.themeColors.almostWhite,
-                    ),
-                    const SizedBox(width: kSeparator8),
-                    Expanded(
-                      child: Text(
-                        e.desc,
-                        strutStyle: const StrutStyle(height: 1.185),
+          ...item.phases
+              .mapIndexed<Widget>((idx, e) {
+                return InkWell(
+                  onTap:
+                      () => GsUtils.achievements.update(
+                        item.id,
+                        obtained: idx + 1,
                       ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      kSeparator4,
+                      kSeparator4,
+                      0,
+                      kSeparator4,
                     ),
-                    GsItemCardLabel(
-                      label: e.reward.format(),
-                      asset: AppAssets.primogem,
+                    child: Row(
+                      children: [
+                        Icon(
+                          obtained > idx
+                              ? Icons.radio_button_checked_rounded
+                              : Icons.radio_button_off_rounded,
+                          color: context.themeColors.almostWhite,
+                        ),
+                        const SizedBox(width: kSeparator8),
+                        Expanded(
+                          child: Text(
+                            e.desc,
+                            strutStyle: const StrutStyle(height: 1.185),
+                          ),
+                        ),
+                        GsItemCardLabel(
+                          label: e.reward.format(),
+                          asset: AppAssets.primogem,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                );
+              })
+              .separate(
+                Divider(
+                  height: kSeparator4,
+                  color: context.themeColors.divider,
                 ),
               ),
-            );
-          }).separate(
-            Divider(
-              height: kSeparator4,
-              color: context.themeColors.divider,
-            ),
-          ),
         ],
       ),
     );

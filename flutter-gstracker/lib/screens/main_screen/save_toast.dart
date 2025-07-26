@@ -70,8 +70,10 @@ class _ToastState extends State<Toast> with SingleTickerProviderStateMixin {
                         ),
                       ],
                     ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 8,
+                    ),
                     child: SizedBox(
                       width: 28,
                       height: 28,

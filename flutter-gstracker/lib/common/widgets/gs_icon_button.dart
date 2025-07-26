@@ -23,15 +23,10 @@ class GsCircleIcon extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
-            blurRadius: 2,
-          ),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 2),
         ],
       ),
-      child: Center(
-        child: Icon(icon, color: color, size: 16),
-      ),
+      child: Center(child: Icon(icon, color: color, size: 16)),
     );
   }
 }
@@ -56,11 +51,7 @@ class GsIconButton extends StatelessWidget {
       opacity: onPress != null ? 1 : kDisableOpacity,
       child: InkWell(
         onTap: () => onPress?.call(),
-        child: GsCircleIcon(
-          size: size,
-          icon: icon,
-          color: color,
-        ),
+        child: GsCircleIcon(size: size, icon: icon, color: color),
       ),
     );
   }
@@ -89,11 +80,7 @@ class GsIconButtonHold extends StatelessWidget {
         opacity: onPress != null ? 1 : kDisableOpacity,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
-          child: GsCircleIcon(
-            size: size,
-            icon: icon,
-            color: color,
-          ),
+          child: GsCircleIcon(size: size, icon: icon, color: color),
         ),
       ),
     );

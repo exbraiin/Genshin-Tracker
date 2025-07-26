@@ -14,8 +14,9 @@ class GsWeaponExt extends GsModelExt<GsWeapon> {
     final vdVersion = ValidateModels.versions();
     final vldMatElite = ValidateModels.materials(GeMaterialType.eliteDrops);
     final vldMatCommon = ValidateModels.materials(GeMaterialType.normalDrops);
-    final vldMatWeapon =
-        ValidateModels.materials(GeMaterialType.weaponMaterials);
+    final vldMatWeapon = ValidateModels.materials(
+      GeMaterialType.weaponMaterials,
+    );
 
     return [
       DataField.textField(

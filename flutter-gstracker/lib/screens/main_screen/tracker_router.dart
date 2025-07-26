@@ -47,7 +47,8 @@ class TrackerRouter {
       pageBuilder: (context, animation, secondaryAnimation) {
         return FadeTransition(
           opacity: animation.drive(CurveTween(curve: Curves.easeIn)),
-          child: _routes[settings.name]?.call() ??
+          child:
+              _routes[settings.name]?.call() ??
               const Center(
                 child: Text(
                   'No route defined!',

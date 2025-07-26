@@ -21,12 +21,13 @@ class GsMultiSelect<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _SelectDialog<T>(
-        title: title,
-        items: items,
-        selected: selected,
-        onConfirm: onConfirm,
-      ).show(context),
+      onTap:
+          () => _SelectDialog<T>(
+            title: title,
+            items: items,
+            selected: selected,
+            onConfirm: onConfirm,
+          ).show(context),
       child: Container(
         padding: const EdgeInsets.all(6),
         constraints: const BoxConstraints(minHeight: 44),
@@ -49,11 +50,14 @@ class GsMultiSelect<T> extends StatelessWidget {
     return Wrap(
       spacing: 6,
       runSpacing: 6,
-      children: selected
-          .map((i) => items.firstOrNullWhere((e) => e.value == i))
-          .map((e) => e != null ? GsSelectChip(e, disableImage: true) : null)
-          .whereType<GsSelectChip>()
-          .toList(),
+      children:
+          selected
+              .map((i) => items.firstOrNullWhere((e) => e.value == i))
+              .map(
+                (e) => e != null ? GsSelectChip(e, disableImage: true) : null,
+              )
+              .whereType<GsSelectChip>()
+              .toList(),
     );
   }
 }
@@ -72,10 +76,10 @@ class _SelectDialog<T> extends StatefulWidget {
   });
 
   void show(BuildContext context) => showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) => this,
-      );
+    context: context,
+    barrierDismissible: true,
+    builder: (context) => this,
+  );
 
   @override
   State<_SelectDialog<T>> createState() => _SelectDialogState<T>();
@@ -116,10 +120,7 @@ class _SelectDialogState<T> extends State<_SelectDialog<T>> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Select',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+                Text('Select', style: Theme.of(context).textTheme.titleLarge),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextField(
@@ -140,29 +141,37 @@ class _SelectDialogState<T> extends State<_SelectDialog<T>> {
                             child: Wrap(
                               spacing: 6,
                               runSpacing: 6,
-                              children: widget.items.where((item) {
-                                if (controller.text.isEmpty) return true;
+                              children:
+                                  widget.items
+                                      .where((item) {
+                                        if (controller.text.isEmpty)
+                                          return true;
 
-                                final query = controller.text.toLowerCase();
-                                final worlds = query.split(' ');
+                                        final query =
+                                            controller.text.toLowerCase();
+                                        final worlds = query.split(' ');
 
-                                final name = item.label.toLowerCase();
-                                return worlds.all(name.contains);
-                              }).map((item) {
-                                return GsSelectChip(
-                                  item,
-                                  selected: selected.contains(item.value),
-                                  onTap: (id) {
-                                    final newSet = selected.toSet();
-                                    if (newSet.contains(id)) {
-                                      newSet.remove(id);
-                                    } else {
-                                      newSet.add(id);
-                                    }
-                                    _notifier.value = newSet;
-                                  },
-                                );
-                              }).toList(),
+                                        final name = item.label.toLowerCase();
+                                        return worlds.all(name.contains);
+                                      })
+                                      .map((item) {
+                                        return GsSelectChip(
+                                          item,
+                                          selected: selected.contains(
+                                            item.value,
+                                          ),
+                                          onTap: (id) {
+                                            final newSet = selected.toSet();
+                                            if (newSet.contains(id)) {
+                                              newSet.remove(id);
+                                            } else {
+                                              newSet.add(id);
+                                            }
+                                            _notifier.value = newSet;
+                                          },
+                                        );
+                                      })
+                                      .toList(),
                             ),
                           );
                         },

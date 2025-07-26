@@ -31,8 +31,9 @@ class HomeRecipesWidget extends StatelessWidget {
 
         int master([int? rarity]) {
           final values = groups[rarity] ?? groups.values.expand((e) => e);
-          bool compare(GsRecipe i) => saved
-              .any((t) => t.id == i.id && t.proficiency == i.maxProficiency);
+          bool compare(GsRecipe i) => saved.any(
+            (t) => t.id == i.id && t.proficiency == i.maxProficiency,
+          );
           return values.count(compare);
         }
 

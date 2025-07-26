@@ -37,12 +37,7 @@ final class YattaImporter implements ImportApi {
     return items.values.cast<JsonMap>().map((m) {
       final levels = (m['levelList'] as List? ?? []).cast<int>();
       final icon = '$url/${m['icon']}.png';
-      return ImportItem(
-        m['id'].toString(),
-        m['name'],
-        icon,
-        levels.max() ?? 0,
-      );
+      return ImportItem(m['id'].toString(), m['name'], icon, levels.max() ?? 0);
     }).toList();
   }
 
@@ -51,27 +46,28 @@ final class YattaImporter implements ImportApi {
     final data = await _fetchPage('reliquary/$id');
     final level = data.getIntList('levelList').max() ?? 0;
 
-    final pieces = (data['suit'] as JsonMap).entries.map((item) {
-      final data = item.value as JsonMap;
-      final type = switch (item.key) {
-        'EQUIP_BRACER' => GeArtifactPieceType.flowerOfLife,
-        'EQUIP_NECKLACE' => GeArtifactPieceType.plumeOfDeath,
-        'EQUIP_SHOES' => GeArtifactPieceType.sandsOfEon,
-        'EQUIP_RING' => GeArtifactPieceType.gobletOfEonothem,
-        'EQUIP_DRESS' => GeArtifactPieceType.circletOfLogos,
-        _ => GeArtifactPieceType.flowerOfLife,
-      };
+    final pieces =
+        (data['suit'] as JsonMap).entries.map((item) {
+          final data = item.value as JsonMap;
+          final type = switch (item.key) {
+            'EQUIP_BRACER' => GeArtifactPieceType.flowerOfLife,
+            'EQUIP_NECKLACE' => GeArtifactPieceType.plumeOfDeath,
+            'EQUIP_SHOES' => GeArtifactPieceType.sandsOfEon,
+            'EQUIP_RING' => GeArtifactPieceType.gobletOfEonothem,
+            'EQUIP_DRESS' => GeArtifactPieceType.circletOfLogos,
+            _ => GeArtifactPieceType.flowerOfLife,
+          };
 
-      final fall = other?.pieces.firstOrNullWhere((e) => e.id == id);
+          final fall = other?.pieces.firstOrNullWhere((e) => e.id == id);
 
-      return GsArtifactPiece(
-        id: type.id,
-        type: type,
-        name: data.getString('name'),
-        icon: fall?.icon ?? '',
-        desc: data.getString('description'),
-      );
-    }).toList();
+          return GsArtifactPiece(
+            id: type.id,
+            type: type,
+            name: data.getString('name'),
+            icon: fall?.icon ?? '',
+            desc: data.getString('description'),
+          );
+        }).toList();
 
     final affixes = data['affixList'] as JsonMap;
     final effects = affixes.entries
@@ -195,17 +191,17 @@ final class YattaImporter implements ImportApi {
         .values
         .cast<JsonMap>()
         .map((e) => e.getString('name'));
-    final mats = Database.i
-        .of<GsMaterial>()
-        .items
-        .where((e) => matNames.contains(e.name));
+    final mats = Database.i.of<GsMaterial>().items.where(
+      (e) => matNames.contains(e.name),
+    );
 
     String getMat(GeMaterialType type) {
-      final found = mats
-          .where((e) => e.group == type)
-          .sortedBy((e) => e.rarity)
-          .firstOrNull
-          ?.id;
+      final found =
+          mats
+              .where((e) => e.group == type)
+              .sortedBy((e) => e.rarity)
+              .firstOrNull
+              ?.id;
       late final fallback = switch (type) {
         GeMaterialType.none => '',
         GeMaterialType.oculi => '',
@@ -259,9 +255,10 @@ final class YattaImporter implements ImportApi {
       description: fetter.getString('detail'),
       constellation: fetter.getString('constellation'),
       affiliation: fetter.getString('native'),
-      specialDish: other != null && other.specialDish.isNotEmpty
-          ? other.specialDish
-          : info.getJsonMap('specialFood').getString('name').toDbId(),
+      specialDish:
+          other != null && other.specialDish.isNotEmpty
+              ? other.specialDish
+              : info.getJsonMap('specialFood').getString('name').toDbId(),
       birthday: birthday,
       releaseDate: release,
       image: other?.image ?? '',
@@ -378,15 +375,13 @@ final class YattaImporter implements ImportApi {
     final mats = Database.i.of<GsMaterial>().items.where((e) => e.ingredient);
 
     final input = recipe.getJsonMap('input');
-    final ingredients = input.values.cast<JsonMap>().map((e) {
-      final name = e.getString('name');
-      final amount = e.getInt('count');
-      final mat = mats.firstOrNullWhere((m) => m.name == name);
-      return GsIngredient(
-        id: mat?.id ?? name.toDbId(),
-        amount: amount,
-      );
-    }).toList();
+    final ingredients =
+        input.values.cast<JsonMap>().map((e) {
+          final name = e.getString('name');
+          final amount = e.getInt('count');
+          final mat = mats.firstOrNullWhere((m) => m.name == name);
+          return GsIngredient(id: mat?.id ?? name.toDbId(), amount: amount);
+        }).toList();
 
     return GsRecipe(
       id: name.toDbId(),
@@ -452,26 +447,28 @@ final class YattaImporter implements ImportApi {
         .cast<JsonMap>()
         .map((e) => e.getString('name'));
 
-    final mats = Database.i
-        .of<GsMaterial>()
-        .items
-        .where((mat) => items.contains(mat.name));
+    final mats = Database.i.of<GsMaterial>().items.where(
+      (mat) => items.contains(mat.name),
+    );
 
-    final matWeapon = mats
-        .where((e) => e.group == GeMaterialType.weaponMaterials)
-        .sortedBy((e) => e.rarity)
-        .firstOrNull
-        ?.id;
-    final matCommon = mats
-        .where((e) => e.group == GeMaterialType.normalDrops)
-        .sortedBy((e) => e.rarity)
-        .firstOrNull
-        ?.id;
-    final matElite = mats
-        .where((e) => e.group == GeMaterialType.eliteDrops)
-        .sortedBy((e) => e.rarity)
-        .firstOrNull
-        ?.id;
+    final matWeapon =
+        mats
+            .where((e) => e.group == GeMaterialType.weaponMaterials)
+            .sortedBy((e) => e.rarity)
+            .firstOrNull
+            ?.id;
+    final matCommon =
+        mats
+            .where((e) => e.group == GeMaterialType.normalDrops)
+            .sortedBy((e) => e.rarity)
+            .firstOrNull
+            ?.id;
+    final matElite =
+        mats
+            .where((e) => e.group == GeMaterialType.eliteDrops)
+            .sortedBy((e) => e.rarity)
+            .firstOrNull
+            ?.id;
 
     final effect =
         data.getJsonMap('affix').values.firstOrNull as JsonMap? ?? {};
@@ -583,17 +580,18 @@ final class YattaImporter implements ImportApi {
         .cast<JsonMap>()
         .where((e) => e.getList('types').contains('giftSet'))
         .map((e) {
-      final id = e.getInt('id').toString();
-      final name = e.getString('name');
-      final icon = '$url/furnitureSuite/${e.getString('icon')}.png';
-      final categories = e.getList('categories');
-      final level = switch (categories) {
-        _ when categories.contains('indoorSet') => 4,
-        _ when categories.contains('outdoorSet') => 5,
-        _ => 0,
-      };
-      return ImportItem(id, name, icon, level);
-    }).toList();
+          final id = e.getInt('id').toString();
+          final name = e.getString('name');
+          final icon = '$url/furnitureSuite/${e.getString('icon')}.png';
+          final categories = e.getList('categories');
+          final level = switch (categories) {
+            _ when categories.contains('indoorSet') => 4,
+            _ when categories.contains('outdoorSet') => 5,
+            _ => 0,
+          };
+          return ImportItem(id, name, icon, level);
+        })
+        .toList();
   }
 
   @override
@@ -692,9 +690,10 @@ class CharacterCurves {
       'FIGHT_PROP_BASE_DEFENSE',
       'FIGHT_PROP_ELEMENT_MASTERY',
     ];
-    final format = !flatStats.contains(statType)
-        ? (double e) => '${(e * 100).toStringAsFixed(1)}%'
-        : (double e) => '${e.round()}';
+    final format =
+        !flatStats.contains(statType)
+            ? (double e) => '${(e * 100).toStringAsFixed(1)}%'
+            : (double e) => '${e.round()}';
 
     for (final level in levels) {
       final a = getStatValue(data, statType, level);
@@ -728,10 +727,12 @@ class CharacterCurves {
 
     if (initValue == null) return null;
     final promotes = upgrade.getJsonMapList('promote');
-    final promo = promotes.firstOrNullWhere(
-          (e) => ascended
-              ? (e['unlockMaxLevel'] ?? 0) > level
-              : (e['unlockMaxLevel'] ?? 0) >= level,
+    final promo =
+        promotes.firstOrNullWhere(
+          (e) =>
+              ascended
+                  ? (e['unlockMaxLevel'] ?? 0) > level
+                  : (e['unlockMaxLevel'] ?? 0) >= level,
         ) ??
         promotes.lastOrNull;
 
@@ -769,13 +770,11 @@ class WeaponCurves {
       _ => [],
     };
 
-    const flatStats = [
-      'FIGHT_PROP_BASE_ATTACK',
-      'FIGHT_PROP_ELEMENT_MASTERY',
-    ];
-    final format = !flatStats.contains(statType)
-        ? (double e) => '${(e * 100).toStringAsFixed(1)}%'
-        : (double e) => '${e.round()}';
+    const flatStats = ['FIGHT_PROP_BASE_ATTACK', 'FIGHT_PROP_ELEMENT_MASTERY'];
+    final format =
+        !flatStats.contains(statType)
+            ? (double e) => '${(e * 100).toStringAsFixed(1)}%'
+            : (double e) => '${e.round()}';
 
     for (final level in levels) {
       final a = getStatValue(data, statType, level);
@@ -803,10 +802,12 @@ class WeaponCurves {
 
     if (initValue == null) return null;
     late final promotes = upgrade.getJsonMapList('promote');
-    final promo = promotes.firstOrNullWhere(
-          (e) => ascended
-              ? (e['unlockMaxLevel'] ?? 0) > level
-              : (e['unlockMaxLevel'] ?? 0) >= level,
+    final promo =
+        promotes.firstOrNullWhere(
+          (e) =>
+              ascended
+                  ? (e['unlockMaxLevel'] ?? 0) > level
+                  : (e['unlockMaxLevel'] ?? 0) >= level,
         ) ??
         promotes.lastOrNull;
 

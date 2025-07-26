@@ -11,11 +11,7 @@ class FileImageWidget extends StatelessWidget {
   final String path;
   final BoxFit fit;
 
-  const FileImageWidget(
-    this.path, {
-    super.key,
-    this.fit = BoxFit.contain,
-  });
+  const FileImageWidget(this.path, {super.key, this.fit = BoxFit.contain});
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +42,17 @@ class FileImageSafe extends FileImage {
   final int? cacheWidth;
   final int? cacheHeight;
 
-  const FileImageSafe(
-    super.file, {
-    this.cacheWidth,
-    this.cacheHeight,
-  });
+  const FileImageSafe(super.file, {this.cacheWidth, this.cacheHeight});
 
   factory FileImageSafe.path(
     String path, {
     int? cacheWidth,
     int? cacheHeight,
-  }) =>
-      FileImageSafe(
-        File(path),
-        cacheWidth: cacheWidth,
-        cacheHeight: cacheHeight,
-      );
+  }) => FileImageSafe(
+    File(path),
+    cacheWidth: cacheWidth,
+    cacheHeight: cacheHeight,
+  );
 
   @override
   ImageStreamCompleter loadBuffer(FileImage key, DecoderBufferCallback decode) {
@@ -69,9 +60,8 @@ class FileImageSafe extends FileImage {
       codec: _loadAsync(key, decode),
       scale: key.scale,
       debugLabel: key.file.path,
-      informationCollector: () => <DiagnosticsNode>[
-        ErrorDescription('Path: ${file.path}'),
-      ],
+      informationCollector:
+          () => <DiagnosticsNode>[ErrorDescription('Path: ${file.path}')],
     );
   }
 
@@ -82,15 +72,12 @@ class FileImageSafe extends FileImage {
     assert(key == this);
 
     if (!await file.exists()) {
-      const empty = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs'
+      const empty =
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs'
           '4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAANSURBVBhXY2'
           'BgYGAAAAAFAAGKM+MAAAAAAElFTkSuQmCC';
       final buffer = await ImmutableBuffer.fromUint8List(base64Decode(empty));
-      return decode(
-        buffer,
-        cacheWidth: cacheWidth,
-        cacheHeight: cacheHeight,
-      );
+      return decode(buffer, cacheWidth: cacheWidth, cacheHeight: cacheHeight);
     }
 
     final bytes = await file.readAsBytes();

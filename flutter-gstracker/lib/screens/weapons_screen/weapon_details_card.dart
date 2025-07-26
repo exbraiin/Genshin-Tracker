@@ -105,16 +105,18 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return Wrap(
       spacing: GsSpacing.kGridSeparator,
       runSpacing: GsSpacing.kGridSeparator,
-      children: mats.entries
-          .map((e) => MapEntry(im.getItem(e.key), e.value))
-          .where((e) => e.key != null)
-          .sortedWith((a, b) => a.key!.compareTo(b.key!))
-          .map((e) {
-        return ItemGridWidget.material(
-          e.key!,
-          label: e.value.compact(),
-        );
-      }).toList(),
+      children:
+          mats.entries
+              .map((e) => MapEntry(im.getItem(e.key), e.value))
+              .where((e) => e.key != null)
+              .sortedWith((a, b) => a.key!.compareTo(b.key!))
+              .map((e) {
+                return ItemGridWidget.material(
+                  e.key!,
+                  label: e.value.compact(),
+                );
+              })
+              .toList(),
     );
   }
 

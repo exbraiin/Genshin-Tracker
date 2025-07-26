@@ -22,10 +22,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         return ItemDetailsCard(
           name: item.name,
           fgImage: item.image,
-          info: Align(
-            alignment: Alignment.topLeft,
-            child: Text(item.id),
-          ),
+          info: Align(alignment: Alignment.topLeft, child: Text(item.id)),
           contentPadding: EdgeInsets.all(kSeparator16),
           child: _content(context),
         );
@@ -165,10 +162,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           mapItems(
             banners,
             context.labels.wishes(),
-            (e) => ItemGridWidget(
-              urlImage: e.image,
-              tooltip: e.name,
-            ),
+            (e) => ItemGridWidget(urlImage: e.image, tooltip: e.name),
           ),
           mapItems(
             chests,

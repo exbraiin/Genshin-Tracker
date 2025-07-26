@@ -7,7 +7,8 @@ class ValueNotifierBuilder<T> extends StatefulWidget {
     BuildContext context,
     ValueNotifier<T> notifier,
     Widget? child,
-  ) builder;
+  )
+  builder;
 
   const ValueNotifierBuilder({
     super.key,
@@ -45,8 +46,8 @@ class _ValueNotifierBuilderState<T> extends State<ValueNotifierBuilder<T>> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<T>(
       valueListenable: _notifier,
-      builder: (context, value, child) =>
-          widget.builder(context, _notifier, child),
+      builder:
+          (context, value, child) => widget.builder(context, _notifier, child),
       child: widget.child,
     );
   }

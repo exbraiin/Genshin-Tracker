@@ -37,15 +37,13 @@ class GsSelectChip<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final child = Opacity(
       opacity: hide ? 0.2 : 1,
-      child: item.image != null && !disableImage
-          ? _selectBox(context)
-          : _selectChip(context),
+      child:
+          item.image != null && !disableImage
+              ? _selectBox(context)
+              : _selectChip(context),
     );
     if (onTap == null) return child;
-    return InkWell(
-      onTap: () => onTap!(item.value),
-      child: child,
-    );
+    return InkWell(onTap: () => onTap!(item.value), child: child);
   }
 
   Widget _selectBox(BuildContext context) {
@@ -61,9 +59,10 @@ class GsSelectChip<T> extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 width: 2,
-                color: selected
-                    ? Colors.white
-                    : Color.lerp(item.color, Colors.white, 0.2)!,
+                color:
+                    selected
+                        ? Colors.white
+                        : Color.lerp(item.color, Colors.white, 0.2)!,
               ),
               gradient: LinearGradient(
                 colors: [
@@ -74,9 +73,10 @@ class GsSelectChip<T> extends StatelessWidget {
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: item.image!.isNotEmpty
-                ? Image.network(item.image!.toFandom(46))
-                : const Icon(Icons.question_mark_rounded),
+            child:
+                item.image!.isNotEmpty
+                    ? Image.network(item.image!.toFandom(46))
+                    : const Icon(Icons.question_mark_rounded),
           ),
           Text(
             item.label,
@@ -101,16 +101,14 @@ class GsSelectChip<T> extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: 2,
-          color: selected
-              ? Colors.white
-              : Color.lerp(item.color, Colors.white, 0.2)!,
+          color:
+              selected
+                  ? Colors.white
+                  : Color.lerp(item.color, Colors.white, 0.2)!,
         ),
         borderRadius: BorderRadius.circular(100),
         gradient: LinearGradient(
-          colors: [
-            item.color,
-            Color.lerp(item.color, Colors.black, 0.2)!,
-          ],
+          colors: [item.color, Color.lerp(item.color, Colors.black, 0.2)!],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -121,11 +119,7 @@ class GsSelectChip<T> extends StatelessWidget {
           if (item.asset.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(right: 4),
-              child: Image.asset(
-                item.asset,
-                width: 20,
-                height: 20,
-              ),
+              child: Image.asset(item.asset, width: 20, height: 20),
             ),
           Text(
             item.label,
@@ -133,12 +127,7 @@ class GsSelectChip<T> extends StatelessWidget {
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              shadows: [
-                BoxShadow(
-                  color: Colors.black38,
-                  offset: Offset(1, 1),
-                ),
-              ],
+              shadows: [BoxShadow(color: Colors.black38, offset: Offset(1, 1))],
             ),
           ),
         ],

@@ -74,60 +74,63 @@ class BannerDetailsCard extends StatelessWidget {
           ),
         ],
       ),
-      child: bannerWishes.isNotEmpty
-          ? Column(
-              children: [
-                _header(context),
-                const SizedBox(height: GsSpacing.kListSeparator),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: filteredWishes.length,
-                    itemBuilder: (context, index) {
-                      final wish = filteredWishes[index];
-                      return WishListItem(
-                        pity: wish.pity,
-                        index: index,
-                        wish: wish.wish,
-                        wishState: wish.state,
-                        type: WishListItem.getListType(filteredWishes, index),
-                        bannerType: item.type,
-                      );
-                    },
-                  ),
-                ),
-              ],
-            )
-          : Padding(
-              padding: const EdgeInsets.all(kSeparator8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+      child:
+          bannerWishes.isNotEmpty
+              ? Column(
                 children: [
-                  ItemIconWidget.asset(AppAssets.empty, size: 100),
-                  const SizedBox(height: kSeparator4),
-                  Text(
-                    context.labels.noWishes(),
-                    style: context.themeStyles.label14n
-                        .copyWith(color: context.themeColors.mainColor1),
-                  ),
-                  const SizedBox(height: kSeparator8),
-                  GsButton(
-                    color: context.themeColors.mainColor1,
-                    borderRadius: GsSpacing.kListRadius,
-                    onPressed: () => Navigator.of(context)
-                        .pushNamed(AddWishScreen.id, arguments: item),
-                    child: Text(
-                      context.labels.addWishes(),
+                  _header(context),
+                  const SizedBox(height: GsSpacing.kListSeparator),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: filteredWishes.length,
+                      itemBuilder: (context, index) {
+                        final wish = filteredWishes[index];
+                        return WishListItem(
+                          pity: wish.pity,
+                          index: index,
+                          wish: wish.wish,
+                          wishState: wish.state,
+                          type: WishListItem.getListType(filteredWishes, index),
+                          bannerType: item.type,
+                        );
+                      },
                     ),
                   ),
                 ],
+              )
+              : Padding(
+                padding: const EdgeInsets.all(kSeparator8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ItemIconWidget.asset(AppAssets.empty, size: 100),
+                    const SizedBox(height: kSeparator4),
+                    Text(
+                      context.labels.noWishes(),
+                      style: context.themeStyles.label14n.copyWith(
+                        color: context.themeColors.mainColor1,
+                      ),
+                    ),
+                    const SizedBox(height: kSeparator8),
+                    GsButton(
+                      color: context.themeColors.mainColor1,
+                      borderRadius: GsSpacing.kListRadius,
+                      onPressed:
+                          () => Navigator.of(
+                            context,
+                          ).pushNamed(AddWishScreen.id, arguments: item),
+                      child: Text(context.labels.addWishes()),
+                    ),
+                  ],
+                ),
               ),
-            ),
     );
   }
 
   Widget _header(BuildContext context) {
-    final textStyle = context.themeStyles.label14n
-        .copyWith(color: context.themeColors.almostWhite);
+    final textStyle = context.themeStyles.label14n.copyWith(
+      color: context.themeColors.almostWhite,
+    );
     final strutStyle = textStyle.toStrut();
     return GsDataBox.info(
       bgColor: context.themeColors.mainColor1,
@@ -185,21 +188,18 @@ class BannerDetailsCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GsItemCardLabel(
-                  label: item.dateStart.format(showHour: false),
-                ),
+                GsItemCardLabel(label: item.dateStart.format(showHour: false)),
                 const SizedBox(height: kSeparator4),
                 if (!item.type.isPermanent)
                   Padding(
                     padding: const EdgeInsets.only(bottom: kSeparator4),
-                    child: GsItemCardLabel(
-                      label: _getBannerDuration(context),
-                    ),
+                    child: GsItemCardLabel(label: _getBannerDuration(context)),
                   ),
                 RichText(
                   text: TextSpan(
-                    style: context.themeStyles.label14n
-                        .copyWith(shadows: GsSpacing.kMainShadowText),
+                    style: context.themeStyles.label14n.copyWith(
+                      shadows: GsSpacing.kMainShadowText,
+                    ),
                     children: [
                       TextSpan(
                         text: ' ${context.labels.bannerNRolls(rolls)} - ',
@@ -228,20 +228,23 @@ class BannerDetailsCard extends StatelessWidget {
             children: [
               GsIconButton(
                 icon: Icons.remove,
-                onPress: GsUtils.wishes.bannerHasWishes(item.id)
-                    ? () {
-                        RemoveDialog.show(context, item.name).then((value) {
-                          if (!value) return;
-                          GsUtils.wishes.removeLastWish(item.id);
-                        });
-                      }
-                    : null,
+                onPress:
+                    GsUtils.wishes.bannerHasWishes(item.id)
+                        ? () {
+                          RemoveDialog.show(context, item.name).then((value) {
+                            if (!value) return;
+                            GsUtils.wishes.removeLastWish(item.id);
+                          });
+                        }
+                        : null,
               ),
               const SizedBox(height: kSeparator8),
               GsIconButton(
                 icon: Icons.add,
-                onPress: () => Navigator.of(context)
-                    .pushNamed(AddWishScreen.id, arguments: item),
+                onPress:
+                    () => Navigator.of(
+                      context,
+                    ).pushNamed(AddWishScreen.id, arguments: item),
               ),
             ],
           ),

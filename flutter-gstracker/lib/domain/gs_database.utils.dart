@@ -83,11 +83,13 @@ class _Items {
     final getMat = _ifMaterials.getItem;
 
     return [
-      ..._ifCharacters.items
-          .map((element) => MapEntry(element.id, element.talentMaterial)),
-      ..._ifWeapons.items
-          .map((element) => MapEntry(element.id, element.matWeapon)),
-    ]
+          ..._ifCharacters.items.map(
+            (element) => MapEntry(element.id, element.talentMaterial),
+          ),
+          ..._ifWeapons.items.map(
+            (element) => MapEntry(element.id, element.matWeapon),
+          ),
+        ]
         .groupBy((element) => element.value)
         .entries
         .where((element) => getMat(element.key)!.weekdays.contains(weekday))
@@ -137,8 +139,9 @@ class _Wishes {
   /// Gets all released banners by [type]
   Iterable<GsBanner> getReleasedInfoBannerByType(GeBannerType type) {
     final now = DateTime.now();
-    return _ifBanners.items
-        .where((e) => e.type == type && e.dateStart.isBefore(now));
+    return _ifBanners.items.where(
+      (e) => e.type == type && e.dateStart.isBefore(now),
+    );
   }
 
   /// Gets all released banners by [types]
@@ -381,11 +384,7 @@ class _Recipes {
   /// Updates the recipe as [own] or the recipe [proficiency].
   ///
   /// {@macro db_update}
-  void update(
-    String id, {
-    bool? own,
-    int? proficiency,
-  }) {
+  void update(String id, {bool? own, int? proficiency}) {
     if (own != null) {
       final contains = _svRecipe.exists(id);
       if (own && !contains) {
@@ -420,25 +419,25 @@ class _Versions {
   const _Versions();
   bool isCurrentVersion(String version) {
     final now = DateTime.now();
-    final current = _ifVersions.items
-        .sorted()
-        .lastOrNullWhere((element) => !element.releaseDate.isAfter(now));
+    final current = _ifVersions.items.sorted().lastOrNullWhere(
+      (element) => !element.releaseDate.isAfter(now),
+    );
     return current?.id == version;
   }
 
   bool isUpcomingVersion(String version) {
     final now = DateTime.now();
-    final upcoming = _ifVersions.items
-        .sorted()
-        .where((version) => version.releaseDate.isAfter(now));
+    final upcoming = _ifVersions.items.sorted().where(
+      (version) => version.releaseDate.isAfter(now),
+    );
     return upcoming.any((element) => element.id == version);
   }
 
   GsVersion? getCurrentVersion() {
     final now = DateTime.now();
-    final current = _ifVersions.items
-        .sorted()
-        .lastOrNullWhere((version) => !version.releaseDate.isAfter(now));
+    final current = _ifVersions.items.sorted().lastOrNullWhere(
+      (version) => !version.releaseDate.isAfter(now),
+    );
     return current;
   }
 }
@@ -446,11 +445,13 @@ class _Versions {
 class _Materials {
   const _Materials();
   Iterable<GsMaterial> getGroupMaterials(GsMaterial material) {
-    return _ifMaterials.items.where((element) {
-      return element.group == material.group &&
-          element.region == material.region &&
-          element.subgroup == material.subgroup;
-    }).sortedBy((element) => element.rarity);
+    return _ifMaterials.items
+        .where((element) {
+          return element.group == material.group &&
+              element.region == material.region &&
+              element.subgroup == material.subgroup;
+        })
+        .sortedBy((element) => element.rarity);
   }
 
   Iterable<GsMaterial> getGroupMaterialsById(String id) {
@@ -483,24 +484,29 @@ final class CharInfo {
     required this.isOwned,
     required this.hasOutfit,
     required this.totalConstellations,
-  })  : iconImage = item.image,
-        wishImage = item.fullImage,
-        ascension = info.ascension.clamp(0, 6),
-        friendship = info.friendship.clamp(1, 10),
-        talents = isOwned ? CharTalents(item, info, totalConstellations) : null;
+  }) : iconImage = item.image,
+       wishImage = item.fullImage,
+       ascension = info.ascension.clamp(0, 6),
+       friendship = info.friendship.clamp(1, 10),
+       talents = isOwned ? CharTalents(item, info, totalConstellations) : null;
 }
 
 enum CharTalentType { attack, skill, burst }
 
 final class CharTalents {
+  static const kTotal = 30;
+  static const kMaxLevel = 10;
+  static const kTotalCrownless = 9 * 3;
   final Map<CharTalentType, (int, int)> _data;
 
   int get total => _data.values.sumBy((e) => e.$1);
   int get totalCrownless => _data.values.sumBy((e) => e.$1.coerceAtMost(9));
 
   CharTalents(GsCharacter item, GiCharacter info, int cons)
-      : _data = CharTalentType.values
-            .toMap((tal) => tal, (tal) => _parseTalent(item, info, tal, cons));
+    : _data = CharTalentType.values.toMap(
+        (tal) => tal,
+        (tal) => _parseTalent(item, info, tal, cons),
+      );
 
   static (int, int) _parseTalent(
     GsCharacter item,
@@ -628,8 +634,9 @@ class _Characters {
     final char = _svCharacter.getItem(id);
     var cFriendship = char?.friendship ?? 1;
     cFriendship = ((cFriendship + 1) % 11).coerceAtLeast(1);
-    final item =
-        (char ?? GiCharacter(id: id)).copyWith(friendship: cFriendship);
+    final item = (char ?? GiCharacter(id: id)).copyWith(
+      friendship: cFriendship,
+    );
     _svCharacter.setItem(item);
   }
 
@@ -943,8 +950,43 @@ class _CharactersMaterials {
     final max = GsUtils.characters.isCharMaxAscended(id);
     if (max) return const [];
     final ascension = GsUtils.characters.getCharAscension(id);
-    return getAscensionMaterials(id, ascension + 1)
-        .entries
+    return getAscensionMaterials(id, ascension + 1).entries
+        .map((e) => MapEntry(_ifMaterials.getItem(e.key), e.value))
+        .toList();
+  }
+
+  List<MapEntry<GsMaterial?, int>> getCharMissingMats(
+    String id, [
+    bool crownless = false,
+  ]) {
+    final mats = <String, int>{};
+
+    void sumMaterials(Map<String, int> map) =>
+        map.forEach((k, v) => mats[k] = (mats[k] ?? 0) + v);
+
+    if (!GsUtils.characters.isCharMaxAscended(id)) {
+      final ascension = GsUtils.characters.getCharAscension(id);
+      for (var i = ascension + 1; i < 7; ++i) {
+        final ascMats = getAscensionMaterials(id, i);
+        sumMaterials(ascMats);
+      }
+    }
+
+    final max = CharTalents.kMaxLevel - (crownless ? 2 : 0);
+    final info = _svCharacter.getItem(id);
+    if (info != null) {
+      for (var i = info.talent1 - 2; i < max; ++i) {
+        sumMaterials(getTalentMaterials(id, i));
+      }
+      for (var i = info.talent2 - 2; i < max; ++i) {
+        sumMaterials(getTalentMaterials(id, i));
+      }
+      for (var i = info.talent3 - 2; i < max; ++i) {
+        sumMaterials(getTalentMaterials(id, i));
+      }
+    }
+
+    return mats.entries
         .map((e) => MapEntry(_ifMaterials.getItem(e.key), e.value))
         .toList();
   }
@@ -971,8 +1013,13 @@ class _CharactersMaterials {
     );
   }
 
-  /// Gets all character talent materials at level.
+  /// Gets all character talent materials.
   /// * Returns materials for all 3 talents.
+  Map<String, int> getAllTalentsMaterials(String id) {
+    return getTalentMaterials(id).map((k, v) => MapEntry(k, v * 3));
+  }
+
+  /// Gets all character talent materials at level.
   Map<String, int> getTalentMaterials(String id, [int? level]) {
     final info = _ifCharacters.getItem(id);
     if (info == null) return const {};
@@ -991,13 +1038,12 @@ class _CharactersMaterials {
         info.talentMaterial: (i) => i.talentIndex,
       },
       level,
-    ).map((key, value) => MapEntry(key, value * 3));
+    );
   }
 
   /// Gets all character ascension and talent materials.
   Map<String, int> getAllMaterials(String id) {
-    return {...getTalentMaterials(id), ...getAscensionMaterials(id)}
-        .entries
+    return {...getAllTalentsMaterials(id), ...getAscensionMaterials(id)}.entries
         .groupBy((e) => e.key)
         .map((k, v) => MapEntry(k, v.sumBy((e) => e.value).toInt()));
   }
@@ -1121,7 +1167,7 @@ class WeaponAsc {
       WeaponAsc(70, 55000, 9, 14, 9, 2, 2, 2),
       WeaponAsc(80, 65000, 18, 27, 6, 2, 2, 3),
       WeaponAsc(90, 0, 0, 0, 0, 0, 0, 0),
-    ]
+    ],
   ];
   final int level;
   final int moraAmount;
@@ -1156,16 +1202,18 @@ Map<String, int> _getMaterials<T>(
     items = temp != null ? [temp] : [];
   }
 
-  final materials = amounts
-      .map((k, v) => MapEntry(k, GsUtils.materials.getGroupMaterialsById(k)));
+  final materials = amounts.map(
+    (k, v) => MapEntry(k, GsUtils.materials.getGroupMaterialsById(k)),
+  );
 
   final total = <String, int>{};
   for (final item in items) {
     for (final entry in materials.entries) {
       final index = indexes[entry.key]?.call(item) ?? 0;
-      final material = index == 0
-          ? entry.value.firstOrNullWhere((e) => e.id == entry.key)
-          : entry.value.elementAtOrNull(index);
+      final material =
+          index == 0
+              ? entry.value.firstOrNullWhere((e) => e.id == entry.key)
+              : entry.value.elementAtOrNull(index);
       if (material == null) continue;
       final amount = amounts[entry.key]?.call(item) ?? 0;
       total[material.id] = (total[material.id] ?? 0) + amount;
@@ -1176,13 +1224,14 @@ Map<String, int> _getMaterials<T>(
 
 // === OLD ===
 
-typedef WishesInfo = ({
-  int last,
-  int total,
-  double average,
-  double percentage,
-  List<WishSummary> wishes,
-});
+typedef WishesInfo =
+    ({
+      int last,
+      int total,
+      double average,
+      double percentage,
+      List<WishSummary> wishes,
+    });
 
 class WishesSummary {
   final int total;
@@ -1226,11 +1275,12 @@ class WishesSummary {
     for (final item in wishes) {
       if (item.item.rarity == 4) {
         info4.add(item);
-        is4Guaranteed ??= !(_ifBanners
-                .getItem(item.wish.bannerId)
-                ?.feature4
-                .contains(item.wish.itemId) ??
-            true);
+        is4Guaranteed ??=
+            !(_ifBanners
+                    .getItem(item.wish.bannerId)
+                    ?.feature4
+                    .contains(item.wish.itemId) ??
+                true);
 
         if (item.item.isWeapon) {
           info4Weapon.add(item);
@@ -1239,11 +1289,12 @@ class WishesSummary {
         }
       } else if (item.item.rarity == 5) {
         info5.add(item);
-        is5Guaranteed ??= !(_ifBanners
-                .getItem(item.wish.bannerId)
-                ?.feature5
-                .contains(item.wish.itemId) ??
-            true);
+        is5Guaranteed ??=
+            !(_ifBanners
+                    .getItem(item.wish.bannerId)
+                    ?.feature5
+                    .contains(item.wish.itemId) ??
+                true);
         if (item.item.isWeapon) {
           info5Weapon.add(item);
         } else {

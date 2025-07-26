@@ -114,18 +114,13 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
               ),
             ),
             Row(
-              children: List.generate(
-                5,
-                (idx) {
-                  final missing = value.getMissing(idx);
-                  final st = style.copyWith(
-                    color: missing > 0 ? Colors.redAccent : Colors.lightGreen,
-                  );
-                  return Expanded(
-                    child: _getText(missing.toString(), st),
-                  );
-                },
-              ),
+              children: List.generate(5, (idx) {
+                final missing = value.getMissing(idx);
+                final st = style.copyWith(
+                  color: missing > 0 ? Colors.redAccent : Colors.lightGreen,
+                );
+                return Expanded(child: _getText(missing.toString(), st));
+              }),
             ),
           ],
         );
@@ -142,11 +137,7 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
         border: Border.all(color: context.themeColors.mainColor0, width: 0.6),
         borderRadius: GsSpacing.kGridRadius,
       ),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: style,
-      ),
+      child: Text(text, textAlign: TextAlign.center, style: style),
     );
   }
 
@@ -156,15 +147,9 @@ class _HomeResourceCalcWidgetState extends State<HomeResourceCalcWidget> {
       padding: const EdgeInsets.all(kSeparator4),
       decoration: BoxDecoration(
         borderRadius: GsSpacing.kGridRadius,
-        border: Border.all(
-          color: context.themeColors.dimWhite,
-          width: 0.6,
-        ),
+        border: Border.all(color: context.themeColors.dimWhite, width: 0.6),
       ),
-      child: GsNumberField(
-        length: 4,
-        onUpdate: (t) => onEdit.call(t),
-      ),
+      child: GsNumberField(length: 4, onUpdate: (t) => onEdit.call(t)),
     );
   }
 }
@@ -173,14 +158,9 @@ class _ResourceInfo {
   final List<int> owned;
   final List<int> required;
 
-  _ResourceInfo._({
-    required this.owned,
-    required this.required,
-  });
+  _ResourceInfo._({required this.owned, required this.required});
 
-  _ResourceInfo()
-      : owned = [0, 0, 0, 0, 0],
-        required = [0, 0, 0, 0, 0];
+  _ResourceInfo() : owned = [0, 0, 0, 0, 0], required = [0, 0, 0, 0, 0];
 
   _ResourceInfo selfCopy() => _ResourceInfo._(owned: owned, required: required);
 

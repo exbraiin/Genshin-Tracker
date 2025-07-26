@@ -54,14 +54,8 @@ class _MainScreenState extends State<MainScreen> {
       color: context.themeColors.mainColor0,
       child: Stack(
         children: [
-          Positioned.fill(
-            left: _menuWidth,
-            child: _pageWidget(),
-          ),
-          Positioned.fill(
-            right: null,
-            child: _buttonsWidget(),
-          ),
+          Positioned.fill(left: _menuWidth, child: _pageWidget()),
+          Positioned.fill(right: null, child: _buttonsWidget()),
           Positioned(
             right: 0,
             bottom: 0,
@@ -83,14 +77,16 @@ class _MainScreenState extends State<MainScreen> {
         width: double.infinity,
         padding: const EdgeInsets.all(kSeparator2),
         decoration: BoxDecoration(
-          color: idx == 0
-              ? context.themeColors.primary
-              : context.themeColors.mainColor0,
+          color:
+              idx == 0
+                  ? context.themeColors.primary
+                  : context.themeColors.mainColor0,
           borderRadius: GsSpacing.kGridRadius,
           border: Border.all(
-            color: selected
-                ? context.themeColors.almostWhite.withValues(alpha: 0.4)
-                : Colors.transparent,
+            color:
+                selected
+                    ? context.themeColors.almostWhite.withValues(alpha: 0.4)
+                    : Colors.transparent,
             width: 2,
           ),
         ),
@@ -115,10 +111,11 @@ class _MainScreenState extends State<MainScreen> {
         valueListenable: _page,
         builder: (context, value, child) {
           return ListView(
-            children: _menus
-                .mapIndexed(button)
-                .separate(const SizedBox(height: GsSpacing.kListSeparator))
-                .toList(),
+            children:
+                _menus
+                    .mapIndexed(button)
+                    .separate(const SizedBox(height: GsSpacing.kListSeparator))
+                    .toList(),
           );
         },
       ),
@@ -157,42 +154,21 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 final _menus = [
-  _Menu(
-    icon: AppAssets.appIcon40px,
-    initialPage: HomeScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconWish,
-    initialPage: WishesScreen.id,
-  ),
+  _Menu(icon: AppAssets.appIcon40px, initialPage: HomeScreen.id),
+  _Menu(icon: AppAssets.menuIconWish, initialPage: WishesScreen.id),
   _Menu(
     icon: AppAssets.menuIconAchievements,
     initialPage: AchievementGroupsScreen.id,
   ),
-  _Menu(
-    icon: AppAssets.menuIconCharacters,
-    initialPage: CharactersScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconWeapons,
-    initialPage: WeaponsScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconRecipes,
-    initialPage: RecipesScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconMap,
-    initialPage: RemarkableChestsScreen.id,
-  ),
+  _Menu(icon: AppAssets.menuIconCharacters, initialPage: CharactersScreen.id),
+  _Menu(icon: AppAssets.menuIconWeapons, initialPage: WeaponsScreen.id),
+  _Menu(icon: AppAssets.menuIconRecipes, initialPage: RecipesScreen.id),
+  _Menu(icon: AppAssets.menuIconMap, initialPage: RemarkableChestsScreen.id),
   _Menu(
     icon: AppAssets.menuEnvisagedEchoes,
     initialPage: EnvisagedEchoScreen.id,
   ),
-  _Menu(
-    icon: AppAssets.itemToyMedal,
-    initialPage: ThespianTricksScreen.id,
-  ),
+  _Menu(icon: AppAssets.itemToyMedal, initialPage: ThespianTricksScreen.id),
   _Menu(
     icon: AppAssets.menuIconPreciousItems,
     initialPage: SpincrystalsScreen.id,
@@ -201,26 +177,11 @@ final _menus = [
     icon: AppAssets.menuIconSereniteaSets,
     initialPage: SereniteaSetsScreen.id,
   ),
-  _Menu(
-    icon: AppAssets.menuIconArtifacts,
-    initialPage: ArtifactsScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconArchive,
-    initialPage: NamecardScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconMaterials,
-    initialPage: MaterialsScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconEvent,
-    initialPage: EventScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconFeedback,
-    initialPage: VersionScreen.id,
-  ),
+  _Menu(icon: AppAssets.menuIconArtifacts, initialPage: ArtifactsScreen.id),
+  _Menu(icon: AppAssets.menuIconArchive, initialPage: NamecardScreen.id),
+  _Menu(icon: AppAssets.menuIconMaterials, initialPage: MaterialsScreen.id),
+  _Menu(icon: AppAssets.menuIconEvent, initialPage: EventScreen.id),
+  _Menu(icon: AppAssets.menuIconFeedback, initialPage: VersionScreen.id),
 ];
 
 class _Menu {
@@ -229,21 +190,18 @@ class _Menu {
   final Object? initialArgument;
   final Navigator navigator;
 
-  _Menu({
-    required this.icon,
-    required this.initialPage,
-    this.initialArgument,
-  }) : navigator = Navigator(
-          key: GlobalKey(),
-          initialRoute: initialPage,
-          onGenerateRoute: (settings) {
-            if (initialPage == settings.name) {
-              settings = RouteSettings(
-                name: settings.name,
-                arguments: initialArgument,
-              );
-            }
-            return TrackerRouter.onGenerate(settings);
-          },
-        );
+  _Menu({required this.icon, required this.initialPage, this.initialArgument})
+    : navigator = Navigator(
+        key: GlobalKey(),
+        initialRoute: initialPage,
+        onGenerateRoute: (settings) {
+          if (initialPage == settings.name) {
+            settings = RouteSettings(
+              name: settings.name,
+              arguments: initialArgument,
+            );
+          }
+          return TrackerRouter.onGenerate(settings);
+        },
+      );
 }

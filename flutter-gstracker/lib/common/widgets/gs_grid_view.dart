@@ -24,9 +24,9 @@ class GsGridView extends StatelessWidget {
     required int itemCount,
     required Widget Function(BuildContext context, int index) itemBuilder,
   }) : delegate = SliverChildBuilderDelegate(
-          itemBuilder,
-          childCount: itemCount,
-        );
+         itemBuilder,
+         childCount: itemCount,
+       );
 
   @override
   Widget build(BuildContext context) {

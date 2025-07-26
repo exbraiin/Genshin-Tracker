@@ -17,10 +17,7 @@ const _arrow = '→';
 class HomeWishesValues extends StatelessWidget {
   final GeBannerType banner;
 
-  const HomeWishesValues({
-    super.key,
-    required this.banner,
-  });
+  const HomeWishesValues({super.key, required this.banner});
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +41,7 @@ class HomeWishesValues extends StatelessWidget {
           Expanded(child: Text(title)),
           Text(
             (summary.total * GsUtils.details.primogemsPerWish).format(),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-            ),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
           ),
           const SizedBox(width: kSeparator2),
           const PrimogemIcon(size: 18, offset: Offset(0, -1)),
@@ -57,46 +51,25 @@ class HomeWishesValues extends StatelessWidget {
         children: [
           _summary(context, summary, maxPity),
           const SizedBox(height: kSeparator8),
-          _getCharGraph(
-            context: context,
-            summary: summary,
-            maxPity: maxPity,
-          ),
+          _getCharGraph(context: context, summary: summary, maxPity: maxPity),
           const SizedBox(height: kSeparator8),
           Row(
             children: [
               const Spacer(flex: 3),
               Expanded(
                 child: Center(
-                  child: Text(
-                    context.labels.total(),
-                    style: style,
-                  ),
+                  child: Text(context.labels.total(), style: style),
                 ),
               ),
               Expanded(
-                child: Center(
-                  child: Text(
-                    context.labels.per(),
-                    style: style,
-                  ),
-                ),
+                child: Center(child: Text(context.labels.per(), style: style)),
               ),
               Expanded(
-                child: Center(
-                  child: Text(
-                    context.labels.pity(),
-                    style: style,
-                  ),
-                ),
+                child: Center(child: Text(context.labels.pity(), style: style)),
               ),
             ],
           ),
-          Divider(
-            color: context.themeColors.divider,
-            thickness: 1,
-            height: 8,
-          ),
+          Divider(color: context.themeColors.divider, thickness: 1, height: 8),
           _getPullInfo(
             context,
             summary.info5,
@@ -140,44 +113,28 @@ class HomeWishesValues extends StatelessWidget {
               context.themeColors.colorByRarityFg(5),
             ),
           ],
-          Divider(
-            color: context.themeColors.divider,
-            thickness: 1,
-            height: 8,
-          ),
+          Divider(color: context.themeColors.divider, thickness: 1, height: 8),
           _getPullInfo(
             context,
             summary.info4,
             context.labels.rarityStar(4),
             context.themeColors.colorByRarityFg(4),
           ),
-          Divider(
-            color: context.themeColors.divider,
-            thickness: 1,
-            height: 8,
-          ),
+          Divider(color: context.themeColors.divider, thickness: 1, height: 8),
           _getPullInfo(
             context,
             summary.info4Character,
             '   $_arrow ${context.labels.character()}',
             context.themeColors.colorByRarityFg(4),
           ),
-          Divider(
-            color: context.themeColors.divider,
-            thickness: 1,
-            height: 8,
-          ),
+          Divider(color: context.themeColors.divider, thickness: 1, height: 8),
           _getPullInfo(
             context,
             summary.info4Weapon,
             '   $_arrow ${context.labels.weapon()}',
             context.themeColors.colorByRarityFg(4),
           ),
-          _getWishesList(
-            style: style,
-            summary: summary,
-            maxPity: maxPity,
-          ),
+          _getWishesList(style: style, summary: summary, maxPity: maxPity),
         ],
       ),
     );
@@ -243,9 +200,7 @@ class HomeWishesValues extends StatelessWidget {
           return Stack(
             children: [
               Positioned.fill(
-                child: Divider(
-                  color: context.themeColors.mainColor1,
-                ),
+                child: Divider(color: context.themeColors.mainColor1),
               ),
               Row(
                 children: List<Widget>.generate(maxPity, (index) {
@@ -270,8 +225,9 @@ class HomeWishesValues extends StatelessWidget {
                                     color: value ? Colors.white : color,
                                     borderRadius: BorderRadius.circular(width),
                                   ),
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 1),
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 1,
+                                  ),
                                   duration: const Duration(milliseconds: 400),
                                 );
                               },
@@ -343,66 +299,68 @@ class HomeWishesValues extends StatelessWidget {
                   runSpacing: GsSpacing.kGridSeparator,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
-                  children: summary.info5.wishes.reversed.map((wish) {
-                    final item = wish.item;
-                    final pity = wish.pity;
-                    final state = wish.state;
-                    final pityColor =
-                        context.themeColors.colorByPity(pity, maxPity);
+                  children:
+                      summary.info5.wishes.reversed.map((wish) {
+                        final item = wish.item;
+                        final pity = wish.pity;
+                        final state = wish.state;
+                        final pityColor = context.themeColors.colorByPity(
+                          pity,
+                          maxPity,
+                        );
 
-                    return Column(
-                      children: [
-                        Stack(
-                          clipBehavior: Clip.none,
+                        return Column(
                           children: [
-                            item.character != null
-                                ? ItemGridWidget.character(item.character!)
-                                : item.weapon != null
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                item.character != null
+                                    ? ItemGridWidget.character(item.character!)
+                                    : item.weapon != null
                                     ? ItemGridWidget.weapon(item.weapon!)
                                     : const SizedBox(),
-                            if (state == WishState.won)
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: Icon(
-                                  Icons.star_rounded,
-                                  size: 20,
-                                  color: Colors.yellow,
-                                  shadows: [
-                                    BoxShadow(
-                                      color:
-                                          Colors.black.withValues(alpha: 0.8),
-                                      offset: const Offset(1, 1),
+                                if (state == WishState.won)
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: Icon(
+                                      Icons.star_rounded,
+                                      size: 20,
+                                      color: Colors.yellow,
+                                      shadows: [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(
+                                            alpha: 0.8,
+                                          ),
+                                          offset: const Offset(1, 1),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: kSeparator2),
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: pity.toString(),
-                                style: style.copyWith(
-                                  color: pityColor,
-                                ),
-                              ),
-                              if (state == WishState.guaranteed)
-                                WidgetSpan(
-                                  child: GsWishStateIcon(
-                                    state,
-                                    color: pityColor,
-                                    padding: EdgeInsets.zero,
                                   ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                              ],
+                            ),
+                            const SizedBox(height: kSeparator2),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: pity.toString(),
+                                    style: style.copyWith(color: pityColor),
+                                  ),
+                                  if (state == WishState.guaranteed)
+                                    WidgetSpan(
+                                      child: GsWishStateIcon(
+                                        state,
+                                        color: pityColor,
+                                        padding: EdgeInsets.zero,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
                 ),
               ),
             ),
@@ -478,10 +436,7 @@ class HomeWishesValues extends StatelessWidget {
       children: [
         Expanded(
           flex: 3,
-          child: Text(
-            label,
-            style: style.copyWith(color: color),
-          ),
+          child: Text(label, style: style.copyWith(color: color)),
         ),
         Expanded(
           child: Center(
@@ -518,12 +473,11 @@ class HomeWishesValues extends StatelessWidget {
     String label,
     Color color,
   ) {
-    return _getInfo(
-      context,
-      label,
-      color,
-      [info.wishes.length, info.percentage, info.average],
-    );
+    return _getInfo(context, label, color, [
+      info.wishes.length,
+      info.percentage,
+      info.average,
+    ]);
   }
 
   Widget _getWonInfo(
@@ -532,15 +486,11 @@ class HomeWishesValues extends StatelessWidget {
     String label,
     Color color,
   ) {
-    final total = info.wishes
-        .where((e) => e.state == WishState.won || e.state == WishState.lost);
+    final total = info.wishes.where(
+      (e) => e.state == WishState.won || e.state == WishState.lost,
+    );
     final won = total.count((e) => e.state == WishState.won);
     final percent = won / total.length.coerceAtLeast(1) * 100;
-    return _getInfo(
-      context,
-      label,
-      color,
-      [won, percent, null],
-    );
+    return _getInfo(context, label, color, [won, percent, null]);
   }
 }

@@ -73,55 +73,53 @@ class _InfoScreenState extends State<InfoScreen> {
   Widget _getInvalidList() {
     return ListView(
       padding: const EdgeInsets.all(8),
-      children: _validateList(context).expand((record) {
-        final color0 = GsStyle.getVersionColor(record.version);
-        final color1 = Color.lerp(color0, Colors.black, 0.6)!;
-        return [
-          Container(
-            height: 44,
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [color0, color1],
-                stops: const [0, 0.25],
-              ),
-              border: Border.all(width: 2, color: color1),
-            ),
-            padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.only(bottom: 8),
-            child: Text('Version ${record.version}'),
-          ),
-          ...record.items.map((record) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 4),
-              padding: const EdgeInsets.only(bottom: 4),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Color(0x66FFFFFF)),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text(record.label),
+      children:
+          _validateList(context).expand((record) {
+            final color0 = GsStyle.getVersionColor(record.version);
+            final color1 = Color.lerp(color0, Colors.black, 0.6)!;
+            return [
+              Container(
+                height: 44,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [color0, color1],
+                    stops: const [0, 0.25],
                   ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    flex: 6,
-                    child: Wrap(
-                      spacing: 4,
-                      runSpacing: 4,
-                      children: record.items.toList(),
+                  border: Border.all(width: 2, color: color1),
+                ),
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.only(bottom: 8),
+                child: Text('Version ${record.version}'),
+              ),
+              ...record.items.map((record) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 4),
+                  padding: const EdgeInsets.only(bottom: 4),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0x66FFFFFF)),
                     ),
                   ),
-                ],
-              ),
-            );
-          }),
-          const SizedBox(height: 24),
-        ];
-      }).toList(),
+                  child: Row(
+                    children: [
+                      Expanded(flex: 2, child: Text(record.label)),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        flex: 6,
+                        child: Wrap(
+                          spacing: 4,
+                          runSpacing: 4,
+                          children: record.items.toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              const SizedBox(height: 24),
+            ];
+          }).toList(),
     );
   }
 
@@ -131,12 +129,13 @@ class _InfoScreenState extends State<InfoScreen> {
       builder: (context, value, child) {
         return ListView(
           padding: const EdgeInsets.all(8).copyWith(bottom: 0),
-          children: Database.i
-              .of<GsVersion>()
-              .items
-              .sortedByDescending((e) => e.releaseDate)
-              .map(_getChild)
-              .toList(),
+          children:
+              Database.i
+                  .of<GsVersion>()
+                  .items
+                  .sortedByDescending((e) => e.releaseDate)
+                  .map(_getChild)
+                  .toList(),
         );
       },
     );
@@ -168,9 +167,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 _notifier.value =
                     _notifier.value != version.id ? version.id : '';
               },
-              child: Center(
-                child: Text(version.id),
-              ),
+              child: Center(child: Text(version.id)),
             ),
           ),
           _getByVersion<GsAchievementGroup>(version.id),
@@ -197,8 +194,9 @@ class _InfoScreenState extends State<InfoScreen> {
     if (!_isExpanded(version)) return const SizedBox();
     final config = GsConfigs.of<T>();
     if (config == null) return const SizedBox();
-    final versionItems = config.collection.items
-        .where((e) => config.itemDecoration(e).version == version);
+    final versionItems = config.collection.items.where(
+      (e) => config.itemDecoration(e).version == version,
+    );
     if (versionItems.isEmpty) return const SizedBox();
 
     Widget badge(Color color) {
@@ -211,10 +209,7 @@ class _InfoScreenState extends State<InfoScreen> {
             color: Color.lerp(color, Colors.white, 0.2)!,
           ),
           gradient: LinearGradient(
-            colors: [
-              color,
-              Color.lerp(color, Colors.black, 0.2)!,
-            ],
+            colors: [color, Color.lerp(color, Colors.black, 0.2)!],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -248,33 +243,35 @@ class _InfoScreenState extends State<InfoScreen> {
                   child: Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: versionItems.map<Widget>((item) {
-                      final decor = config.itemDecoration(item);
-                      final level = DataValidator.i.getLevel<T>(item.id);
-                      Widget widget = GsSelectChip(
-                        GsSelectItem(
-                          item,
-                          decor.label,
-                          color: decor.color ?? GsStyle.getRarityColor(1),
-                        ),
-                        onTap: (item) => config.openEditScreen(context, item),
-                      );
-                      final levelColor = level.color;
-                      if (levelColor != null) {
-                        widget = Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            widget,
-                            Positioned(
-                              top: -2,
-                              right: -2,
-                              child: badge(levelColor),
+                    children:
+                        versionItems.map<Widget>((item) {
+                          final decor = config.itemDecoration(item);
+                          final level = DataValidator.i.getLevel<T>(item.id);
+                          Widget widget = GsSelectChip(
+                            GsSelectItem(
+                              item,
+                              decor.label,
+                              color: decor.color ?? GsStyle.getRarityColor(1),
                             ),
-                          ],
-                        );
-                      }
-                      return widget;
-                    }).toList(),
+                            onTap:
+                                (item) => config.openEditScreen(context, item),
+                          );
+                          final levelColor = level.color;
+                          if (levelColor != null) {
+                            widget = Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                widget,
+                                Positioned(
+                                  top: -2,
+                                  right: -2,
+                                  child: badge(levelColor),
+                                ),
+                              ],
+                            );
+                          }
+                          return widget;
+                        }).toList(),
                   ),
                 );
               },
@@ -306,24 +303,22 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
       }
 
       final config = GsConfigs.of<T>();
-      final items = values.map((value) {
-        final decor = value != null ? config?.itemDecoration(value) : null;
-        final color = GsStyle.getRarityColor(decor?.rarity ?? 1);
+      final items =
+          values.map((value) {
+            final decor = value != null ? config?.itemDecoration(value) : null;
+            final color = GsStyle.getRarityColor(decor?.rarity ?? 1);
 
-        return GsSelectChip(
-          GsSelectItem(
-            value,
-            decor?.label ?? T.toString(),
-            color: color,
-          ),
-          onTap: (item) => config?.openEditScreen(context, item),
-        );
-      }).toList();
+            return GsSelectChip(
+              GsSelectItem(value, decor?.label ?? T.toString(), color: color),
+              onTap: (item) => config?.openEditScreen(context, item),
+            );
+          }).toList();
       buffer.add((items: items, label: label));
     }
 
-    final battlepass =
-        items<GsBattlepass>().firstOrNullWhere((e) => e.version == version.id);
+    final battlepass = items<GsBattlepass>().firstOrNullWhere(
+      (e) => e.version == version.id,
+    );
     if (battlepass == null) {
       addItems<GsBattlepass>('Missing battlepass!', [null]);
     }
@@ -416,8 +411,9 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
     }
 
     final sets = items<GsSereniteaSet>();
-    final charMissingGift =
-        chars.where((e) => sets.count((s) => s.chars.contains(e.id)) != 2);
+    final charMissingGift = chars.where(
+      (e) => sets.count((s) => s.chars.contains(e.id)) != 2,
+    );
     if (charMissingGift.isNotEmpty) {
       addItems<GsCharacter>('Missing Serenitea Gift', charMissingGift);
     }
@@ -426,8 +422,9 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
     final versionRecipes = recipes.where((e) => e.version == version.id);
     final charRecipes = versionRecipes.where((e) => e.baseRecipe.isNotEmpty);
 
-    final isNotPermanent =
-        charRecipes.where((e) => e.type != GeRecipeType.permanent);
+    final isNotPermanent = charRecipes.where(
+      (e) => e.type != GeRecipeType.permanent,
+    );
     if (isNotPermanent.isNotEmpty) {
       addItems('Recipes are not permanent:', isNotPermanent);
     }

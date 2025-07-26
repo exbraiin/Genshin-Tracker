@@ -64,7 +64,7 @@ String _writeDelegate(Map<String, String> json) {
     final hasPlural = plural.any((p) => json.keys.contains('${entry.key}$p'));
 
     final fnName = _normalizeName(entry.key);
-    final params = groups.map((e) => _normalizeName(e)).join(', ');
+    final params = groups.map((e) => 'Object? ${_normalizeName(e)}').join(', ');
     buffer.writeln();
     buffer.writeln('  /// ${_normalizeDocs(entry.value)}');
 

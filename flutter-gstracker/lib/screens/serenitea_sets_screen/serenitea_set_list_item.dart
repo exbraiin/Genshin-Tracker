@@ -49,10 +49,7 @@ class SereniteaSetListItem extends StatelessWidget {
                 (i, e) => Positioned(
                   right: kSeparator2 + i * kSeparator16,
                   bottom: kSeparator2,
-                  child: ItemCircleWidget(
-                    image: e.image,
-                    rarity: e.rarity,
-                  ),
+                  child: ItemCircleWidget(image: e.image, rarity: e.rarity),
                 ),
               ),
         ],

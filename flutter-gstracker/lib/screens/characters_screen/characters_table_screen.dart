@@ -21,7 +21,7 @@ class CharactersTableScreen extends StatefulWidget {
 }
 
 class _CharactersTableScreenState extends State<CharactersTableScreen> {
-  var _sorter = false;
+  var _ascending = false;
   _TableItem? _sortItem;
   var _idSortedList = <String>[];
   late final List<_TableItem> _builders;
@@ -43,7 +43,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
             final list = _getCharsSorted(filter.match(items)).where(
               (e) =>
                   !filter.hasExtra(FilterExtras.hide) ||
-                  (e.talents?.total ?? 0) < 9 * 3,
+                  (e.talents?.total ?? 0) < CharTalents.kTotalCrownless,
             );
 
             return InventoryPage(
@@ -54,17 +54,16 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                   IconButton(
                     tooltip: context.labels.hide999Characters(),
                     onPressed: () => toggle(FilterExtras.hide),
-                    icon: filter.hasExtra(FilterExtras.hide)
-                        ? Icon(Icons.visibility_off_rounded)
-                        : Icon(Icons.visibility_rounded),
+                    icon:
+                        filter.hasExtra(FilterExtras.hide)
+                            ? Icon(Icons.visibility_off_rounded)
+                            : Icon(Icons.visibility_rounded),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
                   button,
                 ],
               ),
-              child: InventoryBox(
-                child: _getList(context, list),
-              ),
+              child: InventoryBox(child: _getList(context, list)),
             );
           },
         );
@@ -73,6 +72,18 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
   }
 
   Widget _getList(BuildContext context, Iterable<CharInfo> characters) {
+    void applySort(_TableItem item) {
+      if (_sortItem == null || _sortItem != item) {
+        _ascending = true;
+        _sortItem = item;
+      } else if (_ascending) {
+        _ascending = false;
+      } else {
+        _ascending = true;
+        _sortItem = null;
+      }
+    }
+
     return SingleChildScrollView(
       child: Table(
         columnWidths: Map.fromEntries(
@@ -85,79 +96,69 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
         ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder.symmetric(
-          inside: BorderSide(
-            color: context.themeColors.mainColor0,
-          ),
+          inside: BorderSide(color: context.themeColors.mainColor0),
         ),
         children: [
           TableRow(
-            children: _builders.map((item) {
-              return InkWell(
-                onTap: item.sortBy != null
-                    ? () {
-                        setState(() {
-                          if (_sortItem == null || _sortItem != item) {
-                            _sorter = true;
-                            _sortItem = item;
-                          } else if (_sorter) {
-                            _sorter = false;
-                          } else {
-                            _sorter = true;
-                            _sortItem = null;
-                          }
-                          _idSortedList = _getCharsIdsSorted(characters);
-                        });
-                      }
-                    : null,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: kSeparator4,
-                    horizontal: kSeparator8,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        item.label,
-                        textAlign: !item.expand ? TextAlign.center : null,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Icon(
-                        _sortItem == item
-                            ? _sorter
-                                ? Icons.arrow_drop_up_rounded
-                                : Icons.arrow_drop_down_rounded
+            children:
+                _builders.map((item) {
+                  return InkWell(
+                    onTap:
+                        item.sortBy != null
+                            ? () {
+                              setState(() {
+                                applySort(item);
+                                _idSortedList = _getCharsIdsSorted(characters);
+                              });
+                            }
                             : null,
-                        color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: kSeparator4,
+                        horizontal: kSeparator8,
                       ),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
+                      child: Row(
+                        children: [
+                          Text(
+                            item.label,
+                            textAlign: !item.expand ? TextAlign.center : null,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            _sortItem == item
+                                ? _ascending
+                                    ? Icons.arrow_drop_up_rounded
+                                    : Icons.arrow_drop_down_rounded
+                                : null,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
           ),
           ...characters.map((item) {
             return TableRow(
-              children: _builders.map<Widget>((e) {
-                final child = Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: kSeparator4,
-                    horizontal: kSeparator8,
-                  ),
-                  child: Opacity(
-                    opacity: item.isOwned ? 1 : kDisableOpacity,
-                    child: e.builder(item),
-                  ),
-                );
+              children:
+                  _builders.map<Widget>((e) {
+                    final child = Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: kSeparator4,
+                        horizontal: kSeparator8,
+                      ),
+                      child: Opacity(
+                        opacity: item.isOwned ? 1 : kDisableOpacity,
+                        child: e.builder(item),
+                      ),
+                    );
 
-                if (e.onTap != null && (e.allowTap || item.isOwned)) {
-                  return InkWell(
-                    onTap: () => e.onTap!(item),
-                    child: child,
-                  );
-                }
+                    if (e.onTap != null && (e.allowTap || item.isOwned)) {
+                      return InkWell(onTap: () => e.onTap!(item), child: child);
+                    }
 
-                return child;
-              }).toList(),
+                    return child;
+                  }).toList(),
             );
           }),
         ],
@@ -166,25 +167,37 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
   }
 
   List<_TableItem> _getBuilders(BuildContext context) {
-    double unowned() => _sorter ? double.infinity : double.negativeInfinity;
+    Color getGoodColor(int value, int max) {
+      return context.themeColors.colorByPity(max - value, max);
+    }
+
+    double unowned() => _ascending ? double.infinity : double.negativeInfinity;
     return [
       _TableItem(
         label: 'Icon',
-        builder: (info) => ItemCircleWidget(
-          image: info.iconImage,
-          size: kSize56,
-          rarity: info.item.rarity,
-        ),
+        sortBy: (e) => e.item.element.index,
+        builder: (info) {
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              ItemCircleWidget(
+                image: info.item.image,
+                rarity: info.item.rarity,
+                size: kSize50,
+              ),
+              Positioned(
+                right: -6,
+                bottom: -6,
+                child: ItemIconWidget.asset(
+                  info.item.element.assetPath,
+                  size: 24,
+                ),
+              ),
+            ],
+          );
+        },
         allowTap: true,
         onTap: (info) => CharacterDetailsCard(info.item).show(context),
-      ),
-      _TableItem(
-        label: 'Element',
-        sortBy: (e) => e.item.element.index,
-        builder: (info) => ItemIconWidget.asset(
-          info.item.element.assetPath,
-          size: kSize44,
-        ),
       ),
       _TableItem(
         label: 'Name',
@@ -195,43 +208,48 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
       _TableItem(
         label: 'Friendship',
         sortBy: (e) => e.isOwned ? e.friendship : unowned(),
-        builder: (info) => Text(
-          info.isOwned ? '${info.friendship}' : '-',
-          textAlign: TextAlign.center,
-        ),
-        onTap: (info) =>
-            GsUtils.characters.increaseFriendshipCharacter(info.item.id),
+        builder:
+            (info) => Text(
+              info.isOwned ? '${info.friendship}' : '-',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: getGoodColor(info.friendship, 10)),
+            ),
+        onTap:
+            (info) =>
+                GsUtils.characters.increaseFriendshipCharacter(info.item.id),
       ),
       _TableItem(
-        label: 'Ascension',
+        label: 'Asc.',
         sortBy: (e) => e.isOwned ? e.ascension : unowned(),
-        builder: (info) => Text(
-          info.isOwned ? '${info.ascension} ✦' : '-',
-          textAlign: TextAlign.center,
-        ),
+        builder:
+            (info) => Text(
+              info.isOwned ? '${info.ascension} ✦' : '-',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: getGoodColor(info.ascension, 6)),
+            ),
         onTap: (info) => GsUtils.characters.increaseAscension(info.item.id),
       ),
       _TableItem(
-        label: 'Constellations',
+        label: 'Cons.',
         sortBy: (e) => e.isOwned ? e.totalConstellations : unowned(),
-        builder: (info) => Text.rich(
-          info.isOwned
-              ? TextSpan(
-                  children: [
-                    TextSpan(text: 'C${info.constellations}'),
-                    if (info.extraConstellations > 0)
-                      TextSpan(
-                        text: ' (+${info.extraConstellations})',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontStyle: FontStyle.italic,
+        builder:
+            (info) => Text.rich(
+              info.isOwned
+                  ? TextSpan(
+                    children: [
+                      TextSpan(text: 'C${info.constellations}'),
+                      if (info.extraConstellations > 0)
+                        TextSpan(
+                          text: ' +${info.extraConstellations}',
+                          style: context.themeStyles.label12i.copyWith(
+                            fontSize: 10,
+                          ),
                         ),
-                      ),
-                  ],
-                )
-              : const TextSpan(text: '-'),
-          textAlign: TextAlign.center,
-        ),
+                    ],
+                  )
+                  : const TextSpan(text: '-'),
+              textAlign: TextAlign.center,
+            ),
       ),
       ...CharTalentType.values.map((e) => _talentTableItem(e)),
       _TableItem(
@@ -246,16 +264,18 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color:
-                      (info.talents?.total ?? 0) >= 30 ? Colors.yellow : null,
+                      (info.talents?.total ?? 0) >= CharTalents.kTotal
+                          ? Colors.yellow
+                          : getGoodColor(
+                            info.talents?.total ?? 0,
+                            CharTalents.kTotalCrownless,
+                          ),
                 ),
               ),
-              if ((info.talents?.total ?? 0) >= 30)
+              if ((info.talents?.total ?? 0) >= CharTalents.kTotal)
                 const Padding(
                   padding: EdgeInsets.only(left: kSeparator2),
-                  child: Icon(
-                    Icons.star_rounded,
-                    color: Colors.yellow,
-                  ),
+                  child: Icon(Icons.star_rounded, color: Colors.yellow),
                 ),
             ],
           );
@@ -265,7 +285,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
   }
 
   _TableItem _talentTableItem(CharTalentType tal) {
-    double unowned() => _sorter ? double.infinity : double.negativeInfinity;
+    double unowned() => _ascending ? double.infinity : double.negativeInfinity;
 
     /// TODO: Localize labels...
     final label = switch (tal) {
@@ -283,9 +303,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
         return Text(
           value?.toString() ?? '-',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: hasExtra ? Colors.lightBlue : null,
-          ),
+          style: TextStyle(color: hasExtra ? Colors.lightBlue : null),
         );
       },
       onTap: (info) => GsUtils.characters.increaseTalent(info.item.id, tal),
@@ -295,6 +313,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
   Iterable<CharInfo> _getCharsSorted(Iterable<GsCharacter> characters) {
     final info = GsUtils.characters.getCharInfo;
     var chars = characters.map((e) => info(e.id)).whereNotNull();
+
     if (_idSortedList.isNotEmpty) {
       chars = chars.sortedBy((e) => _idSortedList.indexOf(e.item.id));
     }
@@ -304,8 +323,9 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
   List<String> _getCharsIdsSorted(Iterable<CharInfo> chars) {
     if (_sortItem == null) return const [];
 
-    final sorted = _sorter ? chars.sortedBy : chars.sortedByDescending;
+    final sorted = _ascending ? chars.sortedBy : chars.sortedByDescending;
     return sorted((e) => _sortItem!.sortBy?.call(e) ?? 0)
+        .thenByDescending((e) => e.item.releaseDate)
         .thenBy((e) => e.item.name)
         .map((e) => e.item.id)
         .toList();

@@ -57,9 +57,10 @@ class _ItemsListScreenState<T extends GsModel<T>>
         actions: [
           if (sortByVersion)
             IconButton(
-              icon: _sortByVersion
-                  ? const Icon(Icons.arrow_drop_down_rounded)
-                  : const Icon(Icons.arrow_drop_up_rounded),
+              icon:
+                  _sortByVersion
+                      ? const Icon(Icons.arrow_drop_down_rounded)
+                      : const Icon(Icons.arrow_drop_up_rounded),
               onPressed: () => setState(() => _sortByVersion = !_sortByVersion),
             ),
           IconButton(
@@ -69,10 +70,11 @@ class _ItemsListScreenState<T extends GsModel<T>>
           ),
           IconButton(
             icon: const Icon(Icons.search_rounded),
-            onPressed: () => _GsSearchItem(
-              _searchQuery,
-              (value) => setState(() => _searchQuery = value),
-            ).show(context),
+            onPressed:
+                () => _GsSearchItem(
+                  _searchQuery,
+                  (value) => setState(() => _searchQuery = value),
+                ).show(context),
           ),
           if (widget.filters.isNotEmpty)
             IconButton(
@@ -89,12 +91,13 @@ class _ItemsListScreenState<T extends GsModel<T>>
       body: StreamBuilder(
         stream: Database.i.modified,
         builder: (context, snapshot) {
-          final collection = _sortByVersion && sortByVersion
-              ? widget
-                  .list()
-                  .sortedByDescending((e) => widget.getDecor(e).version)
-                  .thenWith((a, b) => a.compareTo(b))
-              : widget.list();
+          final collection =
+              _sortByVersion && sortByVersion
+                  ? widget
+                      .list()
+                      .sortedByDescending((e) => widget.getDecor(e).version)
+                      .thenWith((a, b) => a.compareTo(b))
+                  : widget.list();
 
           final list = collection.where((item) {
             // Apply filters...
@@ -114,16 +117,17 @@ class _ItemsListScreenState<T extends GsModel<T>>
           });
 
           return GsGridView(
-            children: list.map((item) {
-              final level = DataValidator.i.getLevel<T>(item.id);
-              final decor = widget.getDecor(item);
-              return GsGridItem.decor(
-                decor,
-                validLevel: level,
-                onTap: () => widget.onTap?.call(context, item),
-                child: decor.child,
-              );
-            }).toList(),
+            children:
+                list.map((item) {
+                  final level = DataValidator.i.getLevel<T>(item.id);
+                  final decor = widget.getDecor(item);
+                  return GsGridItem.decor(
+                    decor,
+                    validLevel: level,
+                    onTap: () => widget.onTap?.call(context, item),
+                    child: decor.child,
+                  );
+                }).toList(),
           );
         },
       ),
@@ -151,35 +155,44 @@ class _ItemsListScreenState<T extends GsModel<T>>
                     return ListView(
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(8),
-                      children: filters.mapIndexed((i, e) {
-                        return Column(
-                          children: [
-                            Text(e.label),
-                            const SizedBox(height: 4),
-                            Wrap(
-                              spacing: 4,
-                              runSpacing: 4,
-                              alignment: WrapAlignment.center,
-                              children: e.filters.map((e) {
-                                final contained = selected[i].contains(e.value);
-                                return GsSelectChip(
-                                  e,
-                                  selected: contained,
-                                  onTap: (item) {
-                                    value.value++;
-                                    setState(
-                                      () => contained
-                                          ? selected[i].remove(e.value)
-                                          : selected[i].add(e.value),
-                                    );
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                        );
-                      }).toList(),
+                      children:
+                          filters.mapIndexed((i, e) {
+                            return Column(
+                              children: [
+                                Text(e.label),
+                                const SizedBox(height: 4),
+                                Wrap(
+                                  spacing: 4,
+                                  runSpacing: 4,
+                                  alignment: WrapAlignment.center,
+                                  children:
+                                      e.filters.map((e) {
+                                        final contained = selected[i].contains(
+                                          e.value,
+                                        );
+                                        return GsSelectChip(
+                                          e,
+                                          selected: contained,
+                                          onTap: (item) {
+                                            value.value++;
+                                            setState(
+                                              () =>
+                                                  contained
+                                                      ? selected[i].remove(
+                                                        e.value,
+                                                      )
+                                                      : selected[i].add(
+                                                        e.value,
+                                                      ),
+                                            );
+                                          },
+                                        );
+                                      }).toList(),
+                                ),
+                                const SizedBox(height: 8),
+                              ],
+                            );
+                          }).toList(),
                     );
                   },
                 ),
@@ -200,32 +213,29 @@ class GsFieldFilter<T extends GsModel<T>> {
   GsFieldFilter(this.label, this.filters, this.filter);
 
   GsFieldFilter.rarity(this.label, int Function(T i) filter, [int min = 1])
-      : filters = List.generate(
-          6 - min,
-          (index) {
-            final rarity = (min + index).toString();
-            return GsSelectItem(
-              rarity,
-              rarity,
-              color: GsStyle.getRarityColor(min + index),
-            );
-          },
-        ),
-        filter = ((i) => filter(i).toString());
+    : filters = List.generate(6 - min, (index) {
+        final rarity = (min + index).toString();
+        return GsSelectItem(
+          rarity,
+          rarity,
+          color: GsStyle.getRarityColor(min + index),
+        );
+      }),
+      filter = ((i) => filter(i).toString());
 
   GsFieldFilter.fromEnum(
     this.label,
     List<GeEnum> filters,
     GeEnum Function(T i) filter,
-  )   : filters = filters.toChips().map((e) {
-          return GsSelectItem(
-            e.value.id,
-            e.label,
-            color: e.color,
-            asset: e.asset,
-          );
-        }),
-        filter = ((i) => filter(i).id);
+  ) : filters = filters.toChips().map((e) {
+        return GsSelectItem(
+          e.value.id,
+          e.label,
+          color: e.color,
+          asset: e.asset,
+        );
+      }),
+      filter = ((i) => filter(i).id);
 }
 
 class GsItemDecor {
@@ -263,16 +273,13 @@ class _GsSearchItem extends StatelessWidget {
   final String initialValue;
   final void Function(String value) onSubmit;
 
-  const _GsSearchItem(
-    this.initialValue,
-    this.onSubmit,
-  );
+  const _GsSearchItem(this.initialValue, this.onSubmit);
 
   void show(BuildContext context) => showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) => this,
-      );
+    context: context,
+    barrierDismissible: true,
+    builder: (context) => this,
+  );
 
   @override
   Widget build(BuildContext context) {

@@ -58,19 +58,21 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: list
-                        .map<Widget>((info) {
-                          return ItemGridWidget.character(
-                            info,
-                            label: '✦${chars.getCharAscension(info.id)}',
-                            onAdd: (ctx) =>
-                                GsUtils.characters.increaseAscension(info.id),
-                          );
-                        })
-                        .separate(
-                          const SizedBox(width: GsSpacing.kGridSeparator),
-                        )
-                        .toList(),
+                    children:
+                        list
+                            .map<Widget>((info) {
+                              return ItemGridWidget.character(
+                                info,
+                                label: '✦${chars.getCharAscension(info.id)}',
+                                onAdd:
+                                    (ctx) => GsUtils.characters
+                                        .increaseAscension(info.id),
+                              );
+                            })
+                            .separate(
+                              const SizedBox(width: GsSpacing.kGridSeparator),
+                            )
+                            .toList(),
                   ),
                   _getMaterialsList(list),
                 ],
@@ -85,9 +87,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
   Widget _getMaterialsList(Iterable<GsCharacter> characters) {
     if (characters.isEmpty) return const SizedBox();
 
-    MapEntry<GsMaterial?, int> combine(
-      List<MapEntry<GsMaterial?, int>> list,
-    ) {
+    MapEntry<GsMaterial?, int> combine(List<MapEntry<GsMaterial?, int>> list) {
       final valid = list.where((e) => e.key != null);
       final first = valid.firstOrNull;
       if (first == null) return const MapEntry(null, 0);
@@ -137,12 +137,13 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                   runSpacing: kSeparator4,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
-                  children: materials.map((e) {
-                    return ItemGridWidget.material(
-                      e.key!,
-                      label: e.value.compact(),
-                    );
-                  }).toList(),
+                  children:
+                      materials.map((e) {
+                        return ItemGridWidget.material(
+                          e.key!,
+                          label: e.value.compact(),
+                        );
+                      }).toList(),
                 ),
               ),
             ),

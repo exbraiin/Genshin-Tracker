@@ -16,14 +16,14 @@ class GsDataBox extends StatelessWidget {
     this.child,
     Color? bgColor,
     this.children = const [],
-  })  : alignment = CrossAxisAlignment.start,
-        padding = const EdgeInsets.all(kSeparator8),
-        decoration = ((ctx) {
-          return BoxDecoration(
-            color: bgColor ?? ctx.themeColors.mainColor0,
-            borderRadius: GsSpacing.kGridRadius,
-          );
-        });
+  }) : alignment = CrossAxisAlignment.start,
+       padding = const EdgeInsets.all(kSeparator8),
+       decoration = ((ctx) {
+         return BoxDecoration(
+           color: bgColor ?? ctx.themeColors.mainColor0,
+           borderRadius: GsSpacing.kGridRadius,
+         );
+       });
 
   @override
   Widget build(BuildContext context) {

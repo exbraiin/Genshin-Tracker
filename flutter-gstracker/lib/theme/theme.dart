@@ -6,19 +6,13 @@ final _themeColors = ThemeColors.defaultTheme();
 final _textStyle = ThemeStyles.defaultTheme(_themeColors);
 final theme = ThemeData(
   extensions: [_themeColors, _textStyle],
-  scrollbarTheme: ScrollbarThemeData(
-    thickness: WidgetStateProperty.all(0),
-  ),
+  scrollbarTheme: ScrollbarThemeData(thickness: WidgetStateProperty.all(0)),
   fontFamily: defaultFontFamily,
   primarySwatch: Colors.blue,
   scaffoldBackgroundColor: _themeColors.mainColor1,
   splashColor: Colors.transparent,
-  appBarTheme: AppBarTheme(
-    backgroundColor: _themeColors.mainColor1,
-  ),
-  colorScheme: ColorScheme.dark(
-    surface: _themeColors.mainColor1,
-  ),
+  appBarTheme: AppBarTheme(backgroundColor: _themeColors.mainColor1),
+  colorScheme: ColorScheme.dark(surface: _themeColors.mainColor1),
   tooltipTheme: TooltipThemeData(
     preferBelow: false,
     enableFeedback: false,
@@ -29,11 +23,7 @@ final theme = ThemeData(
       color: _themeColors.almostWhite,
       borderRadius: BorderRadius.circular(kSeparator4),
       boxShadow: const [
-        BoxShadow(
-          color: Colors.black,
-          offset: Offset(0, 2),
-          blurRadius: 6,
-        ),
+        BoxShadow(color: Colors.black, offset: Offset(0, 2), blurRadius: 6),
       ],
     ),
     textStyle: const TextStyle(
@@ -91,32 +81,32 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   });
 
   ThemeColors.defaultTheme()
-      : primary = Colors.teal,
-        dimWhite = const Color(0xFFCCCCCC),
-        almostWhite = const Color(0xFFEEEEEE),
-        mainColor0 = const Color(0xFF0C122E),
-        mainColor1 = const Color(0xFF1E2240),
-        sectionTitle = const Color(0xFF495366),
-        sectionContent = Color(0xFF717782),
-        divider = Colors.grey.withValues(alpha: 0.2),
-        badValue = Colors.orange,
-        goodValue = Colors.lightGreen,
-        setIndoor = const Color(0xFFA01F2E),
-        setOutdoor = const Color(0xFF303671);
+    : primary = Colors.teal,
+      dimWhite = const Color(0xFFCCCCCC),
+      almostWhite = const Color(0xFFEEEEEE),
+      mainColor0 = const Color(0xFF0C122E),
+      mainColor1 = const Color(0xFF1E2240),
+      sectionTitle = const Color(0xFF495366),
+      sectionContent = Color(0xFF717782),
+      divider = Colors.grey.withValues(alpha: 0.2),
+      badValue = Colors.orange,
+      goodValue = Colors.lightGreen,
+      setIndoor = const Color(0xFFA01F2E),
+      setOutdoor = const Color(0xFF303671);
 
   ThemeColors.darkTheme()
-      : primary = Color.lerp(Colors.black, Colors.cyan, 0.6)!,
-        dimWhite = const Color(0x80FFFFFF),
-        almostWhite = const Color(0xFFEEEEEE),
-        mainColor0 = const Color(0xFF1E1F22),
-        mainColor1 = const Color(0xFF2B2D31),
-        sectionTitle = const Color(0xFF495366),
-        sectionContent = Color(0xFF717782),
-        divider = Colors.grey.withValues(alpha: 0.2),
-        badValue = Colors.orange,
-        goodValue = Colors.lightGreen,
-        setIndoor = const Color(0xFFA01F2E),
-        setOutdoor = const Color(0xFF303671);
+    : primary = Color.lerp(Colors.black, Colors.cyan, 0.6)!,
+      dimWhite = const Color(0x80FFFFFF),
+      almostWhite = const Color(0xFFEEEEEE),
+      mainColor0 = const Color(0xFF1E1F22),
+      mainColor1 = const Color(0xFF2B2D31),
+      sectionTitle = const Color(0xFF495366),
+      sectionContent = Color(0xFF717782),
+      divider = Colors.grey.withValues(alpha: 0.2),
+      badValue = Colors.orange,
+      goodValue = Colors.lightGreen,
+      setIndoor = const Color(0xFFA01F2E),
+      setOutdoor = const Color(0xFF303671);
 
   Color colorByPity(int pity, [int max = 90]) {
     final h = (1 - (pity / max)) * 120;
@@ -253,17 +243,17 @@ class ThemeStyles extends ThemeExtension<ThemeStyles> {
   });
 
   ThemeStyles.defaultTheme(ThemeColors colors)
-      : emptyState = _style(14, colors.dimWhite),
-        title24n = _style(24, Colors.white),
-        title20n = _style(20, Colors.white),
-        title18n = _style(18, Colors.white),
-        label16n = _style(16, Colors.white),
-        label14n = _style(14, Colors.white),
-        label14b = _style(14, Colors.white, w: FontWeight.bold),
-        label12n = _style(12, Colors.white),
-        label12i = _style(12, colors.dimWhite, s: FontStyle.italic),
-        label12b = _style(12, Colors.white, w: FontWeight.bold),
-        fgLabel12b = _style(12, Colors.black87, w: FontWeight.bold);
+    : emptyState = _style(14, colors.dimWhite),
+      title24n = _style(24, Colors.white),
+      title20n = _style(20, Colors.white),
+      title18n = _style(18, Colors.white),
+      label16n = _style(16, Colors.white),
+      label14n = _style(14, Colors.white),
+      label14b = _style(14, Colors.white, w: FontWeight.bold),
+      label12n = _style(12, Colors.white),
+      label12i = _style(12, colors.dimWhite, s: FontStyle.italic),
+      label12b = _style(12, Colors.white, w: FontWeight.bold),
+      fgLabel12b = _style(12, Colors.black87, w: FontWeight.bold);
 
   static TextStyle _style(
     double fontSize,
@@ -317,8 +307,6 @@ extension ThemeExt on BuildContext {
 }
 
 extension TextStyleExt on TextStyle {
-  StrutStyle toStrut() => StrutStyle(
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-      );
+  StrutStyle toStrut() =>
+      StrutStyle(fontSize: fontSize, fontWeight: fontWeight);
 }

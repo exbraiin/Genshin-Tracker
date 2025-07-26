@@ -27,11 +27,13 @@ class SliverGridDelegateWithFixedChildSize extends SliverGridDelegate {
       crossAxisSize = childHeight;
     }
 
-    final crossAxisCount = ((constraints.crossAxisExtent + crossAxisSpacing) /
-            (crossAxisSize + crossAxisSpacing))
-        .floor();
+    final crossAxisCount =
+        ((constraints.crossAxisExtent + crossAxisSpacing) /
+                (crossAxisSize + crossAxisSpacing))
+            .floor();
 
-    late final remainingSpace = constraints.crossAxisExtent -
+    late final remainingSpace =
+        constraints.crossAxisExtent -
         (crossAxisSize + crossAxisSpacing) * crossAxisCount;
 
     late final double crossAxisOffset;

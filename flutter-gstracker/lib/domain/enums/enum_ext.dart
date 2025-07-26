@@ -104,15 +104,15 @@ extension GeItemSourceTypeExt on GeItemSourceType {
 
 extension GeElementTypeExt on GeElementType {
   Color get color => switch (this) {
-        GeElementType.none => Colors.grey,
-        GeElementType.anemo => const Color(0xFF33CCB3),
-        GeElementType.geo => const Color(0xFFCFA726),
-        GeElementType.electro => const Color(0xFFD376F0),
-        GeElementType.dendro => const Color(0xFF77AD2D),
-        GeElementType.hydro => const Color(0xFF1C72FD),
-        GeElementType.pyro => const Color(0xFFE2311D),
-        GeElementType.cryo => const Color(0xFF98C8E8),
-      };
+    GeElementType.none => Colors.grey,
+    GeElementType.anemo => const Color(0xFF33CCB3),
+    GeElementType.geo => const Color(0xFFCFA726),
+    GeElementType.electro => const Color(0xFFD376F0),
+    GeElementType.dendro => const Color(0xFF77AD2D),
+    GeElementType.hydro => const Color(0xFF1C72FD),
+    GeElementType.pyro => const Color(0xFFE2311D),
+    GeElementType.cryo => const Color(0xFF98C8E8),
+  };
 
   String label(BuildContext ctx) {
     return switch (this) {
@@ -156,24 +156,24 @@ extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
   }
 
   String get assetPath => switch (this) {
-        GeCharacterAscStatType.none => AppAssets.missingIcon,
-        GeCharacterAscStatType.anemoDmgBonus => '$_ep/anemo.png',
-        GeCharacterAscStatType.geoDmgBonus => '$_ep/geo.png',
-        GeCharacterAscStatType.electroDmgBonus => '$_ep/electro.png',
-        GeCharacterAscStatType.dendroDmgBonus => '$_ep/dendro.png',
-        GeCharacterAscStatType.hydroDmgBonus => '$_ep/hydro.png',
-        GeCharacterAscStatType.pyroDmgBonus => '$_ep/pyro.png',
-        GeCharacterAscStatType.cryoDmgBonus => '$_ep/cryo.png',
-        GeCharacterAscStatType.hpPercent => '$_wp/hpPercent.png',
-        GeCharacterAscStatType.atkPercent => '$_wp/atkPercent.png',
-        GeCharacterAscStatType.defPercent => '$_wp/defPercent.png',
-        GeCharacterAscStatType.critDmg => '$_wp/critDmg.png',
-        GeCharacterAscStatType.critRate => '$_wp/critRate.png',
-        GeCharacterAscStatType.healing => '$_wp/healing.png',
-        GeCharacterAscStatType.physicalDmg => '$_wp/physicalDmg.png',
-        GeCharacterAscStatType.energyRecharge => '$_wp/energyRecharge.png',
-        GeCharacterAscStatType.elementalMastery => '$_wp/elementalMastery.png',
-      };
+    GeCharacterAscStatType.none => AppAssets.missingIcon,
+    GeCharacterAscStatType.anemoDmgBonus => '$_ep/anemo.png',
+    GeCharacterAscStatType.geoDmgBonus => '$_ep/geo.png',
+    GeCharacterAscStatType.electroDmgBonus => '$_ep/electro.png',
+    GeCharacterAscStatType.dendroDmgBonus => '$_ep/dendro.png',
+    GeCharacterAscStatType.hydroDmgBonus => '$_ep/hydro.png',
+    GeCharacterAscStatType.pyroDmgBonus => '$_ep/pyro.png',
+    GeCharacterAscStatType.cryoDmgBonus => '$_ep/cryo.png',
+    GeCharacterAscStatType.hpPercent => '$_wp/hpPercent.png',
+    GeCharacterAscStatType.atkPercent => '$_wp/atkPercent.png',
+    GeCharacterAscStatType.defPercent => '$_wp/defPercent.png',
+    GeCharacterAscStatType.critDmg => '$_wp/critDmg.png',
+    GeCharacterAscStatType.critRate => '$_wp/critRate.png',
+    GeCharacterAscStatType.healing => '$_wp/healing.png',
+    GeCharacterAscStatType.physicalDmg => '$_wp/physicalDmg.png',
+    GeCharacterAscStatType.energyRecharge => '$_wp/energyRecharge.png',
+    GeCharacterAscStatType.elementalMastery => '$_wp/elementalMastery.png',
+  };
 
   String toIntOrPercentage(double value, {bool format = true}) {
     final percentage = GeCharacterAscStatType.values.except({
@@ -182,9 +182,10 @@ extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
     });
 
     late final dc = value.toStringAsFixed(1).split('.').last;
-    final str = format
-        ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
-        : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
+    final str =
+        format
+            ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
+            : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
     return !percentage.contains(this) ? str : '$str%';
   }
 }
@@ -214,10 +215,10 @@ extension GeRecipeTypeExt on GeRecipeType {
 
 extension GeSereniteaSetTypeExt on GeSereniteaSetType {
   Color get color => switch (this) {
-        GeSereniteaSetType.none => Colors.grey,
-        GeSereniteaSetType.indoor => const Color(0xFFA01F2E),
-        GeSereniteaSetType.outdoor => const Color(0xFF303671),
-      };
+    GeSereniteaSetType.none => Colors.grey,
+    GeSereniteaSetType.indoor => const Color(0xFFA01F2E),
+    GeSereniteaSetType.outdoor => const Color(0xFF303671),
+  };
 
   String label(BuildContext ctx) {
     return switch (this) {
@@ -298,16 +299,16 @@ extension GeWeaponAscStatTypeExt on GeWeaponAscStatType {
   }
 
   String get assetPath => switch (this) {
-        GeWeaponAscStatType.none => '',
-        GeWeaponAscStatType.critDmg => '$_wp/critDmg.png',
-        GeWeaponAscStatType.critRate => '$_wp/critRate.png',
-        GeWeaponAscStatType.physicalDmg => '$_wp/physicalDmg.png',
-        GeWeaponAscStatType.elementalMastery => '$_wp/elementalMastery.png',
-        GeWeaponAscStatType.energyRecharge => '$_wp/energyRecharge.png',
-        GeWeaponAscStatType.hpPercent => '$_wp/hpPercent.png',
-        GeWeaponAscStatType.atkPercent => '$_wp/atkPercent.png',
-        GeWeaponAscStatType.defPercent => '$_wp/defPercent.png',
-      };
+    GeWeaponAscStatType.none => '',
+    GeWeaponAscStatType.critDmg => '$_wp/critDmg.png',
+    GeWeaponAscStatType.critRate => '$_wp/critRate.png',
+    GeWeaponAscStatType.physicalDmg => '$_wp/physicalDmg.png',
+    GeWeaponAscStatType.elementalMastery => '$_wp/elementalMastery.png',
+    GeWeaponAscStatType.energyRecharge => '$_wp/energyRecharge.png',
+    GeWeaponAscStatType.hpPercent => '$_wp/hpPercent.png',
+    GeWeaponAscStatType.atkPercent => '$_wp/atkPercent.png',
+    GeWeaponAscStatType.defPercent => '$_wp/defPercent.png',
+  };
 
   String toIntOrPercentage(double value, {bool format = true}) {
     final percentage = GeWeaponAscStatType.values.except({
@@ -316,9 +317,10 @@ extension GeWeaponAscStatTypeExt on GeWeaponAscStatType {
     });
 
     late final dc = value.toStringAsFixed(1).split('.').last;
-    final str = format
-        ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
-        : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
+    final str =
+        format
+            ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
+            : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
     return !percentage.contains(this) ? str : '$str%';
   }
 }
@@ -339,14 +341,14 @@ extension GeRegionTypeExt on GeRegionType {
   }
 
   Color get color => switch (this) {
-        GeRegionType.none => Colors.grey,
-        GeRegionType.mondstadt => const Color(0xFF33CCB3),
-        GeRegionType.liyue => const Color(0xFFCFA726),
-        GeRegionType.inazuma => const Color(0xFFD376F0),
-        GeRegionType.sumeru => const Color(0xFF77AD2D),
-        GeRegionType.fontaine => const Color(0xFF1C72FD),
-        GeRegionType.natlan => const Color(0xFFE2311D),
-        GeRegionType.snezhnaya => const Color(0xFF98C8E8),
-        GeRegionType.khaenriah => Colors.grey,
-      };
+    GeRegionType.none => Colors.grey,
+    GeRegionType.mondstadt => const Color(0xFF33CCB3),
+    GeRegionType.liyue => const Color(0xFFCFA726),
+    GeRegionType.inazuma => const Color(0xFFD376F0),
+    GeRegionType.sumeru => const Color(0xFF77AD2D),
+    GeRegionType.fontaine => const Color(0xFF1C72FD),
+    GeRegionType.natlan => const Color(0xFFE2311D),
+    GeRegionType.snezhnaya => const Color(0xFF98C8E8),
+    GeRegionType.khaenriah => Colors.grey,
+  };
 }

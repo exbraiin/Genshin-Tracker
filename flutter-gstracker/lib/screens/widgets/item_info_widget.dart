@@ -68,11 +68,11 @@ class ItemGridWidget extends StatelessWidget {
     this.onAdd,
     this.onRemove,
     ContextCallback<GsMaterial>? onTap = _callMaterial,
-  })  : rarity = info.rarity,
-        tooltip = info.name,
-        urlImage = info.image,
-        assetImage = '',
-        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+  }) : rarity = info.rarity,
+       tooltip = info.name,
+       urlImage = info.image,
+       assetImage = '',
+       onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.recipe(
     GsRecipe info, {
@@ -85,11 +85,11 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     bool tooltip = true,
     ContextCallback<GsRecipe>? onTap = _callRecipe,
-  })  : rarity = info.rarity,
-        tooltip = tooltip ? info.name : '',
-        urlImage = info.image,
-        assetImage = '',
-        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+  }) : rarity = info.rarity,
+       tooltip = tooltip ? info.name : '',
+       urlImage = info.image,
+       assetImage = '',
+       onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.weapon(
     GsWeapon info, {
@@ -101,11 +101,11 @@ class ItemGridWidget extends StatelessWidget {
     this.onAdd,
     this.onRemove,
     ContextCallback<GsWeapon>? onTap = _callWeapon,
-  })  : rarity = info.rarity,
-        tooltip = info.name,
-        urlImage = info.image,
-        assetImage = '',
-        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+  }) : rarity = info.rarity,
+       tooltip = info.name,
+       urlImage = info.image,
+       assetImage = '',
+       onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.character(
     GsCharacter info, {
@@ -117,11 +117,11 @@ class ItemGridWidget extends StatelessWidget {
     this.onAdd,
     this.onRemove,
     ContextCallback<GsCharacter>? onTap = _callCharacter,
-  })  : rarity = info.rarity,
-        tooltip = info.name,
-        urlImage = info.image,
-        assetImage = '',
-        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+  }) : rarity = info.rarity,
+       tooltip = info.name,
+       urlImage = info.image,
+       assetImage = '',
+       onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.serenitea(
     GsSereniteaSet info, {
@@ -133,11 +133,11 @@ class ItemGridWidget extends StatelessWidget {
     this.onAdd,
     this.onRemove,
     ContextCallback<GsSereniteaSet>? onTap = _callSerenitea,
-  })  : rarity = info.rarity,
-        tooltip = info.name,
-        urlImage = info.image,
-        assetImage = '',
-        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+  }) : rarity = info.rarity,
+       tooltip = info.name,
+       urlImage = info.image,
+       assetImage = '',
+       onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.remarkableChest(
     GsFurnitureChest info, {
@@ -149,11 +149,11 @@ class ItemGridWidget extends StatelessWidget {
     this.onAdd,
     this.onRemove,
     ContextCallback<GsFurnitureChest>? onTap = _callFurnitureChest,
-  })  : rarity = info.rarity,
-        tooltip = info.name,
-        urlImage = info.image,
-        assetImage = '',
-        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+  }) : rarity = info.rarity,
+       tooltip = info.name,
+       urlImage = info.image,
+       assetImage = '',
+       onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.namecard(
     GsNamecard info, {
@@ -165,17 +165,18 @@ class ItemGridWidget extends StatelessWidget {
     this.onAdd,
     this.onRemove,
     ContextCallback<GsNamecard>? onTap = _callNamecard,
-  })  : rarity = info.rarity,
-        tooltip = info.name,
-        urlImage = info.image,
-        assetImage = '',
-        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
+  }) : rarity = info.rarity,
+       tooltip = info.name,
+       urlImage = info.image,
+       assetImage = '',
+       onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   @override
   Widget build(BuildContext context) {
-    var child = urlImage.isNotEmpty
-        ? CachedImageWidget(urlImage)
-        : assetImage.isNotEmpty
+    var child =
+        urlImage.isNotEmpty
+            ? CachedImageWidget(urlImage)
+            : assetImage.isNotEmpty
             ? Image.asset(assetImage)
             : const SizedBox();
 
@@ -230,21 +231,19 @@ class ItemGridWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
         borderRadius: GsSpacing.kGridRadius,
-        image: rarity.between(1, 5)
-            ? DecorationImage(
-                image: AssetImage(GsAssets.getRarityBgImage(rarity)),
-                fit: BoxFit.cover,
-              )
-            : null,
+        image:
+            rarity.between(1, 5)
+                ? DecorationImage(
+                  image: AssetImage(GsAssets.getRarityBgImage(rarity)),
+                  fit: BoxFit.cover,
+                )
+                : null,
       ),
       child: child,
     );
 
     if (tooltip.isNotEmpty) {
-      child = Tooltip(
-        message: tooltip,
-        child: child,
-      );
+      child = Tooltip(message: tooltip, child: child);
     }
 
     if (onTap != null) {
@@ -255,19 +254,17 @@ class ItemGridWidget extends StatelessWidget {
             foregroundDecoration: BoxDecoration(
               borderRadius: GsSpacing.kGridRadius,
               border: Border.all(
-                color: value
-                    ? context.themeColors.almostWhite
-                    : Colors.transparent,
+                color:
+                    value
+                        ? context.themeColors.almostWhite
+                        : Colors.transparent,
                 width: 2,
               ),
             ),
             child: child,
           );
         },
-        child: InkWell(
-          onTap: () => onTap!(context),
-          child: child,
-        ),
+        child: InkWell(onTap: () => onTap!(context), child: child),
       );
     }
 
@@ -302,10 +299,7 @@ class ItemGridWidget extends StatelessWidget {
     );
 
     if (disabled) {
-      child = Opacity(
-        opacity: kDisableOpacity,
-        child: child,
-      );
+      child = Opacity(opacity: kDisableOpacity, child: child);
     }
 
     return child;
@@ -343,11 +337,7 @@ class ItemGridWidget extends StatelessWidget {
               ],
             ),
             child: Center(
-              child: Icon(
-                icon,
-                size: 16,
-                color: value ? color : iconColor,
-              ),
+              child: Icon(icon, size: 16, color: value ? color : iconColor),
             ),
           ),
         );
@@ -398,20 +388,16 @@ class ItemCircleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var child = image.isNotEmpty
-        ? CachedImageWidget(image)
-        : asset.isNotEmpty
+    var child =
+        image.isNotEmpty
+            ? CachedImageWidget(image)
+            : asset.isNotEmpty
             ? Image.asset(asset)
             : const SizedBox();
 
     child = Stack(
       children: [
-        Positioned.fill(
-          child: Padding(
-            padding: padding,
-            child: child,
-          ),
-        ),
+        Positioned.fill(child: Padding(padding: padding, child: child)),
         if (this.child != null)
           Padding(
             padding: const EdgeInsets.all(2),
@@ -445,14 +431,16 @@ class ItemCircleWidget extends StatelessWidget {
         color: bgColor ?? context.themeColors.mainColor0.withValues(alpha: 0.4),
         border: Border.all(color: context.themeColors.mainColor1, width: 2),
         shape: BoxShape.circle,
-        image: 1 <= rarity && rarity <= 5
-            ? DecorationImage(
-                image: AssetImage(GsAssets.getRarityBgImage(rarity)),
-                colorFilter: bgColor != null
-                    ? ColorFilter.mode(bgColor!, BlendMode.softLight)
-                    : null,
-              )
-            : null,
+        image:
+            1 <= rarity && rarity <= 5
+                ? DecorationImage(
+                  image: AssetImage(GsAssets.getRarityBgImage(rarity)),
+                  colorFilter:
+                      bgColor != null
+                          ? ColorFilter.mode(bgColor!, BlendMode.softLight)
+                          : null,
+                )
+                : null,
       ),
       foregroundDecoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -462,10 +450,7 @@ class ItemCircleWidget extends StatelessWidget {
     );
 
     if (tooltip.isNotEmpty) {
-      child = Tooltip(
-        message: tooltip,
-        child: child,
-      );
+      child = Tooltip(message: tooltip, child: child);
     }
 
     return child;
@@ -525,10 +510,7 @@ class ItemIconWidget extends StatelessWidget {
                 color: shadowColor,
               ),
             ),
-            Image(
-              image: provider,
-              fit: fit,
-            ),
+            Image(image: provider, fit: fit),
           ],
         ),
       ),

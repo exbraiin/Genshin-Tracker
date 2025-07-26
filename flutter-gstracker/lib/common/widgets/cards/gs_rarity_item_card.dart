@@ -35,13 +35,14 @@ class GsRarityItemCard extends StatelessWidget {
     this.fit = BoxFit.contain,
     String labelHeader = '',
     String labelFooter = '',
-  })  : header = labelHeader.isEmpty ? null : Text(labelHeader),
-        footer = labelFooter.isEmpty ? null : Text(labelFooter);
+  }) : header = labelHeader.isEmpty ? null : Text(labelHeader),
+       footer = labelFooter.isEmpty ? null : Text(labelFooter);
 
   @override
   Widget build(BuildContext context) {
-    final radius =
-        GsSpacing.kGridRadius.copyWith(bottomRight: Radius.circular(size / 4));
+    final radius = GsSpacing.kGridRadius.copyWith(
+      bottomRight: Radius.circular(size / 4),
+    );
     return ClipRRect(
       borderRadius: radius,
       child: Container(
@@ -56,14 +57,17 @@ class GsRarityItemCard extends StatelessWidget {
         child: HoverDetector(
           onTap: onTap,
           child: _getChild(context),
-          decoration: ({bool hover = false}) => BoxDecoration(
-            borderRadius: radius,
-            border: Border.all(
-              width: 1.2,
-              color:
-                  hover ? context.themeColors.almostWhite : Colors.transparent,
-            ),
-          ),
+          decoration:
+              ({bool hover = false}) => BoxDecoration(
+                borderRadius: radius,
+                border: Border.all(
+                  width: 1.2,
+                  color:
+                      hover
+                          ? context.themeColors.almostWhite
+                          : Colors.transparent,
+                ),
+              ),
         ),
       ),
     );
@@ -73,13 +77,9 @@ class GsRarityItemCard extends StatelessWidget {
     return Stack(
       children: [
         if (asset.isNotEmpty)
-          Positioned.fill(
-            child: Image.asset(asset, fit: fit),
-          ),
+          Positioned.fill(child: Image.asset(asset, fit: fit)),
         if (image.isNotEmpty)
-          Positioned.fill(
-            child: CachedImageWidget(image, fit: fit),
-          ),
+          Positioned.fill(child: CachedImageWidget(image, fit: fit)),
         if (header != null)
           Positioned.fill(
             bottom: null,

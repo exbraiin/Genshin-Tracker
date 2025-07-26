@@ -37,10 +37,7 @@ class GsItemBanner {
     final widget = GsItemBanner.isNewOrUpcoming(context, version);
     if (widget.text.isNotEmpty) return widget;
 
-    return GsItemBanner(
-      text: version,
-      color: context.themeColors.mainColor1,
-    );
+    return GsItemBanner(text: version, color: context.themeColors.mainColor1);
   }
 }
 
@@ -93,19 +90,21 @@ class GsItemCardButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: MouseHoverBuilder(
-        builder: (context, value, child) => AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          foregroundDecoration: BoxDecoration(
-            borderRadius: radius,
-            border: value || selected
-                ? Border.all(
-                    color: context.themeColors.almostWhite,
-                    width: 2,
-                  )
-                : null,
-          ),
-          child: child,
-        ),
+        builder:
+            (context, value, child) => AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              foregroundDecoration: BoxDecoration(
+                borderRadius: radius,
+                border:
+                    value || selected
+                        ? Border.all(
+                          color: context.themeColors.almostWhite,
+                          width: 2,
+                        )
+                        : null,
+              ),
+              child: child,
+            ),
         child: child,
       ),
     );
@@ -132,17 +131,20 @@ class GsItemCardButton extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(24),
                 ),
-                image: rarity != null
-                    ? DecorationImage(
-                        fit: BoxFit.cover,
-                        colorFilter: imageColor != null
-                            ? ColorFilter.mode(imageColor!, BlendMode.modulate)
-                            : null,
-                        image: AssetImage(
-                          GsAssets.getRarityBgImage(rarity!),
-                        ),
-                      )
-                    : null,
+                image:
+                    rarity != null
+                        ? DecorationImage(
+                          fit: BoxFit.cover,
+                          colorFilter:
+                              imageColor != null
+                                  ? ColorFilter.mode(
+                                    imageColor!,
+                                    BlendMode.modulate,
+                                  )
+                                  : null,
+                          image: AssetImage(GsAssets.getRarityBgImage(rarity!)),
+                        )
+                        : null,
               ),
               child: Stack(
                 children: [
@@ -156,10 +158,7 @@ class GsItemCardButton extends StatelessWidget {
                     ),
                   if (imageAssetPath != null && imageAssetPath!.isNotEmpty)
                     Positioned.fill(
-                      child: Image.asset(
-                        imageAssetPath!,
-                        fit: BoxFit.cover,
-                      ),
+                      child: Image.asset(imageAssetPath!, fit: BoxFit.cover),
                     ),
                   if (banner.text.isNotEmpty)
                     Positioned.fill(
@@ -228,8 +227,8 @@ class GsItemCardLabel extends StatelessWidget {
     this.onTap,
     Color? fgColor,
     Color? bgColor,
-  })  : fgColor = ((c) => fgColor ?? c.themeColors.almostWhite),
-        bgColor = ((c) => bgColor ?? c.themeColors.mainColor1);
+  }) : fgColor = ((c) => fgColor ?? c.themeColors.almostWhite),
+       bgColor = ((c) => bgColor ?? c.themeColors.mainColor1);
 
   @override
   Widget build(BuildContext context) {
@@ -260,11 +259,7 @@ class GsItemCardLabel extends StatelessWidget {
         if (icon != null)
           Padding(
             padding: const EdgeInsets.all(1),
-            child: Icon(
-              icon!,
-              color: fgColor,
-              size: 14,
-            ),
+            child: Icon(icon!, color: fgColor, size: 14),
           ),
       ],
     );
@@ -291,11 +286,7 @@ class MouseHoverBuilder extends StatefulWidget {
   final Widget? child;
   final ValueWidgetBuilder<bool> builder;
 
-  const MouseHoverBuilder({
-    super.key,
-    this.child,
-    required this.builder,
-  });
+  const MouseHoverBuilder({super.key, this.child, required this.builder});
 
   @override
   State<MouseHoverBuilder> createState() => _MouseHoverBuilderState();

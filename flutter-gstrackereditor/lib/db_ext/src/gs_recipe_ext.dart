@@ -88,8 +88,8 @@ class GsRecipeExt extends GsModelExt<GsRecipe> {
             ingredients: ingredients,
           );
         },
-        filtered: (item) =>
-            ValidateModels.baseRecipesWithIngredients(item).filters,
+        filtered:
+            (item) => ValidateModels.baseRecipesWithIngredients(item).filters,
         validator: (item) => vdBaseRecipes.validate(item.baseRecipe),
       ),
       DataField.buildList(
@@ -101,8 +101,9 @@ class GsRecipeExt extends GsModelExt<GsRecipe> {
             (item) => item.id,
             (item) => vdIngredients.filters,
             (item, value) => item.copyWith(id: value),
-            validator: (subItem) =>
-                validateBuildId(item.ingredients, subItem, (i) => i.id),
+            validator:
+                (subItem) =>
+                    validateBuildId(item.ingredients, subItem, (i) => i.id),
           ),
           DataField.intField(
             'Amount',

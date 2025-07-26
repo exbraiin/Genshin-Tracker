@@ -40,9 +40,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (item.desc.isNotEmpty)
-            ItemDetailsCardInfo.description(
-              text: TextParserWidget(item.desc),
-            ),
+            ItemDetailsCardInfo.description(text: TextParserWidget(item.desc)),
           if (item.weekdays.isNotEmpty)
             ItemDetailsCardInfo.section(
               title: Text(context.labels.weeklyTasks()),
@@ -55,9 +53,10 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 spacing: kSeparator4,
                 runSpacing: kSeparator4,
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children: materials
-                    .map((e) => ItemGridWidget.material(e, onTap: null))
-                    .toList(),
+                children:
+                    materials
+                        .map((e) => ItemGridWidget.material(e, onTap: null))
+                        .toList(),
               ),
             ),
         ],

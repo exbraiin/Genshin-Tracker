@@ -4,11 +4,7 @@ class SwapWidgets extends StatefulWidget {
   final Widget child0;
   final Widget child1;
 
-  const SwapWidgets({
-    super.key,
-    required this.child0,
-    required this.child1,
-  });
+  const SwapWidgets({super.key, required this.child0, required this.child1});
 
   @override
   State<SwapWidgets> createState() => _SwapWidgetsState();
@@ -29,14 +25,16 @@ class _SwapWidgetsState extends State<SwapWidgets>
     animation = TweenSequence<double>([
       TweenSequenceItem(tween: ConstantTween(1), weight: 1),
       TweenSequenceItem(
-        tween: CurveTween(curve: Curves.easeOut)
-            .chain(Tween(begin: 1.0, end: 0.0)),
+        tween: CurveTween(
+          curve: Curves.easeOut,
+        ).chain(Tween(begin: 1.0, end: 0.0)),
         weight: 1,
       ),
       TweenSequenceItem(tween: ConstantTween(0), weight: 1),
       TweenSequenceItem(
-        tween: CurveTween(curve: Curves.easeOut)
-            .chain(Tween(begin: 0.0, end: 1.0)),
+        tween: CurveTween(
+          curve: Curves.easeOut,
+        ).chain(Tween(begin: 0.0, end: 1.0)),
         weight: 1,
       ),
     ]).animate(controller);
@@ -57,10 +55,7 @@ class _SwapWidgetsState extends State<SwapWidgets>
           fit: StackFit.expand,
           children: [
             Positioned.fill(
-              child: Opacity(
-                opacity: animation.value,
-                child: widget.child0,
-              ),
+              child: Opacity(opacity: animation.value, child: widget.child0),
             ),
             Positioned.fill(
               child: Opacity(

@@ -47,7 +47,7 @@ class CharacterListItem extends StatelessWidget {
     int ascension,
   ) {
     late final material = GsUtils.characterMaterials
-        .getTalentMaterials(item.id)
+        .getAllTalentsMaterials(item.id)
         .entries
         .map((e) => Database.instance.infoOf<GsMaterial>().getItem(e.key))
         .firstOrNullWhere((e) => e?.weekdays.isNotEmpty ?? false);

@@ -28,9 +28,10 @@ class CachedImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final placeholder = showPlaceholder
-        ? Image.asset(AppAssets.missingIcon, fit: BoxFit.contain)
-        : SizedBox();
+    late final placeholder =
+        showPlaceholder
+            ? Image.asset(AppAssets.missingIcon, fit: BoxFit.contain)
+            : SizedBox();
     if (imageUrl == null || imageUrl!.isEmpty) return placeholder;
 
     return LayoutBuilder(
@@ -38,9 +39,10 @@ class CachedImageWidget extends StatelessWidget {
         final url = _getScaleUrl(layout.biggest);
         return FadeInImage(
           image: CachedNetworkImageProvider(url).resizeIfNeeded(),
-          placeholder: showPlaceholder
-              ? AssetImage(AppAssets.missingIcon).resizeIfNeeded()
-              : MemoryImage(_emptyPixelBytes),
+          placeholder:
+              showPlaceholder
+                  ? AssetImage(AppAssets.missingIcon).resizeIfNeeded()
+                  : MemoryImage(_emptyPixelBytes),
           fit: fit,
           alignment: alignment,
           placeholderFit: BoxFit.contain,

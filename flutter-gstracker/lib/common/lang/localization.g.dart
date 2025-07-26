@@ -860,7 +860,7 @@ class LocalizationMethods {
   }
 
   /// Energy: {number}
-  String energyN(number) {
+  String energyN(Object? number) {
     return provider(LocalizationKeys.energyN, params: {'number': number});
   }
 
@@ -1010,7 +1010,7 @@ class LocalizationMethods {
   }
 
   /// {star}★
-  String rarityStar(star) {
+  String rarityStar(Object? star) {
     return provider(LocalizationKeys.rarityStar, params: {'star': star});
   }
 
@@ -1040,7 +1040,7 @@ class LocalizationMethods {
   }
 
   /// Do you want to remove "{name}" last wish?
-  String removeWish(name) {
+  String removeWish(Object? name) {
     return provider(LocalizationKeys.removeWish, params: {'name': name});
   }
 
@@ -1090,12 +1090,12 @@ class LocalizationMethods {
   }
 
   /// {weeks} Weeks
-  String nWeeks(weeks) {
+  String nWeeks(Object? weeks) {
     return provider(LocalizationKeys.nWeeks, params: {'weeks': weeks});
   }
 
   /// {from} to {to} Weeks
-  String nnWeeks(from, to) {
+  String nnWeeks(Object? from, Object? to) {
     return provider(LocalizationKeys.nnWeeks, params: {'from': from, 'to': to});
   }
 
@@ -1125,7 +1125,7 @@ class LocalizationMethods {
   }
 
   /// Obtained {amount}
-  String amountObtained(amount) {
+  String amountObtained(Object? amount) {
     return provider(LocalizationKeys.amountObtained, params: {'amount': amount});
   }
 
@@ -1555,7 +1555,7 @@ class LocalizationMethods {
   }
 
   /// {n} Piece Bonus
-  String nPieceBonus(n) {
+  String nPieceBonus(Object? n) {
     return provider(LocalizationKeys.nPieceBonus, params: {'n': n});
   }
 
@@ -1685,7 +1685,7 @@ class LocalizationMethods {
   }
 
   /// Update date for all {wishes} wishes?
-  String updateAllWishes(wishes) {
+  String updateAllWishes(Object? wishes) {
     return provider(LocalizationKeys.updateAllWishes, params: {'wishes': wishes});
   }
 
@@ -1810,7 +1810,7 @@ class LocalizationMethods {
   }
 
   /// (max: {value})
-  String maxProficiency(value) {
+  String maxProficiency(Object? value) {
     return provider(LocalizationKeys.maxProficiency, params: {'value': value});
   }
 
@@ -1820,7 +1820,7 @@ class LocalizationMethods {
   }
 
   /// AR {ar} • WL {wl}
-  String cardPlayerArWl(ar, wl) {
+  String cardPlayerArWl(Object? ar, Object? wl) {
     return provider(LocalizationKeys.cardPlayerArWl, params: {'ar': ar, 'wl': wl});
   }
 
@@ -1845,27 +1845,27 @@ class LocalizationMethods {
   }
 
   /// {value}
-  String cardPlayerAchievementsValue(value) {
+  String cardPlayerAchievementsValue(Object? value) {
     return provider(LocalizationKeys.cardPlayerAchievementsValue, params: {'value': value});
   }
 
   /// {floor}-{chamber} • {stars}★
-  String cardPlayerAbyssValue(floor, chamber, stars) {
+  String cardPlayerAbyssValue(Object? floor, Object? chamber, Object? stars) {
     return provider(LocalizationKeys.cardPlayerAbyssValue, params: {'floor': floor, 'chamber': chamber, 'stars': stars});
   }
 
   /// {act} • {stars}
-  String cardPlayerTheaterValue(act, stars) {
+  String cardPlayerTheaterValue(Object? act, Object? stars) {
     return provider(LocalizationKeys.cardPlayerTheaterValue, params: {'act': act, 'stars': stars});
   }
 
   /// {seconds}s • {index}
-  String cardPlayerStygianValue(seconds, index) {
+  String cardPlayerStygianValue(Object? seconds, Object? index) {
     return provider(LocalizationKeys.cardPlayerStygianValue, params: {'seconds': seconds, 'index': index});
   }
 
   /// Radiant Spincrystal {number}
-  String radiantSpincrystal(number) {
+  String radiantSpincrystal(Object? number) {
     return provider(LocalizationKeys.radiantSpincrystal, params: {'number': number});
   }
 
@@ -1965,52 +1965,52 @@ class LocalizationMethods {
   }
 
   /// {value}y
-  String shortYear(value) {
+  String shortYear(Object? value) {
     return provider(LocalizationKeys.shortYear, params: {'value': value});
   }
 
   /// {value}d
-  String shortDay(value) {
+  String shortDay(Object? value) {
     return provider(LocalizationKeys.shortDay, params: {'value': value});
   }
 
   /// {value}w
-  String shortWeek(value) {
+  String shortWeek(Object? value) {
     return provider(LocalizationKeys.shortWeek, params: {'value': value});
   }
 
   /// {value}h
-  String shortHour(value) {
+  String shortHour(Object? value) {
     return provider(LocalizationKeys.shortHour, params: {'value': value});
   }
 
   /// Ends in {value}
-  String bannerEnds(value) {
+  String bannerEnds(Object? value) {
     return provider(LocalizationKeys.bannerEnds, params: {'value': value});
   }
 
   /// Ended {value} ago
-  String bannerEnded(value) {
+  String bannerEnded(Object? value) {
     return provider(LocalizationKeys.bannerEnded, params: {'value': value});
   }
 
   /// Starts in {value}
-  String bannerStarts(value) {
+  String bannerStarts(Object? value) {
     return provider(LocalizationKeys.bannerStarts, params: {'value': value});
   }
 
   /// Started {value} ago
-  String bannerStarted(value) {
+  String bannerStarted(Object? value) {
     return provider(LocalizationKeys.bannerStarted, params: {'value': value});
   }
 
   /// {n} Pulls
-  String bannerNRolls(n) {
+  String bannerNRolls(Object? n) {
     return provider(LocalizationKeys.bannerNRolls, params: {'n': n});
   }
 
   /// {n} Primogems
-  String bannerNPrimogems(n) {
+  String bannerNPrimogems(Object? n) {
     return provider(LocalizationKeys.bannerNPrimogems, params: {'n': n});
   }
 

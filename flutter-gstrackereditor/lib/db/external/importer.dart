@@ -53,7 +53,8 @@ class Changes {
 
 abstract final class PaimonMoeImporter {
   static Future<Changes?> importAchievements() async {
-    const url = 'https://raw.githubusercontent.com/MadeBaruna/'
+    const url =
+        'https://raw.githubusercontent.com/MadeBaruna/'
         'paimon-moe/main/src/data/achievement/en.json';
     final responseJson = await _getUrl(url);
     final data = jsonDecode(responseJson) as Map;
@@ -71,9 +72,10 @@ abstract final class PaimonMoeImporter {
         'group': groupName.toDbId(),
         'hidden': first['hidden'],
         'version': first['ver'] as String? ?? '1.0',
-        'phases': list
-            .map((e) => {'desc': e['desc'], 'reward': e['reward']})
-            .toList(),
+        'phases':
+            list
+                .map((e) => {'desc': e['desc'], 'reward': e['reward']})
+                .toList(),
       };
     }
 
@@ -91,9 +93,13 @@ abstract final class PaimonMoeImporter {
 
       achs.addAll(
         (group['achievements'] as List? ?? []).map(
-          (ach) => ach is List
-              ? parseAchievement(groupName, ach.cast<Map<String, dynamic>>())
-              : parseAchievement(groupName, [ach]),
+          (ach) =>
+              ach is List
+                  ? parseAchievement(
+                    groupName,
+                    ach.cast<Map<String, dynamic>>(),
+                  )
+                  : parseAchievement(groupName, [ach]),
         ),
       );
     }
@@ -249,7 +255,8 @@ abstract final class FandomImporter {
 
     final name = document.querySelector('h2.pi-title')?.text ?? '';
 
-    final characterName = document
+    final characterName =
+        document
             .querySelector('section.pi-group span.character')
             ?.text
             .trim() ??
@@ -260,7 +267,8 @@ abstract final class FandomImporter {
         .querySelectorAll('section.pi-group > div')
         .firstOrNullWhere((e) => e.attributes['data-source'] == 'date');
     final seasonText = seasonEl?.querySelectorAll('a').firstOrNull?.text ?? '';
-    final season = seasonText
+    final season =
+        seasonText
             .split(' ')
             .map((e) => int.tryParse(e))
             .whereNotNull()
@@ -271,11 +279,12 @@ abstract final class FandomImporter {
     final thumbSrc = thumb?.attributes['src'] ?? '';
 
     final versionEl = document.querySelector('div.change-history-header > div');
-    final version = versionEl?.text
-        .split(' ')
-        .skipWhile((e) => e.toLowerCase() != 'version')
-        .skip(1)
-        .firstOrNull;
+    final version =
+        versionEl?.text
+            .split(' ')
+            .skipWhile((e) => e.toLowerCase() != 'version')
+            .skip(1)
+            .firstOrNull;
 
     return item.copyWith(
       id: '${name}_$character'.toDbId(),

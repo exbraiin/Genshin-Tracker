@@ -9,9 +9,10 @@ class GsBattlepassExt extends GsModelExt<GsBattlepass> {
 
   @override
   List<DataField<GsBattlepass>> getFields(String? editId) {
-    final namecardId = editId != null
-        ? Database.i.of<GsBattlepass>().getItem(editId)?.namecardId
-        : '';
+    final namecardId =
+        editId != null
+            ? Database.i.of<GsBattlepass>().getItem(editId)?.namecardId
+            : '';
     final vd = ValidateModels<GsBattlepass>();
     final vdVersion = ValidateModels.versions();
     final vdNamecard = ValidateModels.namecards(
@@ -58,21 +59,23 @@ class GsBattlepassExt extends GsModelExt<GsBattlepass> {
         'Date Start',
         (item) => item.dateStart,
         (item, value) => item.copyWith(dateStart: value),
-        validator: (item) => vdVersion.validateDates(
-          item.version,
-          item.dateStart,
-          item.dateEnd,
-        ),
+        validator:
+            (item) => vdVersion.validateDates(
+              item.version,
+              item.dateStart,
+              item.dateEnd,
+            ),
       ),
       DataField.dateTime(
         'Date End',
         (item) => item.dateEnd,
         (item, value) => item.copyWith(dateEnd: value),
-        validator: (item) => vdVersion.validateDates(
-          item.version,
-          item.dateStart,
-          item.dateEnd,
-        ),
+        validator:
+            (item) => vdVersion.validateDates(
+              item.version,
+              item.dateStart,
+              item.dateEnd,
+            ),
       ),
     ];
   }

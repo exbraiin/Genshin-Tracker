@@ -22,8 +22,9 @@ class ThespianTrickDetailsCard extends StatelessWidget
       builder: (context, snapshot) {
         final db = Database.instance.saveOf<GiThespianTrick>();
         final owned = db.exists(item.id);
-        final character =
-            Database.instance.infoOf<GsCharacter>().getItem(item.character);
+        final character = Database.instance.infoOf<GsCharacter>().getItem(
+          item.character,
+        );
 
         return ItemDetailsCard(
           name: item.name,
@@ -41,12 +42,16 @@ class ThespianTrickDetailsCard extends StatelessWidget
                 alignment: Alignment.bottomRight,
                 child: GsIconButton(
                   size: 26,
-                  color: owned
-                      ? context.themeColors.goodValue
-                      : context.themeColors.badValue,
+                  color:
+                      owned
+                          ? context.themeColors.goodValue
+                          : context.themeColors.badValue,
                   icon: owned ? Icons.check : Icons.close,
-                  onPress: () =>
-                      GsUtils.thespianTricks.update(item.id, obtained: !owned),
+                  onPress:
+                      () => GsUtils.thespianTricks.update(
+                        item.id,
+                        obtained: !owned,
+                      ),
                 ),
               ),
             ],
@@ -80,10 +85,7 @@ class ThespianTrickDetailsCard extends StatelessWidget
                           ),
                         ),
                       ),
-                      child: CachedImageWidget(
-                        item.image,
-                        fit: BoxFit.cover,
-                      ),
+                      child: CachedImageWidget(item.image, fit: BoxFit.cover),
                     ),
                   ),
                 ),

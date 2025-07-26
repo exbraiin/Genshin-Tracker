@@ -60,10 +60,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
                 ),
               ),
               const SizedBox(width: GsSpacing.kGridSeparator),
-              InventoryBox(
-                width: 220,
-                child: _getTemporaryList(banner),
-              ),
+              InventoryBox(width: 220, child: _getTemporaryList(banner)),
             ],
           ),
         );
@@ -76,11 +73,7 @@ class _AddWishScreenState extends State<AddWishScreen> {
     if (date == null) return;
 
     final ids = _wishes.value.reversed.map((e) => e.id);
-    GsUtils.wishes.addWishes(
-      ids: ids,
-      date: date,
-      bannerId: banner.id,
-    );
+    GsUtils.wishes.addWishes(ids: ids, date: date, bannerId: banner.id);
 
     if (!mounted) return;
     Navigator.of(context).maybePop();
@@ -95,22 +88,25 @@ class _AddWishScreenState extends State<AddWishScreen> {
         banner.feature4.contains(itemData.id) ||
         banner.feature5.contains(itemData.id);
 
-    final filtered = filter
-        .match(GsUtils.wishes.getBannerItemsData(banner))
-        .map((e) => e.copyWith(featured: featured(e)))
-        .sorted();
+    final filtered =
+        filter
+            .match(GsUtils.wishes.getBannerItemsData(banner))
+            .map((e) => e.copyWith(featured: featured(e)))
+            .sorted();
     if (filtered.isEmpty) return const GsNoResultsState();
 
     return GsGridView.builder(
       itemCount: filtered.length,
-      itemBuilder: (context, index) => AddWishItemDataListItem(
-        item: filtered[index],
-        isItemFeatured: featured(filtered[index]),
-        onAdd: () {
-          if (_wishes.value.length >= 10) return;
-          _wishes.value = (_wishes.value..insert(0, filtered[index])).toList();
-        },
-      ),
+      itemBuilder:
+          (context, index) => AddWishItemDataListItem(
+            item: filtered[index],
+            isItemFeatured: featured(filtered[index]),
+            onAdd: () {
+              if (_wishes.value.length >= 10) return;
+              _wishes.value =
+                  (_wishes.value..insert(0, filtered[index])).toList();
+            },
+          ),
     );
   }
 
@@ -124,14 +120,17 @@ class _AddWishScreenState extends State<AddWishScreen> {
               final roll = GsUtils.wishes.countBannerWishes(banner.id);
               return ListView.separated(
                 itemCount: list.length,
-                separatorBuilder: (_, index) =>
-                    const SizedBox(height: GsSpacing.kListSeparator),
+                separatorBuilder:
+                    (_, index) =>
+                        const SizedBox(height: GsSpacing.kListSeparator),
                 itemBuilder: (context, index) {
                   return AddWishWishListItem(
                     item: list[index],
                     roll: roll + (list.length - index),
-                    onRemove: () => _wishes.value =
-                        (_wishes.value..removeAt(index)).toList(),
+                    onRemove:
+                        () =>
+                            _wishes.value =
+                                (_wishes.value..removeAt(index)).toList(),
                   );
                 },
               );
@@ -155,8 +154,9 @@ class _AddWishScreenState extends State<AddWishScreen> {
                   child: Center(
                     child: Text(
                       '${context.labels.addWishes()} (x${list.length})',
-                      style: context.textTheme.titleSmall!
-                          .copyWith(color: Colors.white),
+                      style: context.textTheme.titleSmall!.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

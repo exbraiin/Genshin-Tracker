@@ -26,14 +26,16 @@ class MainButton extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
         decoration: BoxDecoration(
           borderRadius: GsSpacing.kGridRadius,
-          color: Color.lerp(color, Colors.black, 0.25) ??
+          color:
+              Color.lerp(color, Colors.black, 0.25) ??
               context.themeColors.mainColor0,
         ),
         foregroundDecoration: BoxDecoration(
           borderRadius: GsSpacing.kGridRadius,
-          border: selected
-              ? Border.all(color: context.themeColors.almostWhite, width: 2)
-              : null,
+          border:
+              selected
+                  ? Border.all(color: context.themeColors.almostWhite, width: 2)
+                  : null,
         ),
         child: InkWell(
           onTap: onPress,

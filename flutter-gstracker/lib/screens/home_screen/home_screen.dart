@@ -105,40 +105,43 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Expanded(
           child: Column(
-            children: <Widget>[
-              const HomeWishesValues(banner: GeBannerType.character),
-              const HomeWishesValues(banner: GeBannerType.chronicled),
-              const HomeWishesValues(banner: GeBannerType.beginner),
-            ]
-                .separate(const SizedBox(height: GsSpacing.kGridSeparator))
-                .toList(),
+            children:
+                <Widget>[
+                      const HomeWishesValues(banner: GeBannerType.character),
+                      const HomeWishesValues(banner: GeBannerType.chronicled),
+                      const HomeWishesValues(banner: GeBannerType.beginner),
+                    ]
+                    .separate(const SizedBox(height: GsSpacing.kGridSeparator))
+                    .toList(),
           ),
         ),
         const SizedBox(width: GsSpacing.kGridSeparator),
         Expanded(
           child: Column(
-            children: <Widget>[
-              const HomeWishesValues(banner: GeBannerType.weapon),
-              const HomeWishesValues(banner: GeBannerType.standard),
-              const HomeCalendarWidget(),
-            ]
-                .separate(const SizedBox(height: GsSpacing.kGridSeparator))
-                .toList(),
+            children:
+                <Widget>[
+                      const HomeWishesValues(banner: GeBannerType.weapon),
+                      const HomeWishesValues(banner: GeBannerType.standard),
+                      const HomeCalendarWidget(),
+                    ]
+                    .separate(const SizedBox(height: GsSpacing.kGridSeparator))
+                    .toList(),
           ),
         ),
         const SizedBox(width: GsSpacing.kGridSeparator),
         Expanded(
           child: Column(
-            children: <Widget>[
-              const HomePlayerInfoWidget(),
-              const HomePlayerProgress(),
-              const HomeTalentsWidget(),
-              const HomeFriendsWidget(),
-              const HomeAscensionWidget(),
-              const HomeLastBannerWidget(),
-            ]
-                .separate(const SizedBox(height: GsSpacing.kGridSeparator))
-                .toList(),
+            children:
+                <Widget>[
+                      const HomePlayerInfoWidget(),
+                      const HomePlayerProgress(),
+                      const HomeTalentsWidget(),
+                      const HomeFriendsWidget(),
+                      const HomeAscensionWidget(),
+                      const HomeLastBannerWidget(),
+                    ]
+                    .separate(const SizedBox(height: GsSpacing.kGridSeparator))
+                    .toList(),
           ),
         ),
       ],

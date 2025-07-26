@@ -57,9 +57,16 @@ abstract class GsDatabaseExporter {
     }
 
     sheet.appendRow(
-      ['Type', 'Name', 'Time', '⭐', 'Pity', '#Roll', 'Group', 'Banner']
-          .map(TextCellValue.new)
-          .toList(),
+      [
+        'Type',
+        'Name',
+        'Time',
+        '⭐',
+        'Pity',
+        '#Roll',
+        'Group',
+        'Banner',
+      ].map(TextCellValue.new).toList(),
     );
     sheet.applyStyleToRow(
       sheet.maxRows - 1,

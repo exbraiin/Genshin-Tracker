@@ -2,7 +2,7 @@
 // ## GENERATED CODE - DO NOT MODIFY BY HAND ##
 // ############################################
 
-abstract final class Assets{
+abstract final class Assets {
   /// bg.png
   static const bg = 'assets/bg.png';
 

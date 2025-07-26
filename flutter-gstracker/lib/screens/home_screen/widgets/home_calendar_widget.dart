@@ -47,25 +47,28 @@ class HomeCalendarWidget extends StatelessWidget {
     final itemSize = kSize50;
     yield Row(
       mainAxisSize: MainAxisSize.min,
-      children: week
-          .map<Widget>((i) {
-            return Container(
-              width: itemSize,
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(bottom: GsSpacing.kGridSeparator),
-              decoration: BoxDecoration(
-                borderRadius: GsSpacing.kListRadius,
-                color: context.themeColors.mainColor1,
-              ),
-              child: Text(
-                DateLabels.humanizedWeekday(context, i).substring(0, 3),
-                style: context.themeStyles.label14n,
-                strutStyle: context.themeStyles.label14n.toStrut(),
-              ),
-            );
-          })
-          .separate(const SizedBox(width: GsSpacing.kGridSeparator))
-          .toList(),
+      children:
+          week
+              .map<Widget>((i) {
+                return Container(
+                  width: itemSize,
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(
+                    bottom: GsSpacing.kGridSeparator,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: GsSpacing.kListRadius,
+                    color: context.themeColors.mainColor1,
+                  ),
+                  child: Text(
+                    DateLabels.humanizedWeekday(context, i).substring(0, 3),
+                    style: context.themeStyles.label14n,
+                    strutStyle: context.themeStyles.label14n.toStrut(),
+                  ),
+                );
+              })
+              .separate(const SizedBox(width: GsSpacing.kGridSeparator))
+              .toList(),
     );
 
     final date = DateTime(now.year, now.month, 2 - weekday);
@@ -73,216 +76,225 @@ class HomeCalendarWidget extends StatelessWidget {
     final diff = last.difference(date).inDays;
     final weeks = ((now.daysInMonth + diff) / DateTime.daysPerWeek).ceil();
 
-    final src = now.firstDayOfMonth
-        .subtract(const Duration(days: DateTime.daysPerWeek));
-    final characters = Database.instance
-        .infoOf<GsCharacter>()
-        .items
-        .where((e) => e.birthday.copyWith(year: now.year).isAfter(src));
-    final versions = Database.instance
-        .infoOf<GsVersion>()
-        .items
-        .where((e) => e.releaseDate.isAfter(src));
+    final src = now.firstDayOfMonth.subtract(
+      const Duration(days: DateTime.daysPerWeek),
+    );
+    final characters = Database.instance.infoOf<GsCharacter>().items.where(
+      (e) => e.birthday.copyWith(year: now.year).isAfter(src),
+    );
+    final versions = Database.instance.infoOf<GsVersion>().items.where(
+      (e) => e.releaseDate.isAfter(src),
+    );
 
     yield* Iterable<Widget>.generate(
       weeks,
       (w) => Row(
         mainAxisSize: MainAxisSize.min,
-        children: List<Widget>.generate(
-          DateTime.daysPerWeek,
-          (d) {
-            final idx = w * DateTime.daysPerWeek + d - weekday + 1;
-            final date = DateTime(now.year, now.month, idx + 1);
+        children:
+            List<Widget>.generate(DateTime.daysPerWeek, (d) {
+                  final idx = w * DateTime.daysPerWeek + d - weekday + 1;
+                  final date = DateTime(now.year, now.month, idx + 1);
 
-            late final birthdayItems = characters.where(
-              (e) => e.birthday.copyWith(year: date.year).isAtSameDayAs(date),
-            );
+                  late final birthdayItems = characters.where(
+                    (e) => e.birthday
+                        .copyWith(year: date.year)
+                        .isAtSameDayAs(date),
+                  );
 
-            late final versionItem = versions
-                .firstOrNullWhere((e) => e.releaseDate.isAtSameDayAs(date));
+                  late final versionItem = versions.firstOrNullWhere(
+                    (e) => e.releaseDate.isAtSameDayAs(date),
+                  );
 
-            final showVersion = versionItem != null;
-            final showBirthday = birthdayItems.isNotEmpty;
+                  final showVersion = versionItem != null;
+                  final showBirthday = birthdayItems.isNotEmpty;
 
-            final bannersInfo = Database.instance
-                .infoOf<GsBanner>()
-                .items
-                .where((e) => e.type == GeBannerType.character)
-                .where((e) => date.between(e.dateStart, e.dateEnd))
-                .groupBy((e) => e.dateStart)
-                .values
-                .map((list) => _BannerInfo.from(list, date));
+                  final bannersInfo = Database.instance
+                      .infoOf<GsBanner>()
+                      .items
+                      .where((e) => e.type == GeBannerType.character)
+                      .where((e) => date.between(e.dateStart, e.dateEnd))
+                      .groupBy((e) => e.dateStart)
+                      .values
+                      .map((list) => _BannerInfo.from(list, date));
 
-            final battlepassInfo = Database.instance
-                .infoOf<GsBattlepass>()
-                .items
-                .where((e) => date.between(e.dateStart, e.dateEnd));
+                  final battlepassInfo = Database.instance
+                      .infoOf<GsBattlepass>()
+                      .items
+                      .where((e) => date.between(e.dateStart, e.dateEnd));
 
-            final message = showBirthday
-                ? birthdayItems.map((e) => e.name).join(' | ')
-                : '';
+                  final message =
+                      showBirthday
+                          ? birthdayItems.map((e) => e.name).join(' | ')
+                          : '';
 
-            return Opacity(
-              opacity: date.isAtSameMonthAs(now) ? 1 : kDisableOpacity,
-              child: Container(
-                width: itemSize,
-                height: itemSize,
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: GsSpacing.kGridRadius,
-                  color: context.themeColors.mainColor1,
-                ),
-                foregroundDecoration: now.isAtSameDayAs(date)
-                    ? BoxDecoration(
+                  return Opacity(
+                    opacity: date.isAtSameMonthAs(now) ? 1 : kDisableOpacity,
+                    child: Container(
+                      width: itemSize,
+                      height: itemSize,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
                         borderRadius: GsSpacing.kGridRadius,
-                        border: Border.all(
-                          color: context.themeColors.almostWhite,
-                          width: 2,
-                        ),
-                      )
-                    : null,
-                child: Tooltip(
-                  message: message,
-                  child: Stack(
-                    children: [
-                      if (showBirthday)
-                        ...birthdayItems.mapIndexed((i, e) {
-                          return Positioned.fill(
-                            child: ClipRect(
-                              clipper: _RectClipperBuilder(
-                                (size) => Rect.fromLTWH(
-                                  i * size.width / birthdayItems.length,
-                                  0,
-                                  size.width / birthdayItems.length,
-                                  size.height,
+                        color: context.themeColors.mainColor1,
+                      ),
+                      foregroundDecoration:
+                          now.isAtSameDayAs(date)
+                              ? BoxDecoration(
+                                borderRadius: GsSpacing.kGridRadius,
+                                border: Border.all(
+                                  color: context.themeColors.almostWhite,
+                                  width: 2,
                                 ),
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage(
-                                      GsAssets.getRarityBgImage(e.rarity),
+                              )
+                              : null,
+                      child: Tooltip(
+                        message: message,
+                        child: Stack(
+                          children: [
+                            if (showBirthday)
+                              ...birthdayItems.mapIndexed((i, e) {
+                                return Positioned.fill(
+                                  child: ClipRect(
+                                    clipper: _RectClipperBuilder(
+                                      (size) => Rect.fromLTWH(
+                                        i * size.width / birthdayItems.length,
+                                        0,
+                                        size.width / birthdayItems.length,
+                                        size.height,
+                                      ),
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage(
+                                            GsAssets.getRarityBgImage(e.rarity),
+                                          ),
+                                        ),
+                                      ),
+                                      child: CachedImageWidget(e.image),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ...battlepassInfo.map((i) {
+                              final src = i.dateStart.isAtSameDayAs(date);
+                              final end = i.dateEnd.isAtSameDayAs(date);
+                              final msg = i.name;
+                              return Positioned.fill(
+                                top: null,
+                                left: src ? itemSize / 2 + 4 : 0,
+                                right: end ? itemSize / 2 + 4 : 0,
+                                bottom: 4,
+                                child: _ImagesTooltip(
+                                  images: [i.image],
+                                  message: msg,
+                                  size: const Size(150, 54),
+                                  child: Container(
+                                    height: 4,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.cyan,
+                                      borderRadius: BorderRadius.horizontal(
+                                        left:
+                                            src
+                                                ? const Radius.circular(8)
+                                                : Radius.zero,
+                                        right:
+                                            end
+                                                ? const Radius.circular(8)
+                                                : Radius.zero,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                child: CachedImageWidget(e.image),
+                              );
+                            }),
+                            ...bannersInfo.map((i) {
+                              return Positioned.fill(
+                                top: null,
+                                left: i.src ? itemSize / 2 + 4 : 0,
+                                right: i.end ? itemSize / 2 + 4 : 0,
+                                child: _ImagesTooltip(
+                                  images: i.banners.map((e) => e.image),
+                                  message: i.message,
+                                  child: Container(
+                                    height: 4,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: i.color,
+                                      borderRadius: BorderRadius.horizontal(
+                                        left:
+                                            i.src
+                                                ? const Radius.circular(8)
+                                                : Radius.zero,
+                                        right:
+                                            i.end
+                                                ? const Radius.circular(8)
+                                                : Radius.zero,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                            Positioned(
+                              right: 2,
+                              bottom: 2,
+                              child: Icon(
+                                showBirthday ? Icons.cake_rounded : null,
+                                size: 20,
+                                color: context.themeColors.almostWhite,
+                                shadows: const [
+                                  BoxShadow(
+                                    offset: Offset(1, 1),
+                                    blurRadius: 5,
+                                  ),
+                                ],
                               ),
                             ),
-                          );
-                        }),
-                      ...battlepassInfo.map((i) {
-                        final src = i.dateStart.isAtSameDayAs(date);
-                        final end = i.dateEnd.isAtSameDayAs(date);
-                        final msg = i.name;
-                        return Positioned.fill(
-                          top: null,
-                          left: src ? itemSize / 2 + 4 : 0,
-                          right: end ? itemSize / 2 + 4 : 0,
-                          bottom: 4,
-                          child: _ImagesTooltip(
-                            images: [i.image],
-                            message: msg,
-                            size: const Size(150, 54),
-                            child: Container(
-                              height: 4,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.cyan,
-                                borderRadius: BorderRadius.horizontal(
-                                  left: src
-                                      ? const Radius.circular(8)
-                                      : Radius.zero,
-                                  right: end
-                                      ? const Radius.circular(8)
-                                      : Radius.zero,
+                            if (showVersion)
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                child: Transform.translate(
+                                  offset: const Offset(12, 12),
+                                  child: Banner(
+                                    message: versionItem.id,
+                                    color: context.themeColors.primary80,
+                                    location: BannerLocation.bottomEnd,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      }),
-                      ...bannersInfo.map((i) {
-                        return Positioned.fill(
-                          top: null,
-                          left: i.src ? itemSize / 2 + 4 : 0,
-                          right: i.end ? itemSize / 2 + 4 : 0,
-                          child: _ImagesTooltip(
-                            images: i.banners.map((e) => e.image),
-                            message: i.message,
-                            child: Container(
-                              height: 4,
-                              width: double.infinity,
+                            Container(
+                              width: 20,
+                              height: 20,
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.all(kSeparator2),
                               decoration: BoxDecoration(
-                                color: i.color,
-                                borderRadius: BorderRadius.horizontal(
-                                  left: i.src
-                                      ? const Radius.circular(8)
-                                      : Radius.zero,
-                                  right: i.end
-                                      ? const Radius.circular(8)
-                                      : Radius.zero,
+                                shape: BoxShape.circle,
+                                color: context.themeColors.mainColor0
+                                    .withValues(alpha: 0.4),
+                                border: Border.all(
+                                  color: context.themeColors.mainColor1,
+                                  width: 2,
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      }),
-                      Positioned(
-                        right: 2,
-                        bottom: 2,
-                        child: Icon(
-                          showBirthday ? Icons.cake_rounded : null,
-                          size: 20,
-                          color: context.themeColors.almostWhite,
-                          shadows: const [
-                            BoxShadow(
-                              offset: Offset(1, 1),
-                              blurRadius: 5,
+                              child: Text(
+                                date.day.toString(),
+                                style: context.themeStyles.label12n,
+                                strutStyle:
+                                    context.themeStyles.label12n.toStrut(),
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      if (showVersion)
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: Transform.translate(
-                            offset: const Offset(12, 12),
-                            child: Banner(
-                              message: versionItem.id,
-                              color: context.themeColors.primary80,
-                              location: BannerLocation.bottomEnd,
-                            ),
-                          ),
-                        ),
-                      Container(
-                        width: 20,
-                        height: 20,
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.all(kSeparator2),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: context.themeColors.mainColor0
-                              .withValues(alpha: 0.4),
-                          border: Border.all(
-                            color: context.themeColors.mainColor1,
-                            width: 2,
-                          ),
-                        ),
-                        child: Text(
-                          date.day.toString(),
-                          style: context.themeStyles.label12n,
-                          strutStyle: context.themeStyles.label12n.toStrut(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ).separate(const SizedBox(width: GsSpacing.kGridSeparator)).toList(),
+                    ),
+                  );
+                })
+                .separate(const SizedBox(width: GsSpacing.kGridSeparator))
+                .toList(),
       ),
     ).separate(const SizedBox(height: GsSpacing.kGridSeparator));
   }

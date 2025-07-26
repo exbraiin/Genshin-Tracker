@@ -40,11 +40,11 @@ class GsAppBar extends StatelessWidget implements PreferredSizeWidget {
     final hasEndDrawer = Scaffold.maybeOf(context)?.hasEndDrawer ?? false;
     return canPop && !hasEndDrawer
         ? IconButton(
-            onPressed: () => Navigator.of(context).maybePop(),
-            iconSize: 34,
-            padding: const EdgeInsets.all((54 - 34) / 2),
-            icon: const Icon(Icons.close_rounded),
-          )
+          onPressed: () => Navigator.of(context).maybePop(),
+          iconSize: 34,
+          padding: const EdgeInsets.all((54 - 34) / 2),
+          icon: const Icon(Icons.close_rounded),
+        )
         : null;
   }
 

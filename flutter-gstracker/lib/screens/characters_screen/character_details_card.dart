@@ -20,8 +20,11 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   final Color bgColor;
 
   CharacterDetailsCard(this.item, {super.key})
-      : bgColor = Color.lerp(Colors.black, item.element.color, 0.2)!
-            .withValues(alpha: 0.6);
+    : bgColor = Color.lerp(
+        Colors.black,
+        item.element.color,
+        0.2,
+      )!.withValues(alpha: 0.6);
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +50,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           info: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                item.title,
-                style: context.themeStyles.label14n,
-              ),
+              Text(item.title, style: context.themeStyles.label14n),
               const SizedBox(height: kSeparator4),
               if (hasChar) ...[
                 Row(
@@ -63,17 +63,20 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     GsItemCardLabel(
                       asset: AppAssets.companionXp,
                       label: friendship.toString(),
-                      onTap: () => GsUtils.characters
-                          .increaseFriendshipCharacter(item.id),
+                      onTap:
+                          () => GsUtils.characters.increaseFriendshipCharacter(
+                            item.id,
+                          ),
                     ),
                   ],
                 ),
                 const SizedBox(height: kSeparator4),
                 Row(
                   spacing: GsSpacing.kGridSeparator,
-                  children: CharTalentType.values
-                      .map((e) => _talentLabel(info, e))
-                      .toList(),
+                  children:
+                      CharTalentType.values
+                          .map((e) => _talentLabel(info, e))
+                          .toList(),
                 ),
                 InkWell(
                   onTap: () => GsUtils.characters.increaseAscension(item.id),
@@ -101,21 +104,23 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               Padding(
                 padding: const EdgeInsets.only(top: kSeparator6),
                 child: Column(
-                  children: [
-                    Text(
-                      item.description,
-                      style: context.themeStyles.label12n
-                          .copyWith(color: context.themeColors.almostWhite),
-                    ),
-                    _getAttributes(context, item),
-                    _getStats(context, item),
-                    _getMaterials(context, item),
-                    if (hasChar)
-                      Text(
-                        context.labels.amountObtained(owned),
-                        style: context.themeStyles.label12i,
-                      ),
-                  ].separate(const SizedBox(height: kSeparator8)).toList(),
+                  children:
+                      [
+                        Text(
+                          item.description,
+                          style: context.themeStyles.label12n.copyWith(
+                            color: context.themeColors.almostWhite,
+                          ),
+                        ),
+                        _getAttributes(context, item),
+                        _getStats(context, item),
+                        _getMaterials(context, item),
+                        if (hasChar)
+                          Text(
+                            context.labels.amountObtained(owned),
+                            style: context.themeStyles.label12i,
+                          ),
+                      ].separate(const SizedBox(height: kSeparator8)).toList(),
                 ),
               ),
             ],
@@ -129,9 +134,11 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return GsItemCardLabel(
       label: info?.talents?.talentWithExtra(tal).toString() ?? '-',
       onTap: () => GsUtils.characters.increaseTalent(item.id, tal),
-      fgColor: (c) => info?.talents?.hasExtra(tal) ?? false
-          ? Colors.lightBlue
-          : Colors.white,
+      fgColor:
+          (c) =>
+              info?.talents?.hasExtra(tal) ?? false
+                  ? Colors.lightBlue
+                  : Colors.white,
     );
   }
 
@@ -143,8 +150,10 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     final dish = db.getItem(info.specialDish);
 
     final data = <String, Widget>{
-      context.labels.element():
-          Text(info.element.label(context), style: stStyle),
+      context.labels.element(): Text(
+        info.element.label(context),
+        style: stStyle,
+      ),
       context.labels.weapon(): Text(info.weapon.label(context), style: stStyle),
       context.labels.constellation(): Text(info.constellation),
       context.labels.affiliation(): Text(info.affiliation, style: stStyle),
@@ -154,16 +163,17 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         info.releaseDate.toPrettyDate(context),
         style: stStyle,
       ),
-      context.labels.specialDish(): dish != null
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Flexible(child: Text(dish.name)),
-                const SizedBox(width: kSeparator8),
-                ItemGridWidget.recipe(dish, tooltip: false),
-              ],
-            )
-          : Text(context.labels.wsNone(), style: stStyle),
+      context.labels.specialDish():
+          dish != null
+              ? Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Flexible(child: Text(dish.name)),
+                  const SizedBox(width: kSeparator8),
+                  ItemGridWidget.recipe(dish, tooltip: false),
+                ],
+              )
+              : Text(context.labels.wsNone(), style: stStyle),
     };
 
     return GsDataBox.info(
@@ -172,33 +182,32 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       children: [
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          columnWidths: const {
-            0: IntrinsicColumnWidth(),
-          },
+          columnWidths: const {0: IntrinsicColumnWidth()},
           border: TableBorder(
             horizontalInside: BorderSide(
               color: context.themeColors.divider,
               width: 0.4,
             ),
           ),
-          children: data.entries.map((entry) {
-            return TableRow(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
-                  child: Text(entry.key, style: stLabel),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
-                  child: DefaultTextStyle(
-                    style: stStyle,
-                    textAlign: TextAlign.end,
-                    child: entry.value,
-                  ),
-                ),
-              ],
-            );
-          }).toList(),
+          children:
+              data.entries.map((entry) {
+                return TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+                      child: Text(entry.key, style: stLabel),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+                      child: DefaultTextStyle(
+                        style: stStyle,
+                        textAlign: TextAlign.end,
+                        child: entry.value,
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
         ),
       ],
     );
@@ -215,7 +224,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   Widget _getMaterials(BuildContext context, GsCharacter item) {
     final im = Database.instance.infoOf<GsMaterial>();
     const ic = GsUtils.characterMaterials;
-    final tltMats = ic.getTalentMaterials(item.id);
+    final tltMats = ic.getAllTalentsMaterials(item.id);
     final ascMats = ic.getAscensionMaterials(item.id);
 
     int existance(String? id) {
@@ -236,8 +245,9 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             padding: const EdgeInsets.all(kSeparator8),
             child: Text(
               label,
-              style:
-                  context.textTheme.titleSmall!.copyWith(color: Colors.white),
+              style: context.textTheme.titleSmall!.copyWith(
+                color: Colors.white,
+              ),
             ),
           ),
           Padding(
@@ -246,18 +256,19 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               spacing: kSeparator4,
               runSpacing: kSeparator4,
               textDirection: TextDirection.rtl,
-              children: mats.entries
-                  .map((e) => MapEntry(im.getItem(e.key), e.value))
-                  .where((e) => e.key != null)
-                  .map((e) => MapEntry(e.key!, e.value))
-                  .sortedBy((e) => existance(e.key.id))
-                  .thenBy((e) => e.key.group.index)
-                  .thenBy((e) => e.key.subgroup)
-                  .thenBy((e) => e.key.rarity)
-                  .thenBy((e) => e.key.name)
-                  .reversed
-                  .map(mapper)
-                  .toList(),
+              children:
+                  mats.entries
+                      .map((e) => MapEntry(im.getItem(e.key), e.value))
+                      .where((e) => e.key != null)
+                      .map((e) => MapEntry(e.key!, e.value))
+                      .sortedBy((e) => existance(e.key.id))
+                      .thenBy((e) => e.key.group.index)
+                      .thenBy((e) => e.key.subgroup)
+                      .thenBy((e) => e.key.rarity)
+                      .thenBy((e) => e.key.name)
+                      .reversed
+                      .map(mapper)
+                      .toList(),
             ),
           ),
         ],
@@ -268,9 +279,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       bgColor: bgColor,
       title: Text(context.labels.materials()),
       child: Table(
-        columnWidths: const {
-          0: IntrinsicColumnWidth(),
-        },
+        columnWidths: const {0: IntrinsicColumnWidth()},
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder(
           horizontalInside: BorderSide(

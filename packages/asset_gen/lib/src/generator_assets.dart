@@ -5,7 +5,10 @@ import 'package:asset_gen/src/asset_gen_base.dart';
 import 'package:asset_gen/src/utils.dart';
 import 'package:dartx/dartx_io.dart';
 
-Future<void> generateAssets(List<AssetConfig> configs) async {
+Future<void> generateAssets(
+  List<AssetConfig> configs, [
+  bool silent = true,
+]) async {
   final missing = <String>{};
 
   for (final config in configs) {
@@ -13,7 +16,7 @@ Future<void> generateAssets(List<AssetConfig> configs) async {
 
     for (final aClass in config.classes) {
       buffer.writeln(await _assetsClass(aClass.name, aClass.paths));
-      missing.addAll(await _assetsMissing(aClass.paths));
+      if (!silent) missing.addAll(await _assetsMissing(aClass.paths));
     }
     final fileOut = File(config.path);
     if (!await fileOut.parent.exists()) {

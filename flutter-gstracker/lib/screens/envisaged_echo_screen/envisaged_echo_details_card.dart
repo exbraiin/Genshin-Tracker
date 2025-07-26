@@ -22,18 +22,16 @@ class EnvisagedEchoDetailsCard extends StatelessWidget {
       version: item.version,
       info: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(char?.name ?? ''),
-          ),
+          Align(alignment: Alignment.topLeft, child: Text(char?.name ?? '')),
           const Spacer(),
           Align(
             alignment: Alignment.bottomRight,
             child: GsIconButton(
               size: 26,
-              color: owned
-                  ? context.themeColors.goodValue
-                  : context.themeColors.badValue,
+              color:
+                  owned
+                      ? context.themeColors.goodValue
+                      : context.themeColors.badValue,
               icon: owned ? Icons.check : Icons.close,
               onPress: () => GsUtils.echos.update(item.id, !owned),
             ),

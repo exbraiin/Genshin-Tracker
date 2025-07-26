@@ -18,15 +18,14 @@ class MaterialsScreen extends StatelessWidget {
       title: context.labels.materials(),
       items: (db) => db.infoOf<GsMaterial>().items,
       versionSort: (item) => item.version,
-      itemBuilder: (context, state) => MaterialListItem(
-        state.item,
-        onTap: state.onSelect,
-        selected: state.selected,
-      ),
-      itemCardBuilder: (context, item) => MaterialDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemBuilder:
+          (context, state) => MaterialListItem(
+            state.item,
+            onTap: state.onSelect,
+            selected: state.selected,
+          ),
+      itemCardBuilder:
+          (context, item) => MaterialDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

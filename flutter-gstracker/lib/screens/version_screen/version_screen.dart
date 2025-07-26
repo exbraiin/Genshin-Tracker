@@ -60,15 +60,14 @@ class VersionScreen extends StatelessWidget {
           const SizedBox(width: kSeparator4),
         ];
       },
-      itemBuilder: (context, state) => VersionListItem(
-        state.item,
-        onTap: state.onSelect,
-        selected: state.selected,
-      ),
-      itemCardBuilder: (context, item) => VersionDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemBuilder:
+          (context, state) => VersionListItem(
+            state.item,
+            onTap: state.onSelect,
+            selected: state.selected,
+          ),
+      itemCardBuilder:
+          (context, item) => VersionDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }
@@ -76,9 +75,7 @@ class VersionScreen extends StatelessWidget {
 class _TimeBuilder extends StatefulWidget {
   final TransitionBuilder builder;
 
-  const _TimeBuilder({
-    required this.builder,
-  });
+  const _TimeBuilder({required this.builder});
 
   @override
   State<_TimeBuilder> createState() => _TimeBuilderState();
@@ -91,19 +88,17 @@ class _TimeBuilderState extends State<_TimeBuilder>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    )
-      ..forward()
-      ..addStatusListener((status) {
-        if (status != AnimationStatus.completed) return;
-        setState(() {
-          _controller
-            ..reset()
-            ..forward();
-        });
-      });
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1))
+          ..forward()
+          ..addStatusListener((status) {
+            if (status != AnimationStatus.completed) return;
+            setState(() {
+              _controller
+                ..reset()
+                ..forward();
+            });
+          });
   }
 
   @override

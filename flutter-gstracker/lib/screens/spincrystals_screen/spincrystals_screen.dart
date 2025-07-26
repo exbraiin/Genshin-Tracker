@@ -25,10 +25,9 @@ class SpincrystalsScreen extends StatelessWidget {
           selected: state.selected,
         );
       },
-      itemCardBuilder: (context, item) => SpincrystalDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemCardBuilder:
+          (context, item) =>
+              SpincrystalDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

@@ -25,10 +25,9 @@ class ThespianTricksScreen extends StatelessWidget {
           selected: state.selected,
         );
       },
-      itemCardBuilder: (context, item) => ThespianTrickDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemCardBuilder:
+          (context, item) =>
+              ThespianTrickDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

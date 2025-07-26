@@ -20,8 +20,9 @@ class ThespianTrickListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final table = Database.instance.saveOf<GiThespianTrick>();
-    final character =
-        Database.instance.infoOf<GsCharacter>().getItem(item.character);
+    final character = Database.instance.infoOf<GsCharacter>().getItem(
+      item.character,
+    );
 
     final owned = table.exists(item.id);
 

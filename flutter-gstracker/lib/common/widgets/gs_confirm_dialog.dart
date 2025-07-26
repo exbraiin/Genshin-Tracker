@@ -53,11 +53,7 @@ class GsConfirmDialog extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      subtitle,
-                      style: style,
-                      strutStyle: style.toStrut(),
-                    ),
+                    Text(subtitle, style: style, strutStyle: style.toStrut()),
                     const SizedBox(height: GsSpacing.kGridSeparator * 2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

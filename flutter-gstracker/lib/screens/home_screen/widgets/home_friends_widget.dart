@@ -43,18 +43,22 @@ class HomeFriendsWidget extends StatelessWidget {
               final items = (width ~/ itemSize).coerceAtMost(8);
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: characters
-                    .take(items)
-                    .map<Widget>((info) {
-                      return ItemGridWidget.character(
-                        info,
-                        label: chars.getCharFriendship(info.id).format(),
-                        onAdd: (ctx) => GsUtils.characters
-                            .increaseFriendshipCharacter(info.id),
-                      );
-                    })
-                    .separate(const SizedBox(width: GsSpacing.kGridSeparator))
-                    .toList(),
+                children:
+                    characters
+                        .take(items)
+                        .map<Widget>((info) {
+                          return ItemGridWidget.character(
+                            info,
+                            label: chars.getCharFriendship(info.id).format(),
+                            onAdd:
+                                (ctx) => GsUtils.characters
+                                    .increaseFriendshipCharacter(info.id),
+                          );
+                        })
+                        .separate(
+                          const SizedBox(width: GsSpacing.kGridSeparator),
+                        )
+                        .toList(),
               );
             },
           ),

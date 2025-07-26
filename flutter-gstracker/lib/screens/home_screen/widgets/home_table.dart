@@ -6,19 +6,13 @@ class HomeTable extends StatelessWidget {
   final List<Widget> headers;
   final List<List<Widget>> rows;
 
-  const HomeTable({
-    super.key,
-    required this.headers,
-    required this.rows,
-  });
+  const HomeTable({super.key, required this.headers, required this.rows});
 
   @override
   Widget build(BuildContext context) {
     return Table(
       border: TableBorder(
-        verticalInside: BorderSide(
-          color: Colors.grey.withValues(alpha: 0.2),
-        ),
+        verticalInside: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
       ),
       children: [
         TableRow(children: headers.map((e) => e).toList()),
@@ -55,10 +49,7 @@ class HomeRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            owned.format(),
-            textAlign: TextAlign.end,
-          ),
+          Text(owned.format(), textAlign: TextAlign.end),
           if (missing > 0)
             Text(
               ' +${missing.format()}',
@@ -78,14 +69,11 @@ class HomeRow extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(kSeparator2),
       child: DefaultTextStyle(
-        style: context.textTheme.titleSmall!
-            .copyWith(fontSize: fontSize, color: color),
-        child: child ??
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-            ),
+        style: context.textTheme.titleSmall!.copyWith(
+          fontSize: fontSize,
+          color: color,
+        ),
+        child: child ?? Text(label, textAlign: TextAlign.center, maxLines: 1),
       ),
     );
   }

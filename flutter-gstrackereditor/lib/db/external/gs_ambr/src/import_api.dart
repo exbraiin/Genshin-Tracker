@@ -47,10 +47,7 @@ class ImportCache {
 
   ImportCache(this.baseUrl);
 
-  Future<JsonMap> fetchPage(
-    String endpoint, {
-    bool useCache = true,
-  }) async {
+  Future<JsonMap> fetchPage(String endpoint, {bool useCache = true}) async {
     final url = '$baseUrl$endpoint';
     var filename = '.cache$endpoint';
     if (!filename.endsWith('.json')) filename += '.json';

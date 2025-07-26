@@ -30,10 +30,9 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         final saved = db.saveOf<GiRecipe>().getItem(item.id);
 
         late final baseRecipe = db.infoOf<GsRecipe>().getItem(item.baseRecipe);
-        late final char = db
-            .infoOf<GsCharacter>()
-            .items
-            .firstOrNullWhere((e) => e.specialDish == item.id);
+        late final char = db.infoOf<GsCharacter>().items.firstOrNullWhere(
+          (e) => e.specialDish == item.id,
+        );
 
         return ItemDetailsCard(
           name: item.name,
@@ -46,11 +45,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               children: [
                 Row(
                   children: [
-                    Image.asset(
-                      item.effect.assetPath,
-                      width: 24,
-                      height: 24,
-                    ),
+                    Image.asset(item.effect.assetPath, width: 24, height: 24),
                     const SizedBox(width: kSeparator4),
                     Text(item.effect.label(context)),
                   ],
@@ -61,12 +56,16 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     alignment: Alignment.bottomRight,
                     child: GsIconButton(
                       size: 26,
-                      color: saved != null
-                          ? context.themeColors.goodValue
-                          : context.themeColors.badValue,
+                      color:
+                          saved != null
+                              ? context.themeColors.goodValue
+                              : context.themeColors.badValue,
                       icon: saved != null ? Icons.check : Icons.close,
-                      onPress: () =>
-                          GsUtils.recipes.update(item.id, own: saved == null),
+                      onPress:
+                          () => GsUtils.recipes.update(
+                            item.id,
+                            own: saved == null,
+                          ),
                     ),
                   ),
                 if (!isSpecial && owned)
@@ -77,8 +76,9 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                       margin: const EdgeInsets.only(top: kSeparator4),
                       padding: const EdgeInsets.all(kSeparator4),
                       decoration: BoxDecoration(
-                        color: context.themeColors.mainColor0
-                            .withValues(alpha: 0.4),
+                        color: context.themeColors.mainColor0.withValues(
+                          alpha: 0.4,
+                        ),
                         borderRadius: GsSpacing.kGridRadius,
                       ),
                       child: Column(
@@ -106,8 +106,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                                   divisions: item.maxProficiency,
                                   value: notifier.value.toDouble(),
                                   onChanged: (i) => notifier.value = i.toInt(),
-                                  onChangeEnd: (i) =>
-                                      _setProficiency(i.toInt()),
+                                  onChangeEnd:
+                                      (i) => _setProficiency(i.toInt()),
                                 );
                               },
                             ),
@@ -152,10 +152,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                         ),
                         ItemGridWidget.recipe(baseRecipe, onTap: null),
                         if (char != null)
-                          ItemGridWidget.character(
-                            char,
-                            onTap: null,
-                          ),
+                          ItemGridWidget.character(char, onTap: null),
                       ],
                     ],
                   ),

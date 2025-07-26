@@ -41,11 +41,7 @@ class WishListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(pity.toString(), style: style),
-          GsWishStateIcon(
-            wishState,
-            rarity: item.rarity,
-            banner: bannerType,
-          ),
+          GsWishStateIcon(wishState, rarity: item.rarity, banner: bannerType),
         ],
       );
 
@@ -117,15 +113,10 @@ class WishListItem extends StatelessWidget {
           Container(
             width: 44,
             margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
-            child: CachedImageWidget(
-              item.image,
-              fit: BoxFit.cover,
-            ),
+            child: CachedImageWidget(item.image, fit: BoxFit.cover),
           ),
           const SizedBox(width: 8),
-          Expanded(
-            child: Text(item.name),
-          ),
+          Expanded(child: Text(item.name)),
           SizedBox(
             width: 44,
             child: Text(

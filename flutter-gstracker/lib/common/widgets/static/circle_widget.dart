@@ -21,10 +21,7 @@ class CircleWidget extends StatelessWidget {
     return SizedBox(
       width: size ?? double.infinity,
       height: size ?? double.infinity,
-      child: CustomPaint(
-        painter: _Painter(this),
-        child: child,
-      ),
+      child: CustomPaint(painter: _Painter(this), child: child),
     );
   }
 }

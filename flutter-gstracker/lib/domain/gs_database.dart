@@ -46,14 +46,11 @@ class Database {
   Future<void> _load() async {
     if (_loaded.hasValue) return;
     _loaded.add(false);
-    
+
     final dir = File(_kDataPath).parent;
     if (!await dir.exists()) await dir.create(recursive: true);
 
-    await Future.wait([
-      _loadData(),
-      _loadSave(),
-    ]);
+    await Future.wait([_loadData(), _loadSave()]);
     _loaded.add(true);
   }
 
@@ -102,9 +99,10 @@ final class _Downloader {
 
     try {
       _busy = true;
-      final localVersion = await File(_kDataPath).exists()
-          ? await _loadFileVersion()
-          : _Version();
+      final localVersion =
+          await File(_kDataPath).exists()
+              ? await _loadFileVersion()
+              : _Version();
 
       // Check if we can skip the version check
       if (localVersion.shouldSkip) {
@@ -207,14 +205,15 @@ class _Version {
   }
 
   _Version([String? version])
-      : version = version ?? '',
-        lastUpdate = version != null ? DateTime.now() : DateTime(0);
+    : version = version ?? '',
+      lastUpdate = version != null ? DateTime.now() : DateTime(0);
 
   _Version.fromJson(JsonMap json)
-      : version = json['version'] as String? ?? '',
-        lastUpdate = json['updated'] != null
-            ? DateTime.tryParse(json['updated']!) ?? DateTime(0)
-            : DateTime(0);
+    : version = json['version'] as String? ?? '',
+      lastUpdate =
+          json['updated'] != null
+              ? DateTime.tryParse(json['updated']!) ?? DateTime(0)
+              : DateTime(0);
 
   bool? _compare(_Version a, _Version b, bool Function(int a, int b) v) {
     try {
@@ -232,7 +231,7 @@ class _Version {
   bool? operator <=(_Version other) => _compare(this, other, (a, b) => a <= b);
 
   JsonMap toJson() => {
-        'version': version,
-        'updated': lastUpdate.toIso8601String(),
-      };
+    'version': version,
+    'updated': lastUpdate.toIso8601String(),
+  };
 }

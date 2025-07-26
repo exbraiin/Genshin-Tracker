@@ -77,12 +77,7 @@ class GsArtifactExt extends GsModelExt<GsArtifact> {
             (item) => GeArtifactPieceType.values.fromId(item.id),
             (item, value) => item.copyWith(id: value.id),
             validator: (subItem, level) {
-              return validateBuildId(
-                item.pieces,
-                subItem,
-                (i) => i.id,
-                level,
-              );
+              return validateBuildId(item.pieces, subItem, (i) => i.id, level);
             },
           ),
           DataField.textField(

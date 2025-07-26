@@ -66,25 +66,25 @@ class GsEventExt extends GsModelExt<GsEvent> {
         'Date Start',
         (item) => item.dateStart,
         (item, value) => item.copyWith(dateStart: value),
-        validator: (item) => vdVersion.validateDate(
-          item.version,
-          item.dateStart,
-        ),
+        validator:
+            (item) => vdVersion.validateDate(item.version, item.dateStart),
       ),
       DataField.dateTime(
         'Date End',
         (item) => item.dateEnd,
         (item, value) => item.copyWith(dateEnd: value),
-        validator: (item) => switch (item.type) {
-          GeEventType.login => vdDateInterval(item.dateStart, item.dateEnd),
-          GeEventType.quest => vdPermanentDate(item.dateEnd),
-          GeEventType.permanent => vdPermanentDate(item.dateEnd),
-          _ => [
-                vdDateInterval(item.dateStart, item.dateEnd),
-                vdVersion.validateDate(item.version, item.dateEnd),
-              ].maxBy((e) => e.index) ??
-              GsValidLevel.none,
-        },
+        validator:
+            (item) => switch (item.type) {
+              GeEventType.login => vdDateInterval(item.dateStart, item.dateEnd),
+              GeEventType.quest => vdPermanentDate(item.dateEnd),
+              GeEventType.permanent => vdPermanentDate(item.dateEnd),
+              _ =>
+                [
+                      vdDateInterval(item.dateStart, item.dateEnd),
+                      vdVersion.validateDate(item.version, item.dateEnd),
+                    ].maxBy((e) => e.index) ??
+                    GsValidLevel.none,
+            },
       ),
       DataField.multiSelect<GsEvent, String>(
         'Weapon Rewards',

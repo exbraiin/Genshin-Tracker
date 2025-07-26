@@ -6,8 +6,5 @@ class ValueStreamBuilder<T> extends StreamBuilder<T> {
     super.key,
     ValueStream<T>? stream,
     required super.builder,
-  }) : super(
-          stream: stream?.skip(1),
-          initialData: stream?.valueOrNull,
-        );
+  }) : super(stream: stream?.skip(1), initialData: stream?.valueOrNull);
 }

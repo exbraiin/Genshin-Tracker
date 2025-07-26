@@ -95,32 +95,29 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
     return ValueListenableBuilder(
       valueListenable: groupNotifier,
       builder: (context, item, child) {
-        final aList = item != null
-            ? filter.match(_getAchievements(item, query)).sorted()
-            : const <GsAchievement>[];
+        final aList =
+            item != null
+                ? filter.match(_getAchievements(item, query)).sorted()
+                : const <GsAchievement>[];
 
         final obtainFilter = filter.getFilterSectionByKey(FilterKey.obtain);
         const a = GsUtils.achievements;
-        final aGroup = (obtainFilter?.enabled.contains(false) ?? false)
-            ? groups.where((item) {
-                final saved = a.countSaved((e) => e.group == item.id);
-                final total = a.countTotal((e) => e.group == item.id);
-                return saved != total;
-              }).toList()
-            : groups;
+        final aGroup =
+            (obtainFilter?.enabled.contains(false) ?? false)
+                ? groups.where((item) {
+                  final saved = a.countSaved((e) => e.group == item.id);
+                  final total = a.countTotal((e) => e.group == item.id);
+                  return saved != total;
+                }).toList()
+                : groups;
 
         return Row(
           children: [
-            Expanded(
-              flex: 2,
-              child: _getGroupsList(aGroup),
-            ),
+            Expanded(flex: 2, child: _getGroupsList(aGroup)),
             const SizedBox(width: GsSpacing.kGridSeparator),
             Expanded(
               flex: 5,
-              child: InventoryBox(
-                child: _getAchievementsList(item!, aList),
-              ),
+              child: InventoryBox(child: _getAchievementsList(item!, aList)),
             ),
           ],
         );
@@ -138,8 +135,9 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(kSeparator8)
-                        .copyWith(bottom: kSeparator4),
+                    padding: const EdgeInsets.all(
+                      kSeparator8,
+                    ).copyWith(bottom: kSeparator4),
                     child: TextField(
                       style: const TextStyle(fontSize: 16),
                       maxLines: 1,
@@ -175,8 +173,9 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                   () => groupNotifier.value = item,
                 );
               },
-              separatorBuilder: (context, index) =>
-                  const SizedBox(height: GsSpacing.kGridSeparator),
+              separatorBuilder:
+                  (context, index) =>
+                      const SizedBox(height: GsSpacing.kGridSeparator),
             ),
           ),
         ),
@@ -193,8 +192,8 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
       key: ValueKey(list.length),
       itemCount: list.length,
       itemBuilder: (context, index) => AchievementListItem(list[index]),
-      separatorBuilder: (context, index) =>
-          const SizedBox(height: GsSpacing.kListSeparator),
+      separatorBuilder:
+          (context, index) => const SizedBox(height: GsSpacing.kListSeparator),
     );
   }
 
@@ -216,28 +215,32 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
       padding: const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator16),
       decoration: BoxDecoration(
         color: selected ? context.themeColors.mainColor1 : Colors.transparent,
-        image: namecard != null && namecard.fullImage.isNotEmpty
-            ? DecorationImage(
-                fit: BoxFit.cover,
-                opacity: 0.4,
-                alignment: Alignment.centerRight,
-                image: CachedNetworkImageProvider(namecard.fullImage)
-                    .resizeIfNeeded(),
-              )
-            : DecorationImage(
-                fit: BoxFit.cover,
-                opacity: 0.2,
-                alignment: Alignment.centerRight,
-                image: AssetImage(GsAssets.getRarityBgImage(1)),
-              ),
+        image:
+            namecard != null && namecard.fullImage.isNotEmpty
+                ? DecorationImage(
+                  fit: BoxFit.cover,
+                  opacity: 0.4,
+                  alignment: Alignment.centerRight,
+                  image:
+                      CachedNetworkImageProvider(
+                        namecard.fullImage,
+                      ).resizeIfNeeded(),
+                )
+                : DecorationImage(
+                  fit: BoxFit.cover,
+                  opacity: 0.2,
+                  alignment: Alignment.centerRight,
+                  image: AssetImage(GsAssets.getRarityBgImage(1)),
+                ),
         borderRadius: GsSpacing.kGridRadius,
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: GsSpacing.kGridRadius,
         border: Border.all(
-          color: selected
-              ? const Color(0xFFd8c090).withValues(alpha: 0.8)
-              : Colors.transparent,
+          color:
+              selected
+                  ? const Color(0xFFd8c090).withValues(alpha: 0.8)
+                  : Colors.transparent,
           width: 2,
         ),
       ),
@@ -245,10 +248,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
         onTap: select,
         child: Row(
           children: [
-            SizedBox(
-              width: 82,
-              child: CachedImageWidget(item.icon),
-            ),
+            SizedBox(width: 82, child: CachedImageWidget(item.icon)),
             const SizedBox(width: kSeparator8),
             Expanded(
               child: Column(
@@ -256,10 +256,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Text(
-                      item.name,
-                      style: context.themeStyles.label14n,
-                    ),
+                    child: Text(item.name, style: context.themeStyles.label14n),
                   ),
                   const SizedBox(height: kSeparator6),
                   Text(

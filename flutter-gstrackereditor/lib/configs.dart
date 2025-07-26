@@ -63,13 +63,7 @@ class GsConfigs<T extends GsModel<T>> {
           child: _orderItem(item.order.toString()),
         );
       },
-      filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
-      ],
+      filters: [GsFieldFilter('Version', _versions.filters, (i) => i.version)],
     ),
     GsAchievement: GsConfigs<GsAchievement>._(
       title: 'Achievement',
@@ -84,16 +78,8 @@ class GsConfigs<T extends GsModel<T>> {
         );
       },
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
-        GsFieldFilter.fromEnum(
-          'Type',
-          GeAchievementType.values,
-          (i) => i.type,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.fromEnum('Type', GeAchievementType.values, (i) => i.type),
         GsFieldFilter(
           'Category',
           ValidateModels<GsAchievementGroup>().filters,
@@ -104,13 +90,14 @@ class GsConfigs<T extends GsModel<T>> {
     GsArtifact: GsConfigs<GsArtifact>._(
       title: 'Artifacts',
       pageBuilder: const vd.GsArtifactExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: item.name,
-        version: item.version,
-        rarity: item.rarity,
-        image: item.pieces.firstOrNull?.icon,
-        regionColor: GsStyle.getRegionElementColor(item.region),
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.rarity(
+            label: item.name,
+            version: item.version,
+            rarity: item.rarity,
+            image: item.pieces.firstOrNull?.icon,
+            regionColor: GsStyle.getRegionElementColor(item.region),
+          ),
       import: [
         DataButton(
           'Import from ${ImportApi.i.name}',
@@ -119,17 +106,9 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
         GsFieldFilter.rarity('Rarity', (i) => i.rarity),
-        GsFieldFilter.fromEnum(
-          'Region',
-          GeRegionType.values,
-          (i) => i.region,
-        ),
+        GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
       ],
     ),
     GsBanner: GsConfigs<GsBanner>._(
@@ -137,44 +116,39 @@ class GsConfigs<T extends GsModel<T>> {
       pageBuilder: const vd.GsBannerExt(),
       itemDecoration: (item) {
         final data = item.feature5.firstOrNull;
-        final image = data != null
-            ? Database.i.of<GsCharacter>().getItem(data)?.image ??
-                Database.i.of<GsWeapon>().getItem(data)?.image
-            : null;
+        final image =
+            data != null
+                ? Database.i.of<GsCharacter>().getItem(data)?.image ??
+                    Database.i.of<GsWeapon>().getItem(data)?.image
+                : null;
         return GsItemDecor.color(
           label: '${item.dateStart.toString().split(' ').first}\n${item.name}',
           version: item.version,
           color: item.type.color,
           image: image,
-          duration: item.type == GeBannerType.beginner ||
-                  item.type == GeBannerType.standard
-              ? null
-              : item.dateStart.difference(item.dateEnd).abs(),
+          duration:
+              item.type == GeBannerType.beginner ||
+                      item.type == GeBannerType.standard
+                  ? null
+                  : item.dateStart.difference(item.dateEnd).abs(),
         );
       },
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
-        GsFieldFilter.fromEnum(
-          'Type',
-          GeBannerType.values,
-          (i) => i.type,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.fromEnum('Type', GeBannerType.values, (i) => i.type),
       ],
     ),
     GsCharacter: GsConfigs<GsCharacter>._(
       title: 'Characters',
       pageBuilder: const vd.GsCharacterExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: item.name,
-        version: item.version,
-        rarity: item.rarity.coerceAtLeast(1),
-        image: item.image,
-        regionColor: GsStyle.getRegionElementColor(item.region),
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.rarity(
+            label: item.name,
+            version: item.version,
+            rarity: item.rarity.coerceAtLeast(1),
+            image: item.image,
+            regionColor: GsStyle.getRegionElementColor(item.region),
+          ),
       import: [
         DataButton(
           'Import from ${ImportApi.i.name}',
@@ -188,27 +162,15 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
-        GsFieldFilter.fromEnum(
-          'Region',
-          GeRegionType.values,
-          (i) => i.region,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
         GsFieldFilter.rarity('Rarity', (i) => i.rarity, 4),
         GsFieldFilter.fromEnum(
           'Element',
           GeElementType.values,
           (i) => i.element,
         ),
-        GsFieldFilter.fromEnum(
-          'Weapon',
-          GeWeaponType.values,
-          (i) => i.weapon,
-        ),
+        GsFieldFilter.fromEnum('Weapon', GeWeaponType.values, (i) => i.weapon),
         GsFieldFilter.fromEnum(
           'Ascension Stat',
           GeCharacterAscStatType.values,
@@ -226,66 +188,52 @@ class GsConfigs<T extends GsModel<T>> {
           version: item.version,
           rarity: item.rarity,
           image: char?.image,
-          regionColor:
-              GsStyle.getRegionElementColor(char?.region ?? GeRegionType.none),
+          regionColor: GsStyle.getRegionElementColor(
+            char?.region ?? GeRegionType.none,
+          ),
         );
       },
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
         GsFieldFilter.rarity('Rarity', (i) => i.rarity),
       ],
     ),
     GsMaterial: GsConfigs<GsMaterial>._(
       title: 'Materials',
       pageBuilder: const vd.GsMaterialExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: item.name,
-        version: item.version,
-        rarity: item.rarity,
-        image: item.image,
-        regionColor: GsStyle.getRegionElementColor(item.region),
-        child: item.subgroup != 0 ? _orderItem(item.subgroup.toString()) : null,
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.rarity(
+            label: item.name,
+            version: item.version,
+            rarity: item.rarity,
+            image: item.image,
+            regionColor: GsStyle.getRegionElementColor(item.region),
+            child:
+                item.subgroup != 0
+                    ? _orderItem(item.subgroup.toString())
+                    : null,
+          ),
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
         GsFieldFilter.rarity('Rarity', (i) => i.rarity),
-        GsFieldFilter.fromEnum(
-          'Region',
-          GeRegionType.values,
-          (i) => i.region,
-        ),
-        GsFieldFilter.fromEnum(
-          'Group',
-          GeMaterialType.values,
-          (i) => i.group,
-        ),
-        GsFieldFilter(
-          'Ingredient',
-          [
-            const GsSelectItem('true', 'Yes'),
-            const GsSelectItem('false', 'No'),
-          ],
-          (i) => i.ingredient.toString(),
-        ),
+        GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
+        GsFieldFilter.fromEnum('Group', GeMaterialType.values, (i) => i.group),
+        GsFieldFilter('Ingredient', [
+          const GsSelectItem('true', 'Yes'),
+          const GsSelectItem('false', 'No'),
+        ], (i) => i.ingredient.toString()),
       ],
     ),
     GsNamecard: GsConfigs<GsNamecard>._(
       title: 'Namecards',
       pageBuilder: const vd.GsNamecardExt(),
-      itemDecoration: (item) => GsItemDecor.color(
-        label: item.name,
-        version: item.version,
-        color: GsStyle.getNamecardColor(item.type),
-        image: item.image,
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.color(
+            label: item.name,
+            version: item.version,
+            color: GsStyle.getNamecardColor(item.type),
+            image: item.image,
+          ),
       import: [
         DataButton(
           'Import from ${ImportApi.i.name}',
@@ -294,28 +242,21 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
         GsFieldFilter.rarity('Rarity', (i) => i.rarity),
-        GsFieldFilter.fromEnum(
-          'Type',
-          GeNamecardType.values,
-          (i) => i.type,
-        ),
+        GsFieldFilter.fromEnum('Type', GeNamecardType.values, (i) => i.type),
       ],
     ),
     GsRecipe: GsConfigs<GsRecipe>._(
       title: 'Recipes',
       pageBuilder: const vd.GsRecipeExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: item.name,
-        version: item.version,
-        rarity: item.rarity,
-        image: item.image,
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.rarity(
+            label: item.name,
+            version: item.version,
+            rarity: item.rarity,
+            image: item.image,
+          ),
       import: [
         DataButton(
           'Import from ${ImportApi.i.name}',
@@ -324,17 +265,9 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
         GsFieldFilter.rarity('Rarity', (i) => i.rarity),
-        GsFieldFilter.fromEnum(
-          'Type',
-          GeRecipeType.values,
-          (i) => i.type,
-        ),
+        GsFieldFilter.fromEnum('Type', GeRecipeType.values, (i) => i.type),
         GsFieldFilter.fromEnum(
           'Effect',
           GeRecipeEffectType.values,
@@ -345,25 +278,18 @@ class GsConfigs<T extends GsModel<T>> {
     GsFurnitureChest: GsConfigs<GsFurnitureChest>._(
       title: 'Remarkable Chests',
       pageBuilder: const vd.GsFurnitureChestExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: item.name,
-        version: item.version,
-        rarity: item.rarity,
-        image: item.image,
-        regionColor: GsStyle.getRegionElementColor(item.region),
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.rarity(
+            label: item.name,
+            version: item.version,
+            rarity: item.rarity,
+            image: item.image,
+            regionColor: GsStyle.getRegionElementColor(item.region),
+          ),
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
         GsFieldFilter.rarity('Rarity', (i) => i.rarity),
-        GsFieldFilter.fromEnum(
-          'Region',
-          GeRegionType.values,
-          (i) => i.region,
-        ),
+        GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
         GsFieldFilter.fromEnum(
           'Type',
           GeSereniteaSetType.values,
@@ -381,17 +307,14 @@ class GsConfigs<T extends GsModel<T>> {
     GsSereniteaSet: GsConfigs<GsSereniteaSet>._(
       title: 'Sereniteas',
       pageBuilder: const vd.GsSereniteaSetExt(),
-      itemDecoration: (item) => GsItemDecor.color(
-        label: item.name,
-        version: item.version,
-        color: item.category.color,
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.color(
+            label: item.name,
+            version: item.version,
+            color: item.category.color,
+          ),
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
         GsFieldFilter.fromEnum(
           'Category',
           GeSereniteaSetType.values,
@@ -414,43 +337,38 @@ class GsConfigs<T extends GsModel<T>> {
     GsSpincrystal: GsConfigs<GsSpincrystal>._(
       title: 'Spincrystals',
       pageBuilder: const vd.GsSpincrystalExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: '${item.number}',
-        version: item.version,
-        rarity: 5,
-        regionColor: GsStyle.getRegionElementColor(item.region),
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.rarity(
+            label: '${item.number}',
+            version: item.version,
+            rarity: 5,
+            regionColor: GsStyle.getRegionElementColor(item.region),
+          ),
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
-        GsFieldFilter.fromEnum(
-          'Region',
-          GeRegionType.values,
-          (i) => i.region,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
       ],
     ),
     GsEnvisagedEcho: GsConfigs<GsEnvisagedEcho>._(
       title: 'Envisaged Echo',
       pageBuilder: const vd.GsEnvisagedEchoExt(),
-      itemDecoration: (item) => GsItemDecor.color(
-        label: item.name,
-        image: item.icon,
-        version: item.version,
-        color: GsStyle.getRarityColor(4),
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.color(
+            label: item.name,
+            image: item.icon,
+            version: item.version,
+            color: GsStyle.getRarityColor(4),
+          ),
     ),
     GsThespianTrick: GsConfigs<GsThespianTrick>._(
       title: 'Thespian Trick',
       pageBuilder: const vd.GsThespianTrickExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: item.name,
-        version: item.version,
-        rarity: item.rarity,
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.rarity(
+            label: item.name,
+            version: item.version,
+            rarity: item.rarity,
+          ),
       import: [
         DataButton(
           'Import from fandom URL',
@@ -462,34 +380,28 @@ class GsConfigs<T extends GsModel<T>> {
     GsEvent: GsConfigs<GsEvent>._(
       title: 'Events',
       pageBuilder: const vd.GsEventExt(),
-      itemDecoration: (item) => GsItemDecor.color(
-        label: item.name,
-        version: item.version,
-        color: GsStyle.getVersionColor(item.version),
-        child: _orderItem(item.type.name.substring(0, 1).capitalize()),
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.color(
+            label: item.name,
+            version: item.version,
+            color: GsStyle.getVersionColor(item.version),
+            child: _orderItem(item.type.name.substring(0, 1).capitalize()),
+          ),
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
-        GsFieldFilter.fromEnum(
-          'Type',
-          GeEventType.values,
-          (i) => i.type,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.fromEnum('Type', GeEventType.values, (i) => i.type),
       ],
     ),
     GsWeapon: GsConfigs<GsWeapon>._(
       title: 'Weapons',
       pageBuilder: const vd.GsWeaponExt(),
-      itemDecoration: (item) => GsItemDecor.rarity(
-        label: item.name,
-        version: item.version,
-        rarity: item.rarity,
-        image: item.image,
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.rarity(
+            label: item.name,
+            version: item.version,
+            rarity: item.rarity,
+            image: item.image,
+          ),
       import: [
         DataButton(
           'Import from ${ImportApi.i.name}',
@@ -498,17 +410,9 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter(
-          'Version',
-          _versions.filters,
-          (i) => i.version,
-        ),
+        GsFieldFilter('Version', _versions.filters, (i) => i.version),
         GsFieldFilter.rarity('Rarity', (i) => i.rarity),
-        GsFieldFilter.fromEnum(
-          'Type',
-          GeWeaponType.values,
-          (i) => i.type,
-        ),
+        GsFieldFilter.fromEnum('Type', GeWeaponType.values, (i) => i.type),
         GsFieldFilter.fromEnum(
           'Source',
           GeItemSourceType.values,
@@ -524,21 +428,23 @@ class GsConfigs<T extends GsModel<T>> {
     GsBattlepass: GsConfigs<GsBattlepass>._(
       title: 'Battlepass',
       pageBuilder: const vd.GsBattlepassExt(),
-      itemDecoration: (item) => GsItemDecor.color(
-        label: item.name,
-        version: item.version,
-        color: GsStyle.getVersionColor(item.version),
-        image: item.image,
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.color(
+            label: item.name,
+            version: item.version,
+            color: GsStyle.getVersionColor(item.version),
+            image: item.image,
+          ),
     ),
     GsVersion: GsConfigs<GsVersion>._(
       title: 'Versions',
       pageBuilder: const vd.GsVersionExt(),
-      itemDecoration: (item) => GsItemDecor.color(
-        label: item.id,
-        version: item.id,
-        color: GsStyle.getVersionColor(item.id),
-      ),
+      itemDecoration:
+          (item) => GsItemDecor.color(
+            label: item.id,
+            version: item.id,
+            color: GsStyle.getVersionColor(item.id),
+          ),
     ),
   };
 
@@ -556,7 +462,8 @@ class GsConfigs<T extends GsModel<T>> {
 
   Widget toGridItem(BuildContext context) {
     final level = vd.DataValidator.i.getMaxLevel<T>();
-    final version = collection.items
+    final version =
+        collection.items
             .map((e) => itemDecoration(e).version)
             .toSet()
             .sortedBy((element) => element)
@@ -576,9 +483,10 @@ class GsConfigs<T extends GsModel<T>> {
     context.pushWidget(
       ItemsListScreen<T>(
         title: title,
-        list: () =>
-            sort?.call(collection.items.sorted()).toList() ??
-            collection.items.sorted(),
+        list:
+            () =>
+                sort?.call(collection.items.sorted()).toList() ??
+                collection.items.sorted(),
         getDecor: itemDecoration,
         onTap: openEditScreen,
         filters: filters,
@@ -624,10 +532,7 @@ Widget _orderItem(String order) {
         fit: BoxFit.scaleDown,
         child: Text(
           order,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
       ),
     ),

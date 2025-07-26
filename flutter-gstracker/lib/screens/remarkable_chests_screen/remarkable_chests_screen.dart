@@ -18,15 +18,15 @@ class RemarkableChestsScreen extends StatelessWidget {
       title: context.labels.remarkableChests(),
       items: (db) => db.infoOf<GsFurnitureChest>().items,
       versionSort: (item) => item.version,
-      itemBuilder: (context, state) => RemarkableChestListItem(
-        state.item,
-        selected: state.selected,
-        onTap: state.onSelect,
-      ),
-      itemCardBuilder: (context, item) => RemarkableChestDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemBuilder:
+          (context, state) => RemarkableChestListItem(
+            state.item,
+            selected: state.selected,
+            onTap: state.onSelect,
+          ),
+      itemCardBuilder:
+          (context, item) =>
+              RemarkableChestDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

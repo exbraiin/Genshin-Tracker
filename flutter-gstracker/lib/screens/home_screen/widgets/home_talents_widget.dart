@@ -30,14 +30,18 @@ class HomeTalentsWidget extends StatelessWidget {
             .map((c) => chars.getCharInfo(c.id))
             .whereNotNull()
             .where((data) {
-          final hasMissingTalents = data.talents?.isMissing() ?? false;
+              final hasMissingTalents = data.talents?.isMissing() ?? false;
 
-          late final talentMaterial = iMats.getItem(data.item.talentMaterial);
-          final hasWeekdayTalents = today == GeWeekdayType.sunday ||
-              talentMaterial != null && talentMaterial.weekdays.contains(today);
+              late final talentMaterial = iMats.getItem(
+                data.item.talentMaterial,
+              );
+              final hasWeekdayTalents =
+                  today == GeWeekdayType.sunday ||
+                  talentMaterial != null &&
+                      talentMaterial.weekdays.contains(today);
 
-          return hasMissingTalents && hasWeekdayTalents;
-        });
+              return hasMissingTalents && hasWeekdayTalents;
+            });
 
         if (list.isEmpty) {
           return GsDataBox.info(
@@ -68,8 +72,10 @@ class HomeTalentsWidget extends StatelessWidget {
                   IconButton(
                     padding: EdgeInsets.all(2),
                     constraints: BoxConstraints.tightFor(),
-                    onPressed: () => Navigator.of(context)
-                        .pushNamed(CharactersTableScreen.id),
+                    onPressed:
+                        () => Navigator.of(
+                          context,
+                        ).pushNamed(CharactersTableScreen.id),
                     icon: const Icon(Icons.list),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
@@ -78,9 +84,10 @@ class HomeTalentsWidget extends StatelessWidget {
                     padding: EdgeInsets.all(2),
                     constraints: BoxConstraints.tightFor(),
                     onPressed: () => notifier.value = !asc,
-                    icon: asc
-                        ? const Icon(Icons.arrow_circle_up_rounded)
-                        : const Icon(Icons.arrow_circle_down_rounded),
+                    icon:
+                        asc
+                            ? const Icon(Icons.arrow_circle_up_rounded)
+                            : const Icon(Icons.arrow_circle_down_rounded),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
                   SizedBox(width: kSeparator4),
@@ -99,9 +106,10 @@ class HomeTalentsWidget extends StatelessWidget {
                       info.item,
                       labelWidget: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: CharTalentType.values
-                            .map((e) => _talentLabel(context, info, e))
-                            .toList(),
+                        children:
+                            CharTalentType.values
+                                .map((e) => _talentLabel(context, info, e))
+                                .toList(),
                       ),
                     );
                   });
@@ -142,9 +150,7 @@ class HomeTalentsWidget extends StatelessWidget {
     final strut = style.toStrut();
     return Text(
       '${value ?? '-'} ',
-      style: style.copyWith(
-        color: hasExtra ? Colors.lightBlue : null,
-      ),
+      style: style.copyWith(color: hasExtra ? Colors.lightBlue : null),
       strutStyle: strut,
     );
   }

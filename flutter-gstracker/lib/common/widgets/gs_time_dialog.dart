@@ -159,9 +159,11 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                               child: IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints.tightFor(),
-                                onPressed: () => setState(() {
-                                  _savedTime = _isLocked ? null : _getDate();
-                                }),
+                                onPressed:
+                                    () => setState(() {
+                                      _savedTime =
+                                          _isLocked ? null : _getDate();
+                                    }),
                                 iconSize: 24,
                                 color: Colors.white.withValues(alpha: 0.5),
                                 icon: Icon(
@@ -233,9 +235,10 @@ class _GsTimeDialogState extends State<GsTimeDialog>
             scrollbars: false,
           ),
           itemExtent: 44,
-          physics: _isLocked
-              ? const NeverScrollableScrollPhysics()
-              : const FixedExtentScrollPhysics(),
+          physics:
+              _isLocked
+                  ? const NeverScrollableScrollPhysics()
+                  : const FixedExtentScrollPhysics(),
         ),
       ),
     );

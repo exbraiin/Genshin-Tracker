@@ -12,12 +12,13 @@ import 'package:gsdatabase/gsdatabase.dart';
 typedef DEdit<T extends GsModel<T>> = void Function(T v);
 typedef DValidator<T extends GsModel<T>> = GsValidLevel Function(T item);
 typedef DUpdate<T extends GsModel<T>> = T Function(T item);
-typedef DBuilder<T extends GsModel<T>> = Widget Function(
-  BuildContext context,
-  T item,
-  DEdit<T> edit,
-  GsValidLevel level,
-);
+typedef DBuilder<T extends GsModel<T>> =
+    Widget Function(
+      BuildContext context,
+      T item,
+      DEdit<T> edit,
+      GsValidLevel level,
+    );
 
 class DataButton<T extends GsModel<T>> {
   final Widget? icon;
@@ -31,34 +32,31 @@ class DataField<T extends GsModel<T>> {
   final DBuilder<T> builder;
   final DValidator<T> validator;
 
-  DataField._(
-    this.label,
-    this.builder, {
-    required this.validator,
-  });
+  DataField._(this.label, this.builder, {required this.validator});
 
   DataField.text(
     this.label,
     String Function(T item) content, {
     DUpdate<T>? swap,
-  })  : builder = ((context, item, edit, level) => Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    constraints: const BoxConstraints(minHeight: 36),
-                    alignment: Alignment.centerLeft,
-                    child: Text(content(item)),
-                  ),
-                ),
-                if (swap != null)
-                  IconButton(
-                    onPressed: () => edit(swap(item)),
-                    icon: const Icon(Icons.swap_horiz_rounded),
-                  ),
-              ],
-            )),
-        validator = ((item) => GsValidLevel.good);
+  }) : builder =
+           ((context, item, edit, level) => Row(
+             children: [
+               Expanded(
+                 child: Container(
+                   padding: const EdgeInsets.symmetric(vertical: 8),
+                   constraints: const BoxConstraints(minHeight: 36),
+                   alignment: Alignment.centerLeft,
+                   child: Text(content(item)),
+                 ),
+               ),
+               if (swap != null)
+                 IconButton(
+                   onPressed: () => edit(swap(item)),
+                   icon: const Icon(Icons.swap_horiz_rounded),
+                 ),
+             ],
+           )),
+       validator = ((item) => GsValidLevel.good);
 
   DataField.button(
     this.label,
@@ -66,16 +64,16 @@ class DataField<T extends GsModel<T>> {
     VoidCallback? onPressed, {
     required this.validator,
   }) : builder = ((context, item, edit, level) {
-          return InkWell(
-            onTap: onPressed,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              constraints: const BoxConstraints(minHeight: 36),
-              alignment: Alignment.centerLeft,
-              child: Text(content(item)),
-            ),
-          );
-        });
+         return InkWell(
+           onTap: onPressed,
+           child: Container(
+             padding: const EdgeInsets.symmetric(vertical: 8),
+             constraints: const BoxConstraints(minHeight: 36),
+             alignment: Alignment.centerLeft,
+             child: Text(content(item)),
+           ),
+         );
+       });
 
   DataField.textEditor(
     this.label,
@@ -84,45 +82,47 @@ class DataField<T extends GsModel<T>> {
     ModifyString? autoFormat,
     DValidator<T>? validator,
     GsValidLevel emptyLevel = GsValidLevel.warn1,
-  })  : validator = validator ?? _textValidator(content, emptyLevel),
-        builder = ((context, item, edit, level) {
-          var text = content(item).split('\n').first;
-          if (text.length > 40) text = text.substring(0, 40);
-          if (text.isNotEmpty) text = '$text...';
-          return Row(
-            children: [
-              Expanded(
-                child: Builder(
-                  builder: (context) => InkWell(
-                    onTap: () => GsTextEditorDialog(
-                      autoFormat: autoFormat,
-                      initialText: content(item),
-                      onConfirm: (value) => edit(update(item, value)),
-                    ).show(context),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      constraints: const BoxConstraints(minHeight: 36),
-                      alignment: Alignment.centerLeft,
-                      child: Text(text),
-                    ),
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: () => edit(update(item, '')),
-                icon: const Icon(Icons.clear_rounded),
-              ),
-              IconButton(
-                onPressed: () async {
-                  final text = await _getClipboardText();
-                  if (text == null) return;
-                  edit(update(item, text));
-                },
-                icon: Icon(Icons.paste_rounded, color: level.color),
-              ),
-            ],
-          );
-        });
+  }) : validator = validator ?? _textValidator(content, emptyLevel),
+       builder = ((context, item, edit, level) {
+         var text = content(item).split('\n').first;
+         if (text.length > 40) text = text.substring(0, 40);
+         if (text.isNotEmpty) text = '$text...';
+         return Row(
+           children: [
+             Expanded(
+               child: Builder(
+                 builder:
+                     (context) => InkWell(
+                       onTap:
+                           () => GsTextEditorDialog(
+                             autoFormat: autoFormat,
+                             initialText: content(item),
+                             onConfirm: (value) => edit(update(item, value)),
+                           ).show(context),
+                       child: Container(
+                         padding: const EdgeInsets.symmetric(vertical: 8),
+                         constraints: const BoxConstraints(minHeight: 36),
+                         alignment: Alignment.centerLeft,
+                         child: Text(text),
+                       ),
+                     ),
+               ),
+             ),
+             IconButton(
+               onPressed: () => edit(update(item, '')),
+               icon: const Icon(Icons.clear_rounded),
+             ),
+             IconButton(
+               onPressed: () async {
+                 final text = await _getClipboardText();
+                 if (text == null) return;
+                 edit(update(item, text));
+               },
+               icon: Icon(Icons.paste_rounded, color: level.color),
+             ),
+           ],
+         );
+       });
 
   DataField.textField(
     this.label,
@@ -133,62 +133,64 @@ class DataField<T extends GsModel<T>> {
     DataButton<T>? import,
     DataButton<T>? refresh,
     DValidator<T>? validator,
-  })  : validator = validator ??
-            ((item) {
-              final name = content(item);
-              if (name.isEmpty) return empty;
-              if (name.trim() != name) return GsValidLevel.warn2;
-              return GsValidLevel.good;
-            }),
-        builder = ((context, item, edit, level) {
-          final theme = Theme.of(context);
-          return SizedBox(
-            height: 44,
-            child: Theme(
-              data: theme.copyWith(
-                iconTheme: theme.iconTheme.copyWith(color: level.color),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ExtendedTextField(
-                      initialValue: content(item),
-                      process: process,
-                      onEdit: (value) => edit(update(item, value)),
-                    ),
-                  ),
-                  if (refresh != null)
-                    IconButton(
-                      tooltip: refresh.tooltip,
-                      icon: refresh.icon ?? const Icon(Icons.upload_rounded),
-                      onPressed: () async =>
-                          edit(await refresh.callback(context, item)),
-                    ),
-                  if (import != null)
-                    IconButton(
-                      tooltip: import.tooltip,
-                      icon: import.icon ?? const Icon(Icons.bolt_outlined),
-                      onPressed: () async =>
-                          edit(await import.callback(context, item)),
-                    ),
-                  IconButton(
-                    onPressed: () => edit(update(item, '')),
-                    icon: const Icon(Icons.clear_rounded),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      final text = await _getClipboardText();
-                      if (text == null) return;
-                      final processed = process?.call(text) ?? text;
-                      edit(update(item, processed));
-                    },
-                    icon: const Icon(Icons.paste_rounded),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
+  }) : validator =
+           validator ??
+           ((item) {
+             final name = content(item);
+             if (name.isEmpty) return empty;
+             if (name.trim() != name) return GsValidLevel.warn2;
+             return GsValidLevel.good;
+           }),
+       builder = ((context, item, edit, level) {
+         final theme = Theme.of(context);
+         return SizedBox(
+           height: 44,
+           child: Theme(
+             data: theme.copyWith(
+               iconTheme: theme.iconTheme.copyWith(color: level.color),
+             ),
+             child: Row(
+               children: [
+                 Expanded(
+                   child: ExtendedTextField(
+                     initialValue: content(item),
+                     process: process,
+                     onEdit: (value) => edit(update(item, value)),
+                   ),
+                 ),
+                 if (refresh != null)
+                   IconButton(
+                     tooltip: refresh.tooltip,
+                     icon: refresh.icon ?? const Icon(Icons.upload_rounded),
+                     onPressed:
+                         () async =>
+                             edit(await refresh.callback(context, item)),
+                   ),
+                 if (import != null)
+                   IconButton(
+                     tooltip: import.tooltip,
+                     icon: import.icon ?? const Icon(Icons.bolt_outlined),
+                     onPressed:
+                         () async => edit(await import.callback(context, item)),
+                   ),
+                 IconButton(
+                   onPressed: () => edit(update(item, '')),
+                   icon: const Icon(Icons.clear_rounded),
+                 ),
+                 IconButton(
+                   onPressed: () async {
+                     final text = await _getClipboardText();
+                     if (text == null) return;
+                     final processed = process?.call(text) ?? text;
+                     edit(update(item, processed));
+                   },
+                   icon: const Icon(Icons.paste_rounded),
+                 ),
+               ],
+             ),
+           ),
+         );
+       });
 
   DataField.intField(
     this.label,
@@ -197,53 +199,59 @@ class DataField<T extends GsModel<T>> {
     (int? min, int? max) range = (null, null),
     DValidator<T>? validator,
     DataButton<T>? refresh,
-  })  : validator = validator ?? _rangeValidator(content, range),
-        builder = ((context, item, edit, level) {
-          final theme = Theme.of(context);
-          return SizedBox(
-            height: 44,
-            child: Theme(
-              data: theme.copyWith(
-                iconTheme: theme.iconTheme.copyWith(color: level.color),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ExtendedTextField(
-                      regExp: RegExp(r'[0-9]'),
-                      initialValue: content(item).toString(),
-                      process: (value) =>
-                          _clamp(int.tryParse(value) ?? 0, range).toString(),
-                      onEdit: (value) => edit(
-                        update(item, _clamp(int.tryParse(value) ?? 0, range)),
-                      ),
-                    ),
-                  ),
-                  if (refresh != null)
-                    IconButton(
-                      tooltip: refresh.tooltip,
-                      icon: refresh.icon ?? const Icon(Icons.upload_rounded),
-                      onPressed: () async =>
-                          edit(await refresh.callback(context, item)),
-                    ),
-                  IconButton(
-                    onPressed: () => edit(update(item, range.$1 ?? 0)),
-                    icon: const Icon(Icons.clear_rounded),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      final text = await _getClipboardText();
-                      if (text == null) return;
-                      final value = _clamp(int.tryParse(text) ?? 0, range);
-                      edit(update(item, value));
-                    },
-                    icon: const Icon(Icons.paste_rounded),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
+  }) : validator = validator ?? _rangeValidator(content, range),
+       builder = ((context, item, edit, level) {
+         final theme = Theme.of(context);
+         return SizedBox(
+           height: 44,
+           child: Theme(
+             data: theme.copyWith(
+               iconTheme: theme.iconTheme.copyWith(color: level.color),
+             ),
+             child: Row(
+               children: [
+                 Expanded(
+                   child: ExtendedTextField(
+                     regExp: RegExp(r'[0-9]'),
+                     initialValue: content(item).toString(),
+                     process:
+                         (value) =>
+                             _clamp(int.tryParse(value) ?? 0, range).toString(),
+                     onEdit:
+                         (value) => edit(
+                           update(
+                             item,
+                             _clamp(int.tryParse(value) ?? 0, range),
+                           ),
+                         ),
+                   ),
+                 ),
+                 if (refresh != null)
+                   IconButton(
+                     tooltip: refresh.tooltip,
+                     icon: refresh.icon ?? const Icon(Icons.upload_rounded),
+                     onPressed:
+                         () async =>
+                             edit(await refresh.callback(context, item)),
+                   ),
+                 IconButton(
+                   onPressed: () => edit(update(item, range.$1 ?? 0)),
+                   icon: const Icon(Icons.clear_rounded),
+                 ),
+                 IconButton(
+                   onPressed: () async {
+                     final text = await _getClipboardText();
+                     if (text == null) return;
+                     final value = _clamp(int.tryParse(text) ?? 0, range);
+                     edit(update(item, value));
+                   },
+                   icon: const Icon(Icons.paste_rounded),
+                 ),
+               ],
+             ),
+           ),
+         );
+       });
 
   DataField.doubleField(
     this.label,
@@ -252,54 +260,59 @@ class DataField<T extends GsModel<T>> {
     (double? min, double? max) range = (null, null),
     DValidator<T>? validator,
     DataButton<T>? refresh,
-  })  : validator = validator ?? _rangeValidator(content, range),
-        builder = ((context, item, edit, level) {
-          final theme = Theme.of(context);
-          return SizedBox(
-            height: 44,
-            child: Theme(
-              data: theme.copyWith(
-                iconTheme: theme.iconTheme.copyWith(color: level.color),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ExtendedTextField(
-                      regExp: RegExp(r'[0-9|\.]'),
-                      initialValue: content(item).toString(),
-                      process: (value) =>
-                          _clamp(double.tryParse(value) ?? 0, range).toString(),
-                      onEdit: (value) {
-                        final n = _clamp(double.tryParse(value) ?? 0, range);
-                        edit(update(item, n));
-                      },
-                    ),
-                  ),
-                  if (refresh != null)
-                    IconButton(
-                      tooltip: refresh.tooltip,
-                      icon: refresh.icon ?? const Icon(Icons.upload_rounded),
-                      onPressed: () async =>
-                          edit(await refresh.callback(context, item)),
-                    ),
-                  IconButton(
-                    onPressed: () => edit(update(item, range.$1 ?? 0)),
-                    icon: const Icon(Icons.clear_rounded),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      final text = await _getClipboardText();
-                      if (text == null) return;
-                      final value = _clamp(double.tryParse(text) ?? 0, range);
-                      edit(update(item, value));
-                    },
-                    icon: const Icon(Icons.paste_rounded),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
+  }) : validator = validator ?? _rangeValidator(content, range),
+       builder = ((context, item, edit, level) {
+         final theme = Theme.of(context);
+         return SizedBox(
+           height: 44,
+           child: Theme(
+             data: theme.copyWith(
+               iconTheme: theme.iconTheme.copyWith(color: level.color),
+             ),
+             child: Row(
+               children: [
+                 Expanded(
+                   child: ExtendedTextField(
+                     regExp: RegExp(r'[0-9|\.]'),
+                     initialValue: content(item).toString(),
+                     process:
+                         (value) =>
+                             _clamp(
+                               double.tryParse(value) ?? 0,
+                               range,
+                             ).toString(),
+                     onEdit: (value) {
+                       final n = _clamp(double.tryParse(value) ?? 0, range);
+                       edit(update(item, n));
+                     },
+                   ),
+                 ),
+                 if (refresh != null)
+                   IconButton(
+                     tooltip: refresh.tooltip,
+                     icon: refresh.icon ?? const Icon(Icons.upload_rounded),
+                     onPressed:
+                         () async =>
+                             edit(await refresh.callback(context, item)),
+                   ),
+                 IconButton(
+                   onPressed: () => edit(update(item, range.$1 ?? 0)),
+                   icon: const Icon(Icons.clear_rounded),
+                 ),
+                 IconButton(
+                   onPressed: () async {
+                     final text = await _getClipboardText();
+                     if (text == null) return;
+                     final value = _clamp(double.tryParse(text) ?? 0, range);
+                     edit(update(item, value));
+                   },
+                   icon: const Icon(Icons.paste_rounded),
+                 ),
+               ],
+             ),
+           ),
+         );
+       });
 
   DataField.dateTime(
     this.label,
@@ -307,53 +320,55 @@ class DataField<T extends GsModel<T>> {
     T Function(T item, DateTime value) update, {
     bool isBirthday = false,
     DValidator<T>? validator,
-  })  : validator = validator ?? _dateValidator(content, isBirthday),
-        builder = ((context, item, edit, level) {
-          late final DateTime srcDate;
-          late final DateTime dstDate;
-          if (isBirthday) {
-            srcDate = DateTime(0, 1, 1);
-            dstDate = DateTime(0, 12, 31);
-          } else {
-            srcDate = DateTime(2020, 09, 28);
-            dstDate = DateTime(2199, 12, 31);
-          }
-          return Row(
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () => showDatePicker(
-                    context: context,
-                    initialDate:
-                        content(item).clamp(min: srcDate, max: dstDate),
-                    firstDate: srcDate,
-                    lastDate: dstDate,
-                  ).then((value) {
-                    if (value == null) return;
-                    edit(update(item, value));
-                  }),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    constraints: const BoxConstraints(minHeight: 36),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      content(item).toString().split(' ').first,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: () => edit(update(item, DateTime(0, 1, 1))),
-                icon: const Icon(Icons.clear_rounded),
-              ),
-              IconButton(
-                onPressed: () => edit(update(item, DateTime.now())),
-                icon: const Icon(Icons.today_rounded),
-              ),
-            ],
-          );
-        });
+  }) : validator = validator ?? _dateValidator(content, isBirthday),
+       builder = ((context, item, edit, level) {
+         late final DateTime srcDate;
+         late final DateTime dstDate;
+         if (isBirthday) {
+           srcDate = DateTime(0, 1, 1);
+           dstDate = DateTime(0, 12, 31);
+         } else {
+           srcDate = DateTime(2020, 09, 28);
+           dstDate = DateTime(2199, 12, 31);
+         }
+         return Row(
+           children: [
+             Expanded(
+               child: InkWell(
+                 onTap:
+                     () => showDatePicker(
+                       context: context,
+                       initialDate: content(
+                         item,
+                       ).clamp(min: srcDate, max: dstDate),
+                       firstDate: srcDate,
+                       lastDate: dstDate,
+                     ).then((value) {
+                       if (value == null) return;
+                       edit(update(item, value));
+                     }),
+                 child: Container(
+                   padding: const EdgeInsets.symmetric(vertical: 12),
+                   constraints: const BoxConstraints(minHeight: 36),
+                   alignment: Alignment.centerLeft,
+                   child: Text(
+                     content(item).toString().split(' ').first,
+                     style: const TextStyle(fontSize: 16),
+                   ),
+                 ),
+               ),
+             ),
+             IconButton(
+               onPressed: () => edit(update(item, DateTime(0, 1, 1))),
+               icon: const Icon(Icons.clear_rounded),
+             ),
+             IconButton(
+               onPressed: () => edit(update(item, DateTime.now())),
+               icon: const Icon(Icons.today_rounded),
+             ),
+           ],
+         );
+       });
 
   static DataField<T> textList<T extends GsModel<T>>(
     String label,
@@ -368,11 +383,12 @@ class DataField<T extends GsModel<T>> {
       update,
       import: import,
       validator: validator,
-      process: (value) => value
-          .split(',')
-          .map((e) => e.trim())
-          .where((e) => e.isNotBlank)
-          .join(', '),
+      process:
+          (value) => value
+              .split(',')
+              .map((e) => e.trim())
+              .where((e) => e.isNotBlank)
+              .join(', '),
     );
   }
 
@@ -444,28 +460,29 @@ class DataField<T extends GsModel<T>> {
     Iterable<GsSelectItem<String>> Function(T item)? filtered,
     required this.validator,
   }) : builder = ((context, item, edit, level) {
-          return Row(
-            children: [
-              Expanded(
-                child: GsSingleSelect(
-                  items: items(item),
-                  selected: value(item),
-                  onConfirm: (value) => edit(update(item, value ?? '')),
-                ),
-              ),
-              if (filtered != null)
-                IconButton(
-                  onPressed: () => SelectDialog(
-                    title: 'Select',
-                    items: filtered(item),
-                    selected: value(item),
-                    onConfirm: (value) => edit(update(item, value ?? '')),
-                  ).show(context),
-                  icon: const Icon(Icons.filter_alt_rounded),
-                ),
-            ],
-          );
-        });
+         return Row(
+           children: [
+             Expanded(
+               child: GsSingleSelect(
+                 items: items(item),
+                 selected: value(item),
+                 onConfirm: (value) => edit(update(item, value ?? '')),
+               ),
+             ),
+             if (filtered != null)
+               IconButton(
+                 onPressed:
+                     () => SelectDialog(
+                       title: 'Select',
+                       items: filtered(item),
+                       selected: value(item),
+                       onConfirm: (value) => edit(update(item, value ?? '')),
+                     ).show(context),
+                 icon: const Icon(Icons.filter_alt_rounded),
+               ),
+           ],
+         );
+       });
 
   static DataField<T> singleSelectOf<T extends GsModel<T>, R>(
     String label,
@@ -474,17 +491,13 @@ class DataField<T extends GsModel<T>> {
     T Function(T item, R? value) update, {
     required DValidator<T> validator,
   }) {
-    return DataField._(
-      label,
-      (context, item, edit, level) {
-        return GsSingleSelect(
-          items: items,
-          selected: value(item),
-          onConfirm: (value) => edit(update(item, value)),
-        );
-      },
-      validator: validator,
-    );
+    return DataField._(label, (context, item, edit, level) {
+      return GsSingleSelect(
+        items: items,
+        selected: value(item),
+        onConfirm: (value) => edit(update(item, value)),
+      );
+    }, validator: validator);
   }
 
   static DataField<T> singleEnum<T extends GsModel<T>, R extends GeEnum>(
@@ -509,9 +522,10 @@ class DataField<T extends GsModel<T>> {
           onConfirm: (value) => edit(update(item, value ?? items.first.value)),
         );
       },
-      validator: validator != null
-          ? (item) => validator(item, defaultValidator(item))
-          : defaultValidator,
+      validator:
+          validator != null
+              ? (item) => validator(item, defaultValidator(item))
+              : defaultValidator,
     );
   }
 
@@ -521,50 +535,46 @@ class DataField<T extends GsModel<T>> {
     T Function(T item, int value) update, {
     int min = 1,
     DValidator<T>? validator,
-  })  : validator = validator ?? _rarityValidator(value, min),
-        builder = ((context, item, edit, level) {
-          return Container(
-            padding: const EdgeInsets.all(6),
-            constraints: const BoxConstraints(minHeight: 44),
-            alignment: Alignment.centerLeft,
-            child: Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: List.generate(
-                6 - min,
-                (index) {
-                  final rarity = min + index;
-                  final selected = value(item);
-                  return GsSelectChip(
-                    GsSelectItem(
-                      rarity,
-                      rarity.toString(),
-                      color: GsStyle.getRarityColor(rarity),
-                    ),
-                    disableImage: true,
-                    onTap: (v) {
-                      if (v == selected) v = 0;
-                      edit(update(item, v));
-                    },
-                    selected: selected == rarity,
-                  );
-                },
-              ),
-            ),
-          );
-        });
+  }) : validator = validator ?? _rarityValidator(value, min),
+       builder = ((context, item, edit, level) {
+         return Container(
+           padding: const EdgeInsets.all(6),
+           constraints: const BoxConstraints(minHeight: 44),
+           alignment: Alignment.centerLeft,
+           child: Wrap(
+             spacing: 6,
+             runSpacing: 6,
+             children: List.generate(6 - min, (index) {
+               final rarity = min + index;
+               final selected = value(item);
+               return GsSelectChip(
+                 GsSelectItem(
+                   rarity,
+                   rarity.toString(),
+                   color: GsStyle.getRarityColor(rarity),
+                 ),
+                 disableImage: true,
+                 onTap: (v) {
+                   if (v == selected) v = 0;
+                   edit(update(item, v));
+                 },
+                 selected: selected == rarity,
+               );
+             }),
+           ),
+         );
+       });
 
-  DataField.list(
-    this.label,
-    Iterable<DataField<T>> Function(T item) fields,
-  )   : builder = ((context, item, edit, level) =>
-            getTableForFields(context, item, fields(item), edit)),
-        validator = ((item) {
-          return fields(item)
-                  .map((e) => e.validator(item))
-                  .maxBy((e) => e.index) ??
-              GsValidLevel.none;
-        });
+  DataField.list(this.label, Iterable<DataField<T>> Function(T item) fields)
+    : builder =
+          ((context, item, edit, level) =>
+              getTableForFields(context, item, fields(item), edit)),
+      validator = ((item) {
+        return fields(
+              item,
+            ).map((e) => e.validator(item)).maxBy((e) => e.index) ??
+            GsValidLevel.none;
+      });
 
   static DataField<T> build<T extends GsModel<T>, C extends GsModel<C>>(
     String label,
@@ -594,14 +604,15 @@ class DataField<T extends GsModel<T>> {
                 bottom: BorderSide(color: Colors.grey),
               ),
               columnWidths: const {0: IntrinsicColumnWidth()},
-              children: list.map((child) {
-                return _getFieldTableRow(
-                  context,
-                  child,
-                  build(item, child),
-                  (child) => edit(onFieldUpdated(item, child)),
-                );
-              }).toList(),
+              children:
+                  list.map((child) {
+                    return _getFieldTableRow(
+                      context,
+                      child,
+                      build(item, child),
+                      (child) => edit(onFieldUpdated(item, child)),
+                    );
+                  }).toList(),
             ),
           ],
         );
@@ -637,25 +648,26 @@ class DataField<T extends GsModel<T>> {
                 bottom: BorderSide(color: Colors.grey),
               ),
               columnWidths: const {0: IntrinsicColumnWidth()},
-              children: list.mapIndexed((index, child) {
-                return _getFieldTableRow(
-                  context,
-                  child,
-                  DataField<C>.list(
-                    '# $index',
-                    (child) => build(index, item, child),
-                  ),
-                  (child) => edit(update(item, list..[index] = child)),
-                  trailing: (color) {
-                    return IconButton(
-                      color: color,
-                      icon: const Icon(Icons.delete_rounded),
-                      onPressed: () =>
-                          edit(update(item, list..removeAt(index))),
+              children:
+                  list.mapIndexed((index, child) {
+                    return _getFieldTableRow(
+                      context,
+                      child,
+                      DataField<C>.list(
+                        '# $index',
+                        (child) => build(index, item, child),
+                      ),
+                      (child) => edit(update(item, list..[index] = child)),
+                      trailing: (color) {
+                        return IconButton(
+                          color: color,
+                          icon: const Icon(Icons.delete_rounded),
+                          onPressed:
+                              () => edit(update(item, list..removeAt(index))),
+                        );
+                      },
                     );
-                  },
-                );
-              }).toList(),
+                  }).toList(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -670,11 +682,13 @@ class DataField<T extends GsModel<T>> {
         );
       },
       validator: (item) {
-        final level = values(item).mapIndexed((i, e) {
-          final list = build(i, item, e);
-          final l = list.map((n) => n.validator(e)).maxBy((e) => e.index);
-          return l ?? emptyLevel;
-        }).maxBy((e) => e.index);
+        final level = values(item)
+            .mapIndexed((i, e) {
+              final list = build(i, item, e);
+              final l = list.map((n) => n.validator(e)).maxBy((e) => e.index);
+              return l ?? emptyLevel;
+            })
+            .maxBy((e) => e.index);
         return level ?? emptyLevel;
       },
     );
@@ -702,9 +716,12 @@ Widget getTableForFields<T extends GsModel<T>>(
       bottom: BorderSide(color: Colors.grey),
     ),
     columnWidths: const {0: IntrinsicColumnWidth()},
-    children: fields
-        .map((field) => _getFieldTableRow(context, value, field, updateItem))
-        .toList(),
+    children:
+        fields
+            .map(
+              (field) => _getFieldTableRow(context, value, field, updateItem),
+            )
+            .toList(),
   );
 }
 
@@ -887,9 +904,10 @@ class _ExtendedTextFieldState extends State<ExtendedTextField> {
       focusNode: _node,
       controller: _controller,
       maxLines: 1,
-      inputFormatters: widget.regExp != null
-          ? [FilteringTextInputFormatter.allow(widget.regExp!)]
-          : null,
+      inputFormatters:
+          widget.regExp != null
+              ? [FilteringTextInputFormatter.allow(widget.regExp!)]
+              : null,
       decoration: InputDecoration.collapsed(hintText: widget.hintText),
       onChanged: (value) {
         value = widget.process?.call(value) ?? value;

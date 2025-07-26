@@ -20,16 +20,15 @@ class RecipesScreen extends StatelessWidget {
       title: context.labels.recipes(),
       items: (db) => db.infoOf<GsRecipe>().items,
       versionSort: (item) => item.version,
-      itemBuilder: (context, state) => RecipesListItem(
-        recipe: state.item,
-        selected: state.selected,
-        onTap: state.onSelect,
-        savedRecipe: saveRecipes.getItem(state.item.id),
-      ),
-      itemCardBuilder: (context, item) => RecipeDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemBuilder:
+          (context, state) => RecipesListItem(
+            recipe: state.item,
+            selected: state.selected,
+            onTap: state.onSelect,
+            savedRecipe: saveRecipes.getItem(state.item.id),
+          ),
+      itemCardBuilder:
+          (context, item) => RecipeDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

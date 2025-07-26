@@ -3,9 +3,9 @@ import 'package:tracker/theme/gs_assets.dart';
 
 mixin GsDetailedDialogMixin on Widget {
   Future<void> show(BuildContext context) => showDialog(
-        context: context,
-        builder: (context) => GsDetailedDialog(card: this),
-      );
+    context: context,
+    builder: (context) => GsDetailedDialog(card: this),
+  );
 }
 
 /// A detailed item dialog.
@@ -13,11 +13,7 @@ class GsDetailedDialog extends StatelessWidget {
   final double cardWidth;
   final Widget? card;
 
-  const GsDetailedDialog({
-    super.key,
-    required this.card,
-    this.cardWidth = 500,
-  });
+  const GsDetailedDialog({super.key, required this.card, this.cardWidth = 500});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +25,7 @@ class GsDetailedDialog extends StatelessWidget {
         child: Container(
           decoration: const BoxDecoration(boxShadow: GsSpacing.kMainShadow),
           width: cardWidth,
-          child: Material(
-            color: Colors.transparent,
-            child: card,
-          ),
+          child: Material(color: Colors.transparent, child: card),
         ),
       ),
     );

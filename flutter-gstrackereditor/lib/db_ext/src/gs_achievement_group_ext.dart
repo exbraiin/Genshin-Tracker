@@ -9,9 +9,10 @@ class GsAchievementGroupExt extends GsModelExt<GsAchievementGroup> {
 
   @override
   List<DataField<GsAchievementGroup>> getFields(String? editId) {
-    final namecardId = editId != null
-        ? Database.i.of<GsAchievementGroup>().getItem(editId)?.namecard
-        : '';
+    final namecardId =
+        editId != null
+            ? Database.i.of<GsAchievementGroup>().getItem(editId)?.namecard
+            : '';
     final vd = ValidateModels<GsAchievementGroup>();
     final vdVersion = ValidateModels.versions();
     final vdNamecard = ValidateModels.namecards(

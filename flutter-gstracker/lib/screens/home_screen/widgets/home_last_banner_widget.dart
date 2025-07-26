@@ -32,11 +32,12 @@ class HomeLastBannerWidget extends StatelessWidget {
           final items = (width ~/ itemSize).coerceAtMost(8);
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: characters
-                .take(items)
-                .map<Widget>((e) => _getCardItem(context, e))
-                .separate(const SizedBox(width: GsSpacing.kGridSeparator))
-                .toList(),
+            children:
+                characters
+                    .take(items)
+                    .map<Widget>((e) => _getCardItem(context, e))
+                    .separate(const SizedBox(width: GsSpacing.kGridSeparator))
+                    .toList(),
           );
         },
       ),
@@ -47,13 +48,15 @@ class HomeLastBannerWidget extends StatelessWidget {
     GsCharacter chr,
     Iterable<GsBanner> releasedBanners,
   ) {
-    final banner = releasedBanners
-        .where((bnr) => bnr.feature5.contains(chr.id))
-        .sortedBy((bnr) => bnr.dateStart)
-        .lastOrNull;
-    final duration = banner == null
-        ? Duration.zero
-        : DateTime.now().difference(banner.dateStart);
+    final banner =
+        releasedBanners
+            .where((bnr) => bnr.feature5.contains(chr.id))
+            .sortedBy((bnr) => bnr.dateStart)
+            .lastOrNull;
+    final duration =
+        banner == null
+            ? Duration.zero
+            : DateTime.now().difference(banner.dateStart);
     return MapEntry(chr, duration);
   }
 

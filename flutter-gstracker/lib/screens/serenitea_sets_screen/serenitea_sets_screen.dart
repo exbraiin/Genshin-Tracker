@@ -19,15 +19,15 @@ class SereniteaSetsScreen extends StatelessWidget {
       title: context.labels.sereniteaSets(),
       items: (db) => db.infoOf<GsSereniteaSet>().items,
       versionSort: (item) => item.version,
-      itemBuilder: (context, state) => SereniteaSetListItem(
-        state.item,
-        onTap: state.onSelect,
-        selected: state.selected,
-      ),
-      itemCardBuilder: (context, item) => SereniteaSetDetailsCard(
-        item,
-        key: ValueKey(item.id),
-      ),
+      itemBuilder:
+          (context, state) => SereniteaSetListItem(
+            state.item,
+            onTap: state.onSelect,
+            selected: state.selected,
+          ),
+      itemCardBuilder:
+          (context, item) =>
+              SereniteaSetDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

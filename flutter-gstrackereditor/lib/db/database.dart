@@ -38,8 +38,9 @@ final class Database {
   }
 
   Future<void> save() async {
-    await _processAchGroups()
-        .then(Database.i.of<GsAchievementGroup>().updateAll);
+    await _processAchGroups().then(
+      Database.i.of<GsAchievementGroup>().updateAll,
+    );
     await _db.save(path: _kFilePath);
     await _db.save(path: _kFilePathEncoded, encoded: true);
   }
@@ -48,22 +49,22 @@ final class Database {
     GeMaterialType type, [
     GeMaterialType? type1,
   ]) {
-    return of<GsMaterial>()
-        .items
+    return of<GsMaterial>().items
         .where((e) => e.group == type || e.group == type1)
         .groupBy((e) => e.subgroup)
         .values
         .expand((l) {
-      final rarity = l.minBy((m) => m.rarity)?.rarity ?? 1;
-      return l.where((m) => m.rarity == rarity);
-    });
+          final rarity = l.minBy((m) => m.rarity)?.rarity ?? 1;
+          return l.where((m) => m.rarity == rarity);
+        });
   }
 
   ItemState getItemStateByVersion(String version) {
     final now = DateTime.now();
     final versions = of<GsVersion>().items.sortedBy((e) => e.releaseDate);
-    final current =
-        versions.lastOrNullWhere((e) => e.releaseDate.isBefore(now));
+    final current = versions.lastOrNullWhere(
+      (e) => e.releaseDate.isBefore(now),
+    );
     if (current != null && current.id == version) return ItemState.current;
 
     final vs = versions.firstOrNullWhere((e) => e.id == version);
@@ -77,15 +78,13 @@ final class Database {
       if (type == null ||
           type == GeBannerType.weapon ||
           type == GeBannerType.chronicled)
-        ...of<GsWeapon>()
-            .items
+        ...of<GsWeapon>().items
             .where((e) => e.rarity == rarity || rarity == null)
             .map(GsWish.fromWeapon),
       if (type == null ||
           type == GeBannerType.character ||
           type == GeBannerType.chronicled)
-        ...of<GsCharacter>()
-            .items
+        ...of<GsCharacter>().items
             .where((e) => e.rarity == rarity || rarity == null)
             .map(GsWish.fromCharacter),
     ];

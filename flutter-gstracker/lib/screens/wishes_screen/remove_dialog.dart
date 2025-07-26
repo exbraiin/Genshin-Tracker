@@ -49,8 +49,9 @@ class RemoveDialog extends StatelessWidget {
                     Text(
                       context.labels.removeWish(name),
                       textAlign: TextAlign.center,
-                      style: context.textTheme.titleMedium!
-                          .copyWith(color: Colors.white),
+                      style: context.textTheme.titleMedium!.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                     const SizedBox(height: GsSpacing.kGridSeparator * 2),
                     MainButton(

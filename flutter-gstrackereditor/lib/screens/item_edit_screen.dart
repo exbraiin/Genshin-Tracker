@@ -63,36 +63,40 @@ class _ItemEditScreenState<T extends GsModel<T>>
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: widget.import
-                    .map(
-                      (e) => IconButton(
-                        tooltip: e.tooltip,
-                        icon: e.icon != null
-                            ? SizedBox(
-                                width: iconSize,
-                                height: iconSize,
-                                child: e.icon,
-                              )
-                            : const Icon(Icons.bolt_outlined),
-                        onPressed: () async =>
-                            edit(await e.callback(context, value)),
-                      ),
-                    )
-                    .toList(),
+                children:
+                    widget.import
+                        .map(
+                          (e) => IconButton(
+                            tooltip: e.tooltip,
+                            icon:
+                                e.icon != null
+                                    ? SizedBox(
+                                      width: iconSize,
+                                      height: iconSize,
+                                      child: e.icon,
+                                    )
+                                    : const Icon(Icons.bolt_outlined),
+                            onPressed:
+                                () async =>
+                                    edit(await e.callback(context, value)),
+                          ),
+                        )
+                        .toList(),
               );
             },
           ),
           if (widget.duplicated == null && widget.item != null)
             IconButton(
-              onPressed: () => context.pushWidgetReplacement(
-                ItemEditScreen<T>(
-                  item: null,
-                  duplicated: _notifier.value.copyWith(),
-                  title: widget.title,
-                  collection: widget.collection,
-                  modelExt: widget.modelExt,
-                ),
-              ),
+              onPressed:
+                  () => context.pushWidgetReplacement(
+                    ItemEditScreen<T>(
+                      item: null,
+                      duplicated: _notifier.value.copyWith(),
+                      title: widget.title,
+                      collection: widget.collection,
+                      modelExt: widget.modelExt,
+                    ),
+                  ),
               icon: const Icon(Icons.control_point_duplicate_rounded),
             ),
         ],
@@ -119,7 +123,8 @@ class _ItemEditScreenState<T extends GsModel<T>>
               child: ValueListenableBuilder(
                 valueListenable: _notifier,
                 builder: (context, value, child) {
-                  final valid = fields
+                  final valid =
+                      fields
                           .map((e) => e.validator(value))
                           .whereNotNull()
                           .maxBy((element) => element.index) !=
@@ -171,11 +176,7 @@ class FloatingDeleteButton extends StatefulWidget {
   final Widget child;
   final VoidCallback? onPressed;
 
-  const FloatingDeleteButton({
-    super.key,
-    this.onPressed,
-    required this.child,
-  });
+  const FloatingDeleteButton({super.key, this.onPressed, required this.child});
 
   @override
   State<FloatingDeleteButton> createState() => _FloatingDeleteButtonState();

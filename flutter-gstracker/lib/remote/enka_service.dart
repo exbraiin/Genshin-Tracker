@@ -92,8 +92,9 @@ class EnkaPlayerInfo {
     final avtInfo =
         (info['profilePicture'] as Map? ?? {}).cast<String, dynamic>();
     final avtId = avtInfo.getString('id');
-    final avatars = (info['showAvatarInfoList'] as List? ?? [])
-        .cast<Map<String, dynamic>>();
+    final avatars =
+        (info['showAvatarInfoList'] as List? ?? [])
+            .cast<Map<String, dynamic>>();
     return EnkaPlayerInfo._(
       uid: json.getString('uid'),
       pfpId: avtId,

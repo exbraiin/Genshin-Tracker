@@ -20,9 +20,10 @@ class AddWishItemDataListItem extends StatelessWidget {
     return GsItemCardButton(
       label: item.name,
       rarity: item.rarity,
-      banner: isItemFeatured
-          ? GsItemBanner(text: context.labels.featured())
-          : const GsItemBanner(text: ''),
+      banner:
+          isItemFeatured
+              ? GsItemBanner(text: context.labels.featured())
+              : const GsItemBanner(text: ''),
       imageUrlPath: item.image,
       onTap: onAdd,
     );

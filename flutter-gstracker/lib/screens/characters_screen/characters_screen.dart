@@ -19,12 +19,13 @@ class CharactersScreen extends StatelessWidget {
       title: context.labels.characters(),
       items: (db) => db.infoOf<GsCharacter>().items,
       versionSort: (item) => item.version,
-      itemBuilder: (context, state) => CharacterListItem(
-        state.item,
-        showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
-        onTap: state.onSelect,
-        selected: state.selected,
-      ),
+      itemBuilder:
+          (context, state) => CharacterListItem(
+            state.item,
+            showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
+            onTap: state.onSelect,
+            selected: state.selected,
+          ),
       itemCardBuilder: (context, item) => CharacterDetailsCard(item),
     );
   }

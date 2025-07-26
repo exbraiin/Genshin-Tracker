@@ -59,10 +59,7 @@ class ItemDetailsCard extends StatelessWidget {
         margin: const EdgeInsets.all(kSeparator2),
         padding: const EdgeInsets.all(kSeparator8 + kSeparator2),
         decoration: BoxDecoration(
-          border: Border.all(
-            color: color1,
-            width: kSeparator2,
-          ),
+          border: Border.all(color: color1, width: kSeparator2),
         ),
         child: Row(
           children: [
@@ -124,8 +121,10 @@ class ItemDetailsCard extends StatelessWidget {
           decoration: BoxDecoration(color: color1),
           foregroundDecoration: BoxDecoration(
             border: Border(
-              bottom:
-                  BorderSide(color: color1.withValues(alpha: 0.6), width: 4),
+              bottom: BorderSide(
+                color: color1.withValues(alpha: 0.6),
+                width: 4,
+              ),
             ),
           ),
           child: Stack(
@@ -251,8 +250,10 @@ class ItemDetailsCard extends StatelessWidget {
         color: contentImage != null ? null : const Color(0xFFEDE5D8),
         image: contentImage,
         border: Border(
-          bottom:
-              BorderSide(color: Colors.black.withValues(alpha: 0.2), width: 4),
+          bottom: BorderSide(
+            color: Colors.black.withValues(alpha: 0.2),
+            width: 4,
+          ),
         ),
       ),
       child: child ?? const SizedBox(),

@@ -16,10 +16,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
     with GsDetailedDialogMixin {
   final GsSereniteaSet item;
 
-  const SereniteaSetDetailsCard(
-    this.item, {
-    super.key,
-  });
+  const SereniteaSetDetailsCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +30,7 @@ class SereniteaSetDetailsCard extends StatelessWidget
         alignment: Alignment.topLeft,
         child: Row(
           children: [
-            ItemIconWidget.asset(
-              GsAssets.iconSetType(item.category),
-              size: 32,
-            ),
+            ItemIconWidget.asset(GsAssets.iconSetType(item.category), size: 32),
             const SizedBox(width: kSeparator4),
             Text(item.category.label(context)),
           ],
@@ -65,55 +59,63 @@ class SereniteaSetDetailsCard extends StatelessWidget
                     spacing: kSeparator4,
                     runSpacing: kSeparator4,
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    children: item.chars
-                        .map(ic.getItem)
-                        .whereNotNull()
-                        .sortedBy(
-                          (e) => GsUtils.characters.hasCaracter(e.id) ? 0 : 1,
-                        )
-                        .thenByDescending((element) => element.rarity)
-                        .thenBy((element) => element.name)
-                        .map((char) {
-                      final owns = GsUtils.characters.hasCaracter(char.id);
-                      final marked = saved?.chars.contains(char.id) ?? false;
-                      return Opacity(
-                        opacity: owns ? 1 : 0.4,
-                        child: Stack(
-                          children: [
-                            ItemGridWidget.character(
-                              char,
-                              onTap: owns
-                                  ? (ctx, i) =>
-                                      GsUtils.sereniteaSets.setSetCharacter(
-                                        item.id,
-                                        char.id,
-                                        owned: !marked,
-                                      )
-                                  : null,
-                            ),
-                            if (marked)
-                              const Positioned(
-                                right: 0,
-                                bottom: 0,
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: CircleWidget(
-                                    color: Colors.black,
-                                    borderColor: Colors.white,
-                                    borderSize: 1.6,
-                                    size: 20,
-                                    child: Icon(
-                                      Icons.check_rounded,
-                                      color: Colors.lightGreen,
-                                      size: 16,
+                    children:
+                        item.chars
+                            .map(ic.getItem)
+                            .whereNotNull()
+                            .sortedBy(
+                              (e) =>
+                                  GsUtils.characters.hasCaracter(e.id) ? 0 : 1,
+                            )
+                            .thenByDescending((element) => element.rarity)
+                            .thenBy((element) => element.name)
+                            .map((char) {
+                              final owns = GsUtils.characters.hasCaracter(
+                                char.id,
+                              );
+                              final marked =
+                                  saved?.chars.contains(char.id) ?? false;
+                              return Opacity(
+                                opacity: owns ? 1 : 0.4,
+                                child: Stack(
+                                  children: [
+                                    ItemGridWidget.character(
+                                      char,
+                                      onTap:
+                                          owns
+                                              ? (ctx, i) => GsUtils
+                                                  .sereniteaSets
+                                                  .setSetCharacter(
+                                                    item.id,
+                                                    char.id,
+                                                    owned: !marked,
+                                                  )
+                                              : null,
                                     ),
-                                  ),
+                                    if (marked)
+                                      const Positioned(
+                                        right: 0,
+                                        bottom: 0,
+                                        child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: CircleWidget(
+                                            color: Colors.black,
+                                            borderColor: Colors.white,
+                                            borderSize: 1.6,
+                                            size: 20,
+                                            child: Icon(
+                                              Icons.check_rounded,
+                                              color: Colors.lightGreen,
+                                              size: 16,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
-                              ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
+                              );
+                            })
+                            .toList(),
                   );
                 },
               ),

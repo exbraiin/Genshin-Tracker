@@ -31,8 +31,9 @@ class AddWishWishListItem extends StatelessWidget {
             child: Text(
               item.name,
               maxLines: 1,
-              style:
-                  context.textTheme.titleSmall!.copyWith(color: Colors.white),
+              style: context.textTheme.titleSmall!.copyWith(
+                color: Colors.white,
+              ),
             ),
           ),
           Text(
@@ -41,10 +42,7 @@ class AddWishWishListItem extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(2).copyWith(left: 4),
-            child: GsIconButton(
-              icon: Icons.remove,
-              onPress: onRemove,
-            ),
+            child: GsIconButton(icon: Icons.remove, onPress: onRemove),
           ),
         ],
       ),

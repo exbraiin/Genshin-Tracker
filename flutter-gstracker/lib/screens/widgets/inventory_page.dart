@@ -12,18 +12,10 @@ import 'package:tracker/theme/gs_assets.dart';
 
 typedef ItemBuilder = Widget Function(BuildContext context, IndexState state);
 typedef IndexState = ({int index, bool selected, VoidCallback onSelect});
-typedef ItemState<T extends GsModel<T>> = ({
-  T item,
-  bool selected,
-  VoidCallback onSelect,
-  ScreenFilter<T>? filter,
-});
+typedef ItemState<T extends GsModel<T>> =
+    ({T item, bool selected, VoidCallback onSelect, ScreenFilter<T>? filter});
 
-enum SortOrder {
-  none,
-  ascending,
-  descending,
-}
+enum SortOrder { none, ascending, descending }
 
 class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final String icon;
@@ -34,7 +26,8 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final List<Widget> Function(
     bool Function(FilterExtras extra) hasExtra,
     void Function(FilterExtras extra) toggle,
-  )? actions;
+  )?
+  actions;
   final Widget? itemCardFooter;
   final Comparable<String> Function(T item)? versionSort;
   final Widget Function(BuildContext context, T item)? itemCardBuilder;
@@ -78,14 +71,16 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
               ...other,
               if (versionSort != null)
                 Tooltip(
-                  message: hasExtra(FilterExtras.versionSort)
-                      ? context.labels.sortByDefault()
-                      : context.labels.sortByVersion(),
+                  message:
+                      hasExtra(FilterExtras.versionSort)
+                          ? context.labels.sortByDefault()
+                          : context.labels.sortByVersion(),
                   child: IconButton(
                     onPressed: () => toggle(FilterExtras.versionSort),
-                    icon: hasExtra(FilterExtras.versionSort)
-                        ? const Icon(Icons.remove_circle_outline_rounded)
-                        : const Icon(Icons.arrow_circle_up_rounded),
+                    icon:
+                        hasExtra(FilterExtras.versionSort)
+                            ? const Icon(Icons.remove_circle_outline_rounded)
+                            : const Icon(Icons.arrow_circle_up_rounded),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
                 ),
@@ -136,18 +131,17 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
       ),
       itemCount: list.length,
       itemCardFooter: itemCardFooter,
-      itemBuilder: (context, state) => itemBuilder(
-        context,
-        (
-          item: list[state.index],
-          selected: state.selected,
-          onSelect: state.onSelect,
-          filter: filter,
-        ),
-      ),
-      itemCardBuilder: itemCardBuilder != null
-          ? (context, index) => itemCardBuilder!(context, list[index])
-          : null,
+      itemBuilder:
+          (context, state) => itemBuilder(context, (
+            item: list[state.index],
+            selected: state.selected,
+            onSelect: state.onSelect,
+            filter: filter,
+          )),
+      itemCardBuilder:
+          itemCardBuilder != null
+              ? (context, index) => itemCardBuilder!(context, list[index])
+              : null,
     );
   }
 }
@@ -230,9 +224,10 @@ class _InventoryGridPageState extends State<InventoryGridPage> {
 
   @override
   Widget build(BuildContext context) {
-    late final Widget? card = widget.itemCount > 0
-        ? widget.itemCardBuilder!(context, _selectedIndex)
-        : null;
+    late final Widget? card =
+        widget.itemCount > 0
+            ? widget.itemCardBuilder!(context, _selectedIndex)
+            : null;
 
     return InventoryPage(
       padding: widget.padding,
@@ -241,23 +236,22 @@ class _InventoryGridPageState extends State<InventoryGridPage> {
         children: [
           Expanded(
             child: InventoryBox(
-              child: widget.itemCount < 1
-                  ? const GsNoResultsState()
-                  : GsGridView.builder(
-                      padding: EdgeInsets.zero,
-                      childWidth: widget.childWidth,
-                      childHeight: widget.childHeight,
-                      itemCount: widget.itemCount,
-                      itemBuilder: (context, index) => widget.itemBuilder(
-                        context,
-                        (
-                          index: index,
-                          selected: index == _selectedIndex,
-                          onSelect: () =>
-                              setState(() => _selectedIndex = index),
-                        ),
+              child:
+                  widget.itemCount < 1
+                      ? const GsNoResultsState()
+                      : GsGridView.builder(
+                        padding: EdgeInsets.zero,
+                        childWidth: widget.childWidth,
+                        childHeight: widget.childHeight,
+                        itemCount: widget.itemCount,
+                        itemBuilder:
+                            (context, index) => widget.itemBuilder(context, (
+                              index: index,
+                              selected: index == _selectedIndex,
+                              onSelect:
+                                  () => setState(() => _selectedIndex = index),
+                            )),
                       ),
-                    ),
             ),
           ),
           if (widget.itemCardBuilder != null)
@@ -267,15 +261,17 @@ class _InventoryGridPageState extends State<InventoryGridPage> {
                   child: InventoryBox(
                     width: 400,
                     height: double.infinity,
-                    margin:
-                        const EdgeInsets.only(left: GsSpacing.kGridSeparator),
-                    child: widget.scrollableCard
-                        ? SingleChildScrollView(
-                            key: ValueKey('card_$_selectedIndex'),
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            child: card,
-                          )
-                        : card,
+                    margin: const EdgeInsets.only(
+                      left: GsSpacing.kGridSeparator,
+                    ),
+                    child:
+                        widget.scrollableCard
+                            ? SingleChildScrollView(
+                              key: ValueKey('card_$_selectedIndex'),
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: card,
+                            )
+                            : card,
                   ),
                 ),
                 if (widget.itemCardFooter != null)
@@ -361,7 +357,8 @@ class InventoryAppBar extends StatelessWidget implements PreferredSizeWidget {
         Expanded(
           child: Text(
             label,
-            style: Theme.of(context).appBarTheme.titleTextStyle ??
+            style:
+                Theme.of(context).appBarTheme.titleTextStyle ??
                 context.textTheme.titleLarge,
           ),
         ),
