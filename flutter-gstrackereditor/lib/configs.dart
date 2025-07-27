@@ -363,12 +363,16 @@ class GsConfigs<T extends GsModel<T>> {
     GsThespianTrick: GsConfigs<GsThespianTrick>._(
       title: 'Thespian Trick',
       pageBuilder: const vd.GsThespianTrickExt(),
-      itemDecoration:
-          (item) => GsItemDecor.rarity(
-            label: item.name,
-            version: item.version,
-            rarity: item.rarity,
-          ),
+      itemDecoration: (item) {
+        final char = Database.i.of<GsCharacter>().getItem(item.character);
+        return GsItemDecor.rarity(
+          label: item.name,
+          version: item.version,
+          rarity: item.rarity,
+          image: char?.image,
+          child: _orderItem(item.season.toString()),
+        );
+      },
       import: [
         DataButton(
           'Import from fandom URL',
@@ -532,7 +536,7 @@ Widget _orderItem(String order) {
         fit: BoxFit.scaleDown,
         child: Text(
           order,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     ),

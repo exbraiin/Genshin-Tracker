@@ -21,7 +21,7 @@ export 'src/gs_recipe_ext.dart';
 export 'src/gs_remarkable_chest_ext.dart';
 export 'src/gs_serenitea_ext.dart';
 export 'src/gs_spincrystal_ext.dart';
-export 'src/gs_thespian_trick.dart';
+export 'src/gs_thespian_trick_ext.dart';
 export 'src/gs_version_ext.dart';
 export 'src/gs_weapon_ext.dart';
 
