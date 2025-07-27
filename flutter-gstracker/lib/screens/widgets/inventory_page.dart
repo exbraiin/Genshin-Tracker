@@ -84,7 +84,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
                 ),
-              button,
+              if (filter.sections.isNotEmpty) button,
             ];
 
             return _list(sorted, buttons, filter);

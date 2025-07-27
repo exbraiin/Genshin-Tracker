@@ -301,6 +301,7 @@ class ScreenFilter<I extends GsModel<I>> {
 class ScreenFilters {
   static final _db = Database.instance;
   static final _getItem = GsUtils.items.getItemData;
+  static final _getChar = _db.infoOf<GsCharacter>().getItem;
   static final _filters = <Type, ScreenFilter?>{};
 
   static ScreenFilter<T>? _of<T extends GsModel<T>>() {
@@ -559,6 +560,22 @@ class ScreenFilters {
                   ),
                 ],
                 queryMatcher: (item) => item.name,
+              ),
+              const (GsThespianTrick) => ScreenFilter<GsThespianTrick>(
+                sections: [
+                  FilterSection.owned(
+                    (item) => _db.saveOf<GiThespianTrick>().exists(item.id),
+                  ),
+                  FilterSection.version((item) => item.version),
+                  FilterSection.region((item) {
+                    final char = _getChar(item.character);
+                    return char?.region ?? GeRegionType.none;
+                  }),
+                ],
+                queryMatcher: (item) {
+                  final char = _getChar(item.character);
+                  return '${item.name} ${char?.name ?? ''}';
+                },
               ),
               _ => null,
             }
