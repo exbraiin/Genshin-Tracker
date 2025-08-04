@@ -1,5 +1,5 @@
 import 'package:dartx/dartx.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class AutoSizeText extends StatelessWidget {
   final String data;
@@ -61,8 +61,10 @@ class AutoSizeText extends StatelessWidget {
       ptr = i;
     }
 
-    final p0 = words.take(ptr).map((e) => e.$1).join(' ');
     final p1 = words.skip(ptr).map((e) => e.$1).join(' ');
+    if (ptr < 1) return p1;
+
+    final p0 = words.take(ptr).map((e) => e.$1).join(' ');
     return '$p0\n$p1';
   }
 }

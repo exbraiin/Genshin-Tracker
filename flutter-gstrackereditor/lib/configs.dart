@@ -60,7 +60,7 @@ class GsConfigs<T extends GsModel<T>> {
           version: item.version,
           rarity: 4,
           image: item.icon,
-          child: _orderItem(item.order.toString()),
+          child: GsOrderOrb(item.order.toString()),
         );
       },
       filters: [GsFieldFilter('Version', _versions.filters, (i) => i.version)],
@@ -210,7 +210,7 @@ class GsConfigs<T extends GsModel<T>> {
             regionColor: GsStyle.getRegionElementColor(item.region),
             child:
                 item.subgroup != 0
-                    ? _orderItem(item.subgroup.toString())
+                    ? GsOrderOrb(item.subgroup.toString())
                     : null,
           ),
       filters: [
@@ -370,7 +370,7 @@ class GsConfigs<T extends GsModel<T>> {
           version: item.version,
           rarity: item.rarity,
           image: char?.image,
-          child: _orderItem(item.season.toString()),
+          child: GsOrderOrb(item.season.toString()),
         );
       },
       import: [
@@ -389,7 +389,7 @@ class GsConfigs<T extends GsModel<T>> {
             label: item.name,
             version: item.version,
             color: GsStyle.getVersionColor(item.version),
-            child: _orderItem(item.type.name.substring(0, 1).capitalize()),
+            child: GsOrderOrb(item.type.name.substring(0, 1).capitalize()),
           ),
       filters: [
         GsFieldFilter('Version', _versions.filters, (i) => i.version),
@@ -511,34 +511,40 @@ class GsConfigs<T extends GsModel<T>> {
   }
 }
 
-Widget _orderItem(String order) {
-  return Positioned(
-    top: 4,
-    left: 4,
-    child: Container(
-      height: 24,
-      constraints: const BoxConstraints(minWidth: 24),
-      alignment: Alignment.center,
-      padding: const EdgeInsets.fromLTRB(2, 1, 2, 0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          colors: [
-            Color.lerp(Colors.black, Colors.white, 0.4)!,
-            Color.lerp(Colors.black, Colors.black, 0.4)!,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+class GsOrderOrb extends StatelessWidget {
+  final String order;
+  const GsOrderOrb(this.order, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 4,
+      left: 4,
+      child: Container(
+        height: 24,
+        constraints: const BoxConstraints(minWidth: 24),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.fromLTRB(2, 1, 2, 0),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            colors: [
+              Color.lerp(Colors.black, Colors.white, 0.4)!,
+              Color.lerp(Colors.black, Colors.black, 0.4)!,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            order,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
-      child: FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Text(
-          order,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        ),
-      ),
-    ),
-  );
+    );
+  }
 }

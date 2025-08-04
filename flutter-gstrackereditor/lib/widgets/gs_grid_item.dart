@@ -116,7 +116,7 @@ class GsGridItem extends StatelessWidget {
             ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
+              padding: const EdgeInsets.all(8),
               child: AutoSizeText(
                 label,
                 style: const TextStyle(

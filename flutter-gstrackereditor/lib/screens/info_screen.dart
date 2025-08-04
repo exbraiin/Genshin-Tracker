@@ -1,9 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/configs.dart';
 import 'package:data_editor/db/database.dart';
-import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:data_editor/style/style.dart';
-import 'package:data_editor/widgets/gs_notifier_provider.dart';
+import 'package:data_editor/widgets/gs_grid_item.dart';
 import 'package:data_editor/widgets/gs_selector/gs_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
@@ -18,8 +17,6 @@ class InfoScreen extends StatefulWidget {
 class _InfoScreenState extends State<InfoScreen> {
   late final ValueNotifier<bool> _invalid;
   late final ValueNotifier<String> _notifier;
-
-  bool _isExpanded(String version) => version == _notifier.value;
 
   @override
   void initState() {
@@ -124,6 +121,60 @@ class _InfoScreenState extends State<InfoScreen> {
   }
 
   Widget _getInfoList() {
+    Widget getChild(GsVersion version) {
+      final vColor = GsStyle.getVersionColor(version.id);
+      final color1 = Color.lerp(vColor, Colors.black, 0.6)!;
+      return Column(
+        spacing: 4,
+        children: [
+          Container(
+            height: 32,
+            width: double.infinity,
+            padding: EdgeInsets.only(left: 16),
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [vColor, color1],
+                stops: const [0, 0.25],
+              ),
+              border: Border.all(width: 2, color: color1),
+            ),
+            child: Text(version.id, textAlign: TextAlign.center),
+          ),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children:
+                GsConfigs.getAllConfigs()
+                    .map((config) {
+                      try {
+                        final items = config.collection.items.where(
+                          (e) => (e as dynamic).version == version.id,
+                        );
+                        final len = items.length;
+                        final color = len < 1 ? Colors.red : null;
+                        return SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: GsGridItem(
+                            color: color,
+                            label: config.title,
+                            onTap: () => config.openListScreen(context),
+                            child: GsOrderOrb(len.toString()),
+                          ),
+                        );
+                      } catch (e) {
+                        return null;
+                      }
+                    })
+                    .whereNotNull()
+                    .toList(),
+          ),
+          SizedBox(height: 8),
+        ],
+      );
+    }
+
     return ValueListenableBuilder(
       valueListenable: _notifier,
       builder: (context, value, child) {
@@ -134,149 +185,8 @@ class _InfoScreenState extends State<InfoScreen> {
                   .of<GsVersion>()
                   .items
                   .sortedByDescending((e) => e.releaseDate)
-                  .map(_getChild)
+                  .map(getChild)
                   .toList(),
-        );
-      },
-    );
-  }
-
-  Widget _getChild(GsVersion version) {
-    final expanded = _isExpanded(version.id);
-    final vColor = GsStyle.getVersionColor(version.id);
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        color: vColor.withValues(alpha: 0.2),
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: 44,
-            decoration: BoxDecoration(
-              color: vColor.withValues(alpha: 0.6),
-              borderRadius: BorderRadius.vertical(
-                top: const Radius.circular(8),
-                bottom: expanded ? Radius.zero : const Radius.circular(8),
-              ),
-            ),
-            child: InkWell(
-              onTap: () {
-                _notifier.value =
-                    _notifier.value != version.id ? version.id : '';
-              },
-              child: Center(child: Text(version.id)),
-            ),
-          ),
-          _getByVersion<GsAchievementGroup>(version.id),
-          _getByVersion<GsAchievement>(version.id),
-          _getByVersion<GsArtifact>(version.id),
-          _getByVersion<GsBanner>(version.id),
-          _getByVersion<GsCharacter>(version.id),
-          _getByVersion<GsCharacterSkin>(version.id),
-          _getByVersion<GsMaterial>(version.id),
-          _getByVersion<GsNamecard>(version.id),
-          _getByVersion<GsRecipe>(version.id),
-          _getByVersion<GsFurnitureChest>(version.id),
-          _getByVersion<GsSereniteaSet>(version.id),
-          _getByVersion<GsSpincrystal>(version.id),
-          _getByVersion<GsEvent>(version.id),
-          _getByVersion<GsWeapon>(version.id),
-          _getByVersion<GsBattlepass>(version.id),
-        ],
-      ),
-    );
-  }
-
-  Widget _getByVersion<T extends GsModel<T>>(String version) {
-    if (!_isExpanded(version)) return const SizedBox();
-    final config = GsConfigs.of<T>();
-    if (config == null) return const SizedBox();
-    final versionItems = config.collection.items.where(
-      (e) => config.itemDecoration(e).version == version,
-    );
-    if (versionItems.isEmpty) return const SizedBox();
-
-    Widget badge(Color color) {
-      return Container(
-        width: 12,
-        height: 12,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 2,
-            color: Color.lerp(color, Colors.white, 0.2)!,
-          ),
-          gradient: LinearGradient(
-            colors: [color, Color.lerp(color, Colors.black, 0.2)!],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          borderRadius: BorderRadius.circular(16),
-        ),
-      );
-    }
-
-    final vColor = GsStyle.getVersionColor(version);
-    return GsNotifierProvider(
-      value: false,
-      builder: (context, notifier, child) {
-        return Column(
-          children: [
-            InkWell(
-              onTap: () => notifier.value = !notifier.value,
-              child: Container(
-                height: 32,
-                color: vColor.withValues(alpha: 0.4),
-                child: Center(
-                  child: Text('${config.title} (${versionItems.length})'),
-                ),
-              ),
-            ),
-            ValueListenableBuilder(
-              valueListenable: notifier,
-              builder: (context, value, child) {
-                if (!value) return const SizedBox();
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children:
-                        versionItems.map<Widget>((item) {
-                          final decor = config.itemDecoration(item);
-                          final level = DataValidator.i.getLevel<T>(item.id);
-                          Widget widget = GsSelectChip(
-                            GsSelectItem(
-                              item,
-                              decor.label,
-                              color: decor.color ?? GsStyle.getRarityColor(1),
-                            ),
-                            onTap:
-                                (item) => config.openEditScreen(context, item),
-                          );
-                          final levelColor = level.color;
-                          if (levelColor != null) {
-                            widget = Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                widget,
-                                Positioned(
-                                  top: -2,
-                                  right: -2,
-                                  child: badge(levelColor),
-                                ),
-                              ],
-                            );
-                          }
-                          return widget;
-                        }).toList(),
-                  ),
-                );
-              },
-            ),
-          ],
         );
       },
     );

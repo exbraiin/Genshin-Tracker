@@ -135,17 +135,17 @@ class Home extends StatelessWidget {
       final c = await PaimonMoeImporter.importAchievements();
       if (c == null) return;
 
+      String changesToText(int rmv, int mdf, int add) {
+        return '<color=pyro>$rmv</color> | '
+            '<color=geo>$mdf</color> | '
+            '<color=dendro>$add</color>';
+      }
+
       messenger.showSnackBar(
         SnackBar(
           content: TextParserWidget(
-            'Groups: ('
-            '<color=pyro>${c.grpRmv}</color> | '
-            '<color=geo>${c.grpMdf}</color> | '
-            '<color=dendro>${c.grpAdd}</color>)\n'
-            'Achievements: ('
-            '<color=pyro>${c.achRmv}</color> | '
-            '<color=geo>${c.achMdf}</color> | '
-            '<color=dendro>${c.achAdd}</color>)',
+            'Groups: (${changesToText(c.grpRmv, c.grpMdf, c.grpAdd)})\n'
+            'Achievements: (${changesToText(c.achRmv, c.achMdf, c.achAdd)})',
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,

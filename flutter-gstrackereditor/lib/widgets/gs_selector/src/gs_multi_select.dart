@@ -136,42 +136,42 @@ class _SelectDialogState<T> extends State<_SelectDialog<T>> {
                       return ValueListenableBuilder(
                         valueListenable: _notifier,
                         builder: (context, selected, child) {
+                          final children =
+                              widget.items
+                                  .where((item) {
+                                    if (controller.text.isEmpty) {
+                                      return true;
+                                    }
+
+                                    final query = controller.text.toLowerCase();
+                                    final worlds = query.split(' ');
+
+                                    final name = item.label.toLowerCase();
+                                    return worlds.all(name.contains);
+                                  })
+                                  .map((item) {
+                                    return GsSelectChip(
+                                      item,
+                                      selected: selected.contains(item.value),
+                                      onTap: (id) {
+                                        final newSet = selected.toSet();
+                                        if (newSet.contains(id)) {
+                                          newSet.remove(id);
+                                        } else {
+                                          newSet.add(id);
+                                        }
+                                        _notifier.value = newSet;
+                                      },
+                                    );
+                                  })
+                                  .toList();
+
                           return SingleChildScrollView(
                             padding: const EdgeInsets.all(8),
                             child: Wrap(
                               spacing: 6,
                               runSpacing: 6,
-                              children:
-                                  widget.items
-                                      .where((item) {
-                                        if (controller.text.isEmpty)
-                                          return true;
-
-                                        final query =
-                                            controller.text.toLowerCase();
-                                        final worlds = query.split(' ');
-
-                                        final name = item.label.toLowerCase();
-                                        return worlds.all(name.contains);
-                                      })
-                                      .map((item) {
-                                        return GsSelectChip(
-                                          item,
-                                          selected: selected.contains(
-                                            item.value,
-                                          ),
-                                          onTap: (id) {
-                                            final newSet = selected.toSet();
-                                            if (newSet.contains(id)) {
-                                              newSet.remove(id);
-                                            } else {
-                                              newSet.add(id);
-                                            }
-                                            _notifier.value = newSet;
-                                          },
-                                        );
-                                      })
-                                      .toList(),
+                              children: children,
                             ),
                           );
                         },
