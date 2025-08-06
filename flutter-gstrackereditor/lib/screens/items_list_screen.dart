@@ -3,6 +3,7 @@ import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db/ge_enums.dart';
 import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:data_editor/db_ext/datafield.dart';
+import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/style/style.dart';
 import 'package:data_editor/widgets/gs_grid_item.dart';
 import 'package:data_editor/widgets/gs_grid_view.dart';
@@ -13,6 +14,7 @@ import 'package:gsdatabase/gsdatabase.dart';
 
 class ItemsListScreen<T extends GsModel<T>> extends StatefulWidget {
   final String title;
+  final String? version;
   final List<T> Function() list;
   final List<GsFieldFilter<T>> filters;
 
@@ -24,6 +26,7 @@ class ItemsListScreen<T extends GsModel<T>> extends StatefulWidget {
     required this.title,
     required this.list,
     required this.getDecor,
+    this.version,
     this.filters = const [],
     this.onTap,
   });
@@ -42,7 +45,14 @@ class _ItemsListScreenState<T extends GsModel<T>>
   @override
   void initState() {
     super.initState();
-    _selectedFilters = widget.filters.map((e) => <String>{}).toList();
+    final versionLabel = GsFieldFilter<T>.version((e) => '').label;
+    _selectedFilters =
+        widget.filters.map((e) {
+          if (widget.version != null && e.label == versionLabel) {
+            return <String>{widget.version!};
+          }
+          return <String>{};
+        }).toList();
   }
 
   @override
@@ -212,8 +222,13 @@ class GsFieldFilter<T extends GsModel<T>> {
 
   GsFieldFilter(this.label, this.filters, this.filter);
 
-  GsFieldFilter.rarity(this.label, int Function(T i) filter, [int min = 1])
-    : filters = List.generate(6 - min, (index) {
+  GsFieldFilter.version(this.filter)
+    : label = 'Version',
+      filters = ValidateModels.versions().filters;
+
+  GsFieldFilter.rarity(int Function(T i) filter, [int min = 1])
+    : label = 'Rarity',
+      filters = List.generate(6 - min, (index) {
         final rarity = (min + index).toString();
         return GsSelectItem(
           rarity,

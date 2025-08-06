@@ -146,28 +146,28 @@ class _InfoScreenState extends State<InfoScreen> {
             runSpacing: 8,
             children:
                 GsConfigs.getAllConfigs()
+                    .where((e) => e.collection.parser({}) is GsVersionable)
                     .map((config) {
-                      try {
-                        final items = config.collection.items.where(
-                          (e) => (e as dynamic).version == version.id,
-                        );
-                        final len = items.length;
-                        final color = len < 1 ? Colors.red : null;
-                        return SizedBox(
-                          width: 80,
-                          height: 80,
-                          child: GsGridItem(
-                            color: color,
-                            label: config.title,
-                            onTap: () => config.openListScreen(context),
-                            child: GsOrderOrb(len.toString()),
-                          ),
-                        );
-                      } catch (e) {
-                        return null;
-                      }
+                      final amount = config.collection.items
+                          .cast<GsVersionable>()
+                          .count((e) => e.version == version.id);
+                      final color =
+                          amount < 1 ? Colors.deepOrange : Colors.lightGreen;
+                      return SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: GsGridItem(
+                          color: color,
+                          label: config.title,
+                          onTap:
+                              () => config.openListScreen(
+                                context,
+                                version: version.id,
+                              ),
+                          child: GsOrderOrb(amount.toString()),
+                        ),
+                      );
                     })
-                    .whereNotNull()
                     .toList(),
           ),
           SizedBox(height: 8),

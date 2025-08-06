@@ -5,13 +5,14 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_recipe.g.dart';
 
 @BuilderGenerator()
-abstract class _GsRecipe extends GsModel<GsRecipe> {
+abstract class _GsRecipe extends GsModel<GsRecipe> with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('type')
   GeRecipeType get type;
   @BuilderWire('rarity')
   int get rarity;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('image')

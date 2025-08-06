@@ -3,13 +3,15 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_character_skin.g.dart';
 
 @BuilderGenerator()
-abstract class _GsCharacterSkin extends GsModel<GsCharacterSkin> {
+abstract class _GsCharacterSkin extends GsModel<GsCharacterSkin>
+    with GsVersionable {
   @BuilderWire('rarity')
   int get rarity;
   @BuilderWire('name')
   String get name;
   @BuilderWire('image')
   String get image;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('character')

@@ -4,13 +4,15 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_achievement.g.dart';
 
 @BuilderGenerator()
-abstract class _GsAchievement extends GsModel<GsAchievement> {
+abstract class _GsAchievement extends GsModel<GsAchievement>
+    with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('group')
   String get group;
   @BuilderWire('hidden')
   bool get hidden;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('type')

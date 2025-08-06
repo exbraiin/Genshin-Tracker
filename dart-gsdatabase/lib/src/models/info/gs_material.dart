@@ -6,7 +6,7 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_material.g.dart';
 
 @BuilderGenerator()
-abstract class _GsMaterial extends GsModel<GsMaterial> {
+abstract class _GsMaterial extends GsModel<GsMaterial> with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('desc')
@@ -21,6 +21,7 @@ abstract class _GsMaterial extends GsModel<GsMaterial> {
   GeRegionType get region;
   @BuilderWire('subgroup')
   int get subgroup;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('ingredient')

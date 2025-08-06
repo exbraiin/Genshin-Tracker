@@ -5,7 +5,8 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_furniture_chest.g.dart';
 
 @BuilderGenerator()
-abstract class _GsFurnitureChest extends GsModel<GsFurnitureChest> {
+abstract class _GsFurnitureChest extends GsModel<GsFurnitureChest>
+    with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('type')
@@ -18,6 +19,7 @@ abstract class _GsFurnitureChest extends GsModel<GsFurnitureChest> {
   int get energy;
   @BuilderWire('region')
   GeRegionType get region;
+  @override
   @BuilderWire('version')
   String get version;
 

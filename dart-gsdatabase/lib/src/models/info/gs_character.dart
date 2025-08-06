@@ -4,7 +4,7 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_character.g.dart';
 
 @BuilderGenerator()
-abstract class _GsCharacter extends GsModel<GsCharacter> {
+abstract class _GsCharacter extends GsModel<GsCharacter> with GsVersionable {
   @BuilderWire('enka_id')
   String get enkaId;
   @BuilderWire('name')
@@ -21,6 +21,7 @@ abstract class _GsCharacter extends GsModel<GsCharacter> {
   GeWeaponType get weapon;
   @BuilderWire('element')
   GeElementType get element;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('source')

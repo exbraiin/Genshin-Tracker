@@ -4,7 +4,7 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_banner.g.dart';
 
 @BuilderGenerator()
-abstract class _GsBanner extends GsModel<GsBanner> {
+abstract class _GsBanner extends GsModel<GsBanner> with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('image')
@@ -13,6 +13,7 @@ abstract class _GsBanner extends GsModel<GsBanner> {
   DateTime get dateStart;
   @BuilderWire('date_end')
   DateTime get dateEnd;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('type')

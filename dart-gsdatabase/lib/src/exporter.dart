@@ -17,7 +17,8 @@ export 'enums/ge_weapon_asc_stat_type.dart';
 export 'enums/ge_weapon_type.dart';
 export 'enums/ge_weekday_type.dart';
 // --- OTHER ---
-export 'models/gs_model.dart' show GsModel, ListGsEnumExt, GeEnum, JsonMap;
+export 'models/gs_model.dart'
+    show GsModel, ListGsEnumExt, GeEnum, JsonMap, GsVersionable;
 // --- DATA MODELS ---
 export 'models/info/gs_achievement.dart' show GsAchievement, GsAchievementPhase;
 export 'models/info/gs_achievement_group.dart' show GsAchievementGroup;

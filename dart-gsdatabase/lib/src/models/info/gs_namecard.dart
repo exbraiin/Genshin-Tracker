@@ -4,13 +4,14 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_namecard.g.dart';
 
 @BuilderGenerator()
-abstract class _GsNamecard extends GsModel<GsNamecard> {
+abstract class _GsNamecard extends GsModel<GsNamecard> with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('rarity')
   int get rarity;
   @BuilderWire('type')
   GeNamecardType get type;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('image')

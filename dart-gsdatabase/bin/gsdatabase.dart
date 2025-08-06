@@ -22,3 +22,17 @@ void main(List<String> arguments) async {
     print(version.toMap()['release_date']);
   }
 }
+
+void testVersionGetter() {
+  final group = GsAchievementGroup.fromJson({'version': '1.0'});
+  final char0 = GsCharacter.fromJson({'version': '1.0'});
+
+  void test(GsModel model) {
+    if (model is GsVersionable) {
+      print('Is Getter ${model.runtimeType}: ${model.version}');
+    }
+  }
+
+  test(group);
+  test(char0);
+}

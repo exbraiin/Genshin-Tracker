@@ -4,11 +4,12 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_artifact.g.dart';
 
 @BuilderGenerator()
-abstract class _GsArtifact extends GsModel<GsArtifact> {
+abstract class _GsArtifact extends GsModel<GsArtifact> with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('region')
   GeRegionType get region;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('rarity')

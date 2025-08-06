@@ -49,7 +49,6 @@ class GsConfigs<T extends GsModel<T>> {
     this.filters = const [],
   });
 
-  static final _versions = ValidateModels.versions();
   static final _map = <Type, GsConfigs>{
     GsAchievementGroup: GsConfigs<GsAchievementGroup>._(
       title: 'Achievement Category',
@@ -63,7 +62,7 @@ class GsConfigs<T extends GsModel<T>> {
           child: GsOrderOrb(item.order.toString()),
         );
       },
-      filters: [GsFieldFilter('Version', _versions.filters, (i) => i.version)],
+      filters: [GsFieldFilter.version((i) => i.version)],
     ),
     GsAchievement: GsConfigs<GsAchievement>._(
       title: 'Achievement',
@@ -78,7 +77,7 @@ class GsConfigs<T extends GsModel<T>> {
         );
       },
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.version((i) => i.version),
         GsFieldFilter.fromEnum('Type', GeAchievementType.values, (i) => i.type),
         GsFieldFilter(
           'Category',
@@ -106,8 +105,8 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity),
+        GsFieldFilter.version((i) => i.version),
+        GsFieldFilter.rarity((i) => i.rarity),
         GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
       ],
     ),
@@ -134,7 +133,7 @@ class GsConfigs<T extends GsModel<T>> {
         );
       },
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.version((i) => i.version),
         GsFieldFilter.fromEnum('Type', GeBannerType.values, (i) => i.type),
       ],
     ),
@@ -162,9 +161,9 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.version((i) => i.version),
         GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity, 4),
+        GsFieldFilter.rarity((i) => i.rarity, 4),
         GsFieldFilter.fromEnum(
           'Element',
           GeElementType.values,
@@ -194,8 +193,8 @@ class GsConfigs<T extends GsModel<T>> {
         );
       },
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity),
+        GsFieldFilter.version((i) => i.version),
+        GsFieldFilter.rarity((i) => i.rarity),
       ],
     ),
     GsMaterial: GsConfigs<GsMaterial>._(
@@ -214,8 +213,8 @@ class GsConfigs<T extends GsModel<T>> {
                     : null,
           ),
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity),
+        GsFieldFilter.version((i) => i.version),
+        GsFieldFilter.rarity((i) => i.rarity),
         GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
         GsFieldFilter.fromEnum('Group', GeMaterialType.values, (i) => i.group),
         GsFieldFilter('Ingredient', [
@@ -242,8 +241,8 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity),
+        GsFieldFilter.version((i) => i.version),
+        GsFieldFilter.rarity((i) => i.rarity),
         GsFieldFilter.fromEnum('Type', GeNamecardType.values, (i) => i.type),
       ],
     ),
@@ -265,8 +264,8 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity),
+        GsFieldFilter.version((i) => i.version),
+        GsFieldFilter.rarity((i) => i.rarity),
         GsFieldFilter.fromEnum('Type', GeRecipeType.values, (i) => i.type),
         GsFieldFilter.fromEnum(
           'Effect',
@@ -287,8 +286,8 @@ class GsConfigs<T extends GsModel<T>> {
             regionColor: GsStyle.getRegionElementColor(item.region),
           ),
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity),
+        GsFieldFilter.version((i) => i.version),
+        GsFieldFilter.rarity((i) => i.rarity),
         GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
         GsFieldFilter.fromEnum(
           'Type',
@@ -314,7 +313,7 @@ class GsConfigs<T extends GsModel<T>> {
             color: item.category.color,
           ),
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.version((i) => i.version),
         GsFieldFilter.fromEnum(
           'Category',
           GeSereniteaSetType.values,
@@ -345,7 +344,7 @@ class GsConfigs<T extends GsModel<T>> {
             regionColor: GsStyle.getRegionElementColor(item.region),
           ),
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.version((i) => i.version),
         GsFieldFilter.fromEnum('Region', GeRegionType.values, (i) => i.region),
       ],
     ),
@@ -392,7 +391,7 @@ class GsConfigs<T extends GsModel<T>> {
             child: GsOrderOrb(item.type.name.substring(0, 1).capitalize()),
           ),
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
+        GsFieldFilter.version((i) => i.version),
         GsFieldFilter.fromEnum('Type', GeEventType.values, (i) => i.type),
       ],
     ),
@@ -414,8 +413,8 @@ class GsConfigs<T extends GsModel<T>> {
         ),
       ],
       filters: [
-        GsFieldFilter('Version', _versions.filters, (i) => i.version),
-        GsFieldFilter.rarity('Rarity', (i) => i.rarity),
+        GsFieldFilter.version((i) => i.version),
+        GsFieldFilter.rarity((i) => i.rarity),
         GsFieldFilter.fromEnum('Type', GeWeaponType.values, (i) => i.type),
         GsFieldFilter.fromEnum(
           'Source',
@@ -483,7 +482,7 @@ class GsConfigs<T extends GsModel<T>> {
     );
   }
 
-  void openListScreen(BuildContext context) {
+  void openListScreen(BuildContext context, {String? version}) {
     context.pushWidget(
       ItemsListScreen<T>(
         title: title,
@@ -491,6 +490,7 @@ class GsConfigs<T extends GsModel<T>> {
             () =>
                 sort?.call(collection.items.sorted()).toList() ??
                 collection.items.sorted(),
+        version: version,
         getDecor: itemDecoration,
         onTap: openEditScreen,
         filters: filters,

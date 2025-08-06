@@ -6,7 +6,7 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_weapon.g.dart';
 
 @BuilderGenerator()
-abstract class _GsWeapon extends GsModel<GsWeapon> {
+abstract class _GsWeapon extends GsModel<GsWeapon> with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('rarity')
@@ -21,6 +21,7 @@ abstract class _GsWeapon extends GsModel<GsWeapon> {
   GeWeaponAscStatType get statType;
   @BuilderWire('desc')
   String get desc;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('source')

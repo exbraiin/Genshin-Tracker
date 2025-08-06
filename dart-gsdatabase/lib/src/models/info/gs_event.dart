@@ -4,13 +4,14 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_event.g.dart';
 
 @BuilderGenerator()
-abstract class _GsEvent extends GsModel<GsEvent> {
+abstract class _GsEvent extends GsModel<GsEvent> with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('type')
   GeEventType get type;
   @BuilderWire('image')
   String get image;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('date_start')

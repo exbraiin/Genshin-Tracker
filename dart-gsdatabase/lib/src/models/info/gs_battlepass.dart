@@ -3,11 +3,12 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_battlepass.g.dart';
 
 @BuilderGenerator()
-abstract class _GsBattlepass extends GsModel<GsBattlepass> {
+abstract class _GsBattlepass extends GsModel<GsBattlepass> with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('image')
   String get image;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('namecard_id')

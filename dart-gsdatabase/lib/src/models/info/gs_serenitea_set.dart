@@ -4,9 +4,11 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_serenitea_set.g.dart';
 
 @BuilderGenerator()
-abstract class _GsSereniteaSet extends GsModel<GsSereniteaSet> {
+abstract class _GsSereniteaSet extends GsModel<GsSereniteaSet>
+    with GsVersionable {
   @BuilderWire('name')
   String get name;
+  @override
   @BuilderWire('version')
   String get version;
   @BuilderWire('category')

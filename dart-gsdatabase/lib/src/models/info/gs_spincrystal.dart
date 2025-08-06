@@ -4,7 +4,8 @@ import 'package:gsdatabase/src/models/gs_model.dart';
 part 'gs_spincrystal.g.dart';
 
 @BuilderGenerator()
-abstract class _GsSpincrystal extends GsModel<GsSpincrystal> {
+abstract class _GsSpincrystal extends GsModel<GsSpincrystal>
+    with GsVersionable {
   @BuilderWire('name')
   String get name;
   @BuilderWire('number')
@@ -15,6 +16,7 @@ abstract class _GsSpincrystal extends GsModel<GsSpincrystal> {
   String get imageSource;
   @BuilderWire('region')
   GeRegionType get region;
+  @override
   @BuilderWire('version')
   String get version;
 

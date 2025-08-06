@@ -18,6 +18,10 @@ abstract class GsModel<T extends GsModel<T>> implements Comparable<T> {
   Iterable<Comparable Function(T a)> get sorters => [];
 }
 
+mixin GsVersionable<T extends GsModel<T>> on GsModel<T> {
+  String get version;
+}
+
 class BuilderGenerator {
   const BuilderGenerator();
 }
