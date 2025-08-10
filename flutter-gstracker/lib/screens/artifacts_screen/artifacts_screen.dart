@@ -16,7 +16,6 @@ class ArtifactsScreen extends StatelessWidget {
     return InventoryListPage<GsArtifact>(
       icon: AppAssets.menuIconArtifacts,
       title: context.labels.artifacts(),
-      items: (db) => db.infoOf<GsArtifact>().items,
       versionSort: (item) => item.version,
       itemBuilder:
           (context, state) => ArtifactListItem(

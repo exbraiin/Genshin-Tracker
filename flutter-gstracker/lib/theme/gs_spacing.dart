@@ -14,6 +14,7 @@ abstract final class GsSpacing {
   static const kListSeparator = 2.0;
   static const kGridRadius = BorderRadius.all(Radius.circular(4));
   static const kListRadius = BorderRadius.all(Radius.circular(4));
+  static const kCardRadius = BorderRadius.all(Radius.circular(6));
 }
 
 const double kSeparator2 = 2;

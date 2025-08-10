@@ -4,8 +4,6 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
-const radius = BorderRadius.all(Radius.circular(6));
-
 class GsItemBanner {
   final String text;
   final Color color;
@@ -94,7 +92,7 @@ class GsItemCardButton extends StatelessWidget {
             (context, value, child) => AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               foregroundDecoration: BoxDecoration(
-                borderRadius: radius,
+                borderRadius: GsSpacing.kCardRadius,
                 border:
                     value || selected
                         ? Border.all(
@@ -117,7 +115,7 @@ class GsItemCardButton extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: radius,
+        borderRadius: GsSpacing.kCardRadius,
         boxShadow: shadow ? GsSpacing.kMainShadow : null,
       ),
       child: Column(

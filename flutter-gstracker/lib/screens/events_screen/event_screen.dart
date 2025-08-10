@@ -23,7 +23,6 @@ class EventScreen extends StatelessWidget {
       sortOrder: SortOrder.descending,
       childSize: const Size(126 * 2 + 6, 160),
       title: context.labels.filterEvent(),
-      items: (db) => db.infoOf<GsEvent>().items,
       itemBuilder:
           (context, state) => EventListItem(
             state.item,

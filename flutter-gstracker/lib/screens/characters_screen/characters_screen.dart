@@ -17,7 +17,6 @@ class CharactersScreen extends StatelessWidget {
     return InventoryListPage<GsCharacter>(
       icon: AppAssets.menuIconCharacters,
       title: context.labels.characters(),
-      items: (db) => db.infoOf<GsCharacter>().items,
       versionSort: (item) => item.version,
       itemBuilder:
           (context, state) => CharacterListItem(

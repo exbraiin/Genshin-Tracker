@@ -18,7 +18,6 @@ class RecipesScreen extends StatelessWidget {
     return InventoryListPage<GsRecipe>(
       icon: AppAssets.menuIconRecipes,
       title: context.labels.recipes(),
-      items: (db) => db.infoOf<GsRecipe>().items,
       versionSort: (item) => item.version,
       itemBuilder:
           (context, state) => RecipesListItem(

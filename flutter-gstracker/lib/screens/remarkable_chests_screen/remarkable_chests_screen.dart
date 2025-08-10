@@ -16,7 +16,6 @@ class RemarkableChestsScreen extends StatelessWidget {
     return InventoryListPage<GsFurnitureChest>(
       icon: AppAssets.menuIconMap,
       title: context.labels.remarkableChests(),
-      items: (db) => db.infoOf<GsFurnitureChest>().items,
       versionSort: (item) => item.version,
       itemBuilder:
           (context, state) => RemarkableChestListItem(

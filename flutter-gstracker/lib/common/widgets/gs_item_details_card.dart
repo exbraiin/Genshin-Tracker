@@ -39,12 +39,15 @@ class ItemDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _headerTitle(context),
-        _headerInfo(context),
-        flexContent ? Flexible(child: _content(context)) : _content(context),
-      ],
+    return ClipRRect(
+      borderRadius: GsSpacing.kGridRadius,
+      child: Column(
+        children: [
+          _headerTitle(context),
+          _headerInfo(context),
+          flexContent ? Flexible(child: _content(context)) : _content(context),
+        ],
+      ),
     );
   }
 
@@ -59,6 +62,7 @@ class ItemDetailsCard extends StatelessWidget {
         margin: const EdgeInsets.all(kSeparator2),
         padding: const EdgeInsets.all(kSeparator8 + kSeparator2),
         decoration: BoxDecoration(
+          borderRadius: GsSpacing.kGridRadius,
           border: Border.all(color: color1, width: kSeparator2),
         ),
         child: Row(

@@ -17,7 +17,6 @@ class WeaponsScreen extends StatelessWidget {
     return InventoryListPage<GsWeapon>(
       icon: AppAssets.menuIconWeapons,
       title: context.labels.weapons(),
-      items: (db) => db.infoOf<GsWeapon>().items,
       versionSort: (item) => item.version,
       itemBuilder:
           (context, state) => WeaponListItem(

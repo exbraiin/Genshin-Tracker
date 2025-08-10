@@ -19,7 +19,6 @@ class VersionScreen extends StatelessWidget {
       icon: AppAssets.menuIconBook,
       sortOrder: SortOrder.descending,
       title: context.labels.version(),
-      items: (db) => db.infoOf<GsVersion>().items,
       actions: (hasExtra, toggle) {
         return [
           _TimeBuilder(

@@ -22,7 +22,6 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   final String title;
   final Size childSize;
   final SortOrder sortOrder;
-  final Iterable<T> Function(Database db) items;
   final List<Widget> Function(
     bool Function(FilterExtras extra) hasExtra,
     void Function(FilterExtras extra) toggle,
@@ -43,7 +42,6 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
     this.itemCardBuilder,
     required this.icon,
     required this.title,
-    required this.items,
     required this.itemBuilder,
   });
 
@@ -61,7 +59,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
             final other = actions?.call(hasExtra, toggle) ?? const [];
 
             final items = _sortedItems(
-              this.items(db),
+              db.infoOf<T>().items,
               hasExtra(FilterExtras.versionSort) ? versionSort : null,
             );
 

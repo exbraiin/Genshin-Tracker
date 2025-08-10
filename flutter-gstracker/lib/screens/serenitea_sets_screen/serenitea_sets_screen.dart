@@ -17,7 +17,6 @@ class SereniteaSetsScreen extends StatelessWidget {
       childSize: const Size(126 * 2 + 6, 160),
       icon: AppAssets.menuIconSereniteaSets,
       title: context.labels.sereniteaSets(),
-      items: (db) => db.infoOf<GsSereniteaSet>().items,
       versionSort: (item) => item.version,
       itemBuilder:
           (context, state) => SereniteaSetListItem(

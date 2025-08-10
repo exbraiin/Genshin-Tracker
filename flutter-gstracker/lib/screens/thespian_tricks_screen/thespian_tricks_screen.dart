@@ -16,7 +16,6 @@ class ThespianTricksScreen extends StatelessWidget {
     return InventoryListPage<GsThespianTrick>(
       icon: AppAssets.itemToyMedal,
       title: context.labels.thespianTricks(),
-      items: (db) => db.infoOf<GsThespianTrick>().items,
       versionSort: (item) => item.version,
       itemBuilder: (context, state) {
         return ThespianTrickListItem(
