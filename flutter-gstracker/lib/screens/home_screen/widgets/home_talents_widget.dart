@@ -25,25 +25,26 @@ class HomeTalentsWidget extends StatelessWidget {
         final iMats = Database.instance.infoOf<GsMaterial>();
         final iChar = Database.instance.infoOf<GsCharacter>();
 
-        final list = iChar.items
-            .where((c) => chars.hasCaracter(c.id))
-            .map((c) => chars.getCharInfo(c.id))
+        final farmableDays = [
+          (day1: GeWeekdayType.monday, day2: GeWeekdayType.thursday),
+          (day1: GeWeekdayType.tuesday, day2: GeWeekdayType.friday),
+          (day1: GeWeekdayType.wednesday, day2: GeWeekdayType.saturday),
+        ];
+        final characters = iChar.items
+            .where((e) => chars.hasCaracter(e.id))
+            .map((e) => chars.getCharInfo(e.id))
             .whereNotNull()
-            .where((data) {
-              final hasMissingTalents = data.talents?.isMissing() ?? false;
-
-              late final talentMaterial = iMats.getItem(
-                data.item.talentMaterial,
+            .where((e) => e.talents?.isMissing() ?? false)
+            .groupBy((e) {
+              final weekdays =
+                  iMats.getItem(e.item.talentMaterial)?.weekdays ?? [];
+              return farmableDays.firstOrNullWhere(
+                (e) => weekdays.contains(e.day1),
               );
-              final hasWeekdayTalents =
-                  today == GeWeekdayType.sunday ||
-                  talentMaterial != null &&
-                      talentMaterial.weekdays.contains(today);
-
-              return hasMissingTalents && hasWeekdayTalents;
             });
 
-        if (list.isEmpty) {
+        final isEmpty = characters.values.every((list) => list.isEmpty);
+        if (isEmpty) {
           return GsDataBox.info(
             title: Text(context.labels.talents()),
             child: const GsNoResultsState.small(),
@@ -55,11 +56,17 @@ class HomeTalentsWidget extends StatelessWidget {
           value: false,
           builder: (context, notifier, child) {
             final asc = notifier.value;
-            final characters = list
-                .sortedByOrder((c) => c.talents?.totalCrownless ?? 0, asc)
-                .thenByDescending((c) => c.item.rarity)
-                .thenBy((c) => c.item.releaseDate)
-                .thenBy((c) => c.item.id);
+
+            final charactersByDays = characters.map((key, value) {
+              final list = value
+                  .sortedByOrder((e) => e.talents?.totalCrownless ?? 0, asc)
+                  .thenByDescending((e) => e.item.rarity)
+                  .thenBy((c) => c.item.releaseDate)
+                  .thenBy((c) => c.item.id);
+              return MapEntry(key, list);
+            });
+
+            const kItemsPerDay = 4;
             return GsDataBox.info(
               title: Row(
                 children: [
@@ -93,48 +100,64 @@ class HomeTalentsWidget extends StatelessWidget {
                   SizedBox(width: kSeparator4),
                 ],
               ),
-              child: LayoutBuilder(
-                builder: (context, layout) {
-                  final itemSize = kItemSize + GsSpacing.kGridSeparator;
-                  final width = layout.maxWidth;
-                  final items = (width ~/ itemSize).coerceAtMost(8) * 2;
-                  final take = (items - 1).coerceAtLeast(0);
+              child: Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: [
+                  TableRow(
+                    children:
+                        farmableDays.map((days) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: kSeparator8),
+                            child: Text(
+                              '${days.day1.getLabel(context).substring(0, 3)} & '
+                              '${days.day2.getLabel(context).substring(0, 3)}',
+                              textAlign: TextAlign.center,
+                              style: context.themeStyles.label14n,
+                            ),
+                          );
+                        }).toList(),
+                  ),
+                  TableRow(
+                    children:
+                        farmableDays.map((days) {
+                          final chars = charactersByDays[days] ?? <CharInfo>[];
+                          late final isToday =
+                              today == GeWeekdayType.sunday ||
+                              days.day1 == today ||
+                              days.day2 == today;
 
-                  var list = characters.take(take).map<Widget>((info) {
-                    return ItemGridWidget.character(
-                      size: kItemSize,
-                      info.item,
-                      labelWidget: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:
-                            CharTalentType.values
-                                .map((e) => _talentLabel(context, info, e))
-                                .toList(),
-                      ),
-                    );
-                  });
-
-                  final remain = characters.length - take;
-                  if (remain > 0) {
-                    list = list.appendElement(
-                      Container(
-                        width: kItemSize,
-                        height: kItemSize,
-                        alignment: Alignment.center,
-                        child: Text('+$remain'),
-                      ),
-                    );
-                  }
-
-                  return Center(
-                    child: Wrap(
-                      spacing: GsSpacing.kGridSeparator,
-                      runSpacing: GsSpacing.kGridSeparator,
-                      alignment: WrapAlignment.center,
-                      children: list.toList(),
-                    ),
-                  );
-                },
+                          return Wrap(
+                            spacing: kSeparator4,
+                            runSpacing: kSeparator4,
+                            alignment: WrapAlignment.center,
+                            children:
+                                chars.take(kItemsPerDay).map((info) {
+                                  return ItemGridWidget.character(
+                                    info.item,
+                                    size: kItemSize,
+                                    disabled: !isToday,
+                                    labelWidget: _talenstLabel(context, info),
+                                  );
+                                }).toList(),
+                          );
+                        }).toList(),
+                  ),
+                  TableRow(
+                    children:
+                        farmableDays.map((days) {
+                          final chars = charactersByDays[days] ?? <CharInfo>[];
+                          final total = chars.length;
+                          return Padding(
+                            padding: EdgeInsets.only(top: kSeparator8),
+                            child: Text(
+                              '${context.labels.total()} $total',
+                              textAlign: TextAlign.center,
+                              style: context.themeStyles.label12i,
+                            ),
+                          );
+                        }).toList(),
+                  ),
+                ],
               ),
             );
           },
@@ -143,15 +166,21 @@ class HomeTalentsWidget extends StatelessWidget {
     );
   }
 
-  Widget _talentLabel(BuildContext context, CharInfo info, CharTalentType tal) {
-    final value = info.talents?.talentWithExtra(tal);
-    final hasExtra = info.talents?.hasExtra(tal) ?? false;
+  Widget _talenstLabel(BuildContext context, CharInfo info) {
     final style = context.themeStyles.label14n;
     final strut = style.toStrut();
-    return Text(
-      '${value ?? '-'} ',
-      style: style.copyWith(color: hasExtra ? Colors.lightBlue : null),
-      strutStyle: strut,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children:
+          CharTalentType.values.map((talent) {
+            final value = info.talents?.talentWithExtra(talent);
+            final hasExtra = info.talents?.hasExtra(talent) ?? false;
+            return Text(
+              '${value ?? '-'} ',
+              style: style.copyWith(color: hasExtra ? Colors.lightBlue : null),
+              strutStyle: strut,
+            );
+          }).toList(),
     );
   }
 }
