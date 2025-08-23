@@ -8,11 +8,12 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
-const _arrow = '→';
+const _arrow = '\u2022';
 
 class HomeWishesValues extends StatelessWidget {
   final GeBannerType banner;
@@ -292,75 +293,88 @@ class HomeWishesValues extends StatelessWidget {
               curve: Curves.easeOut,
               duration: const Duration(milliseconds: 400),
               constraints: BoxConstraints(maxHeight: expanded ? 300 : 0),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: kSeparator4),
-                child: Wrap(
-                  spacing: GsSpacing.kGridSeparator,
-                  runSpacing: GsSpacing.kGridSeparator,
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children:
-                      summary.info5.wishes.reversed.map((wish) {
-                        final item = wish.item;
-                        final pity = wish.pity;
-                        final state = wish.state;
-                        final pityColor = context.themeColors.colorByPity(
-                          pity,
-                          maxPity,
-                        );
+              child: InventoryBox(
+                padding: EdgeInsets.zero,
+                child: Align(
+                  heightFactor: 1,
+                  alignment: Alignment.topCenter,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(kSeparator4),
+                    child: Wrap(
+                      spacing: GsSpacing.kGridSeparator,
+                      runSpacing: GsSpacing.kGridSeparator,
+                      alignment: WrapAlignment.start,
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      children:
+                          summary.info5.wishes.reversed.map((wish) {
+                            final item = wish.item;
+                            final pity = wish.pity;
+                            final state = wish.state;
+                            final pityColor = context.themeColors.colorByPity(
+                              pity,
+                              maxPity,
+                            );
 
-                        return Column(
-                          children: [
-                            Stack(
-                              clipBehavior: Clip.none,
+                            return Column(
                               children: [
-                                item.character != null
-                                    ? ItemGridWidget.character(item.character!)
-                                    : item.weapon != null
-                                    ? ItemGridWidget.weapon(item.weapon!)
-                                    : const SizedBox(),
-                                if (state == WishState.won)
-                                  Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: Icon(
-                                      Icons.star_rounded,
-                                      size: 20,
-                                      color: Colors.yellow,
-                                      shadows: [
-                                        BoxShadow(
-                                          color: Colors.black.withValues(
-                                            alpha: 0.8,
-                                          ),
-                                          offset: const Offset(1, 1),
+                                Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    item.character != null
+                                        ? ItemGridWidget.character(
+                                          item.character!,
+                                          tooltip: '',
+                                        )
+                                        : item.weapon != null
+                                        ? ItemGridWidget.weapon(
+                                          item.weapon!,
+                                          tooltip: '',
+                                        )
+                                        : const SizedBox(),
+                                    if (state == WishState.won)
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Icon(
+                                          Icons.star_rounded,
+                                          size: 20,
+                                          color: context.themeColors.starColor,
+                                          shadows: [
+                                            BoxShadow(
+                                              color: Colors.black.withValues(
+                                                alpha: 0.8,
+                                              ),
+                                              offset: const Offset(1, 1),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(height: kSeparator2),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: pity.toString(),
-                                    style: style.copyWith(color: pityColor),
-                                  ),
-                                  if (state == WishState.guaranteed)
-                                    WidgetSpan(
-                                      child: GsWishStateIcon(
-                                        state,
-                                        color: pityColor,
-                                        padding: EdgeInsets.zero,
                                       ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                                  ],
+                                ),
+                                const SizedBox(height: kSeparator2),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: pity.toString(),
+                                        style: style.copyWith(color: pityColor),
+                                      ),
+                                      if (state == WishState.guaranteed)
+                                        WidgetSpan(
+                                          child: GsWishStateIcon(
+                                            state,
+                                            color: pityColor,
+                                            padding: EdgeInsets.zero,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                    ),
+                  ),
                 ),
               ),
             ),

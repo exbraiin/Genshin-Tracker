@@ -215,10 +215,10 @@ class ItemDetailsCard extends StatelessWidget {
                               rarity,
                               (i) => Transform.translate(
                                 offset: Offset(i * -6, 0),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.star_rounded,
                                   size: 30,
-                                  color: Colors.yellow,
+                                  color: context.themeColors.starColor,
                                   shadows: GsSpacing.kMainShadow,
                                 ),
                               ),

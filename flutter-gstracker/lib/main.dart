@@ -5,10 +5,6 @@ import 'package:tracker/screens/main_screen/main_screen.dart';
 import 'package:tracker/theme/gs_assets.dart';
 import 'package:tracker/theme/windows_bar.dart';
 
-// TODO:
-// - Move hide empty banners to filters
-// - Make spincrystal sort by version sort by descending number
-
 void main() {
   runApp(const MyApp());
 }

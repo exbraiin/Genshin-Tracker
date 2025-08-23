@@ -478,6 +478,9 @@ final class CharInfo {
   int get constellations => totalConstellations.clamp(0, 6);
   int get extraConstellations => totalConstellations - constellations;
 
+  int get talentsTotal => talents?.total ?? 0;
+  int get talentsTotalCrownless => talents?.totalCrownless ?? 0;
+
   CharInfo._({
     required this.item,
     required this.info,

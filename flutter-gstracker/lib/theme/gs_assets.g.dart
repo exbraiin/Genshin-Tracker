@@ -67,12 +67,6 @@ abstract final class AppAssets {
   /// pyro.png
   static const pyro2 = 'assets/image/element/pyro.png';
 
-  /// Item_Key_of_Echoes.png
-  static const itemKeyOfEchoes = 'assets/image/icons/Item_Key_of_Echoes.png';
-
-  /// Item_Toy_Medal.png
-  static const itemToyMedal = 'assets/image/icons/Item_Toy_Medal.png';
-
   /// app_icon.png
   static const appIcon = 'assets/image/icons/app_icon.png';
 
@@ -135,6 +129,9 @@ abstract final class AppAssets {
 
   /// menu_icon_serenitea_sets.png
   static const menuIconSereniteaSets = 'assets/image/icons/menu_icon_serenitea_sets.png';
+
+  /// menu_icon_thespian_tricks.png
+  static const menuIconThespianTricks = 'assets/image/icons/menu_icon_thespian_tricks.png';
 
   /// menu_icon_weapons.png
   static const menuIconWeapons = 'assets/image/icons/menu_icon_weapons.png';

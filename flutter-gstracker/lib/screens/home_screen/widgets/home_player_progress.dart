@@ -50,7 +50,7 @@ class HomePlayerProgress extends StatelessWidget {
                   GsUtils.echos.total,
                 ),
                 _ProgressInfo(
-                  AppAssets.itemToyMedal,
+                  AppAssets.menuIconThespianTricks,
                   context.labels.thespianTricks(),
                   GsUtils.thespianTricks.owned,
                   GsUtils.thespianTricks.total,

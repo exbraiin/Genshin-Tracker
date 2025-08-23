@@ -62,6 +62,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color setIndoor;
   final Color setOutdoor;
 
+  Color get starColor => Color(0xFFFFCC32);
+
   Color get primary60 => Color.lerp(Colors.black, primary, 0.6)!;
   Color get primary80 => Color.lerp(Colors.black, primary, 0.8)!;
 

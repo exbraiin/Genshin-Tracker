@@ -14,7 +14,7 @@ class ThespianTricksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InventoryListPage<GsThespianTrick>(
-      icon: AppAssets.itemToyMedal,
+      icon: AppAssets.menuIconThespianTricks,
       title: context.labels.thespianTricks(),
       versionSort: (item) => item.version,
       itemBuilder: (context, state) {

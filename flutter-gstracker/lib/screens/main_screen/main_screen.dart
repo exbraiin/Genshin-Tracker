@@ -154,52 +154,36 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 final _menus = [
-  _Menu(icon: AppAssets.appIcon40px, initialPage: HomeScreen.id),
-  _Menu(icon: AppAssets.menuIconWish, initialPage: WishesScreen.id),
-  _Menu(
-    icon: AppAssets.menuIconAchievements,
-    initialPage: AchievementGroupsScreen.id,
-  ),
-  _Menu(icon: AppAssets.menuIconCharacters, initialPage: CharactersScreen.id),
-  _Menu(icon: AppAssets.menuIconWeapons, initialPage: WeaponsScreen.id),
-  _Menu(icon: AppAssets.menuIconRecipes, initialPage: RecipesScreen.id),
-  _Menu(icon: AppAssets.menuIconMap, initialPage: RemarkableChestsScreen.id),
-  _Menu(
-    icon: AppAssets.menuEnvisagedEchoes,
-    initialPage: EnvisagedEchoScreen.id,
-  ),
-  _Menu(icon: AppAssets.itemToyMedal, initialPage: ThespianTricksScreen.id),
-  _Menu(
-    icon: AppAssets.menuIconPreciousItems,
-    initialPage: SpincrystalsScreen.id,
-  ),
-  _Menu(
-    icon: AppAssets.menuIconSereniteaSets,
-    initialPage: SereniteaSetsScreen.id,
-  ),
-  _Menu(icon: AppAssets.menuIconArtifacts, initialPage: ArtifactsScreen.id),
-  _Menu(icon: AppAssets.menuIconArchive, initialPage: NamecardScreen.id),
-  _Menu(icon: AppAssets.menuIconMaterials, initialPage: MaterialsScreen.id),
-  _Menu(icon: AppAssets.menuIconEvent, initialPage: EventScreen.id),
-  _Menu(icon: AppAssets.menuIconFeedback, initialPage: VersionScreen.id),
+  _Menu(icon: AppAssets.appIcon40px, page: HomeScreen.id),
+  _Menu(icon: AppAssets.menuIconWish, page: WishesScreen.id),
+  _Menu(icon: AppAssets.menuIconAchievements, page: AchievementGroupsScreen.id),
+  _Menu(icon: AppAssets.menuIconCharacters, page: CharactersScreen.id),
+  _Menu(icon: AppAssets.menuIconWeapons, page: WeaponsScreen.id),
+  _Menu(icon: AppAssets.menuIconRecipes, page: RecipesScreen.id),
+  _Menu(icon: AppAssets.menuIconMap, page: RemarkableChestsScreen.id),
+  _Menu(icon: AppAssets.menuEnvisagedEchoes, page: EnvisagedEchoScreen.id),
+  _Menu(icon: AppAssets.menuIconThespianTricks, page: ThespianTricksScreen.id),
+  _Menu(icon: AppAssets.menuIconPreciousItems, page: SpincrystalsScreen.id),
+  _Menu(icon: AppAssets.menuIconSereniteaSets, page: SereniteaSetsScreen.id),
+  _Menu(icon: AppAssets.menuIconArtifacts, page: ArtifactsScreen.id),
+  _Menu(icon: AppAssets.menuIconArchive, page: NamecardScreen.id),
+  _Menu(icon: AppAssets.menuIconMaterials, page: MaterialsScreen.id),
+  _Menu(icon: AppAssets.menuIconEvent, page: EventScreen.id),
+  _Menu(icon: AppAssets.menuIconFeedback, page: VersionScreen.id),
 ];
 
 class _Menu {
   final String icon;
-  final String initialPage;
-  final Object? initialArgument;
+  final String page;
   final Navigator navigator;
 
-  _Menu({required this.icon, required this.initialPage, this.initialArgument})
+  _Menu({required this.icon, required this.page})
     : navigator = Navigator(
         key: GlobalKey(),
-        initialRoute: initialPage,
+        initialRoute: page,
         onGenerateRoute: (settings) {
-          if (initialPage == settings.name) {
-            settings = RouteSettings(
-              name: settings.name,
-              arguments: initialArgument,
-            );
+          if (page == settings.name) {
+            settings = RouteSettings(name: settings.name);
           }
           return TrackerRouter.onGenerate(settings);
         },

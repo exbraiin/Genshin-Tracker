@@ -1,6 +1,7 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
+import 'package:tracker/common/extensions/src/iterable_ext.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
@@ -21,16 +22,9 @@ class CharactersTableScreen extends StatefulWidget {
 }
 
 class _CharactersTableScreenState extends State<CharactersTableScreen> {
+  var _sortIndex = -1;
   var _ascending = false;
-  _TableItem? _sortItem;
   var _idSortedList = <String>[];
-  late final List<_TableItem> _builders;
-
-  @override
-  void initState() {
-    super.initState();
-    _builders = _getBuilders(context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +37,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
             final list = _getCharsSorted(filter.match(items)).where(
               (e) =>
                   !filter.hasExtra(FilterExtras.hide) ||
-                  (e.talents?.total ?? 0) < CharTalents.kTotalCrownless &&
-                      e.isOwned,
+                  e.talentsTotal < CharTalents.kTotalCrownless && e.isOwned,
             );
 
             return InventoryPage(
@@ -53,7 +46,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                 iconAsset: AppAssets.menuIconCharacters,
                 actions: [
                   IconButton(
-                    tooltip: context.labels.hide999Characters(),
+                    tooltip: context.labels.hideTableCharacters(),
                     onPressed: () => toggle(FilterExtras.hide),
                     icon:
                         filter.hasExtra(FilterExtras.hide)
@@ -73,28 +66,36 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
   }
 
   Widget _getList(BuildContext context, Iterable<CharInfo> characters) {
-    void applySort(_TableItem item) {
-      if (_sortItem == null || _sortItem != item) {
-        _ascending = true;
-        _sortItem = item;
-      } else if (_ascending) {
-        _ascending = false;
-      } else {
-        _ascending = true;
-        _sortItem = null;
-      }
+    final builders = _getBuilders(context);
+    final sortItem = _sortIndex != -1 ? builders[_sortIndex] : null;
+
+    void applySort(_TableItem item, int index) {
+      setState(() {
+        if (sortItem == null || sortItem != item) {
+          _ascending = true;
+          _sortIndex = index;
+        } else if (_ascending) {
+          _ascending = false;
+        } else {
+          _ascending = true;
+          _sortIndex = -1;
+        }
+
+        _idSortedList = _getCharsIdsSorted(characters, sortItem);
+      });
     }
 
     return SingleChildScrollView(
       child: Table(
-        columnWidths: Map.fromEntries(
-          _builders.mapIndexed(
-            (i, e) => MapEntry(
-              i,
-              e.expand ? const FlexColumnWidth() : const IntrinsicColumnWidth(),
+        columnWidths: builders
+            .mapIndexed((i, e) => (index: i, item: e))
+            .toMap(
+              (e) => e.index,
+              (e) =>
+                  e.item.expand
+                      ? const FlexColumnWidth()
+                      : const IntrinsicColumnWidth(),
             ),
-          ),
-        ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         border: TableBorder.symmetric(
           inside: BorderSide(color: context.themeColors.mainColor0),
@@ -102,16 +103,11 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
         children: [
           TableRow(
             children:
-                _builders.map((item) {
+                builders.mapIndexed((index, item) {
                   return InkWell(
                     onTap:
                         item.sortBy != null
-                            ? () {
-                              setState(() {
-                                applySort(item);
-                                _idSortedList = _getCharsIdsSorted(characters);
-                              });
-                            }
+                            ? () => applySort(item, index)
                             : null,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -126,7 +122,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Icon(
-                            _sortItem == item
+                            sortItem == item
                                 ? _ascending
                                     ? Icons.arrow_drop_up_rounded
                                     : Icons.arrow_drop_down_rounded
@@ -142,7 +138,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
           ...characters.map((item) {
             return TableRow(
               children:
-                  _builders.map<Widget>((e) {
+                  builders.map<Widget>((e) {
                     final child = Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: kSeparator4,
@@ -271,18 +267,21 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color:
-                      (info.talents?.total ?? 0) >= CharTalents.kTotal
-                          ? Colors.yellow
+                      info.talentsTotal >= CharTalents.kTotal
+                          ? context.themeColors.starColor
                           : getGoodColor(
-                            info.talents?.total ?? 0,
+                            info.talentsTotal,
                             CharTalents.kTotalCrownless,
                           ),
                 ),
               ),
-              if ((info.talents?.total ?? 0) >= CharTalents.kTotal)
-                const Padding(
+              if (info.talentsTotal >= CharTalents.kTotal)
+                Padding(
                   padding: EdgeInsets.only(left: kSeparator2),
-                  child: Icon(Icons.star_rounded, color: Colors.yellow),
+                  child: Icon(
+                    Icons.star_rounded,
+                    color: context.themeColors.starColor,
+                  ),
                 ),
             ],
           );
@@ -326,11 +325,14 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
     return chars;
   }
 
-  List<String> _getCharsIdsSorted(Iterable<CharInfo> chars) {
-    if (_sortItem == null) return const [];
+  List<String> _getCharsIdsSorted(
+    Iterable<CharInfo> chars,
+    _TableItem? sortItem,
+  ) {
+    if (sortItem == null) return const [];
 
     final sorted = _ascending ? chars.sortedBy : chars.sortedByDescending;
-    return sorted((e) => _sortItem!.sortBy?.call(e) ?? 0)
+    return sorted((e) => sortItem.sortBy?.call(e) ?? 0)
         .thenByDescending((e) => e.item.releaseDate)
         .thenBy((e) => e.item.name)
         .map((e) => e.item.id)
