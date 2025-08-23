@@ -67,7 +67,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
 
   Widget _getList(BuildContext context, Iterable<CharInfo> characters) {
     final builders = _getBuilders(context);
-    final sortItem = _sortIndex != -1 ? builders[_sortIndex] : null;
+    final sortItem = builders.elementAtOrNull(_sortIndex);
 
     void applySort(_TableItem item, int index) {
       setState(() {
@@ -81,7 +81,8 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
           _sortIndex = -1;
         }
 
-        _idSortedList = _getCharsIdsSorted(characters, sortItem);
+        final sorter = builders.elementAtOrNull(_sortIndex);
+        _idSortedList = _getCharsIdsSorted(characters, sorter);
       });
     }
 
