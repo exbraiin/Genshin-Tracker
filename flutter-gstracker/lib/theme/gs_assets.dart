@@ -36,8 +36,8 @@ abstract final class GsAssets {
       GeRegionType.sumeru => AppAssets.sumeru,
       GeRegionType.fontaine => AppAssets.fontaine,
       GeRegionType.natlan => AppAssets.natlan,
+      GeRegionType.nodkrai => AppAssets.missingIcon,
       GeRegionType.snezhnaya => AppAssets.unknown,
-      GeRegionType.khaenriah => AppAssets.missingIcon,
     };
   }
 

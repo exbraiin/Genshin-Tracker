@@ -32,9 +32,9 @@ extension GeEnumListExt<T extends GeEnum> on List<T> {
 }
 
 extension on GeRegionType {
-  Color get color => element.color;
+  Color get color => _element.color;
 
-  GeElementType get element => switch (this) {
+  GeElementType get _element => switch (this) {
     GeRegionType.none => GeElementType.none,
     GeRegionType.mondstadt => GeElementType.anemo,
     GeRegionType.liyue => GeElementType.geo,
@@ -42,8 +42,8 @@ extension on GeRegionType {
     GeRegionType.sumeru => GeElementType.dendro,
     GeRegionType.fontaine => GeElementType.hydro,
     GeRegionType.natlan => GeElementType.pyro,
+    GeRegionType.nodkrai => GeElementType.cryo,
     GeRegionType.snezhnaya => GeElementType.cryo,
-    GeRegionType.khaenriah => GeElementType.none,
   };
 }
 

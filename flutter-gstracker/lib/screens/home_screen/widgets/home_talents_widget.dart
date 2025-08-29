@@ -34,7 +34,7 @@ class HomeTalentsWidget extends StatelessWidget {
             .where((e) => chars.hasCaracter(e.id))
             .map((e) => chars.getCharInfo(e.id))
             .whereNotNull()
-            .where((e) => e.talents?.isMissing() ?? false)
+            .where((e) => e.talents?.isMissing(crownless: true) ?? false)
             .groupBy((e) {
               final weekdays =
                   iMats.getItem(e.item.talentMaterial)?.weekdays ?? [];

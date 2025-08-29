@@ -10,6 +10,8 @@ class GsVersion extends _GsVersion {
   @override
   final String id;
   @override
+  final String version;
+  @override
   final String name;
   @override
   final String image;
@@ -19,6 +21,7 @@ class GsVersion extends _GsVersion {
   /// Creates a new [GsVersion] instance.
   GsVersion({
     required this.id,
+    required this.version,
     required this.name,
     required this.image,
     required this.releaseDate,
@@ -27,6 +30,7 @@ class GsVersion extends _GsVersion {
   /// Creates a new [GsVersion] instance from the given map.
   GsVersion.fromJson(JsonMap m)
       : id = m['id'] as String? ?? '',
+        version = m['version'] as String? ?? '',
         name = m['name'] as String? ?? '',
         image = m['image'] as String? ?? '',
         releaseDate =
@@ -36,12 +40,14 @@ class GsVersion extends _GsVersion {
   @override
   GsVersion copyWith({
     String? id,
+    String? version,
     String? name,
     String? image,
     DateTime? releaseDate,
   }) {
     return GsVersion(
       id: id ?? this.id,
+      version: version ?? this.version,
       name: name ?? this.name,
       image: image ?? this.image,
       releaseDate: releaseDate ?? this.releaseDate,
@@ -53,6 +59,7 @@ class GsVersion extends _GsVersion {
   JsonMap toMap() {
     return {
       'id': id,
+      'version': version,
       'name': name,
       'image': image,
       'release_date': releaseDate.toString(),

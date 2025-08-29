@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
@@ -116,7 +117,7 @@ final class _Downloader {
       final remoteVersion = await _downloadVersion(_kGitVersionUrl);
 
       // Check if we can skip the version
-      if (localVersion >= remoteVersion ?? false) {
+      if (!remoteVersion.isAfter(localVersion)) {
         if (kDebugMode) print('Skipping version ${remoteVersion.version}!');
         _version = remoteVersion;
         return;
@@ -140,7 +141,7 @@ final class _Downloader {
       final localVersion = await _loadFileVersion();
       final remoteVersion = await _downloadVersion(_kGitVersionUrl);
 
-      if (localVersion >= remoteVersion ?? false) {
+      if (!remoteVersion.isAfter(localVersion)) {
         if (kDebugMode) print('Skipping version ${remoteVersion.version}!');
         return false;
       }
@@ -215,23 +216,27 @@ class _Version {
               ? DateTime.tryParse(json['updated']!) ?? DateTime(0)
               : DateTime(0);
 
-  bool? _compare(_Version a, _Version b, bool Function(int a, int b) v) {
-    try {
-      final va = a.version.split('.').map(int.parse);
-      final vb = b.version.split('.').map(int.parse);
-      return va.zip(vb, (a, b) => (a, b)).all((e) => v(e.$1, e.$2));
-    } catch (error) {
-      return null;
-    }
-  }
+  bool isAfter(_Version v1) {
+    final l0 = version.split('.').map((e) => int.tryParse(e) ?? 0);
+    final l1 = v1.version.split('.').map((e) => int.tryParse(e) ?? 0);
+    final mx = max(l0.length, l1.length);
 
-  bool? operator >(_Version other) => _compare(this, other, (a, b) => a > b);
-  bool? operator <(_Version other) => _compare(this, other, (a, b) => a < b);
-  bool? operator >=(_Version other) => _compare(this, other, (a, b) => a >= b);
-  bool? operator <=(_Version other) => _compare(this, other, (a, b) => a <= b);
+    for (var i = 0; i < mx; ++i) {
+      final i0 = l0.elementAtOrDefault(i, 0);
+      final i1 = l1.elementAtOrDefault(i, 0);
+      if (i0 > i1) return true;
+    }
+
+    return false;
+  }
 
   JsonMap toJson() => {
     'version': version,
     'updated': lastUpdate.toIso8601String(),
   };
+
+  @override
+  String toString() {
+    return '$version ($lastUpdate)';
+  }
 }

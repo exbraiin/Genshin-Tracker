@@ -67,9 +67,10 @@ class ItemGridWidget extends StatelessWidget {
     this.disabled = false,
     this.onAdd,
     this.onRemove,
+    String? tooltip,
     ContextCallback<GsMaterial>? onTap = _callMaterial,
   }) : rarity = info.rarity,
-       tooltip = info.name,
+       tooltip = tooltip ?? info.name,
        urlImage = info.image,
        assetImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;

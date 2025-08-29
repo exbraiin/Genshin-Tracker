@@ -8,8 +8,8 @@ enum GeRegionType implements GeEnum {
   sumeru('sumeru'),
   fontaine('fontaine'),
   natlan('natlan'),
-  snezhnaya('snezhnaya'),
-  khaenriah('khaenriah');
+  nodkrai('nodkrai'),
+  snezhnaya('snezhnaya');
 
   @override
   final String id;

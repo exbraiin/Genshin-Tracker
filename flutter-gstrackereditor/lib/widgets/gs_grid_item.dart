@@ -6,6 +6,7 @@ import 'package:data_editor/style/utils.dart';
 import 'package:data_editor/widgets/auto_size_text.dart';
 import 'package:data_editor/widgets/mouse_button.dart';
 import 'package:flutter/material.dart';
+import 'package:gsdatabase/gsdatabase.dart';
 
 class GsGridItem extends StatelessWidget {
   final int rarity;
@@ -172,10 +173,12 @@ class GsGridItem extends StatelessWidget {
 
   Widget _getVersionBanner() {
     if (version.isEmpty) return const SizedBox();
+    final versions = Database.i.of<GsVersion>();
+    final versionName = versions.getItem(version)?.version ?? '';
     return Transform.translate(
       offset: const Offset(10, -10),
       child: Banner(
-        message: version,
+        message: versionName.isNotEmpty ? versionName : version,
         color: GsStyle.getVersionColor(version),
         location: BannerLocation.topEnd,
       ),

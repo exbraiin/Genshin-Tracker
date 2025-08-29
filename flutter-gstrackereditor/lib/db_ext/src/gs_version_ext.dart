@@ -1,3 +1,4 @@
+import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:data_editor/db_ext/datafield.dart';
 import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
@@ -16,6 +17,16 @@ class GsVersionExt extends GsModelExt<GsVersion> {
         (item) => item.id,
         (item, value) => item.copyWith(id: value),
         validator: (item) => vdVersion.validateItemId(item, editId),
+        refresh: DataButton(
+          'Generate Id',
+          (context, item) => item.copyWith(id: expectedId(item)),
+        ),
+      ),
+      DataField.textField(
+        'Version',
+        (item) => item.version,
+        (item, value) => item.copyWith(version: value),
+        empty: GsValidLevel.warn2,
       ),
       DataField.textField(
         'Name',

@@ -150,14 +150,15 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     final dish = db.getItem(info.specialDish);
 
     final data = <String, Widget>{
+      context.labels.version(): Text(info.version, style: stStyle),
       context.labels.element(): Text(
         info.element.label(context),
         style: stStyle,
       ),
       context.labels.weapon(): Text(info.weapon.label(context), style: stStyle),
+      context.labels.region(): Text(info.region.label(context), style: stStyle),
       context.labels.constellation(): Text(info.constellation),
       context.labels.affiliation(): Text(info.affiliation, style: stStyle),
-      context.labels.version(): Text(info.version, style: stStyle),
       context.labels.birthday(): Text(info.birthday.toPrettyDate(context)),
       context.labels.releaseDate(): Text(
         info.releaseDate.toPrettyDate(context),

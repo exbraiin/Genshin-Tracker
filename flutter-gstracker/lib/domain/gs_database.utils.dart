@@ -542,8 +542,9 @@ final class CharTalents {
     return extra != 0;
   }
 
-  bool isMissing() {
-    return _data.values.any((e) => e.$1 < 9);
+  bool isMissing({required bool crownless}) {
+    final max = CharTalents.kMaxLevel - (crownless ? 1 : 0);
+    return _data.values.any((e) => e.$1 < max);
   }
 }
 
@@ -958,10 +959,7 @@ class _CharactersMaterials {
         .toList();
   }
 
-  List<MapEntry<GsMaterial?, int>> getCharMissingMats(
-    String id, [
-    bool crownless = false,
-  ]) {
+  Map<GsMaterial, int> getCharMissingMats(String id, [int maxLevel = 10]) {
     final mats = <String, int>{};
 
     void sumMaterials(Map<String, int> map) =>
@@ -970,28 +968,26 @@ class _CharactersMaterials {
     if (!GsUtils.characters.isCharMaxAscended(id)) {
       final ascension = GsUtils.characters.getCharAscension(id);
       for (var i = ascension + 1; i < 7; ++i) {
-        final ascMats = getAscensionMaterials(id, i);
-        sumMaterials(ascMats);
+        sumMaterials(getAscensionMaterials(id, i));
       }
     }
 
-    final max = CharTalents.kMaxLevel - (crownless ? 2 : 0);
-    final info = _svCharacter.getItem(id);
-    if (info != null) {
-      for (var i = info.talent1 - 2; i < max; ++i) {
-        sumMaterials(getTalentMaterials(id, i));
-      }
-      for (var i = info.talent2 - 2; i < max; ++i) {
-        sumMaterials(getTalentMaterials(id, i));
-      }
-      for (var i = info.talent3 - 2; i < max; ++i) {
+    void sumTalMaterials(int talent) {
+      final tal = talent.clamp(0, CharTalents.kMaxLevel) + 1;
+      for (var i = tal; i <= maxLevel; ++i) {
         sumMaterials(getTalentMaterials(id, i));
       }
     }
+
+    final info = _svCharacter.getItem(id) ?? GiCharacter(id: id);
+    sumTalMaterials(info.talent1);
+    sumTalMaterials(info.talent2);
+    sumTalMaterials(info.talent3);
 
     return mats.entries
-        .map((e) => MapEntry(_ifMaterials.getItem(e.key), e.value))
-        .toList();
+        .map((e) => (_ifMaterials.getItem(e.key), e.value))
+        .where((e) => e.$1 != null)
+        .toMap((e) => e.$1!, (e) => e.$2);
   }
 
   /// Gets all character ascension materials at level.
@@ -1023,7 +1019,10 @@ class _CharactersMaterials {
   }
 
   /// Gets all character talent materials at level.
+  /// * Level should be null or between [2, 10]
   Map<String, int> getTalentMaterials(String id, [int? level]) {
+    if (level != null) level -= 2;
+
     final info = _ifCharacters.getItem(id);
     if (info == null) return const {};
 

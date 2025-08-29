@@ -17,7 +17,7 @@ class VersionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GsItemCardButton(
-      label: item.id,
+      label: item.version,
       imageUrlPath: item.image,
       selected: selected,
       banner: GsItemBanner.version(context, item.id),

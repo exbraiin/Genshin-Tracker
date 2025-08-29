@@ -91,13 +91,15 @@ class FilterSection<T, I> {
        _asset = asset;
 
   static FilterSection<String, I> version<I>(String Function(I item) match) {
-    String toMajorVersion(String version) => '${version.split('.').first}.x';
+    String toMajorVersion(String version) {
+      version = version.toLowerCase();
+      if (version.startsWith('luna')) return 'Luna';
+      return '${version.split('.').first}.x';
+    }
+
+    final items = Database.instance.infoOf<GsVersion>().items;
     return FilterSection(
-      Database.instance
-          .infoOf<GsVersion>()
-          .items
-          .map((e) => toMajorVersion(e.id))
-          .toSet(),
+      items.map((e) => toMajorVersion(e.id)).toSet(),
       (item) => toMajorVersion(match(item)),
       (c) => c.labels.version(),
       (c, i) => i,
@@ -795,13 +797,15 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
       type: MaterialType.transparency,
       child: InkWell(
         onTap: onTap,
-        child: Container(
+        child: AnimatedContainer(
+          curve: Curves.easeInOut,
+          duration: Duration(milliseconds: 200),
           constraints: BoxConstraints(minHeight: 26),
           padding: EdgeInsets.symmetric(
             vertical: kSeparator4,
             horizontal: kSeparator8,
           ),
-          margin: selected ? null : EdgeInsets.all(1),
+          margin: EdgeInsets.all(selected ? 0 : 1),
           decoration: BoxDecoration(
             border: Border.all(
               color:

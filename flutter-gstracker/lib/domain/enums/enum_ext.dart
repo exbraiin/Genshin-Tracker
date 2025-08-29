@@ -336,7 +336,7 @@ extension GeRegionTypeExt on GeRegionType {
       GeRegionType.fontaine => ctx.labels.regionFontaine(),
       GeRegionType.natlan => ctx.labels.regionNatlan(),
       GeRegionType.snezhnaya => ctx.labels.regionSnezhnaya(),
-      GeRegionType.khaenriah => ctx.labels.regionKhaenriah(),
+      GeRegionType.nodkrai => ctx.labels.regionNodkrai(),
     };
   }
 
@@ -348,7 +348,7 @@ extension GeRegionTypeExt on GeRegionType {
     GeRegionType.sumeru => const Color(0xFF77AD2D),
     GeRegionType.fontaine => const Color(0xFF1C72FD),
     GeRegionType.natlan => const Color(0xFFE2311D),
+    GeRegionType.nodkrai => const Color(0xFF98C8E8),
     GeRegionType.snezhnaya => const Color(0xFF98C8E8),
-    GeRegionType.khaenriah => Colors.grey,
   };
 }

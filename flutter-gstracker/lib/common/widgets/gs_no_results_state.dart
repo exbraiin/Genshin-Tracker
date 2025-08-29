@@ -5,10 +5,11 @@ import 'package:tracker/theme/gs_assets.dart';
 
 class GsNoResultsState extends StatelessWidget {
   final double size;
+  final Color? color;
 
-  const GsNoResultsState.xSmall({super.key}) : size = 40;
-  const GsNoResultsState.small({super.key}) : size = 60;
-  const GsNoResultsState({super.key, this.size = 100});
+  const GsNoResultsState.xSmall({super.key, this.color}) : size = 40;
+  const GsNoResultsState.small({super.key, this.color}) : size = 60;
+  const GsNoResultsState({super.key, this.size = 100, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class GsNoResultsState extends StatelessWidget {
             const SizedBox(height: kSeparator4),
             Text(
               context.labels.noResults(),
-              style: context.themeStyles.emptyState,
+              style: context.themeStyles.emptyState.copyWith(color: color),
             ),
           ],
         ),

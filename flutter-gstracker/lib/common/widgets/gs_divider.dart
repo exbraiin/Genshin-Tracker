@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tracker/theme/gs_assets.g.dart';
 
 class GsDivider extends StatelessWidget {
+  final Color? color;
   final double height;
   final double spacing;
 
-  const GsDivider({super.key, this.height = 12, this.spacing = 4});
+  const GsDivider({super.key, this.height = 12, this.spacing = 4, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +15,14 @@ class GsDivider extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: spacing),
       child: Row(
         children: [
-          Image.asset(AppAssets.pageBdLt, height: height),
+          Image.asset(AppAssets.pageBdLt, height: height, color: color),
           Expanded(
             child: Container(
               height: h,
-              color: Colors.white.withValues(alpha: 0.09),
+              color: (color ?? Colors.white).withValues(alpha: 0.09),
             ),
           ),
-          Image.asset(AppAssets.pageBdRt, height: height),
+          Image.asset(AppAssets.pageBdRt, height: height, color: color),
         ],
       ),
     );

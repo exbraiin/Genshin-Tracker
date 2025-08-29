@@ -376,8 +376,8 @@ abstract final class LocalizationKeys {
   /// Snezhnaya
   static const regionSnezhnaya = 'region_snezhnaya';
 
-  /// Khaenri'ah
-  static const regionKhaenriah = 'region_khaenriah';
+  /// Nod-Krai
+  static const regionNodkrai = 'region_nodkrai';
 
   /// Artifacts
   static const artifacts = 'artifacts';
@@ -1465,9 +1465,9 @@ class LocalizationMethods {
     return provider(LocalizationKeys.regionSnezhnaya);
   }
 
-  /// Khaenri'ah
-  String regionKhaenriah() {
-    return provider(LocalizationKeys.regionKhaenriah);
+  /// Nod-Krai
+  String regionNodkrai() {
+    return provider(LocalizationKeys.regionNodkrai);
   }
 
   /// Artifacts

@@ -83,6 +83,9 @@ abstract final class GsStyle {
   }
 
   static Color getVersionColor(String id) {
+    if (id.toLowerCase().startsWith('luna')) {
+      return GeElementType.cryo.color;
+    }
     final idx = (double.tryParse(id) ?? 1.0).toInt();
     if (!idx.between(1, GeElementType.values.length)) {
       return GeElementType.none.color;

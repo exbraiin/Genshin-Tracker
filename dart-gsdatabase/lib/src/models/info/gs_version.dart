@@ -4,6 +4,8 @@ part 'gs_version.g.dart';
 
 @BuilderGenerator()
 abstract class _GsVersion extends GsModel<GsVersion> {
+  @BuilderWire('version')
+  String get version;
   @BuilderWire('name')
   String get name;
   @BuilderWire('image')

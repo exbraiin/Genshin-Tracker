@@ -101,11 +101,16 @@ class _ItemsListScreenState<T extends GsModel<T>>
       body: StreamBuilder(
         stream: Database.i.modified,
         builder: (context, snapshot) {
+          final versions = Database.i.of<GsVersion>();
           final collection =
               _sortByVersion && sortByVersion
                   ? widget
                       .list()
-                      .sortedByDescending((e) => widget.getDecor(e).version)
+                      .sortedByDescending((e) {
+                        final version = widget.getDecor(e).version;
+                        return versions.getItem(version) ??
+                            GsVersion.fromJson({});
+                      })
                       .thenWith((a, b) => a.compareTo(b))
                   : widget.list();
 

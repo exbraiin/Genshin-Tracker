@@ -276,6 +276,7 @@ class GsModelDecorator<T extends GsModel<T>> {
             color: (item) => GsStyle.getRarityColor(item.rarity),
           ),
           const (GsVersion) => GsModelDecorator<GsVersion>(
+            label: (item) => item.version,
             color: (item) => GsStyle.getVersionColor(item.id),
           ),
           const (GsMaterial) => GsModelDecorator<GsMaterial>(

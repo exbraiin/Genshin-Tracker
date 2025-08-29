@@ -1,8 +1,9 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/extensions/src/iterable_ext.dart';
+import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/widgets/gs_divider.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
@@ -45,19 +46,28 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                 label: context.labels.characters(),
                 iconAsset: AppAssets.menuIconCharacters,
                 actions: [
+                  if (!filter.hasExtra(FilterExtras.versionSort))
+                    IconButton(
+                      tooltip: context.labels.hideTableCharacters(),
+                      onPressed: () => toggle(FilterExtras.hide),
+                      icon:
+                          filter.hasExtra(FilterExtras.hide)
+                              ? Icon(Icons.visibility_off_rounded)
+                              : Icon(Icons.visibility_rounded),
+                      color: Colors.white.withValues(alpha: 0.5),
+                    ),
                   IconButton(
-                    tooltip: context.labels.hideTableCharacters(),
-                    onPressed: () => toggle(FilterExtras.hide),
-                    icon:
-                        filter.hasExtra(FilterExtras.hide)
-                            ? Icon(Icons.visibility_off_rounded)
-                            : Icon(Icons.visibility_rounded),
+                    onPressed: () => toggle(FilterExtras.versionSort),
+                    icon: Icon(Icons.swap_horiz_rounded),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
                   button,
                 ],
               ),
-              child: InventoryBox(child: _getList(context, list)),
+              child:
+                  filter.hasExtra(FilterExtras.versionSort)
+                      ? _MatsList(list)
+                      : InventoryBox(child: _getTableList(context, list)),
             );
           },
         );
@@ -65,7 +75,7 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
     );
   }
 
-  Widget _getList(BuildContext context, Iterable<CharInfo> characters) {
+  Widget _getTableList(BuildContext context, Iterable<CharInfo> characters) {
     final builders = _getBuilders(context);
     final sortItem = builders.elementAtOrNull(_sortIndex);
 
@@ -358,3 +368,183 @@ class _TableItem {
     this.allowTap = false,
   });
 }
+
+class _MatsList extends StatefulWidget {
+  final Iterable<CharInfo> characters;
+
+  const _MatsList(this.characters);
+
+  @override
+  State<_MatsList> createState() => _MatsListState();
+}
+
+class _MatsListState extends State<_MatsList> {
+  var level = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    final chars = calculateCharacters(level);
+    final mats = calculateMaterials(chars);
+    final today = GeWeekdayType.values.today;
+    return Row(
+      spacing: GsSpacing.kGridSeparator,
+      children: [
+        Expanded(
+          child: InventoryBox(
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(kSeparator8),
+                  child: Text(
+                    context.labels.materials(),
+                    style: context.themeStyles.label14b,
+                  ),
+                ),
+                GsDivider(),
+                SizedBox(height: kSeparator8),
+                Wrap(
+                  spacing: kSeparator4,
+                  runSpacing: kSeparator4,
+                  children: [
+                    ...mats.entries.sortedBy((e) => e.key).map((e) {
+                      final enabled =
+                          e.key.group != GeMaterialType.talentMaterials ||
+                          today == GeWeekdayType.sunday ||
+                          e.key.weekdays.contains(today);
+
+                      return ItemGridWidget.material(
+                        e.key,
+                        disabled: !enabled,
+                        label: e.value.compact(),
+                        tooltip: '',
+                      );
+                    }),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Column(
+            spacing: GsSpacing.kGridSeparator,
+            children: [
+              Expanded(
+                child: InventoryBox(
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.all(kSeparator8),
+                        child: Text(
+                          context.labels.characters(),
+                          style: context.themeStyles.label14b,
+                        ),
+                      ),
+                      GsDivider(),
+                      SizedBox(height: kSeparator8),
+                      Wrap(
+                        spacing: kSeparator4,
+                        runSpacing: kSeparator4,
+                        children: [
+                          ...chars
+                              .where((e) => e.$2.isNotEmpty)
+                              .sortedBy((e) => e.$1.item.element.index)
+                              .thenByDescending((e) => e.$1.item.rarity)
+                              .thenBy((e) => e.$1.item.name)
+                              .map((e) {
+                                late final mat = e.$2.keys.firstOrNullWhere(
+                                  (e) =>
+                                      e.group == GeMaterialType.talentMaterials,
+                                );
+                                final enabled =
+                                    today == GeWeekdayType.sunday ||
+                                    (mat?.weekdays.contains(today) ?? false);
+
+                                return ItemGridWidget.character(
+                                  e.$1.item,
+                                  disabled: !enabled,
+                                  tooltip: '',
+                                );
+                              }),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              InventoryBox(
+                padding: EdgeInsets.all(kSeparator16),
+                child: Row(
+                  spacing: kSeparator16,
+                  children: [
+                    Text(
+                      context.labels.level(),
+                      style: context.themeStyles.label14b,
+                    ),
+                    Expanded(
+                      child: SliderTheme(
+                        data: SliderThemeData(
+                          thumbColor: context.themeColors.primary,
+
+                          activeTickMarkColor: context.themeColors.primary80,
+                          inactiveTickMarkColor: context.themeColors.mainColor1,
+
+                          activeTrackColor: context.themeColors.primary60,
+                          inactiveTrackColor: context.themeColors.mainColor0,
+
+                          overlayColor: Colors.white.withValues(alpha: 0.1),
+                          valueIndicatorColor: context.themeColors.almostWhite,
+
+                          valueIndicatorTextStyle: context.themeStyles.label12b
+                              .copyWith(color: Colors.black),
+                          allowedInteraction: SliderInteraction.tapAndSlide,
+                        ),
+                        child: Slider(
+                          value: level.toDouble(),
+                          min: 2,
+                          max: 10,
+                          divisions: 10 - 2,
+                          label: level.toString(),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: kSeparator8,
+                          ),
+                          onChanged: (i) => setState(() => level = i.toInt()),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<(CharInfo, Map<GsMaterial, int>)> calculateCharacters(int level) {
+    final mats = GsUtils.characterMaterials.getCharMissingMats;
+    return widget.characters
+        // .where((e) => e.isOwned)
+        .map((e) => (e, mats(e.item.id, level)))
+        .toList();
+  }
+
+  Map<GsMaterial, int> calculateMaterials(
+    List<(CharInfo, Map<GsMaterial, int>)> chars,
+  ) {
+    return chars
+        .expand((e) => e.$2.entries)
+        .groupBy((e) => e.key.id)
+        .entries
+        .where((e) => e.value.firstOrNull != null)
+        .toMap((e) => e.value.first.key, (e) => e.value.sumBy((e) => e.value));
+  }
+}
+
+
+// TODO: Split by ascension and talent materials ??
+// Add a total list ??
+// Convert character info into compute, so the UI is not locked by the expensive operation.
