@@ -217,8 +217,25 @@ class _Version {
               : DateTime(0);
 
   bool isAfter(_Version v1) {
-    final l0 = version.split('.').map((e) => int.tryParse(e) ?? 0);
-    final l1 = v1.version.split('.').map((e) => int.tryParse(e) ?? 0);
+    return _isAfterOther(this, v1);
+  }
+
+  static bool _isAfterOther(_Version v0, _Version v1) {
+    final sg0 = v0.version.replaceAll(RegExp(r'[^0-9.+]'), '').split('+');
+    final sg1 = v1.version.replaceAll(RegExp(r'[^0-9.+]'), '').split('+');
+    final mx = max(sg0.length, sg1.length);
+
+    for (var i = 0; i < mx; ++i) {
+      final i0 = sg0.elementAtOrDefault(i, '');
+      final i1 = sg1.elementAtOrDefault(i, '');
+      if (_isAfterVersion(i0, i1)) return true;
+    }
+    return false;
+  }
+
+  static bool _isAfterVersion(String v0, String v1) {
+    final l0 = v0.split('.').map((e) => int.tryParse(e) ?? 0);
+    final l1 = v1.split('.').map((e) => int.tryParse(e) ?? 0);
     final mx = max(l0.length, l1.length);
 
     for (var i = 0; i < mx; ++i) {
