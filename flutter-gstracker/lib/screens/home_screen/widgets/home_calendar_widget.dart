@@ -2,11 +2,13 @@ import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
+import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/swap_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/utils/_gu_collections.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
 class HomeCalendarWidget extends StatelessWidget {
@@ -14,27 +16,29 @@ class HomeCalendarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GsDataBox.info(
-      title: const Text('Calendar'),
-      child: Column(
-        children: [
-          Center(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Column(children: _getItems(context).toList()),
+    return measurePerformance('HomeCalendarWidget', () {
+      return GsDataBox.info(
+        title: Text(context.labels.calendar()),
+        child: Column(
+          children: [
+            Center(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Column(children: _getItems(context).toList()),
+              ),
             ),
-          ),
-          // const SizedBox(height: kSeparator8),
-          // const EventsScrollView(),
-        ],
-      ),
-    );
+            // const SizedBox(height: kSeparator8),
+            // const EventsScrollView(),
+          ],
+        ),
+      );
+    });
   }
 
   Iterable<Widget> _getItems(BuildContext context) sync* {
     final now = DateTime.now().date;
     final weekday = now.firstDayOfMonth.weekday;
-    const week = [
+    const kWeek = [
       DateTime.monday,
       DateTime.tuesday,
       DateTime.wednesday,
@@ -48,7 +52,7 @@ class HomeCalendarWidget extends StatelessWidget {
     yield Row(
       mainAxisSize: MainAxisSize.min,
       children:
-          week
+          kWeek
               .map<Widget>((i) {
                 return Container(
                   width: itemSize,
@@ -79,12 +83,18 @@ class HomeCalendarWidget extends StatelessWidget {
     final src = now.firstDayOfMonth.subtract(
       const Duration(days: DateTime.daysPerWeek),
     );
-    final characters = Database.instance.infoOf<GsCharacter>().items.where(
-      (e) => e.birthday.copyWith(year: now.year).isAfter(src),
-    );
-    final versions = Database.instance.infoOf<GsVersion>().items.where(
-      (e) => e.releaseDate.isAfter(src),
-    );
+    final characters =
+        Database.instance
+            .infoOf<GsCharacter>()
+            .items
+            .where((e) => e.birthday.copyWith(year: now.year).isAfter(src))
+            .toList();
+    final versions =
+        Database.instance
+            .infoOf<GsVersion>()
+            .items
+            .where((e) => e.releaseDate.isAfter(src))
+            .toList();
 
     yield* Iterable<Widget>.generate(
       weeks,
@@ -95,32 +105,39 @@ class HomeCalendarWidget extends StatelessWidget {
                   final idx = w * DateTime.daysPerWeek + d - weekday + 1;
                   final date = DateTime(now.year, now.month, idx + 1);
 
-                  late final birthdayItems = characters.where(
-                    (e) => e.birthday
-                        .copyWith(year: date.year)
-                        .isAtSameDayAs(date),
-                  );
+                  final birthdayItems =
+                      characters
+                          .where(
+                            (e) => e.birthday
+                                .copyWith(year: date.year)
+                                .isAtSameDayAs(date),
+                          )
+                          .toList();
 
-                  late final versionItem = versions.firstOrNullWhere(
+                  final versionItem = versions.firstOrNullWhere(
                     (e) => e.releaseDate.isAtSameDayAs(date),
                   );
 
                   final showVersion = versionItem != null;
                   final showBirthday = birthdayItems.isNotEmpty;
 
-                  final bannersInfo = Database.instance
-                      .infoOf<GsBanner>()
-                      .items
-                      .where((e) => e.type == GeBannerType.character)
-                      .where((e) => date.between(e.dateStart, e.dateEnd))
-                      .groupBy((e) => e.dateStart)
-                      .values
-                      .map((list) => _BannerInfo.from(list, date));
+                  final bannersInfo =
+                      Database.instance
+                          .infoOf<GsBanner>()
+                          .items
+                          .where((e) => e.type == GeBannerType.character)
+                          .where((e) => date.between(e.dateStart, e.dateEnd))
+                          .groupBy((e) => e.dateStart)
+                          .values
+                          .map((list) => _BannerInfo.from(list, date))
+                          .toList();
 
-                  final battlepassInfo = Database.instance
-                      .infoOf<GsBattlepass>()
-                      .items
-                      .where((e) => date.between(e.dateStart, e.dateEnd));
+                  final battlepassInfo =
+                      Database.instance
+                          .infoOf<GsBattlepass>()
+                          .items
+                          .where((e) => date.between(e.dateStart, e.dateEnd))
+                          .toList();
 
                   final message =
                       showBirthday

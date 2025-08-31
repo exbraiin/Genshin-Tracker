@@ -28,6 +28,9 @@ abstract final class LocalizationKeys {
   /// Serenitea Sets
   static const sereniteaSets = 'serenitea_sets';
 
+  /// Calendar
+  static const calendar = 'calendar';
+
   /// Recipes
   static const recipes = 'recipes';
 
@@ -883,6 +886,11 @@ class LocalizationMethods {
   /// Serenitea Sets
   String sereniteaSets() {
     return provider(LocalizationKeys.sereniteaSets);
+  }
+
+  /// Calendar
+  String calendar() {
+    return provider(LocalizationKeys.calendar);
   }
 
   /// Recipes

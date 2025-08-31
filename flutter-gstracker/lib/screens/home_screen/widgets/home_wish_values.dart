@@ -22,11 +22,18 @@ class HomeWishesValues extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: GsUtils.wishes.getWishesSummaryAsync(banner),
+      builder: (context, snapshot) {
+        final summary = snapshot.data ?? WishesSummary.empty();
+        return _getBox(context, summary);
+      },
+    );
+  }
+
+  Widget _getBox(BuildContext context, WishesSummary summary) {
     final st = Theme.of(context).textTheme.titleSmall!;
     final style = st.copyWith(color: context.themeColors.almostWhite);
-
-    // TODO: This can now be converted into a compute
-    final summary = GsUtils.wishes.getWishesSummary(banner);
 
     final maxPity = banner == GeBannerType.weapon ? 80 : 90;
     final title = switch (banner) {
@@ -151,7 +158,7 @@ class HomeWishesValues extends StatelessWidget {
         Expanded(
           child: _summaryContainer(
             context,
-            summary.total.format(),
+            summary.isEmpty ? '-' : summary.total.format(),
             context.labels.lifetimePulls(),
             valueColor: context.themeColors.almostWhite,
           ),
@@ -159,7 +166,7 @@ class HomeWishesValues extends StatelessWidget {
         Expanded(
           child: _summaryContainer(
             context,
-            summary.info5.last.format(),
+            summary.isEmpty ? '-' : summary.info5.last.format(),
             context.labels.l5sPity(),
             valueColor: pityColor,
             wasGuaranteed: show && summary.isNext5Guaranteed,
@@ -168,7 +175,7 @@ class HomeWishesValues extends StatelessWidget {
         Expanded(
           child: _summaryContainer(
             context,
-            summary.info4.last.format(),
+            summary.isEmpty ? '-' : summary.info4.last.format(),
             context.labels.l4sPity(),
             valueColor: context.themeColors.colorByRarityFg(4),
             wasGuaranteed: show && summary.isNext4Guaranteed,
@@ -183,7 +190,6 @@ class HomeWishesValues extends StatelessWidget {
     required WishesSummary summary,
     required int maxPity,
   }) {
-    if (summary.info5.wishes.isEmpty) return const SizedBox();
     final map = <int, int>{};
     for (final wish in summary.info5.wishes) {
       final pity = wish.pity;
@@ -267,14 +273,18 @@ class HomeWishesValues extends StatelessWidget {
     required WishesSummary summary,
     required int maxPity,
   }) {
-    if (summary.info5.total == 0) return const SizedBox();
     var expanded = false;
     return StatefulBuilder(
       builder: (context, setState) {
         return Column(
           children: [
-            SizedBox(
-              child: Center(
+            Center(
+              child: Visibility(
+                visible: summary.info5.total > 0,
+                maintainSize: true,
+                maintainState: true,
+                maintainAnimation: true,
+                maintainInteractivity: false,
                 child: IconButton(
                   onPressed: () => setState(() => expanded = !expanded),
                   padding: const EdgeInsets.all(kSeparator4),

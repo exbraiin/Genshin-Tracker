@@ -266,6 +266,7 @@ typedef WishesInfo =
 
 class WishesSummary {
   final int total;
+  final bool isEmpty;
   final bool isNext4Guaranteed;
   final bool isNext5Guaranteed;
   final WishesInfo info4;
@@ -285,5 +286,28 @@ class WishesSummary {
     required this.info4Character,
     required this.info5Weapon,
     required this.info5Character,
+    this.isEmpty = false,
   });
+
+  factory WishesSummary.empty() {
+    final WishesInfo info = (
+      last: 0,
+      total: 0,
+      average: 0.0,
+      percentage: 0.0,
+      wishes: [],
+    );
+    return WishesSummary(
+      total: 0,
+      isEmpty: true,
+      isNext4Guaranteed: false,
+      isNext5Guaranteed: false,
+      info4: info,
+      info5: info,
+      info4Weapon: info,
+      info4Character: info,
+      info5Weapon: info,
+      info5Character: info,
+    );
+  }
 }
