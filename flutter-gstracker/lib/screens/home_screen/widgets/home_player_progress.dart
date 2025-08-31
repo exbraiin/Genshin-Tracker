@@ -40,14 +40,14 @@ class HomePlayerProgress extends StatelessWidget {
                 _ProgressInfo(
                   AppAssets.menuIconMap,
                   context.labels.remarkableChests(),
-                  GsUtils.remarkableChests.owned,
-                  GsUtils.remarkableChests.total,
+                  GsUtils.furnitureChests.owned,
+                  GsUtils.furnitureChests.total,
                 ),
                 _ProgressInfo(
                   AppAssets.menuEnvisagedEchoes,
                   context.labels.envisagedEchoes(),
-                  GsUtils.echos.owned,
-                  GsUtils.echos.total,
+                  GsUtils.envisagedEchos.owned,
+                  GsUtils.envisagedEchos.total,
                 ),
                 _ProgressInfo(
                   AppAssets.menuIconThespianTricks,

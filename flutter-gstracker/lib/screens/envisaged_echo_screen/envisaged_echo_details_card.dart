@@ -13,7 +13,7 @@ class EnvisagedEchoDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final db = Database.instance;
-    final owned = GsUtils.echos.hasItem(item.id);
+    final owned = GsUtils.envisagedEchos.hasItem(item.id);
     final char = db.infoOf<GsCharacter>().getItem(item.character);
     return ItemDetailsCard(
       name: item.name,
@@ -33,7 +33,8 @@ class EnvisagedEchoDetailsCard extends StatelessWidget {
                       ? context.themeColors.goodValue
                       : context.themeColors.badValue,
               icon: owned ? Icons.check : Icons.close,
-              onPress: () => GsUtils.echos.update(item.id, !owned),
+              onPress:
+                  () => GsUtils.envisagedEchos.update(item.id, own: !owned),
             ),
           ),
         ],

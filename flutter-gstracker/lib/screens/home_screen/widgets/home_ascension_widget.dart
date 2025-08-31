@@ -10,21 +10,8 @@ import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
-class HomeAscensionWidget extends StatefulWidget {
+class HomeAscensionWidget extends StatelessWidget {
   const HomeAscensionWidget({super.key});
-
-  @override
-  State<HomeAscensionWidget> createState() => _HomeAscensionWidgetState();
-}
-
-class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
-  final _notifier = ValueNotifier(false);
-
-  @override
-  void dispose() {
-    _notifier.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +32,7 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
           );
         }
 
-        const chars = GsUtils.characters;
+        final chars = GsUtils.characters;
         return GsDataBox.info(
           title: Text(context.labels.ascension()),
           child: LayoutBuilder(
@@ -74,80 +61,10 @@ class _HomeAscensionWidgetState extends State<HomeAscensionWidget> {
                             )
                             .toList(),
                   ),
-                  _getMaterialsList(list),
                 ],
               );
             },
           ),
-        );
-      },
-    );
-  }
-
-  Widget _getMaterialsList(Iterable<GsCharacter> characters) {
-    if (characters.isEmpty) return const SizedBox();
-
-    MapEntry<GsMaterial?, int> combine(List<MapEntry<GsMaterial?, int>> list) {
-      final valid = list.where((e) => e.key != null);
-      final first = valid.firstOrNull;
-      if (first == null) return const MapEntry(null, 0);
-      if (valid.map((e) => e.key!.id).toSet().length != 1) return first;
-      return MapEntry(first.key, valid.sumBy((e) => e.value).toInt());
-    }
-
-    const db = GsUtils.characterMaterials;
-    final materials = characters
-        .expand((e) => db.getCharNextAscensionMats(e.id))
-        .groupBy((e) => e.key?.id)
-        .values
-        .map(combine)
-        .where((e) => e.key != null)
-        .sortedWith((a, b) => a.key!.compareTo(b.key!));
-
-    return ValueListenableBuilder<bool>(
-      valueListenable: _notifier,
-      builder: (context, expanded, child) {
-        return Column(
-          children: [
-            SizedBox(
-              child: Center(
-                child: IconButton(
-                  onPressed: () => _notifier.value = !_notifier.value,
-                  padding: const EdgeInsets.all(kSeparator4),
-                  constraints: const BoxConstraints.tightFor(),
-                  icon: AnimatedRotation(
-                    turns: expanded ? 0.5 : 1,
-                    duration: const Duration(milliseconds: 200),
-                    child: const Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            AnimatedContainer(
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 400),
-              constraints: BoxConstraints(maxHeight: expanded ? 300 : 0),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: kSeparator4),
-                child: Wrap(
-                  spacing: kSeparator4,
-                  runSpacing: kSeparator4,
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children:
-                      materials.map((e) {
-                        return ItemGridWidget.material(
-                          e.key!,
-                          label: e.value.compact(),
-                        );
-                      }).toList(),
-                ),
-              ),
-            ),
-          ],
         );
       },
     );

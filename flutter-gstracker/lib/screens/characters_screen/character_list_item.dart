@@ -1,4 +1,4 @@
-import 'package:dartx/dartx_io.dart';
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/widgets/gs_item_card_button.dart';
@@ -23,7 +23,7 @@ class CharacterListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const chars = GsUtils.characters;
+    final chars = GsUtils.characters;
     final friend = chars.getCharFriendship(item.id);
     final ascension = chars.getCharAscension(item.id);
     final charConsTotal = chars.getTotalCharConstellations(item.id);
@@ -46,11 +46,10 @@ class CharacterListItem extends StatelessWidget {
     int friend,
     int ascension,
   ) {
-    late final material = GsUtils.characterMaterials
-        .getAllTalentsMaterials(item.id)
-        .entries
-        .map((e) => Database.instance.infoOf<GsMaterial>().getItem(e.key))
-        .firstOrNullWhere((e) => e?.weekdays.isNotEmpty ?? false);
+    late final material = GsUtils.materials
+        .getAllCharTalents(item)
+        .keys
+        .firstOrNullWhere((e) => e.weekdays.isNotEmpty);
 
     return Padding(
       padding: const EdgeInsets.all(kSeparator2),

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/utils/network.dart';
-import 'package:tracker/domain/gs_database.utils.dart';
 
 const _apiBaseUrl = 'https://enka.network';
 const _gitBaseUrl = 'https://raw.githubusercontent.com/EnkaNetwork';
@@ -120,9 +119,8 @@ class EnkaPlayerInfo {
   }
 
   GiPlayerInfo toGiPlayerInfo() {
-    final id = GsUtils.playerConfigs.kPlayerInfo;
     return GiPlayerInfo(
-      id: id,
+      id: uid,
       uid: uid,
       avatarId: pfpId,
       nickname: nickname,

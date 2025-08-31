@@ -26,7 +26,7 @@ class EnvisagedEchoListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final db = Database.instance;
-    final owned = GsUtils.echos.hasItem(item.id);
+    final owned = GsUtils.envisagedEchos.hasItem(item.id);
     final char = db.infoOf<GsCharacter>().getItem(item.character);
 
     return GsItemCardButton(

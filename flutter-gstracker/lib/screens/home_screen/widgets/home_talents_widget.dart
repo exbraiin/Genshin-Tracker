@@ -8,6 +8,7 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/screens/characters_screen/character_widgets.dart';
 import 'package:tracker/screens/characters_screen/characters_table_screen.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/gs_assets.dart';
@@ -20,7 +21,7 @@ class HomeTalentsWidget extends StatelessWidget {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        const chars = GsUtils.characters;
+        final chars = GsUtils.characters;
         final today = GeWeekdayType.values.today;
         final iMats = Database.instance.infoOf<GsMaterial>();
         final iChar = Database.instance.infoOf<GsCharacter>();
@@ -59,7 +60,7 @@ class HomeTalentsWidget extends StatelessWidget {
 
             final charactersByDays = characters.map((key, value) {
               final list = value
-                  .sortedByOrder((e) => e.talents?.totalCrownless ?? 0, asc)
+                  .sortedByOrder((e) => e.lowestTalent, asc)
                   .thenByDescending((e) => e.item.rarity)
                   .thenBy((c) => c.item.releaseDate)
                   .thenBy((c) => c.item.id);
@@ -136,7 +137,7 @@ class HomeTalentsWidget extends StatelessWidget {
                                     info.item,
                                     size: kItemSize,
                                     disabled: !isToday,
-                                    labelWidget: _talenstLabel(context, info),
+                                    labelWidget: CharaterTalentsLabel(info),
                                   );
                                 }).toList(),
                           );
@@ -163,24 +164,6 @@ class HomeTalentsWidget extends StatelessWidget {
           },
         );
       },
-    );
-  }
-
-  Widget _talenstLabel(BuildContext context, CharInfo info) {
-    final style = context.themeStyles.label14n;
-    final strut = style.toStrut();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children:
-          CharTalentType.values.map((talent) {
-            final value = info.talents?.talentWithExtra(talent);
-            final hasExtra = info.talents?.hasExtra(talent) ?? false;
-            return Text(
-              '${value ?? '-'} ',
-              style: style.copyWith(color: hasExtra ? Colors.lightBlue : null),
-              strutStyle: strut,
-            );
-          }).toList(),
     );
   }
 }

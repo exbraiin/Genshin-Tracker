@@ -101,12 +101,12 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                 : const <GsAchievement>[];
 
         final obtainFilter = filter.getFilterSectionByKey(FilterKey.obtain);
-        const a = GsUtils.achievements;
+        final achv = GsUtils.achievements;
         final aGroup =
             (obtainFilter?.enabled.contains(false) ?? false)
                 ? groups.where((item) {
-                  final saved = a.countSaved((e) => e.group == item.id);
-                  final total = a.countTotal((e) => e.group == item.id);
+                  final saved = achv.countSaved((e) => e.group == item.id);
+                  final total = achv.countTotal((e) => e.group == item.id);
                   return saved != total;
                 }).toList()
                 : groups;

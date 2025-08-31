@@ -67,7 +67,7 @@ class RemarkableChestDetailsCard extends StatelessWidget
                           : context.themeColors.badValue,
                   icon: owned ? Icons.check : Icons.close,
                   onPress:
-                      () => GsUtils.remarkableChests.update(
+                      () => GsUtils.furnitureChests.update(
                         item.id,
                         obtained: !owned,
                       ),

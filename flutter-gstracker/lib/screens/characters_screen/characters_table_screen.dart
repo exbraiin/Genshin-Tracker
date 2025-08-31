@@ -1,13 +1,17 @@
 import 'package:dartx/dartx.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_divider.dart';
+import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/domain/utils/gu_materials.dart';
 import 'package:tracker/screens/characters_screen/character_details_card.dart';
+import 'package:tracker/screens/characters_screen/character_widgets.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
@@ -46,16 +50,15 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                 label: context.labels.characters(),
                 iconAsset: AppAssets.menuIconCharacters,
                 actions: [
-                  if (!filter.hasExtra(FilterExtras.versionSort))
-                    IconButton(
-                      tooltip: context.labels.hideTableCharacters(),
-                      onPressed: () => toggle(FilterExtras.hide),
-                      icon:
-                          filter.hasExtra(FilterExtras.hide)
-                              ? Icon(Icons.visibility_off_rounded)
-                              : Icon(Icons.visibility_rounded),
-                      color: Colors.white.withValues(alpha: 0.5),
-                    ),
+                  IconButton(
+                    tooltip: context.labels.hideTableCharacters(),
+                    onPressed: () => toggle(FilterExtras.hide),
+                    icon:
+                        filter.hasExtra(FilterExtras.hide)
+                            ? Icon(Icons.visibility_off_rounded)
+                            : Icon(Icons.visibility_rounded),
+                    color: Colors.white.withValues(alpha: 0.5),
+                  ),
                   IconButton(
                     onPressed: () => toggle(FilterExtras.versionSort),
                     icon: Icon(Icons.swap_horiz_rounded),
@@ -96,81 +99,95 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
       });
     }
 
-    return SingleChildScrollView(
-      child: Table(
-        columnWidths: builders
-            .mapIndexed((i, e) => (index: i, item: e))
-            .toMap(
-              (e) => e.index,
-              (e) =>
-                  e.item.expand
-                      ? const FlexColumnWidth()
-                      : const IntrinsicColumnWidth(),
-            ),
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        border: TableBorder.symmetric(
-          inside: BorderSide(color: context.themeColors.mainColor0),
-        ),
-        children: [
-          TableRow(
-            children:
-                builders.mapIndexed((index, item) {
-                  return InkWell(
-                    onTap:
-                        item.sortBy != null
-                            ? () => applySort(item, index)
-                            : null,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: kSeparator4,
-                        horizontal: kSeparator8,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            item.label,
-                            textAlign: !item.expand ? TextAlign.center : null,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+    final list = characters.toList();
+    return Column(
+      children: [
+        Row(
+          children:
+              builders.mapIndexed((index, builder) {
+                final child = InkWell(
+                  onTap:
+                      builder.sortBy != null
+                          ? () => applySort(builder, index)
+                          : null,
+                  child: Container(
+                    padding: const EdgeInsets.all(kSeparator8),
+                    child: Row(
+                      children: [
+                        Text(
+                          builder.label,
+                          textAlign: !builder.expand ? TextAlign.center : null,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Icon(
-                            sortItem == item
-                                ? _ascending
-                                    ? Icons.arrow_drop_up_rounded
-                                    : Icons.arrow_drop_down_rounded
-                                : null,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
+                        ),
+                        Icon(
+                          sortItem == builder
+                              ? _ascending
+                                  ? Icons.arrow_drop_up_rounded
+                                  : Icons.arrow_drop_down_rounded
+                              : null,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ],
                     ),
-                  );
-                }).toList(),
+                  ),
+                );
+
+                return builder.expand
+                    ? Expanded(child: child)
+                    : SizedBox(width: builder.width, child: child);
+              }).toList(),
+        ),
+        GsDivider(),
+        Expanded(
+          child: ListView.separated(
+            itemCount: list.length,
+            separatorBuilder: (context, index) {
+              return Divider(
+                color: Colors.white.withValues(alpha: 0.09),
+                indent: kSeparator16,
+                endIndent: kSeparator16,
+              );
+            },
+            itemBuilder: (context, index) {
+              final item = list[index];
+              return SizedBox(
+                height: 44,
+                child: Row(
+                  children:
+                      builders.map((builder) {
+                        Widget child = Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: kSeparator4,
+                            horizontal: kSeparator8,
+                          ),
+                          child: Opacity(
+                            opacity: item.isOwned ? 1 : kDisableOpacity,
+                            child: builder.builder(item),
+                          ),
+                        );
+
+                        if (builder.onTap != null &&
+                            (builder.allowTap || item.isOwned)) {
+                          child = InkWell(
+                            onTap: () => builder.onTap!(item),
+                            child: child,
+                          );
+                        }
+
+                        return builder.expand
+                            ? Expanded(child: child)
+                            : SizedBox(width: builder.width, child: child);
+                      }).toList(),
+                ),
+              );
+            },
           ),
-          ...characters.map((item) {
-            return TableRow(
-              children:
-                  builders.map<Widget>((e) {
-                    final child = Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: kSeparator4,
-                        horizontal: kSeparator8,
-                      ),
-                      child: Opacity(
-                        opacity: item.isOwned ? 1 : kDisableOpacity,
-                        child: e.builder(item),
-                      ),
-                    );
-
-                    if (e.onTap != null && (e.allowTap || item.isOwned)) {
-                      return InkWell(onTap: () => e.onTap!(item), child: child);
-                    }
-
-                    return child;
-                  }).toList(),
-            );
-          }),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -210,10 +227,10 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
         onTap: (info) => CharacterDetailsCard(info.item).show(context),
       ),
       _TableItem(
+        expand: true,
         label: context.labels.tableTitleName(),
         sortBy: (e) => e.item.name,
         builder: (info) => Text(info.item.name),
-        expand: true,
       ),
       _TableItem(
         label: context.labels.tableTitleFriendship(),
@@ -359,6 +376,22 @@ class _TableItem {
   final void Function(CharInfo info)? onTap;
   final Widget Function(CharInfo info) builder;
 
+  late final width = () {
+    final painter = TextPainter(
+      text: TextSpan(
+        text: label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          fontFamily: defaultFontFamily,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    painter.layout();
+    return painter.size.width + kSeparator8 * 2 + 28;
+  }();
+
   _TableItem({
     this.sortBy,
     required this.label,
@@ -379,172 +412,286 @@ class _MatsList extends StatefulWidget {
 }
 
 class _MatsListState extends State<_MatsList> {
-  var level = 2;
+  var talent = 9;
+  var ascension = 6;
+  Future<_MissMats>? future;
+
+  @override
+  void initState() {
+    super.initState();
+    future = _missingMaterials(maxTalent: talent, maxAscension: ascension);
+  }
+
+  @override
+  void didUpdateWidget(covariant _MatsList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    future = _missingMaterials(maxTalent: talent, maxAscension: ascension);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final chars = calculateCharacters(level);
-    final mats = calculateMaterials(chars);
-    final today = GeWeekdayType.values.today;
     return Row(
       spacing: GsSpacing.kGridSeparator,
       children: [
-        Expanded(
-          child: InventoryBox(
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.all(kSeparator8),
-                  child: Text(
-                    context.labels.materials(),
-                    style: context.themeStyles.label14b,
-                  ),
-                ),
-                GsDivider(),
-                SizedBox(height: kSeparator8),
-                Wrap(
-                  spacing: kSeparator4,
-                  runSpacing: kSeparator4,
-                  children: [
-                    ...mats.entries.sortedBy((e) => e.key).map((e) {
-                      final enabled =
-                          e.key.group != GeMaterialType.talentMaterials ||
-                          today == GeWeekdayType.sunday ||
-                          e.key.weekdays.contains(today);
-
-                      return ItemGridWidget.material(
-                        e.key,
-                        disabled: !enabled,
-                        label: e.value.compact(),
-                        tooltip: '',
-                      );
-                    }),
-                  ],
-                ),
-              ],
-            ),
-          ),
+        _materialsBox(
+          label: context.labels.talents(),
+          filter: (mats) => mats.talents,
+          value: talent,
+          values: (min: 2, max: 10),
+          setValue: (value) => talent = value,
         ),
-        Expanded(
-          child: Column(
-            spacing: GsSpacing.kGridSeparator,
-            children: [
-              Expanded(
-                child: InventoryBox(
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.all(kSeparator8),
-                        child: Text(
-                          context.labels.characters(),
-                          style: context.themeStyles.label14b,
-                        ),
-                      ),
-                      GsDivider(),
-                      SizedBox(height: kSeparator8),
-                      Wrap(
-                        spacing: kSeparator4,
-                        runSpacing: kSeparator4,
-                        children: [
-                          ...chars
-                              .where((e) => e.$2.isNotEmpty)
-                              .sortedBy((e) => e.$1.item.element.index)
-                              .thenByDescending((e) => e.$1.item.rarity)
-                              .thenBy((e) => e.$1.item.name)
-                              .map((e) {
-                                late final mat = e.$2.keys.firstOrNullWhere(
-                                  (e) =>
-                                      e.group == GeMaterialType.talentMaterials,
-                                );
-                                final enabled =
-                                    today == GeWeekdayType.sunday ||
-                                    (mat?.weekdays.contains(today) ?? false);
-
-                                return ItemGridWidget.character(
-                                  e.$1.item,
-                                  disabled: !enabled,
-                                  tooltip: '',
-                                );
-                              }),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              InventoryBox(
-                padding: EdgeInsets.all(kSeparator16),
-                child: Row(
-                  spacing: kSeparator16,
-                  children: [
-                    Text(
-                      context.labels.level(),
-                      style: context.themeStyles.label14b,
-                    ),
-                    Expanded(
-                      child: SliderTheme(
-                        data: SliderThemeData(
-                          thumbColor: context.themeColors.primary,
-
-                          activeTickMarkColor: context.themeColors.primary80,
-                          inactiveTickMarkColor: context.themeColors.mainColor1,
-
-                          activeTrackColor: context.themeColors.primary60,
-                          inactiveTrackColor: context.themeColors.mainColor0,
-
-                          overlayColor: Colors.white.withValues(alpha: 0.1),
-                          valueIndicatorColor: context.themeColors.almostWhite,
-
-                          valueIndicatorTextStyle: context.themeStyles.label12b
-                              .copyWith(color: Colors.black),
-                          allowedInteraction: SliderInteraction.tapAndSlide,
-                        ),
-                        child: Slider(
-                          value: level.toDouble(),
-                          min: 2,
-                          max: 10,
-                          divisions: 10 - 2,
-                          label: level.toString(),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: kSeparator8,
-                          ),
-                          onChanged: (i) => setState(() => level = i.toInt()),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        _materialsBox(
+          label: context.labels.ascension(),
+          filter: (mats) => mats.ascension,
+          value: ascension,
+          values: (min: 1, max: 6),
+          setValue: (value) => ascension = value,
+        ),
+        _materialsBox(
+          label: context.labels.total(),
+          filter: (mats) => mats.total,
         ),
       ],
     );
   }
 
-  List<(CharInfo, Map<GsMaterial, int>)> calculateCharacters(int level) {
-    final mats = GsUtils.characterMaterials.getCharMissingMats;
-    return widget.characters
-        // .where((e) => e.isOwned)
-        .map((e) => (e, mats(e.item.id, level)))
-        .toList();
+  Future<_MissMats> _missingMaterials({
+    int maxAscension = 6,
+    int maxTalent = 10,
+  }) {
+    _MissMats callback((GuMaterials, List<CharInfo>) data) {
+      final (utils, characters) = data;
+
+      final tal = utils.getCharTalentsMissing;
+      final asc = utils.getCharAscensionMissing;
+
+      final tals =
+          characters
+              .map((info) => (info, tal(info.item, info.info, maxTalent)))
+              .toList();
+      final ascs =
+          characters
+              .map((info) => (info, asc(info.item, info.info, maxAscension)))
+              .toList();
+
+      final total =
+          [...tals, ...ascs].groupBy((e) => e.$1.item.id).values.map((entry) {
+            final item = entry.first.$1;
+            final mats = entry
+                .expand((e) => e.$2.entries)
+                .groupBy((e) => e.key.id)
+                .values
+                .toMap((e) => e.first.key, (e) => e.sumBy((e) => e.value));
+
+            return (item, mats);
+          }).toList();
+
+      return (total: total, talents: tals, ascension: ascs);
+    }
+
+    final list = widget.characters.toList();
+    return compute(callback, (GsUtils.materials, list));
   }
 
-  Map<GsMaterial, int> calculateMaterials(
-    List<(CharInfo, Map<GsMaterial, int>)> chars,
-  ) {
-    return chars
-        .expand((e) => e.$2.entries)
-        .groupBy((e) => e.key.id)
-        .entries
-        .where((e) => e.value.firstOrNull != null)
-        .toMap((e) => e.value.first.key, (e) => e.value.sumBy((e) => e.value));
+  Widget _materialsBox({
+    required String label,
+    required List<_CharMats> Function(_MissMats mats) filter,
+    int? value,
+    ({int min, int max})? values,
+    void Function(int value)? setValue,
+  }) {
+    return Expanded(
+      child: Column(
+        spacing: GsSpacing.kGridSeparator,
+        children: [
+          Expanded(
+            child: InventoryBox(
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.all(kSeparator8),
+                    child: Text(label, style: context.themeStyles.label14b),
+                  ),
+                  GsDivider(),
+                  SizedBox(height: kSeparator8),
+                  Expanded(
+                    child: FutureBuilder(
+                      key: ValueKey(future),
+                      future: future,
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeCap: StrokeCap.round,
+                            ),
+                          );
+                        }
+
+                        final data = snapshot.data!;
+                        final list = filter(data).where((e) => e.$2.isNotEmpty);
+                        if (list.isEmpty) {
+                          return GsNoResultsState.small();
+                        }
+
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.all(kSeparator8),
+                                child: Text(
+                                  context.labels.characters(),
+                                  style: context.themeStyles.label14n,
+                                ),
+                              ),
+                              _characters(list),
+                              GsDivider(),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.all(kSeparator8),
+                                child: Text(
+                                  context.labels.materials(),
+                                  style: context.themeStyles.label14n,
+                                ),
+                              ),
+                              _materials(list),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (value != null && values != null && setValue != null)
+            _sliderBox(
+              label: context.labels.max(),
+              min: values.min,
+              max: values.max,
+              value: value,
+              setValue: setValue,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _characters(Iterable<_CharMats> list) {
+    return Wrap(
+      spacing: kSeparator4,
+      runSpacing: kSeparator4,
+      children:
+          list
+              .sortedBy((e) => e.$1.talentsTotalCrownless)
+              .thenBy((e) => e.$1.item.rarity)
+              .map((e) {
+                const kTal = GeMaterialType.talentMaterials;
+                final mat = e.$2.keys.firstOrNullWhere((e) => e.group == kTal);
+                final enable = (mat?.isFarmableToday ?? false) && e.$1.isOwned;
+                return ItemGridWidget.character(
+                  e.$1.item,
+                  disabled: !enable,
+                  labelWidget: CharaterTalentsLabel(
+                    e.$1,
+                    style: context.themeStyles.label12n,
+                  ),
+                  tooltip: '',
+                );
+              })
+              .toList(),
+    );
+  }
+
+  Widget _materials(Iterable<_CharMats> list) {
+    return Wrap(
+      spacing: kSeparator4,
+      runSpacing: kSeparator4,
+      children:
+          list
+              .expand((e) => e.$2.entries)
+              .groupBy((e) => e.key.id)
+              .values
+              .where((e) => e.firstOrNull != null)
+              .map((e) => (e.first.key, e.sumBy((e) => e.value)))
+              .sortedBy((e) => e.$1.group.index)
+              .thenBy((e) => e.$1.subgroup)
+              .thenBy((e) => e.$1.region.index)
+              .map((e) {
+                return ItemGridWidget.material(
+                  e.$1,
+                  disabled: !e.$1.isFarmableToday,
+                  label: e.$2.compact(),
+                  tooltip: '',
+                );
+              })
+              .toList(),
+    );
+  }
+
+  Widget _sliderBox({
+    required String label,
+    required int value,
+    required int min,
+    required int max,
+    required void Function(int) setValue,
+  }) {
+    return InventoryBox(
+      padding: EdgeInsets.all(kSeparator16),
+      child: Row(
+        spacing: kSeparator16,
+        children: [
+          Text(label, style: context.themeStyles.label14b),
+          Expanded(
+            child: SliderTheme(
+              data: SliderThemeData(
+                thumbColor: context.themeColors.primary,
+                activeTickMarkColor: context.themeColors.primary80,
+                inactiveTickMarkColor: context.themeColors.mainColor1,
+                activeTrackColor: context.themeColors.primary60,
+                inactiveTrackColor: context.themeColors.mainColor0,
+                overlayColor: Colors.white.withValues(alpha: 0.1),
+                valueIndicatorColor: context.themeColors.almostWhite,
+                valueIndicatorTextStyle: context.themeStyles.label12b.copyWith(
+                  color: Colors.black,
+                ),
+                allowedInteraction: SliderInteraction.tapAndSlide,
+              ),
+              child: Slider(
+                value: value.toDouble(),
+                min: min.toDouble(),
+                max: max.toDouble(),
+                divisions: max - min,
+                label: value.toString(),
+                padding: EdgeInsets.symmetric(horizontal: kSeparator8),
+                onChanged:
+                    (i) => setState(() {
+                      setValue(i.toInt());
+                    }),
+                onChangeEnd: (value) {
+                  setState(() {
+                    future = _missingMaterials(
+                      maxAscension: ascension,
+                      maxTalent: talent,
+                    );
+                  });
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
-
-// TODO: Split by ascension and talent materials ??
-// Add a total list ??
-// Convert character info into compute, so the UI is not locked by the expensive operation.
+typedef _CharMats = (CharInfo, Map<GsMaterial, int>);
+typedef _MissMats =
+    ({
+      List<_CharMats> total,
+      List<_CharMats> talents,
+      List<_CharMats> ascension,
+    });

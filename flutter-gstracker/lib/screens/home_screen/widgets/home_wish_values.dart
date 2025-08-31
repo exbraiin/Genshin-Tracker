@@ -13,7 +13,7 @@ import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
-const _arrow = '\u2022';
+const _kArrow = '\u2022';
 
 class HomeWishesValues extends StatelessWidget {
   final GeBannerType banner;
@@ -25,7 +25,8 @@ class HomeWishesValues extends StatelessWidget {
     final st = Theme.of(context).textTheme.titleSmall!;
     final style = st.copyWith(color: context.themeColors.almostWhite);
 
-    final summary = WishesSummary.fromBannerType(banner);
+    // TODO: This can now be converted into a compute
+    final summary = GsUtils.wishes.getWishesSummary(banner);
 
     final maxPity = banner == GeBannerType.weapon ? 80 : 90;
     final title = switch (banner) {
@@ -86,7 +87,7 @@ class HomeWishesValues extends StatelessWidget {
             _getPullInfo(
               context,
               summary.info5Character,
-              '   $_arrow ${context.labels.character()}',
+              '   $_kArrow ${context.labels.character()}',
               context.themeColors.colorByRarityFg(5),
             ),
             Divider(
@@ -97,7 +98,7 @@ class HomeWishesValues extends StatelessWidget {
             _getPullInfo(
               context,
               summary.info5Weapon,
-              '   $_arrow ${context.labels.weapon()}',
+              '   $_kArrow ${context.labels.weapon()}',
               context.themeColors.colorByRarityFg(5),
             ),
           ],
@@ -110,7 +111,7 @@ class HomeWishesValues extends StatelessWidget {
             _getWonInfo(
               context,
               summary.info5,
-              '   $_arrow ${banner.getWonLabel(context, 5)}',
+              '   $_kArrow ${banner.getWonLabel(context, 5)}',
               context.themeColors.colorByRarityFg(5),
             ),
           ],
@@ -125,14 +126,14 @@ class HomeWishesValues extends StatelessWidget {
           _getPullInfo(
             context,
             summary.info4Character,
-            '   $_arrow ${context.labels.character()}',
+            '   $_kArrow ${context.labels.character()}',
             context.themeColors.colorByRarityFg(4),
           ),
           Divider(color: context.themeColors.divider, thickness: 1, height: 8),
           _getPullInfo(
             context,
             summary.info4Weapon,
-            '   $_arrow ${context.labels.weapon()}',
+            '   $_kArrow ${context.labels.weapon()}',
             context.themeColors.colorByRarityFg(4),
           ),
           _getWishesList(style: style, summary: summary, maxPity: maxPity),

@@ -223,21 +223,20 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   }
 
   Widget _getMaterials(BuildContext context, GsCharacter item) {
-    final im = Database.instance.infoOf<GsMaterial>();
-    const ic = GsUtils.characterMaterials;
-    final tltMats = ic.getAllTalentsMaterials(item.id);
-    final ascMats = ic.getAscensionMaterials(item.id);
+    final ic = GsUtils.materials;
+    final tltMats = ic.getAllCharTalents(item);
+    final ascMats = ic.getCharAscension(item);
 
     int existance(String? id) {
       if (id == null) return 0;
-      final a = tltMats.containsKey(id) ? 1 : 0;
-      final b = ascMats.containsKey(id) ? 1 : 0;
+      final a = tltMats.any((k, v) => k.id == id) ? 1 : 0;
+      final b = ascMats.any((k, v) => k.id == id) ? 1 : 0;
       return a + b;
     }
 
     TableRow getTableRow(
       String label,
-      Map<String, int> mats,
+      Map<GsMaterial, int> mats,
       Widget Function(MapEntry<GsMaterial, int> e) mapper,
     ) {
       return TableRow(
@@ -259,9 +258,6 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               textDirection: TextDirection.rtl,
               children:
                   mats.entries
-                      .map((e) => MapEntry(im.getItem(e.key), e.value))
-                      .where((e) => e.key != null)
-                      .map((e) => MapEntry(e.key!, e.value))
                       .sortedBy((e) => existance(e.key.id))
                       .thenBy((e) => e.key.group.index)
                       .thenBy((e) => e.key.subgroup)

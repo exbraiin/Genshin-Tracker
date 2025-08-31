@@ -128,6 +128,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               urlImage: e.image,
               rarity: e.rarity,
               tooltip: e.name,
+              onTap: null,
             ),
           ),
           mapItems(
@@ -157,22 +158,24 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               assetImage: AppAssets.spincrystal,
               rarity: 4,
               label: e.number.toString(),
+              onTap: null,
             ),
           ),
           mapItems(
             banners,
             context.labels.wishes(),
-            (e) => ItemGridWidget(urlImage: e.image, tooltip: e.name),
+            (e) =>
+                ItemGridWidget(urlImage: e.image, tooltip: e.name, onTap: null),
           ),
           mapItems(
             chests,
             context.labels.remarkableChests(),
-            (e) => ItemGridWidget.remarkableChest(e),
+            (e) => ItemGridWidget.remarkableChest(e, onTap: null),
           ),
           mapItems(
             namecards,
             context.labels.namecards(),
-            (e) => ItemGridWidget.namecard(e),
+            (e) => ItemGridWidget.namecard(e, onTap: null),
           ),
         ].whereNotNull(),
       ],

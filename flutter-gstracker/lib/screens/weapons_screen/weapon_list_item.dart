@@ -37,11 +37,10 @@ class WeaponListItem extends StatelessWidget {
   }
 
   Widget _getContent(BuildContext context) {
-    late final material = GsUtils.weaponMaterials
-        .getAscensionMaterials(item.id)
-        .entries
-        .map((e) => Database.instance.infoOf<GsMaterial>().getItem(e.key))
-        .firstOrNullWhere((e) => e?.weekdays.isNotEmpty ?? false);
+    late final material = GsUtils.materials
+        .getWeaponAscension(item)
+        .keys
+        .firstOrNullWhere((e) => e.weekdays.isNotEmpty);
 
     return Padding(
       padding: const EdgeInsets.all(kSeparator2),

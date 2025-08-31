@@ -438,9 +438,10 @@ class ScreenFilters {
                   FilterSection.version((item) => item.version),
                   FilterSection.weekdaysMaterials(
                     (item) =>
-                        GsUtils.weaponMaterials
-                            .getAscensionMaterials(item.id)
+                        GsUtils.materials
+                            .getWeaponAscension(item)
                             .keys
+                            .map((e) => e.id)
                             .toSet(),
                   ),
                   FilterSection<GeWeaponAscStatType, GsWeapon>(
@@ -498,9 +499,10 @@ class ScreenFilters {
                   FilterSection.element((item) => item.element),
                   FilterSection.weaponType((item) => item.weapon),
                   FilterSection.weekdaysMaterials((item) {
-                    return GsUtils.characterMaterials
-                        .getAllTalentsMaterials(item.id)
+                    return GsUtils.materials
+                        .getAllCharTalents(item)
                         .keys
+                        .map((e) => e.id)
                         .toSet();
                   }),
                   FilterSection.version((item) => item.version),

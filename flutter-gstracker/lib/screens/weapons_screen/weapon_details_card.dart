@@ -99,24 +99,15 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   }
 
   Widget _materialsList(GsWeapon info) {
-    final im = Database.instance.infoOf<GsMaterial>();
-    const iw = GsUtils.weaponMaterials;
-    final mats = iw.getAscensionMaterials(info.id);
+    final iw = GsUtils.materials;
+    final mats = iw.getWeaponAscension(info);
     return Wrap(
       spacing: GsSpacing.kGridSeparator,
       runSpacing: GsSpacing.kGridSeparator,
       children:
-          mats.entries
-              .map((e) => MapEntry(im.getItem(e.key), e.value))
-              .where((e) => e.key != null)
-              .sortedWith((a, b) => a.key!.compareTo(b.key!))
-              .map((e) {
-                return ItemGridWidget.material(
-                  e.key!,
-                  label: e.value.compact(),
-                );
-              })
-              .toList(),
+          mats.entries.sortedWith((a, b) => a.key.compareTo(b.key)).map((e) {
+            return ItemGridWidget.material(e.key, label: e.value.compact());
+          }).toList(),
     );
   }
 

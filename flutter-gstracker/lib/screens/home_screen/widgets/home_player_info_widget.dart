@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
+import 'package:tracker/common/utils/logger.dart';
 import 'package:tracker/common/widgets/cards/gs_data_box.dart';
 import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/gs_number_field.dart';
@@ -275,7 +276,12 @@ class HomePlayerInfoWidget extends StatelessWidget {
 }
 
 Future<void> _fetchAndInsert(String uid) async {
-  final player = await EnkaService.i.getPlayerInfo(uid);
-  final item = player.toGiPlayerInfo();
-  Database.instance.saveOf<GiPlayerInfo>().setItem(item);
+  try {
+    Monitor.debug('Fetching profile $uid');
+    final player = await EnkaService.i.getPlayerInfo(uid);
+    final item = player.toGiPlayerInfo();
+    GsUtils.playerConfigs.update(item);
+  } catch (error) {
+    Monitor.error('Error fetching profile: $error');
+  }
 }
