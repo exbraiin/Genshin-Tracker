@@ -28,6 +28,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   @override
   Widget build(BuildContext context) {
+    final namecards = Database.instance.infoOf<GsNamecard>();
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
@@ -37,12 +38,15 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         final ascension = info?.ascension ?? 0;
         final friendship = info?.friendship ?? 1;
         final constellation = info?.totalConstellations;
+        final namecard = namecards.getItem(info?.item.namecardId ?? '');
         late final owned = (constellation ?? 0) + 1;
+
         return ItemDetailsCard(
           name: item.name,
           rarity: item.rarity,
           image: item.image,
           version: item.version,
+          bgImage: namecard?.fullImage,
           contentImage: DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage(item.element.assetBgPath),

@@ -17,6 +17,7 @@ class ItemDetailsCard extends StatelessWidget {
   final String? asset;
   final String? image;
   final String? fgImage;
+  final String? bgImage;
   final String version;
   final Widget? child;
 
@@ -34,6 +35,7 @@ class ItemDetailsCard extends StatelessWidget {
     this.asset,
     this.image,
     this.fgImage,
+    this.bgImage,
     this.child,
   });
 
@@ -137,45 +139,65 @@ class ItemDetailsCard extends StatelessWidget {
                 left: null,
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: Stack(
-                    children: [
-                      ShaderMask(
-                        shaderCallback: (rect) {
-                          return LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Colors.black,
-                              Colors.black.withValues(alpha: 0),
-                            ],
-                            stops: const [0, 0.8],
-                          ).createShader(rect);
-                        },
-                        blendMode: BlendMode.dstOut,
-                        child: Image.asset(
-                          GsAssets.getRarityBgImage(rarity.coerceAtLeast(1)),
-                          alignment: Alignment.centerRight,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: () {
-                          if (asset != null) {
-                            return Image.asset(asset!);
-                          }
-                          if (image != null) {
-                            return AspectRatio(
-                              aspectRatio: 1,
-                              child: CachedImageWidget(image!),
-                            );
-                          }
-                          return const SizedBox();
-                        }(),
-                      ),
-                    ],
+                  child: ShaderMask(
+                    shaderCallback: (rect) {
+                      return LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Colors.black,
+                          Colors.black.withValues(alpha: 0),
+                        ],
+                        stops: const [0, 0.8],
+                      ).createShader(rect);
+                    },
+                    blendMode: BlendMode.dstOut,
+                    child: Image.asset(
+                      GsAssets.getRarityBgImage(rarity.coerceAtLeast(1)),
+                      alignment: Alignment.centerRight,
+                      fit: BoxFit.fitHeight,
+                    ),
                   ),
                 ),
+              ),
+              if (bgImage != null)
+                Positioned.fill(
+                  child: Container(
+                    foregroundDecoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black.withValues(alpha: 0.6),
+                          Colors.transparent,
+                        ],
+                        stops: [0, 0.25],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                    child: Opacity(
+                      opacity: kDisableOpacity * 2,
+                      child: CachedImageWidget(
+                        bgImage,
+                        showPlaceholder: false,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              Positioned.fill(
+                left: null,
+                child: () {
+                  if (asset != null) {
+                    return Image.asset(asset!);
+                  }
+                  if (image != null) {
+                    return AspectRatio(
+                      aspectRatio: 1,
+                      child: CachedImageWidget(image!),
+                    );
+                  }
+                  return const SizedBox();
+                }(),
               ),
               if (fgImage != null)
                 Positioned.fill(
