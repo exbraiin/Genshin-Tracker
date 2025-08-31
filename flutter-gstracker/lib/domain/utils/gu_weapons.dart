@@ -6,7 +6,8 @@ final class GuWeapons {
   const GuWeapons(this._items);
 
   int obtainedAmount(String id) {
-    return _items.svWishes.items.count((e) => e.itemId == id) + eventWeapons(id);
+    return _items.svWishes.items.count((e) => e.itemId == id) +
+        eventWeapons(id);
   }
 
   bool hasWeapon(String id) {
@@ -15,6 +16,8 @@ final class GuWeapons {
   }
 
   int eventWeapons(String id) {
-    return _items.svEventRewards.items.count((e) => e.obtainedWeapons.contains(id));
+    return _items.svEventRewards.items.count(
+      (e) => e.obtainedWeapons.contains(id),
+    );
   }
 }
