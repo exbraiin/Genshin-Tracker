@@ -1,6 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/domain/utils/_gu_collections.dart';
+import 'package:tracker/domain/utils/gs_collections.dart';
 
 final class GuVersions {
   final GuCollections _items;

@@ -2,7 +2,7 @@ import 'package:dartx/dartx.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/src/iterable_ext.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
-import 'package:tracker/domain/utils/_gu_collections.dart';
+import 'package:tracker/domain/utils/gs_collections.dart';
 
 final class GuMaterials {
   final GuCollections _items;

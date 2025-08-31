@@ -8,36 +8,39 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/swap_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/utils/_gu_collections.dart';
 import 'package:tracker/theme/gs_assets.dart';
+
+const _kItemSize = kSize50;
 
 class HomeCalendarWidget extends StatelessWidget {
   const HomeCalendarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return measurePerformance('HomeCalendarWidget', () {
-      return GsDataBox.info(
-        title: Text(context.labels.calendar()),
-        child: Column(
-          children: [
-            Center(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Column(children: _getItems(context).toList()),
-              ),
+    final now = DateTime.now().date;
+    return GsDataBox.info(
+      title: Row(
+        children: [
+          Text(context.labels.calendar()),
+          Text(
+            ' \u2022 ${DateLabels.humanizedMonth(context, now.month)}',
+            style: context.themeStyles.label14b.copyWith(
+              color: context.themeColors.sectionContent,
             ),
-            // const SizedBox(height: kSeparator8),
-            // const EventsScrollView(),
-          ],
+            strutStyle: context.themeStyles.label14b.toStrut(),
+          ),
+        ],
+      ),
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(children: _getItems(context, now).toList()),
         ),
-      );
-    });
+      ),
+    );
   }
 
-  Iterable<Widget> _getItems(BuildContext context) sync* {
-    final now = DateTime.now().date;
-    final weekday = now.firstDayOfMonth.weekday;
+  Iterable<Widget> _getItems(BuildContext context, DateTime now) sync* {
     const kWeek = [
       DateTime.monday,
       DateTime.tuesday,
@@ -48,14 +51,13 @@ class HomeCalendarWidget extends StatelessWidget {
       DateTime.sunday,
     ];
 
-    final itemSize = kSize50;
     yield Row(
       mainAxisSize: MainAxisSize.min,
       children:
           kWeek
               .map<Widget>((i) {
                 return Container(
-                  width: itemSize,
+                  width: _kItemSize,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(
                     bottom: GsSpacing.kGridSeparator,
@@ -75,245 +77,21 @@ class HomeCalendarWidget extends StatelessWidget {
               .toList(),
     );
 
-    final date = DateTime(now.year, now.month, 2 - weekday);
-    final last = now.firstDayOfMonth;
-    final diff = last.difference(date).inDays;
-    final weeks = ((now.daysInMonth + diff) / DateTime.daysPerWeek).ceil();
-
-    final src = now.firstDayOfMonth.subtract(
-      const Duration(days: DateTime.daysPerWeek),
-    );
-    final characters =
-        Database.instance
-            .infoOf<GsCharacter>()
-            .items
-            .where((e) => e.birthday.copyWith(year: now.year).isAfter(src))
-            .toList();
-    final versions =
-        Database.instance
-            .infoOf<GsVersion>()
-            .items
-            .where((e) => e.releaseDate.isAfter(src))
-            .toList();
-
-    yield* Iterable<Widget>.generate(
-      weeks,
-      (w) => Row(
+    final dates = _getDatesInfo(now);
+    final weeks = dates.length ~/ DateTime.daysPerWeek;
+    yield* Iterable<Widget>.generate(weeks, (w) {
+      return Row(
         mainAxisSize: MainAxisSize.min,
         children:
-            List<Widget>.generate(DateTime.daysPerWeek, (d) {
-                  final idx = w * DateTime.daysPerWeek + d - weekday + 1;
-                  final date = DateTime(now.year, now.month, idx + 1);
-
-                  final birthdayItems =
-                      characters
-                          .where(
-                            (e) => e.birthday
-                                .copyWith(year: date.year)
-                                .isAtSameDayAs(date),
-                          )
-                          .toList();
-
-                  final versionItem = versions.firstOrNullWhere(
-                    (e) => e.releaseDate.isAtSameDayAs(date),
-                  );
-
-                  final showVersion = versionItem != null;
-                  final showBirthday = birthdayItems.isNotEmpty;
-
-                  final bannersInfo =
-                      Database.instance
-                          .infoOf<GsBanner>()
-                          .items
-                          .where((e) => e.type == GeBannerType.character)
-                          .where((e) => date.between(e.dateStart, e.dateEnd))
-                          .groupBy((e) => e.dateStart)
-                          .values
-                          .map((list) => _BannerInfo.from(list, date))
-                          .toList();
-
-                  final battlepassInfo =
-                      Database.instance
-                          .infoOf<GsBattlepass>()
-                          .items
-                          .where((e) => date.between(e.dateStart, e.dateEnd))
-                          .toList();
-
-                  final message =
-                      showBirthday
-                          ? birthdayItems.map((e) => e.name).join(' | ')
-                          : '';
-
-                  return Opacity(
-                    opacity: date.isAtSameMonthAs(now) ? 1 : kDisableOpacity,
-                    child: Container(
-                      width: itemSize,
-                      height: itemSize,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: GsSpacing.kGridRadius,
-                        color: context.themeColors.mainColor1,
-                      ),
-                      foregroundDecoration:
-                          now.isAtSameDayAs(date)
-                              ? BoxDecoration(
-                                borderRadius: GsSpacing.kGridRadius,
-                                border: Border.all(
-                                  color: context.themeColors.almostWhite,
-                                  width: 2,
-                                ),
-                              )
-                              : null,
-                      child: Tooltip(
-                        message: message,
-                        child: Stack(
-                          children: [
-                            if (showBirthday)
-                              ...birthdayItems.mapIndexed((i, e) {
-                                return Positioned.fill(
-                                  child: ClipRect(
-                                    clipper: _RectClipperBuilder(
-                                      (size) => Rect.fromLTWH(
-                                        i * size.width / birthdayItems.length,
-                                        0,
-                                        size.width / birthdayItems.length,
-                                        size.height,
-                                      ),
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: AssetImage(
-                                            GsAssets.getRarityBgImage(e.rarity),
-                                          ),
-                                        ),
-                                      ),
-                                      child: CachedImageWidget(e.image),
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ...battlepassInfo.map((i) {
-                              final src = i.dateStart.isAtSameDayAs(date);
-                              final end = i.dateEnd.isAtSameDayAs(date);
-                              final msg = i.name;
-                              return Positioned.fill(
-                                top: null,
-                                left: src ? itemSize / 2 + 4 : 0,
-                                right: end ? itemSize / 2 + 4 : 0,
-                                bottom: 4,
-                                child: _ImagesTooltip(
-                                  images: [i.image],
-                                  message: msg,
-                                  size: const Size(150, 54),
-                                  child: Container(
-                                    height: 4,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.cyan,
-                                      borderRadius: BorderRadius.horizontal(
-                                        left:
-                                            src
-                                                ? const Radius.circular(8)
-                                                : Radius.zero,
-                                        right:
-                                            end
-                                                ? const Radius.circular(8)
-                                                : Radius.zero,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                            ...bannersInfo.map((i) {
-                              return Positioned.fill(
-                                top: null,
-                                left: i.src ? itemSize / 2 + 4 : 0,
-                                right: i.end ? itemSize / 2 + 4 : 0,
-                                child: _ImagesTooltip(
-                                  images: i.banners.map((e) => e.image),
-                                  message: i.message,
-                                  child: Container(
-                                    height: 4,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: i.color,
-                                      borderRadius: BorderRadius.horizontal(
-                                        left:
-                                            i.src
-                                                ? const Radius.circular(8)
-                                                : Radius.zero,
-                                        right:
-                                            i.end
-                                                ? const Radius.circular(8)
-                                                : Radius.zero,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                            Positioned(
-                              right: 2,
-                              bottom: 2,
-                              child: Icon(
-                                showBirthday ? Icons.cake_rounded : null,
-                                size: 20,
-                                color: context.themeColors.almostWhite,
-                                shadows: const [
-                                  BoxShadow(
-                                    offset: Offset(1, 1),
-                                    blurRadius: 5,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (showVersion)
-                              Positioned(
-                                right: 0,
-                                bottom: 0,
-                                child: Transform.translate(
-                                  offset: const Offset(12, 12),
-                                  child: Banner(
-                                    message: versionItem.id,
-                                    color: context.themeColors.primary80,
-                                    location: BannerLocation.bottomEnd,
-                                  ),
-                                ),
-                              ),
-                            Container(
-                              width: 20,
-                              height: 20,
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.all(kSeparator2),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context.themeColors.mainColor0
-                                    .withValues(alpha: 0.4),
-                                border: Border.all(
-                                  color: context.themeColors.mainColor1,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Text(
-                                date.day.toString(),
-                                style: context.themeStyles.label12n,
-                                strutStyle:
-                                    context.themeStyles.label12n.toStrut(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+            Iterable<Widget>.generate(DateTime.daysPerWeek, (d) {
+                  final idx = w * DateTime.daysPerWeek + d;
+                  final date = dates[idx];
+                  return _CalendarDay(info: date, now: now);
                 })
                 .separate(const SizedBox(width: GsSpacing.kGridSeparator))
                 .toList(),
-      ),
-    ).separate(const SizedBox(height: GsSpacing.kGridSeparator));
+      );
+    }).separate(const SizedBox(height: GsSpacing.kGridSeparator));
   }
 }
 
@@ -330,34 +108,6 @@ class _RectClipperBuilder extends CustomClipper<Rect> {
   @override
   bool shouldReclip(covariant CustomClipper<Rect> oldClipper) {
     return false;
-  }
-}
-
-class _BannerInfo {
-  final bool src, end;
-  final Color color;
-  final Iterable<GsBanner> banners;
-
-  String get message => banners.map((e) => e.name).join('\n');
-
-  _BannerInfo(this.banners, this.color, {this.src = false, this.end = false});
-
-  factory _BannerInfo.from(Iterable<GsBanner> banners, DateTime date) {
-    final banner = banners.first;
-    final db = Database.instance.infoOf<GsCharacter>();
-    final color = banners
-        .map((e) => db.getItem(e.feature5.firstOrNull ?? ''))
-        .whereNotNull()
-        .map((e) => e.element.color)
-        .fold(Colors.white, (p, e) => Color.lerp(p, e, 0.5)!);
-
-    final isSrc = date.isAtSameDayAs(banner.dateStart);
-    if (isSrc) return _BannerInfo(banners, color, src: true);
-
-    final isEnd = date.isAtSameDayAs(banner.dateEnd);
-    if (isEnd) return _BannerInfo(banners, color, end: true);
-
-    return _BannerInfo(banners, color);
   }
 }
 
@@ -434,6 +184,271 @@ class _ImagesTooltip extends StatelessWidget {
         ),
       ),
       child: child,
+    );
+  }
+}
+
+List<DateTime> _generateCalendarDays(DateTime now) {
+  final weekday = now.firstDayOfMonth.weekday;
+
+  final date = DateTime(now.year, now.month, 2 - weekday);
+  final last = now.firstDayOfMonth;
+  final diff = last.difference(date).inDays;
+  final weeks = ((now.daysInMonth + diff) / DateTime.daysPerWeek).ceil();
+
+  return List.generate(weeks * DateTime.daysPerWeek, (i) {
+    final idx = i - weekday + 2;
+    return DateTime(now.year, now.month, idx);
+  });
+}
+
+List<_DayInfo> _getDatesInfo(DateTime now) {
+  final dates = _generateCalendarDays(now);
+
+  final banners = Database.instance.infoOf<GsBanner>();
+  final versions = Database.instance.infoOf<GsVersion>();
+  final characters = Database.instance.infoOf<GsCharacter>();
+  final battlepasses = Database.instance.infoOf<GsBattlepass>();
+
+  final mVersions = <DateTime, GsVersion>{};
+  for (final version in versions.items) {
+    mVersions[version.releaseDate] = version;
+  }
+
+  final mCharacters = <DateTime, List<GsCharacter>>{};
+  for (final character in characters.items) {
+    final date = character.birthday.copyWith(year: now.year);
+    mCharacters[date] = [...?mCharacters[date], character];
+  }
+
+  final stDay = dates.first;
+  final edDay = dates.last;
+  final mBattlepasses = battlepasses.items
+      .where((e) => datesIntersect(e.dateStart, e.dateEnd, stDay, edDay))
+      .toList(growable: false);
+
+  final mBanners =
+      banners.items
+          .where((e) => e.type == GeBannerType.character)
+          .where((e) => datesIntersect(e.dateStart, e.dateEnd, stDay, edDay))
+          .groupBy((e) => e.dateStart)
+          .values;
+
+  Color getBannersColor(List<GsBanner> banners) {
+    return banners
+        .map((e) => characters.getItem(e.feature5.firstOrNull ?? ''))
+        .whereNotNull()
+        .map((e) => e.element.color)
+        .fold(Colors.white, (p, e) => Color.lerp(p, e, 0.5)!);
+  }
+
+  return dates
+      .map((d) {
+        return (
+          date: d,
+          version: mVersions[d],
+          banners:
+              mBanners
+                  .where((e) => d.between(e.first.dateStart, e.first.dateEnd))
+                  .map((e) => (getBannersColor(e), e))
+                  .toList(),
+          battlepasses:
+              mBattlepasses
+                  .where((e) => d.between(e.dateStart, e.dateEnd))
+                  .toList(),
+          birthdays: mCharacters[d] ?? [],
+        );
+      })
+      .sortedBy((e) => e.date);
+}
+
+bool datesIntersect(DateTime st0, DateTime ed0, DateTime st1, DateTime ed1) {
+  return !st0.isAfter(ed1) && !st1.isAfter(ed0);
+}
+
+typedef _DayInfo =
+    ({
+      DateTime date,
+      GsVersion? version,
+      List<GsCharacter> birthdays,
+      List<GsBattlepass> battlepasses,
+      List<(Color, List<GsBanner>)> banners,
+    });
+
+class _CalendarDay extends StatelessWidget {
+  final _DayInfo info;
+  final DateTime now;
+
+  _CalendarDay({required this.info, DateTime? now})
+    : now = now ?? DateTime.now().date;
+
+  @override
+  Widget build(BuildContext context) {
+    final date = info.date;
+    final version = info.version;
+    final banners = info.banners;
+    final birthdays = info.birthdays;
+    final battlepasses = info.battlepasses;
+
+    final showVersion = version != null;
+    final showBirthday = birthdays.isNotEmpty;
+    final tooltip = birthdays.map((e) => e.name).join(' | ');
+
+    return Opacity(
+      opacity: date.isAtSameMonthAs(now) ? 1 : kDisableOpacity,
+      child: Container(
+        width: _kItemSize,
+        height: _kItemSize,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: GsSpacing.kGridRadius,
+          color: context.themeColors.mainColor1,
+        ),
+        foregroundDecoration:
+            now.isAtSameDayAs(date)
+                ? BoxDecoration(
+                  borderRadius: GsSpacing.kGridRadius,
+                  border: Border.all(
+                    color: context.themeColors.almostWhite,
+                    width: 2,
+                  ),
+                )
+                : null,
+        child: Tooltip(
+          message: tooltip,
+          child: Stack(
+            children: [
+              if (showBirthday)
+                ...birthdays.mapIndexed((i, e) {
+                  return Positioned.fill(
+                    child: ClipRect(
+                      clipper: _RectClipperBuilder(
+                        (size) => Rect.fromLTWH(
+                          i * size.width / birthdays.length,
+                          0,
+                          size.width / birthdays.length,
+                          size.height,
+                        ),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                              GsAssets.getRarityBgImage(e.rarity),
+                            ),
+                          ),
+                        ),
+                        child: CachedImageWidget(e.image),
+                      ),
+                    ),
+                  );
+                }),
+              ...battlepasses.map((info) {
+                final src = info.dateStart.isAtSameDayAs(date);
+                final end = info.dateEnd.isAtSameDayAs(date);
+                final msg = info.name;
+
+                return Positioned.fill(
+                  top: null,
+                  left: src ? _kItemSize / 2 + 4 : 0,
+                  right: end ? _kItemSize / 2 + 4 : 0,
+                  bottom: 5,
+                  child: _ImagesTooltip(
+                    images: [info.image],
+                    message: msg,
+                    size: const Size(150, 54),
+                    child: Container(
+                      height: 4,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: context.themeColors.primary,
+                        borderRadius: BorderRadius.horizontal(
+                          left: src ? const Radius.circular(8) : Radius.zero,
+                          right: end ? const Radius.circular(8) : Radius.zero,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+              ...banners.map((info) {
+                final (color, list) = info;
+
+                final banner = list.first;
+                final src = banner.dateStart.isAtSameDayAs(date);
+                final end = banner.dateEnd.isAtSameDayAs(date);
+                final message = list.map((e) => e.name).join('\n');
+
+                return Positioned.fill(
+                  top: null,
+                  left: src ? _kItemSize / 2 + 4 : 0,
+                  right: end ? _kItemSize / 2 + 4 : 0,
+                  child: _ImagesTooltip(
+                    images: list.map((e) => e.image),
+                    message: message,
+                    child: Container(
+                      height: 4,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.horizontal(
+                          left: src ? const Radius.circular(8) : Radius.zero,
+                          right: end ? const Radius.circular(8) : Radius.zero,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+              Positioned(
+                right: 2,
+                bottom: 2,
+                child: Icon(
+                  showBirthday ? Icons.cake_rounded : null,
+                  size: 20,
+                  color: context.themeColors.almostWhite,
+                  shadows: const [
+                    BoxShadow(offset: Offset(1, 1), blurRadius: 5),
+                  ],
+                ),
+              ),
+              if (showVersion)
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Transform.translate(
+                    offset: const Offset(12, 12),
+                    child: Banner(
+                      message: version.id,
+                      color: context.themeColors.primary80,
+                      location: BannerLocation.bottomEnd,
+                    ),
+                  ),
+                ),
+              Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                margin: const EdgeInsets.all(kSeparator2),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.themeColors.mainColor0.withValues(alpha: 0.4),
+                  border: Border.all(
+                    color: context.themeColors.mainColor1,
+                    width: 2,
+                  ),
+                ),
+                child: Text(
+                  date.day.toString(),
+                  style: context.themeStyles.label12n,
+                  strutStyle: context.themeStyles.label12n.toStrut(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

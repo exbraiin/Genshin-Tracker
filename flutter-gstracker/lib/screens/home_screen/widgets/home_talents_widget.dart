@@ -72,8 +72,17 @@ class HomeTalentsWidget extends StatelessWidget {
               title: Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      '${context.labels.talents()} - ${today.getLabel(context)}',
+                    child: Row(
+                      children: [
+                        Text(context.labels.talents()),
+                        Text(
+                          ' \u2022 ${today.getLabel(context)}',
+                          style: context.themeStyles.label14b.copyWith(
+                            color: context.themeColors.sectionContent,
+                          ),
+                          strutStyle: context.themeStyles.label14b.toStrut(),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(width: kSeparator4),

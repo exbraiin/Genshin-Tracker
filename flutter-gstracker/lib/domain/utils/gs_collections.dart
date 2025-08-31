@@ -1,6 +1,5 @@
 import 'package:dartx/dartx.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/common/utils/logger.dart';
 import 'package:tracker/domain/gs_database.dart';
 
 final class GuCollections {
@@ -80,14 +79,5 @@ final class GuCollections {
     );
     late final hasWish = svWishes.items.any((e) => e.itemId == id);
     return hasEvent || hasWish;
-  }
-}
-
-R measurePerformance<R>(String label, R Function() test) {
-  final stop = Stopwatch()..start();
-  try {
-    return test();
-  } finally {
-    Monitor.debug('Test $label in ${(stop..stop()).elapsedMilliseconds}ms');
   }
 }

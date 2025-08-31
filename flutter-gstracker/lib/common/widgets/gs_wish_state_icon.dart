@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
-import 'package:tracker/domain/gs_database.utils.dart';
+import 'package:tracker/domain/utils/gs_utils.dart';
 
 class GsWishStateIcon extends StatelessWidget {
   final Color color;

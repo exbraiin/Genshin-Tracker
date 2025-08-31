@@ -1,7 +1,7 @@
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gsdatabase/gsdatabase.dart';
-import 'package:tracker/domain/utils/_gu_collections.dart';
+import 'package:tracker/domain/utils/gs_collections.dart';
 
 enum WishState { none, won, lost, guaranteed }
 
@@ -60,141 +60,132 @@ final class GuWishes {
 
   /// Gets all saved wishes summary for a banner [type] in ascending order.
   List<WishSummary> getSaveWishesSummaryByBannerType(GeBannerType type) {
-    return measurePerformance('getSaveWishesSummaryByBannerType($type)', () {
-      final l = getReleasedInfoBannerByType(type).map((e) => e.id);
-      final wishes =
-          _items.svWishes.items.where((e) => l.contains(e.bannerId)).sorted();
+    final l = getReleasedInfoBannerByType(type).map((e) => e.id);
+    final wishes =
+        _items.svWishes.items.where((e) => l.contains(e.bannerId)).sorted();
 
-      WishState getWishState(
-        String itemId,
-        WishState lastState,
-        Iterable<String>? featured,
-      ) {
-        if (type == GeBannerType.weapon) return WishState.none;
-        if (type.isPermanent || featured == null) return WishState.none;
-        final isFeatured = featured.contains(itemId);
-        if (!isFeatured) return WishState.lost;
-        if (lastState == WishState.lost) return WishState.guaranteed;
-        return WishState.won;
+    WishState getWishState(
+      String itemId,
+      WishState lastState,
+      Iterable<String>? featured,
+    ) {
+      if (type == GeBannerType.weapon) return WishState.none;
+      if (type.isPermanent || featured == null) return WishState.none;
+      final isFeatured = featured.contains(itemId);
+      if (!isFeatured) return WishState.lost;
+      if (lastState == WishState.lost) return WishState.guaranteed;
+      return WishState.won;
+    }
+
+    var l4 = 0, l5 = 0;
+    var s4 = WishState.none, s5 = WishState.none;
+    final list = <WishSummary>[];
+    for (final wish in wishes) {
+      l4++;
+      l5++;
+
+      final item = _items.getWishItem(wish.itemId);
+      late final banner = _items.inBanners.getItem(wish.bannerId);
+
+      if (item.rarity == 5) {
+        final state = getWishState(wish.itemId, s5, banner?.feature5);
+        final tuple = (item: item, wish: wish, state: state, pity: l5);
+        list.add(tuple);
+        l5 = 0;
+        s5 = state;
+      } else if (item.rarity == 4) {
+        final state = getWishState(wish.itemId, s4, banner?.feature4);
+        final tuple = (item: item, wish: wish, state: state, pity: l4);
+        list.add(tuple);
+        l4 = 0;
+        s4 = state;
+      } else {
+        final tuple = (item: item, wish: wish, state: WishState.none, pity: 1);
+        list.add(tuple);
       }
+    }
 
-      var l4 = 0, l5 = 0;
-      var s4 = WishState.none, s5 = WishState.none;
-      final list = <WishSummary>[];
-      for (final wish in wishes) {
-        l4++;
-        l5++;
-
-        final item = _items.getWishItem(wish.itemId);
-        late final banner = _items.inBanners.getItem(wish.bannerId);
-
-        if (item.rarity == 5) {
-          final state = getWishState(wish.itemId, s5, banner?.feature5);
-          final tuple = (item: item, wish: wish, state: state, pity: l5);
-          list.add(tuple);
-          l5 = 0;
-          s5 = state;
-        } else if (item.rarity == 4) {
-          final state = getWishState(wish.itemId, s4, banner?.feature4);
-          final tuple = (item: item, wish: wish, state: state, pity: l4);
-          list.add(tuple);
-          l4 = 0;
-          s4 = state;
-        } else {
-          final tuple = (
-            item: item,
-            wish: wish,
-            state: WishState.none,
-            pity: 1,
-          );
-          list.add(tuple);
-        }
-      }
-
-      return list;
-    });
+    return list;
   }
 
   WishesSummary getWishesSummary(GeBannerType type) {
-    return measurePerformance('getWishesSummary($type)', () {
-      final wishes = getSaveWishesSummaryByBannerType(
-        type,
-      ).sortedByDescending((e) => e.wish);
+    final wishes = getSaveWishesSummaryByBannerType(
+      type,
+    ).sortedByDescending((e) => e.wish);
 
-      final info4 = <WishSummary>[];
-      final info4Weapon = <WishSummary>[];
-      final info4Character = <WishSummary>[];
-      final info5 = <WishSummary>[];
-      final info5Weapon = <WishSummary>[];
-      final info5Character = <WishSummary>[];
+    final info4 = <WishSummary>[];
+    final info4Weapon = <WishSummary>[];
+    final info4Character = <WishSummary>[];
+    final info5 = <WishSummary>[];
+    final info5Weapon = <WishSummary>[];
+    final info5Character = <WishSummary>[];
 
-      var l4 = 0, l4w = 0, l4c = 0;
-      var l5 = 0, l5w = 0, l5c = 0;
-      bool? is4Guaranteed, is5Guaranteed;
+    var l4 = 0, l4w = 0, l4c = 0;
+    var l5 = 0, l5w = 0, l5c = 0;
+    bool? is4Guaranteed, is5Guaranteed;
 
-      for (final item in wishes) {
-        if (item.item.rarity == 4) {
-          info4.add(item);
-          is4Guaranteed ??=
-              !(_items.inBanners
-                      .getItem(item.wish.bannerId)
-                      ?.feature4
-                      .contains(item.wish.itemId) ??
-                  true);
+    for (final item in wishes) {
+      if (item.item.rarity == 4) {
+        info4.add(item);
+        is4Guaranteed ??=
+            !(_items.inBanners
+                    .getItem(item.wish.bannerId)
+                    ?.feature4
+                    .contains(item.wish.itemId) ??
+                true);
 
-          if (item.item.isWeapon) {
-            info4Weapon.add(item);
-          } else {
-            info4Character.add(item);
-          }
-        } else if (item.item.rarity == 5) {
-          info5.add(item);
-          is5Guaranteed ??=
-              !(_items.inBanners
-                      .getItem(item.wish.bannerId)
-                      ?.feature5
-                      .contains(item.wish.itemId) ??
-                  true);
-          if (item.item.isWeapon) {
-            info5Weapon.add(item);
-          } else {
-            info5Character.add(item);
-          }
+        if (item.item.isWeapon) {
+          info4Weapon.add(item);
+        } else {
+          info4Character.add(item);
         }
-        if (info4.isEmpty) {
-          l4++;
-          if (info4Weapon.isEmpty) l4w++;
-          if (info4Character.isEmpty) l4c++;
-        }
-        if (info5.isEmpty) {
-          l5++;
-          if (info5Weapon.isEmpty) l5w++;
-          if (info5Character.isEmpty) l5c++;
+      } else if (item.item.rarity == 5) {
+        info5.add(item);
+        is5Guaranteed ??=
+            !(_items.inBanners
+                    .getItem(item.wish.bannerId)
+                    ?.feature5
+                    .contains(item.wish.itemId) ??
+                true);
+        if (item.item.isWeapon) {
+          info5Weapon.add(item);
+        } else {
+          info5Character.add(item);
         }
       }
-
-      WishesInfo getWishInfo(List<WishSummary> list, int last) {
-        return (
-          last: last,
-          total: list.length,
-          average: list.isNotEmpty ? list.averageBy((e) => e.pity) : 0.0,
-          percentage: list.length * 100 / wishes.length.coerceAtLeast(1),
-          wishes: list,
-        );
+      if (info4.isEmpty) {
+        l4++;
+        if (info4Weapon.isEmpty) l4w++;
+        if (info4Character.isEmpty) l4c++;
       }
+      if (info5.isEmpty) {
+        l5++;
+        if (info5Weapon.isEmpty) l5w++;
+        if (info5Character.isEmpty) l5c++;
+      }
+    }
 
-      return WishesSummary(
-        total: wishes.length,
-        isNext4Guaranteed: is4Guaranteed ?? false,
-        isNext5Guaranteed: is5Guaranteed ?? false,
-        info4: getWishInfo(info4, l4),
-        info4Weapon: getWishInfo(info4Weapon, l4w),
-        info4Character: getWishInfo(info4Character, l4c),
-        info5: getWishInfo(info5, l5),
-        info5Weapon: getWishInfo(info5Weapon, l5w),
-        info5Character: getWishInfo(info5Character, l5c),
+    WishesInfo getWishInfo(List<WishSummary> list, int last) {
+      return (
+        last: last,
+        total: list.length,
+        average: list.isNotEmpty ? list.averageBy((e) => e.pity) : 0.0,
+        percentage: list.length * 100 / wishes.length.coerceAtLeast(1),
+        wishes: list,
       );
-    });
+    }
+
+    return WishesSummary(
+      total: wishes.length,
+      isNext4Guaranteed: is4Guaranteed ?? false,
+      isNext5Guaranteed: is5Guaranteed ?? false,
+      info4: getWishInfo(info4, l4),
+      info4Weapon: getWishInfo(info4Weapon, l4w),
+      info4Character: getWishInfo(info4Character, l4c),
+      info5: getWishInfo(info5, l5),
+      info5Weapon: getWishInfo(info5Weapon, l5w),
+      info5Character: getWishInfo(info5Character, l5c),
+    );
   }
 
   Future<WishesSummary> getWishesSummaryAsync(GeBannerType type) {

@@ -8,7 +8,7 @@ import 'package:gsdatabase/gsdatabase.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tracker/common/utils/network.dart';
 
-export 'package:tracker/domain/gs_database.utils.dart';
+export 'package:tracker/domain/utils/gs_utils.dart';
 
 const _kDataPath = 'data/db/data.json';
 const _kSavePath = 'data/db/save.json';

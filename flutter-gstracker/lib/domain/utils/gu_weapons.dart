@@ -1,5 +1,5 @@
 import 'package:dartx/dartx.dart';
-import 'package:tracker/domain/utils/_gu_collections.dart';
+import 'package:tracker/domain/utils/gs_collections.dart';
 
 final class GuWeapons {
   final GuCollections _items;

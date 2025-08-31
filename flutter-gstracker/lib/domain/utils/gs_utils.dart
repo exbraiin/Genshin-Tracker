@@ -1,5 +1,5 @@
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/domain/utils/_gu_collections.dart';
+import 'package:tracker/domain/utils/gs_collections.dart';
 import 'package:tracker/domain/utils/gu_achievements.dart';
 import 'package:tracker/domain/utils/gu_characters.dart';
 import 'package:tracker/domain/utils/gu_envisaged_echos.dart';
@@ -16,9 +16,8 @@ import 'package:tracker/domain/utils/gu_versions.dart';
 import 'package:tracker/domain/utils/gu_weapons.dart';
 import 'package:tracker/domain/utils/gu_wishes.dart';
 
-export 'utils/gu_characters.dart' show CharInfo, CharTalents, CharTalentType;
-export 'utils/gu_wishes.dart'
-    show WishState, WishSummary, WishesSummary, WishesInfo;
+export 'gu_characters.dart' show CharInfo, CharTalents, CharTalentType;
+export 'gu_wishes.dart' show WishState, WishSummary, WishesSummary, WishesInfo;
 
 /// {@template db_update}
 /// Updates db collection

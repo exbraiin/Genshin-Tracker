@@ -1,5 +1,5 @@
 import 'package:gsdatabase/gsdatabase.dart' show GiSereniteaSet;
-import 'package:tracker/domain/utils/_gu_collections.dart';
+import 'package:tracker/domain/utils/gs_collections.dart';
 
 final class GuSereniteaSets {
   final GuCollections _items;
