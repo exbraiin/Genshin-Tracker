@@ -6,6 +6,10 @@ extension IterableWidgetExt on Iterable<Widget> {
   }
 }
 
+extension IterableMapEntry<K, V> on Iterable<MapEntry<K, V>> {
+  Map<K, V> toMap() => Map.fromEntries(this);
+}
+
 extension IterableExt<T> on Iterable<T> {
   Iterable<T> separate(T separator) sync* {
     final it = iterator;
@@ -16,7 +20,4 @@ extension IterableExt<T> on Iterable<T> {
       yield it.current;
     }
   }
-
-  Map<K, V> toMap<K, V>(K Function(T e) key, V Function(T e) value) =>
-      Map.fromEntries(map((e) => MapEntry(key(e), value(e))));
 }

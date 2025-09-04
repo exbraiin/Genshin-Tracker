@@ -35,9 +35,12 @@ final class GuItems {
         .groupBy((element) => element.value)
         .entries
         .where((element) => getMat(element.key)!.weekdays.contains(weekday))
-        .toMap(
-          (e) => _items.inMaterials.getItem(e.key)!,
-          (e) => e.value.map((e) => getItemData(e.key)).toList(),
-        );
+        .map((e) {
+          return MapEntry(
+            _items.inMaterials.getItem(e.key)!,
+            e.value.map((e) => getItemData(e.key)).toList(),
+          );
+        })
+        .toMap();
   }
 }

@@ -41,7 +41,8 @@ final class GuMaterials {
     return list
         .groupBy((e) => e.$1.id)
         .values
-        .toMap((e) => e.first.$1, (e) => e.sumBy((n) => n.$2));
+        .map((e) => MapEntry(e.first.$1, e.sumBy((n) => n.$2)))
+        .toMap();
   }
 
   /// Gets the character missing talent materials
@@ -68,7 +69,8 @@ final class GuMaterials {
     return list
         .groupBy((e) => e.$1.id)
         .values
-        .toMap((e) => e.first.$1, (e) => e.sumBy((n) => n.$2));
+        .map((e) => MapEntry(e.first.$1, e.sumBy((n) => n.$2)))
+        .toMap();
   }
 
   /// Gets the character missing ascension and talent materials
@@ -86,7 +88,8 @@ final class GuMaterials {
     return list
         .groupBy((e) => e.key.id)
         .values
-        .toMap((e) => e.first.key, (e) => e.sumBy((n) => n.value));
+        .map((e) => MapEntry(e.first.key, e.sumBy((n) => n.value)))
+        .toMap();
   }
 
   /// Gets all weapon ascension materials at level.
@@ -219,7 +222,8 @@ final class GuMaterials {
     return total.entries
         .map((e) => (_items.inMaterials.getItem(e.key), e.value))
         .where((e) => e.$1 != null && e.$2 > 0)
-        .toMap((e) => e.$1!, (e) => e.$2);
+        .map((e) => MapEntry(e.$1!, e.$2))
+        .toMap();
   }
 }
 

@@ -111,10 +111,10 @@ class EnkaPlayerInfo {
       theaterStar: info.getInt('theaterStarIndex'),
       stygianIndex: info.getInt('stygianIndex'),
       stygianSeconds: info.getInt('stygianSeconds'),
-      avatars: avatars.toMap(
-        (e) => e.getString('avatarId'),
-        (e) => e.getInt('level'),
-      ),
+      avatars:
+          avatars
+              .map((e) => MapEntry(e.getString('avatarId'), e.getInt('level')))
+              .toMap(),
     );
   }
 

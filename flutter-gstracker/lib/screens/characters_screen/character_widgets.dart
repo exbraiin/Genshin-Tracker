@@ -32,7 +32,7 @@ class CharaterTalentsLabel extends StatelessWidget {
                 return Text(
                   '$value',
                   style: style.copyWith(
-                    color: hasExtra ? Colors.lightBlue : null,
+                    color: hasExtra ? context.themeColors.extraTalent : null,
                   ),
                   strutStyle: style.toStrut(),
                 );

@@ -62,7 +62,10 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color setIndoor;
   final Color setOutdoor;
 
-  Color get starColor => Color(0xFFFFCC32);
+  final Color starColor = Color(0xFFFFCC32);
+  final Color extraTalent = Colors.lightBlue;
+  final Color bannerCurrent = Colors.lightBlue;
+  final Color bannerUpcoming = Colors.orange;
 
   Color get primary60 => Color.lerp(Colors.black, primary, 0.6)!;
   Color get primary80 => Color.lerp(Colors.black, primary, 0.8)!;

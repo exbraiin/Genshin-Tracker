@@ -19,10 +19,11 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
+        final version = GsUtils.versions.getName(item.version);
         return ItemDetailsCard(
           name: item.name,
           fgImage: item.image,
-          info: Align(alignment: Alignment.topLeft, child: Text(item.version)),
+          info: Align(alignment: Alignment.topLeft, child: Text(version)),
           contentPadding: EdgeInsets.all(kSeparator16),
           child: _content(context),
         );
@@ -107,13 +108,14 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       );
     }
 
+    final version = GsUtils.versions.getName(item.version);
     return Column(
       spacing: kSeparator16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ItemDetailsCardInfo.section(
           title: Text(context.labels.version()),
-          content: Text(item.version),
+          content: Text(version),
         ),
         ...<Widget?>[
           mapItems(

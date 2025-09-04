@@ -29,4 +29,8 @@ final class GuVersions {
     );
     return current;
   }
+
+  String getName(String version) {
+    return _items.inVersions.getItem(version)?.version ?? version;
+  }
 }

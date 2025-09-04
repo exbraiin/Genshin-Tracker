@@ -59,17 +59,12 @@ class RemarkableChestDetailsCard extends StatelessWidget
               const Spacer(),
               Align(
                 alignment: Alignment.bottomRight,
-                child: GsIconButton(
-                  size: 26,
-                  color:
-                      owned
-                          ? context.themeColors.goodValue
-                          : context.themeColors.badValue,
-                  icon: owned ? Icons.check : Icons.close,
+                child: GsIconButton.owned(
+                  owned: owned,
                   onPress:
-                      () => GsUtils.furnitureChests.update(
+                      (own) => GsUtils.furnitureChests.update(
                         item.id,
-                        obtained: !owned,
+                        obtained: own,
                       ),
                 ),
               ),

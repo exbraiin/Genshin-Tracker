@@ -32,6 +32,17 @@ abstract final class DateLabels {
       _ => throw IndexError.withLength(month, 12),
     };
   }
+
+  static String format(BuildContext context, DateTime from, DateTime to) {
+    String formatDate(DateTime date, {bool showYear = false}) {
+      final m = DateLabels.humanizedMonth(context, date.month);
+      final f = '${date.day.toString().padLeft(2, '0')} ${m.substring(0, 3)}';
+      return '$f${showYear ? ' ${date.year.toString().padLeft(4, '0')}' : ''}';
+    }
+
+    final showYear = from.year != to.year;
+    return '${formatDate(from, showYear: showYear)} - ${formatDate(to, showYear: true)}';
+  }
 }
 
 extension DateTimeExt on DateTime {
@@ -50,18 +61,5 @@ extension DateTimeExt on DateTime {
     final d = day.toString().padLeft(2, '0');
     final m = month.toString().padLeft(2, '0');
     return '$m/$d';
-  }
-}
-
-abstract class DateTimeUtils {
-  static String format(BuildContext context, DateTime from, DateTime to) {
-    String formatDate(DateTime date, {bool showYear = false}) {
-      final m = DateLabels.humanizedMonth(context, date.month);
-      final f = '${date.day.toString().padLeft(2, '0')} ${m.substring(0, 3)}';
-      return '$f${showYear ? ' ${date.year.toString().padLeft(4, '0')}' : ''}';
-    }
-
-    final showYear = from.year != to.year;
-    return '${formatDate(from, showYear: showYear)} - ${formatDate(to, showYear: true)}';
   }
 }

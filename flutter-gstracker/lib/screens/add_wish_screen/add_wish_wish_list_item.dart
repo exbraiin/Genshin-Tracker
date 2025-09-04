@@ -42,7 +42,7 @@ class AddWishWishListItem extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(2).copyWith(left: 4),
-            child: GsIconButton(icon: Icons.remove, onPress: onRemove),
+            child: GsIconButton.remove(onPress: onRemove),
           ),
         ],
       ),

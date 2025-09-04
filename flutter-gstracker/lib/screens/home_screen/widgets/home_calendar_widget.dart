@@ -420,7 +420,7 @@ class _CalendarDay extends StatelessWidget {
                   child: Transform.translate(
                     offset: const Offset(12, 12),
                     child: Banner(
-                      message: version.id,
+                      message: GsUtils.versions.getName(version.id),
                       color: context.themeColors.primary80,
                       location: BannerLocation.bottomEnd,
                     ),

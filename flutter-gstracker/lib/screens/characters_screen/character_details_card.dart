@@ -138,11 +138,11 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return GsItemCardLabel(
       label: info?.talents?.talentWithExtra(tal).toString() ?? '-',
       onTap: () => GsUtils.characters.increaseTalent(item.id, tal),
-      fgColor:
-          (c) =>
-              info?.talents?.hasExtra(tal) ?? false
-                  ? Colors.lightBlue
-                  : Colors.white,
+      fgColor: (ctx) {
+        return info?.talents?.hasExtra(tal) ?? false
+            ? ctx.themeColors.extraTalent
+            : Colors.white;
+      },
     );
   }
 
@@ -152,23 +152,19 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     final stStyle = style.copyWith(color: Colors.white);
     final db = Database.instance.infoOf<GsRecipe>();
     final dish = db.getItem(info.specialDish);
+    final version = GsUtils.versions.getName(info.version);
 
+    final labels = context.labels;
     final data = <String, Widget>{
-      context.labels.version(): Text(info.version, style: stStyle),
-      context.labels.element(): Text(
-        info.element.label(context),
-        style: stStyle,
-      ),
-      context.labels.weapon(): Text(info.weapon.label(context), style: stStyle),
-      context.labels.region(): Text(info.region.label(context), style: stStyle),
-      context.labels.constellation(): Text(info.constellation),
-      context.labels.affiliation(): Text(info.affiliation, style: stStyle),
-      context.labels.birthday(): Text(info.birthday.toPrettyDate(context)),
-      context.labels.releaseDate(): Text(
-        info.releaseDate.toPrettyDate(context),
-        style: stStyle,
-      ),
-      context.labels.specialDish():
+      labels.version(): Text(version),
+      labels.element(): Text(info.element.label(context)),
+      labels.weapon(): Text(info.weapon.label(context)),
+      labels.region(): Text(info.region.label(context)),
+      labels.constellation(): Text(info.constellation),
+      labels.affiliation(): Text(info.affiliation),
+      labels.birthday(): Text(info.birthday.toPrettyDate(context)),
+      labels.releaseDate(): Text(info.releaseDate.toPrettyDate(context)),
+      labels.specialDish():
           dish != null
               ? Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -178,7 +174,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                   ItemGridWidget.recipe(dish, tooltip: ''),
                 ],
               )
-              : Text(context.labels.wsNone(), style: stStyle),
+              : Text(labels.wsNone()),
     };
 
     return GsDataBox.info(

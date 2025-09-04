@@ -33,7 +33,7 @@ class AchievementListItem extends StatelessWidget {
             GsItemCardLabel.chip(label: item.type.label(context)),
             const SizedBox(width: kSeparator4),
           ],
-          GsItemCardLabel.chip(label: item.version),
+          GsItemCardLabel.chip(label: GsUtils.versions.getName(item.version)),
         ],
       ),
       child: Column(

@@ -28,7 +28,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
   )?
   actions;
   final Widget? itemCardFooter;
-  final Comparable<String> Function(T item)? versionSort;
+  final String Function(T item)? versionSort;
   final Widget Function(BuildContext context, T item)? itemCardBuilder;
   final Widget Function(BuildContext context, ItemState<T> state) itemBuilder;
 
@@ -94,7 +94,7 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
 
   Iterable<T> _sortedItems(
     Iterable<T> items, [
-    Comparable<String> Function(T)? versionSort,
+    String Function(T)? versionSort,
   ]) {
     final comparator = switch (sortOrder) {
       SortOrder.none => null,
@@ -102,13 +102,18 @@ class InventoryListPage<T extends GsModel<T>> extends StatelessWidget {
       SortOrder.descending => (T a, T b) => b.compareTo(a),
     };
 
+    GsVersion getVersion(String id) {
+      final version = Database.instance.infoOf<GsVersion>().getItem(id);
+      return version ?? GsVersion.fromJson({'id': id});
+    }
+
     if (versionSort != null) {
       if (comparator != null) {
         return items
-            .sortedByDescending((e) => versionSort(e))
+            .sortedByDescending((e) => getVersion(versionSort(e)))
             .thenWith(comparator);
       }
-      return items.sortedByDescending((e) => versionSort(e));
+      return items.sortedByDescending((e) => getVersion(versionSort(e)));
     }
 
     if (comparator != null) {

@@ -19,13 +19,13 @@ class GsItemBanner {
     if (GsUtils.versions.isUpcomingVersion(version)) {
       return GsItemBanner(
         text: context.labels.itemUpcoming(),
-        color: Colors.orange,
+        color: context.themeColors.bannerUpcoming,
       );
     }
     if (GsUtils.versions.isCurrentVersion(version)) {
       return GsItemBanner(
         text: context.labels.itemNew(),
-        color: Colors.lightBlue,
+        color: context.themeColors.bannerCurrent,
       );
     }
     return const GsItemBanner(text: '');
@@ -35,7 +35,8 @@ class GsItemBanner {
     final widget = GsItemBanner.isNewOrUpcoming(context, version);
     if (widget.text.isNotEmpty) return widget;
 
-    return GsItemBanner(text: version, color: context.themeColors.mainColor1);
+    final label = GsUtils.versions.getName(version);
+    return GsItemBanner(text: label, color: context.themeColors.mainColor1);
   }
 }
 

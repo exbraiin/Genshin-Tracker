@@ -34,7 +34,8 @@ class GsCircleIcon extends StatelessWidget {
 class GsIconButton extends StatelessWidget {
   final IconData icon;
   final double size;
-  final Color color;
+  final Color? color;
+  final Color Function(BuildContext color)? onColor;
   final VoidCallback? onPress;
 
   const GsIconButton({
@@ -42,11 +43,37 @@ class GsIconButton extends StatelessWidget {
     required this.icon,
     this.size = 24,
     this.onPress,
-    this.color = Colors.black,
+    this.onColor,
+    this.color,
   });
+
+  factory GsIconButton.owned({
+    required bool owned,
+    required void Function(bool own) onPress,
+  }) {
+    return GsIconButton(
+      size: 26,
+      onColor:
+          (context) =>
+              owned
+                  ? context.themeColors.goodValue
+                  : context.themeColors.badValue,
+      icon: owned ? Icons.check : Icons.close,
+      onPress: () => onPress(!owned),
+    );
+  }
+
+  factory GsIconButton.add({VoidCallback? onPress}) {
+    return GsIconButton(icon: Icons.add, onPress: onPress);
+  }
+
+  factory GsIconButton.remove({VoidCallback? onPress}) {
+    return GsIconButton(icon: Icons.remove, onPress: onPress);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final color = this.color ?? onColor?.call(context) ?? Colors.black;
     return Opacity(
       opacity: onPress != null ? 1 : kDisableOpacity,
       child: InkWell(

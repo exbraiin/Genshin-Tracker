@@ -20,6 +20,7 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   Widget build(BuildContext context) {
     final weapons = GsUtils.events.getEventWeapons(item.id);
     final characters = GsUtils.events.getEventCharacters(item.id);
+    final version = GsUtils.versions.getName(item.version);
 
     return ItemDetailsCard(
       name: item.name,
@@ -43,7 +44,7 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
           ItemDetailsCardInfo.section(
             title: Text(context.labels.version()),
-            content: Text(item.version),
+            content: Text(version),
           ),
           if (weapons.isNotEmpty || characters.isNotEmpty)
             ItemDetailsCardInfo.section(
@@ -84,7 +85,7 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
 
   String _eventDuration(BuildContext context) {
     return item.dateStart.year != 0 && item.dateEnd.year != 0
-        ? '${DateTimeUtils.format(context, item.dateStart, item.dateEnd)} '
+        ? '${DateLabels.format(context, item.dateStart, item.dateEnd)} '
             '(${item.dateEnd.difference(item.dateStart).toShortTime(context)})'
         : context.labels.itemUpcoming();
   }

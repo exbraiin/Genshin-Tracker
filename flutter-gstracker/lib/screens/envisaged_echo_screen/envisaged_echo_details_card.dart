@@ -26,15 +26,10 @@ class EnvisagedEchoDetailsCard extends StatelessWidget {
           const Spacer(),
           Align(
             alignment: Alignment.bottomRight,
-            child: GsIconButton(
-              size: 26,
-              color:
-                  owned
-                      ? context.themeColors.goodValue
-                      : context.themeColors.badValue,
-              icon: owned ? Icons.check : Icons.close,
+            child: GsIconButton.owned(
+              owned: owned,
               onPress:
-                  () => GsUtils.envisagedEchos.update(item.id, own: !owned),
+                  (own) => GsUtils.envisagedEchos.update(item.id, own: own),
             ),
           ),
         ],

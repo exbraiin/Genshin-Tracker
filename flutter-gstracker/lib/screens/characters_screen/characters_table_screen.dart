@@ -336,7 +336,9 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
         return Text(
           value?.toString() ?? context.labels.tableEmpty(),
           textAlign: TextAlign.center,
-          style: TextStyle(color: hasExtra ? Colors.lightBlue : null),
+          style: TextStyle(
+            color: hasExtra ? context.themeColors.extraTalent : null,
+          ),
         );
       },
       onTap: (info) => GsUtils.characters.increaseTalent(info.item.id, tal),
@@ -477,11 +479,13 @@ class _MatsListState extends State<_MatsList> {
       final total =
           [...tals, ...ascs].groupBy((e) => e.$1.item.id).values.map((entry) {
             final item = entry.first.$1;
-            final mats = entry
-                .expand((e) => e.$2.entries)
-                .groupBy((e) => e.key.id)
-                .values
-                .toMap((e) => e.first.key, (e) => e.sumBy((e) => e.value));
+            final mats =
+                entry
+                    .expand((e) => e.$2.entries)
+                    .groupBy((e) => e.key.id)
+                    .values
+                    .map((e) => MapEntry(e.first.key, e.sumBy((n) => n.value)))
+                    .toMap();
 
             return (item, mats);
           }).toList();

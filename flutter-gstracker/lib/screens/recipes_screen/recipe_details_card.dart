@@ -54,18 +54,10 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 if (!isSpecial)
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: GsIconButton(
-                      size: 26,
-                      color:
-                          saved != null
-                              ? context.themeColors.goodValue
-                              : context.themeColors.badValue,
-                      icon: saved != null ? Icons.check : Icons.close,
+                    child: GsIconButton.owned(
+                      owned: saved != null,
                       onPress:
-                          () => GsUtils.recipes.update(
-                            item.id,
-                            own: saved == null,
-                          ),
+                          (own) => GsUtils.recipes.update(item.id, own: own),
                     ),
                   ),
                 if (!isSpecial && owned)

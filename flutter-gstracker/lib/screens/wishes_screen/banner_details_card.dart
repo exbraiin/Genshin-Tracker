@@ -226,8 +226,7 @@ class BannerDetailsCard extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              GsIconButton(
-                icon: Icons.remove,
+              GsIconButton.remove(
                 onPress:
                     GsUtils.wishes.bannerHasWishes(item.id)
                         ? () {
@@ -239,8 +238,7 @@ class BannerDetailsCard extends StatelessWidget {
                         : null,
               ),
               const SizedBox(height: kSeparator8),
-              GsIconButton(
-                icon: Icons.add,
+              GsIconButton.add(
                 onPress:
                     () => Navigator.of(
                       context,

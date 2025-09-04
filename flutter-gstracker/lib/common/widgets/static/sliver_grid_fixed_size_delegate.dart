@@ -27,10 +27,9 @@ class SliverGridDelegateWithFixedChildSize extends SliverGridDelegate {
       crossAxisSize = childHeight;
     }
 
-    final crossAxisCount =
-        ((constraints.crossAxisExtent + crossAxisSpacing) /
-                (crossAxisSize + crossAxisSpacing))
-            .floor();
+    final itemSize = crossAxisSize + crossAxisSpacing;
+    final totalSize = constraints.crossAxisExtent + crossAxisSpacing;
+    final crossAxisCount = (totalSize / itemSize).floor().atLeast(1);
 
     late final remainingSpace =
         constraints.crossAxisExtent -
@@ -67,6 +66,10 @@ class SliverGridDelegateWithFixedChildSize extends SliverGridDelegate {
   bool shouldRelayout(covariant SliverGridDelegate oldDelegate) {
     return true;
   }
+}
+
+extension on int {
+  int atLeast(int min) => this < min ? min : this;
 }
 
 class _CustomLayout extends SliverGridRegularTileLayout {
