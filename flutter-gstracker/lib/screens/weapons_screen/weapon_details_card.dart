@@ -10,7 +10,7 @@ import 'package:tracker/common/widgets/text_style_parser.dart';
 import 'package:tracker/common/widgets/value_notifier_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
-import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/screens/widgets/materials_table.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
 class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
@@ -77,7 +77,7 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               if (item.rarity.between(1, 5))
                 ItemDetailsCardInfo.section(
                   title: Text(context.labels.materials()),
-                  content: _materialsList(item),
+                  content: _materialsList(context, item),
                 ),
               if (obtained > 0)
                 ItemDetailsCardInfo.description(
@@ -98,16 +98,22 @@ class WeaponDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     );
   }
 
-  Widget _materialsList(GsWeapon info) {
+  Widget _materialsList(BuildContext context, GsWeapon info) {
     final iw = GsUtils.materials;
     final mats = iw.getWeaponAscension(info);
-    return Wrap(
-      spacing: GsSpacing.kGridSeparator,
-      runSpacing: GsSpacing.kGridSeparator,
-      children:
-          mats.entries.sortedWith((a, b) => a.key.compareTo(b.key)).map((e) {
-            return ItemGridWidget.material(e.key, label: e.value.compact());
-          }).toList(),
+    final perLvl = iw.getWeaponAscensionByLevel(info);
+
+    int existance(String? id) {
+      if (id == null) return 0;
+      return mats.any((k, v) => k.id == id) ? 1 : 0;
+    }
+
+    return MaterialsTable(
+      matsTotal: mats,
+      matsByLevel: perLvl,
+      levelLabel: (l) => '${context.labels.levelShort()} $l',
+      sort: (list) => list.sortedBy((e) => existance(e.key.id)),
+      color: context.themeColors.sectionContent,
     );
   }
 

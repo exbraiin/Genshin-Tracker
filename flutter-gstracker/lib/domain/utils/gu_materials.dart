@@ -118,12 +118,26 @@ final class GuMaterials {
     );
   }
 
+  /// Gets weapon ascension materials by level.
+  List<(int, Map<GsMaterial, int>)> getWeaponAscensionByLevel(GsWeapon item) {
+    final list = WeaponAsc.values[item.rarity.clamp(1, 5) - 1];
+    return List.generate(
+      list.length - 2,
+      (i) => (list[i].level, getWeaponAscension(item, i + 1)),
+    );
+  }
+
   /// Gets all character ascension materials at level.
   /// * Level should be null or between [2, 10]
   Map<GsMaterial, int> getCharAscensionById(String id, [int? level]) {
     final info = _items.inCharacters.getItem(id);
     if (info == null) return const {};
     return getCharAscension(info, level);
+  }
+
+  /// Gets character ascension materials by level.
+  List<(int, Map<GsMaterial, int>)> getCharAscensionByLevel(GsCharacter info) {
+    return List.generate(6, (i) => (i + 1, getCharAscension(info, i + 1)));
   }
 
   /// Gets all character ascension materials at level.
@@ -158,6 +172,12 @@ final class GuMaterials {
   /// * Returns materials for all 3 talents.
   Map<GsMaterial, int> getAllCharTalents(GsCharacter info) {
     return getCharTalent(info).map((k, v) => MapEntry(k, v * 3));
+  }
+
+  /// Gets character talent materials by level.
+  /// * Returns materials for all 1 talent.
+  List<(int, Map<GsMaterial, int>)> getCharTalentsByLevel(GsCharacter info) {
+    return List.generate(9, (i) => (i + 2, getCharTalent(info, i + 2)));
   }
 
   /// Gets all character talent materials at level.

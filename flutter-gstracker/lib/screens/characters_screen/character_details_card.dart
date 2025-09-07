@@ -13,6 +13,7 @@ import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/widgets/ascension_status.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
+import 'package:tracker/screens/widgets/materials_table.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
 class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
@@ -108,23 +109,23 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               Padding(
                 padding: const EdgeInsets.only(top: kSeparator6),
                 child: Column(
-                  children:
-                      [
-                        Text(
-                          item.description,
-                          style: context.themeStyles.label12n.copyWith(
-                            color: context.themeColors.almostWhite,
-                          ),
-                        ),
-                        _getAttributes(context, item),
-                        _getStats(context, item),
-                        _getMaterials(context, item),
-                        if (hasChar)
-                          Text(
-                            context.labels.amountObtained(owned),
-                            style: context.themeStyles.label12i,
-                          ),
-                      ].separate(const SizedBox(height: kSeparator8)).toList(),
+                  spacing: kSeparator8,
+                  children: [
+                    Text(
+                      item.description,
+                      style: context.themeStyles.label12n.copyWith(
+                        color: context.themeColors.almostWhite,
+                      ),
+                    ),
+                    _getAttributes(context, item),
+                    _getStats(context, item),
+                    _getMaterials(context, item),
+                    if (hasChar)
+                      Text(
+                        context.labels.amountObtained(owned),
+                        style: context.themeStyles.label12i,
+                      ),
+                  ],
                 ),
               ),
             ],
@@ -226,6 +227,8 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     final ic = GsUtils.materials;
     final tltMats = ic.getAllCharTalents(item);
     final ascMats = ic.getCharAscension(item);
+    final ascLvl = ic.getCharAscensionByLevel(item);
+    final tltLvl = ic.getCharTalentsByLevel(item);
 
     int existance(String? id) {
       if (id == null) return 0;
@@ -234,69 +237,29 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       return a + b;
     }
 
-    TableRow getTableRow(
-      String label,
-      Map<GsMaterial, int> mats,
-      Widget Function(MapEntry<GsMaterial, int> e) mapper,
-    ) {
-      return TableRow(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(kSeparator8),
-            child: Text(
-              label,
-              style: context.textTheme.titleSmall!.copyWith(
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: kSeparator4),
-            child: Wrap(
-              spacing: kSeparator4,
-              runSpacing: kSeparator4,
-              textDirection: TextDirection.rtl,
-              children:
-                  mats.entries
-                      .sortedBy((e) => existance(e.key.id))
-                      .thenBy((e) => e.key.group.index)
-                      .thenBy((e) => e.key.subgroup)
-                      .thenBy((e) => e.key.rarity)
-                      .thenBy((e) => e.key.name)
-                      .reversed
-                      .map(mapper)
-                      .toList(),
-            ),
-          ),
-        ],
-      );
-    }
-
-    return GsDataBox.info(
-      bgColor: bgColor,
-      title: Text(context.labels.materials()),
-      child: Table(
-        columnWidths: const {0: IntrinsicColumnWidth()},
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        border: TableBorder(
-          horizontalInside: BorderSide(
-            color: context.themeColors.divider,
-            width: 0.4,
+    return Column(
+      spacing: kSeparator8,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        GsDataBox.info(
+          bgColor: bgColor,
+          title: Text(context.labels.ascension()),
+          child: MaterialsTable(
+            matsTotal: ascMats,
+            matsByLevel: ascLvl,
+            sort: (list) => list.sortedBy((e) => existance(e.key.id)),
           ),
         ),
-        children: [
-          getTableRow(
-            context.labels.ascension(),
-            ascMats,
-            (e) => ItemGridWidget.material(e.key, label: e.value.compact()),
+        GsDataBox.info(
+          bgColor: bgColor,
+          title: Text(context.labels.talents()),
+          child: MaterialsTable(
+            matsTotal: tltMats,
+            matsByLevel: tltLvl,
+            sort: (list) => list.sortedBy((e) => existance(e.key.id)),
           ),
-          getTableRow(
-            context.labels.talents(),
-            tltMats,
-            (e) => ItemGridWidget.material(e.key, label: e.value.compact()),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
