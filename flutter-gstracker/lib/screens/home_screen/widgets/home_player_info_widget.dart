@@ -25,6 +25,14 @@ class HomePlayerInfoWidget extends StatelessWidget {
       value: false,
       builder: (context, notifier, child) {
         final busy = notifier.value;
+
+        void busyFetch(String id) {
+          notifier.value = true;
+          _fetchAndInsert(id)
+              .onError((_, _) => GsUtils.playerConfigs.deletePlayerInfo())
+              .whenComplete(() => notifier.value = false);
+        }
+
         return ValueStreamBuilder<bool>(
           stream: Database.instance.loaded,
           builder: (context, snapshot) {
@@ -37,19 +45,19 @@ class HomePlayerInfoWidget extends StatelessWidget {
                   Expanded(
                     child: GsNumberField(
                       enabled: !busy,
-                      length: 9,
                       align: TextAlign.right,
                       onDbUpdate: () {
                         final info = GsUtils.playerConfigs.getPlayerInfo();
                         return int.tryParse(info?.uid ?? '') ?? 0;
                       },
                       onUpdate: (i) {
-                        if (info?.uid == i.toString()) return;
-                        if (i.toString().length != 9) {
+                        if (i == 0) {
                           GsUtils.playerConfigs.deletePlayerInfo();
                           return;
                         }
-                        _fetchAndInsert(i.toString());
+
+                        if (info?.uid == i.toString()) return;
+                        busyFetch(i.toString());
                       },
                     ),
                   ),
@@ -68,12 +76,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                         disabledColor: context.themeColors.dimWhite,
                         onPressed:
                             info != null && hasValidId
-                                ? () {
-                                  notifier.value = true;
-                                  _fetchAndInsert(
-                                    info.uid,
-                                  ).whenComplete(() => notifier.value = false);
-                                }
+                                ? () => busyFetch(info.uid)
                                 : null,
                         icon: const Icon(Icons.refresh_rounded),
                       ),
@@ -95,93 +98,99 @@ class HomePlayerInfoWidget extends StatelessWidget {
       style:
           context.textTheme.bodyMedium?.copyWith(color: Colors.white) ??
           const TextStyle(color: Colors.white),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              FutureBuilder(
-                future: EnkaService.i.getProfilePictureUrl(info.avatarId),
-                builder: (context, snapshot) {
-                  return Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                    foregroundDecoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 2,
-                        color: context.themeColors.almostWhite,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: kSeparator8,
+          vertical: kSeparator4,
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                FutureBuilder(
+                  future: EnkaService.i.getProfilePictureUrl(info.avatarId),
+                  builder: (context, snapshot) {
+                    return Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      foregroundDecoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          width: 2,
+                          color: context.themeColors.almostWhite,
+                        ),
                       ),
-                    ),
-                    child: ItemGridWidget(
-                      rarity: 0,
-                      size: kSize70,
-                      urlImage: snapshot.data ?? '',
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(width: kSeparator8),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      info.nickname,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                      child: ItemGridWidget(
+                        rarity: 0,
+                        size: kSize70,
+                        urlImage: snapshot.data ?? '',
                       ),
-                    ),
-                    Text(
-                      context.labels.cardPlayerArWl(
-                        info.level,
-                        info.worldLevel,
-                      ),
-                      maxLines: 1,
-                      style: TextStyle(color: context.themeColors.dimWhite),
-                    ),
-                    Text(
-                      info.signature,
-                      maxLines: 1,
-                      style: TextStyle(color: context.themeColors.dimWhite),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              ),
-              const SizedBox(width: kSeparator8),
-              _playerInfoTable(context, info),
-            ],
-          ),
-          const SizedBox(height: kSeparator8),
-          ...info.avatars.entries
-              .chunked(6)
-              .map<Widget>((list) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children:
-                      list
-                          .map((e) {
-                            final char = Database.instance
-                                .infoOf<GsCharacter>()
-                                .items
-                                .firstOrNullWhere((c) => c.enkaId == e.key);
-                            if (char == null) return const SizedBox();
-                            return ItemGridWidget.character(
-                              char,
-                              size: kSize56,
-                            );
-                          })
-                          .separate(
-                            const SizedBox(width: GsSpacing.kGridSeparator),
-                          )
-                          .toList(),
-                );
-              })
-              .separate(const SizedBox(height: GsSpacing.kGridSeparator)),
-        ],
+                const SizedBox(width: kSeparator8),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        info.nickname,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        context.labels.cardPlayerArWl(
+                          info.level,
+                          info.worldLevel,
+                        ),
+                        maxLines: 1,
+                        style: TextStyle(color: context.themeColors.dimWhite),
+                      ),
+                      Text(
+                        info.signature,
+                        maxLines: 1,
+                        style: TextStyle(color: context.themeColors.dimWhite),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: kSeparator8),
+                _playerInfoTable(context, info),
+              ],
+            ),
+            const SizedBox(height: kSeparator8),
+            ...info.avatars.entries
+                .chunked(6)
+                .map<Widget>((list) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children:
+                        list
+                            .map((e) {
+                              final char = Database.instance
+                                  .infoOf<GsCharacter>()
+                                  .items
+                                  .firstOrNullWhere((c) => c.enkaId == e.key);
+                              if (char == null) return const SizedBox();
+                              return ItemGridWidget.character(
+                                char,
+                                size: kSize56,
+                              );
+                            })
+                            .separate(
+                              const SizedBox(width: GsSpacing.kGridSeparator),
+                            )
+                            .toList(),
+                  );
+                })
+                .separate(const SizedBox(height: GsSpacing.kGridSeparator)),
+          ],
+        ),
       ),
     );
 

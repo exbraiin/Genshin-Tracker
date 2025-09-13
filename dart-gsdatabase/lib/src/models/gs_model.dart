@@ -12,7 +12,7 @@ abstract class GsModel<T extends GsModel<T>> implements Comparable<T> {
   int compareTo(T other) {
     return sorters
         .map((e) => e(this as T).compareTo(e(other)))
-        .firstWhere((e) => e != 0, orElse: () => this.id.compareTo(other.id));
+        .firstWhere((e) => e != 0, orElse: () => id.compareTo(other.id));
   }
 
   Iterable<Comparable Function(T a)> get sorters => [];

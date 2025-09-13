@@ -349,7 +349,7 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
 
     next = version;
     if (buffer.isNotEmpty) {
-      yield (version: version.id, items: buffer);
+      yield (version: version.version, items: buffer);
     }
   }
 }

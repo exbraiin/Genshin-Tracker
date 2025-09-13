@@ -55,13 +55,24 @@ class GsSelectChip<T> extends StatelessWidget {
             width: 50,
             height: 50,
             margin: const EdgeInsets.only(bottom: 4),
+            foregroundDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                width: 4,
+                color: selected ? Colors.white : Colors.transparent,
+              ),
+              color:
+                  selected
+                      ? Colors.transparent
+                      : Colors.black.withValues(alpha: 0.4),
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 width: 2,
                 color:
                     selected
-                        ? Colors.white
+                        ? Colors.black
                         : Color.lerp(item.color, Colors.white, 0.2)!,
               ),
               gradient: LinearGradient(
@@ -98,13 +109,17 @@ class GsSelectChip<T> extends StatelessWidget {
   Widget _selectChip(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 2, 8, 2),
+      foregroundDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(
+          width: 4,
+          color: selected ? Colors.white : Colors.transparent,
+        ),
+      ),
       decoration: BoxDecoration(
         border: Border.all(
           width: 2,
-          color:
-              selected
-                  ? Colors.white
-                  : Color.lerp(item.color, Colors.white, 0.2)!,
+          color: Color.lerp(item.color, Colors.white, 0.2)!,
         ),
         borderRadius: BorderRadius.circular(100),
         gradient: LinearGradient(

@@ -123,7 +123,7 @@ final class GuMaterials {
     final list = WeaponAsc.values[item.rarity.clamp(1, 5) - 1];
     return List.generate(
       list.length - 2,
-      (i) => (list[i].level, getWeaponAscension(item, i + 1)),
+      (i) => (list[i + 1].level, getWeaponAscension(item, i + 1)),
     );
   }
 

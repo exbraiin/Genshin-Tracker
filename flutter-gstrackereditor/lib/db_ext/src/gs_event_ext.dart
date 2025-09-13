@@ -1,4 +1,3 @@
-import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/ge_enums.dart';
 import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:data_editor/db_ext/datafield.dart';
@@ -73,18 +72,24 @@ class GsEventExt extends GsModelExt<GsEvent> {
         'Date End',
         (item) => item.dateEnd,
         (item, value) => item.copyWith(dateEnd: value),
-        validator:
-            (item) => switch (item.type) {
-              GeEventType.login => vdDateInterval(item.dateStart, item.dateEnd),
-              GeEventType.quest => vdPermanentDate(item.dateEnd),
-              GeEventType.permanent => vdPermanentDate(item.dateEnd),
-              _ =>
-                [
-                      vdDateInterval(item.dateStart, item.dateEnd),
-                      vdVersion.validateDate(item.version, item.dateEnd),
-                    ].maxBy((e) => e.index) ??
-                    GsValidLevel.none,
-            },
+        validator: (item) {
+          GsValidLevel validateEventEndDate() {
+            final it = vdDateInterval(item.dateStart, item.dateEnd);
+            if (it.index > GsValidLevel.warn1.index) return it;
+            final ot = vdVersion.validateDate(item.version, item.dateEnd);
+            if (ot.index < GsValidLevel.warn1.index) return ot;
+            return GsValidLevel.warn1;
+          }
+
+          return switch (item.type) {
+            GeEventType.none => GsValidLevel.error,
+            GeEventType.login => vdDateInterval(item.dateStart, item.dateEnd),
+            GeEventType.quest => vdPermanentDate(item.dateEnd),
+            GeEventType.permanent => vdPermanentDate(item.dateEnd),
+            GeEventType.event => validateEventEndDate(),
+            GeEventType.flagship => validateEventEndDate(),
+          };
+        },
       ),
       DataField.multiSelect<GsEvent, String>(
         'Weapon Rewards',

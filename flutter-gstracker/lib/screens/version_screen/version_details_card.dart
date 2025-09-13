@@ -23,6 +23,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         return ItemDetailsCard(
           name: item.name,
           fgImage: item.image,
+          version: item.version,
           info: Align(alignment: Alignment.topLeft, child: Text(version)),
           contentPadding: EdgeInsets.all(kSeparator16),
           child: _content(context),
