@@ -247,6 +247,9 @@ abstract final class AppAssets {
   /// Natlan.png
   static const natlan = 'assets/image/regions/Natlan.png';
 
+  /// Nod-Krai.png
+  static const nodKrai = 'assets/image/regions/Nod-Krai.png';
+
   /// Sumeru.png
   static const sumeru = 'assets/image/regions/Sumeru.png';
 

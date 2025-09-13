@@ -328,13 +328,8 @@ class ScreenFilters {
               ),
               const (GsAchievement) => ScreenFilter<GsAchievement>(
                 sections: [
-                  FilterSection.state(
+                  FilterSection.owned(
                     (item) => !GsUtils.achievements.isObtainable(item.id),
-                    (c) => c.labels.status(),
-                    (c, e) =>
-                        e
-                            ? c.labels.filterObtained()
-                            : c.labels.filterNotObtained(),
                     key: FilterKey.obtain,
                   ),
                   FilterSection<GeAchievementType, GsAchievement>(
@@ -353,6 +348,19 @@ class ScreenFilters {
               ),
               const (GsEvent) => ScreenFilter<GsEvent>(
                 sections: [
+                  FilterSection.owned(
+                    (item) {
+                      final collection = _db.saveOf<GiEventRewards>();
+                      final saved = collection.getItem(item.id);
+                      if (saved == null) return false;
+                      return saved.obtainedWeapons.isNotEmpty ||
+                          saved.obtainedCharacters.isNotEmpty;
+                    },
+                    filter:
+                        (item) =>
+                            item.rewardsWeapons.isNotEmpty ||
+                            item.rewardsCharacters.isNotEmpty,
+                  ),
                   FilterSection.version((item) => item.version),
                   FilterSection<GeEventType, GsEvent>(
                     GeEventType.values.toSet(),
@@ -418,13 +426,13 @@ class ScreenFilters {
               ),
               const (GsFurnitureChest) => ScreenFilter<GsFurnitureChest>(
                 sections: [
+                  FilterSection.owned(
+                    (item) => _db.saveOf<GiFurnitureChest>().exists(item.id),
+                  ),
                   FilterSection.rarity((item) => item.rarity),
                   FilterSection.version((item) => item.version),
                   FilterSection.region((item) => item.region),
                   FilterSection.setCategory((item) => item.type),
-                  FilterSection.owned(
-                    (item) => _db.saveOf<GiFurnitureChest>().exists(item.id),
-                  ),
                 ],
                 queryMatcher: (item) => item.name,
               ),
@@ -519,16 +527,11 @@ class ScreenFilters {
               ),
               const (GsSereniteaSet) => ScreenFilter<GsSereniteaSet>(
                 sections: [
+                  FilterSection.owned(
+                    (item) => !GsUtils.sereniteaSets.isObtainable(item.id),
+                  ),
                   FilterSection.version((item) => item.version),
                   FilterSection.setCategory((item) => item.category),
-                  FilterSection.state(
-                    (item) => !GsUtils.sereniteaSets.isObtainable(item.id),
-                    (c) => c.labels.status(),
-                    (c, e) =>
-                        e
-                            ? c.labels.filterObtained()
-                            : c.labels.filterNotObtained(),
-                  ),
                 ],
                 queryMatcher: (item) => item.name,
               ),

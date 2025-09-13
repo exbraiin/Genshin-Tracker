@@ -19,13 +19,12 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final version = GsUtils.versions.getName(item.version);
         return ItemDetailsCard(
           name: item.name,
           fgImage: item.image,
           version: item.version,
-          info: Align(alignment: Alignment.topLeft, child: Text(version)),
           contentPadding: EdgeInsets.all(kSeparator16),
+          showRarityStars: false,
           child: _content(context),
         );
       },

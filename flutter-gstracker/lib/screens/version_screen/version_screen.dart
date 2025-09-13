@@ -21,6 +21,12 @@ class VersionScreen extends StatelessWidget {
       title: context.labels.version(),
       actions: (hasExtra, toggle) {
         return [
+          Text(
+            'v${Database.instance.version}',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: kDisableOpacity),
+            ),
+          ),
           _TimeBuilder(
             builder: (context, child) {
               final seconds = Database.instance.cooldown.inSeconds;
@@ -50,13 +56,6 @@ class VersionScreen extends StatelessWidget {
               );
             },
           ),
-          Text(
-            'v${Database.instance.version}',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: kDisableOpacity),
-            ),
-          ),
-          const SizedBox(width: kSeparator4),
         ];
       },
       itemBuilder:
