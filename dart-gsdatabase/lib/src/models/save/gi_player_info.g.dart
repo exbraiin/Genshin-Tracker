@@ -68,24 +68,24 @@ class GiPlayerInfo extends _GiPlayerInfo {
 
   /// Creates a new [GiPlayerInfo] instance from the given map.
   GiPlayerInfo.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        uid = m['uid'] as String? ?? '',
-        avatarId = m['avatar_id'] as String? ?? '',
-        nickname = m['nickname'] as String? ?? '',
-        signature = m['signature'] as String? ?? '',
-        level = m['level'] as int? ?? 0,
-        worldLevel = m['world_level'] as int? ?? 0,
-        namecardId = m['namecard'] as int? ?? 0,
-        achievements = m['achievements'] as int? ?? 0,
-        towerFloor = m['tower_floor'] as int? ?? 0,
-        towerChamber = m['tower_chamber'] as int? ?? 0,
-        towerStars = m['tower_stars'] as int? ?? 0,
-        theaterAct = m['theater_act'] as int? ?? 0,
-        theaterMode = m['theater_mode'] as int? ?? 0,
-        theaterStars = m['theater_stars'] as int? ?? 0,
-        stygianIndex = m['stygian_index'] as int? ?? 0,
-        stygianSeconds = m['stygian_seconds'] as int? ?? 0,
-        avatars = (m['avatars'] as Map? ?? const {}).cast<String, int>();
+    : id = m['id'] as String? ?? '',
+      uid = m['uid'] as String? ?? '',
+      avatarId = m['avatar_id'] as String? ?? '',
+      nickname = m['nickname'] as String? ?? '',
+      signature = m['signature'] as String? ?? '',
+      level = m['level'] as int? ?? 0,
+      worldLevel = m['world_level'] as int? ?? 0,
+      namecardId = m['namecard'] as int? ?? 0,
+      achievements = m['achievements'] as int? ?? 0,
+      towerFloor = m['tower_floor'] as int? ?? 0,
+      towerChamber = m['tower_chamber'] as int? ?? 0,
+      towerStars = m['tower_stars'] as int? ?? 0,
+      theaterAct = m['theater_act'] as int? ?? 0,
+      theaterMode = m['theater_mode'] as int? ?? 0,
+      theaterStars = m['theater_stars'] as int? ?? 0,
+      stygianIndex = m['stygian_index'] as int? ?? 0,
+      stygianSeconds = m['stygian_seconds'] as int? ?? 0,
+      avatars = (m['avatars'] as Map? ?? const {}).cast<String, int>();
 
   /// Copies this model with the given parameters.
   @override

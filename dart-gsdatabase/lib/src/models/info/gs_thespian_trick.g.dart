@@ -35,13 +35,13 @@ class GsThespianTrick extends _GsThespianTrick {
 
   /// Creates a new [GsThespianTrick] instance from the given map.
   GsThespianTrick.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        season = m['season'] as int? ?? 0,
-        character = m['character'] as String? ?? '',
-        image = m['image'] as String? ?? '',
-        version = m['version'] as String? ?? '';
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      season = m['season'] as int? ?? 0,
+      character = m['character'] as String? ?? '',
+      image = m['image'] as String? ?? '',
+      version = m['version'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override

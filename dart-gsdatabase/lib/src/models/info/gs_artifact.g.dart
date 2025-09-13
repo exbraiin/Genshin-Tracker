@@ -44,18 +44,18 @@ class GsArtifact extends _GsArtifact {
 
   /// Creates a new [GsArtifact] instance from the given map.
   GsArtifact.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        region = GeRegionType.values.fromId(m['region']),
-        version = m['version'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        pc1 = m['1pc'] as String? ?? '',
-        pc2 = m['2pc'] as String? ?? '',
-        pc4 = m['4pc'] as String? ?? '',
-        domain = m['domain'] as String? ?? '',
-        pieces = (m['list_pieces'] as List? ?? const [])
-            .map((e) => GsArtifactPiece.fromJson(e))
-            .toList();
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      region = GeRegionType.values.fromId(m['region']),
+      version = m['version'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      pc1 = m['1pc'] as String? ?? '',
+      pc2 = m['2pc'] as String? ?? '',
+      pc4 = m['4pc'] as String? ?? '',
+      domain = m['domain'] as String? ?? '',
+      pieces = (m['list_pieces'] as List? ?? const [])
+          .map((e) => GsArtifactPiece.fromJson(e))
+          .toList();
 
   /// Copies this model with the given parameters.
   @override
@@ -126,11 +126,11 @@ class GsArtifactPiece extends _GsArtifactPiece {
 
   /// Creates a new [GsArtifactPiece] instance from the given map.
   GsArtifactPiece.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        icon = m['icon'] as String? ?? '',
-        desc = m['desc'] as String? ?? '',
-        type = GeArtifactPieceType.values.fromId(m['type']);
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      icon = m['icon'] as String? ?? '',
+      desc = m['desc'] as String? ?? '',
+      type = GeArtifactPieceType.values.fromId(m['type']);
 
   /// Copies this model with the given parameters.
   @override

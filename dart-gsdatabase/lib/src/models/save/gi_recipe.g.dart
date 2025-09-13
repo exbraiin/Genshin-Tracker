@@ -13,22 +13,16 @@ class GiRecipe extends _GiRecipe {
   final int proficiency;
 
   /// Creates a new [GiRecipe] instance.
-  GiRecipe({
-    required this.id,
-    required this.proficiency,
-  });
+  GiRecipe({required this.id, required this.proficiency});
 
   /// Creates a new [GiRecipe] instance from the given map.
   GiRecipe.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        proficiency = m['proficiency'] as int? ?? 0;
+    : id = m['id'] as String? ?? '',
+      proficiency = m['proficiency'] as int? ?? 0;
 
   /// Copies this model with the given parameters.
   @override
-  GiRecipe copyWith({
-    String? id,
-    int? proficiency,
-  }) {
+  GiRecipe copyWith({String? id, int? proficiency}) {
     return GiRecipe(
       id: id ?? this.id,
       proficiency: proficiency ?? this.proficiency,
@@ -38,9 +32,6 @@ class GiRecipe extends _GiRecipe {
   /// Creates a [JsonMap] from this model.
   @override
   JsonMap toMap() {
-    return {
-      'id': id,
-      'proficiency': proficiency,
-    };
+    return {'id': id, 'proficiency': proficiency};
   }
 }

@@ -38,14 +38,14 @@ class GsNamecard extends _GsNamecard {
 
   /// Creates a new [GsNamecard] instance from the given map.
   GsNamecard.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        type = GeNamecardType.values.fromId(m['type']),
-        version = m['version'] as String? ?? '',
-        image = m['image'] as String? ?? '',
-        fullImage = m['full_image'] as String? ?? '',
-        desc = m['desc'] as String? ?? '';
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      type = GeNamecardType.values.fromId(m['type']),
+      version = m['version'] as String? ?? '',
+      image = m['image'] as String? ?? '',
+      fullImage = m['full_image'] as String? ?? '',
+      desc = m['desc'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override

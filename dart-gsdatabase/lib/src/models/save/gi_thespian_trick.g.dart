@@ -11,28 +11,20 @@ class GiThespianTrick extends _GiThespianTrick {
   final String id;
 
   /// Creates a new [GiThespianTrick] instance.
-  GiThespianTrick({
-    required this.id,
-  });
+  GiThespianTrick({required this.id});
 
   /// Creates a new [GiThespianTrick] instance from the given map.
   GiThespianTrick.fromJson(JsonMap m) : id = m['id'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override
-  GiThespianTrick copyWith({
-    String? id,
-  }) {
-    return GiThespianTrick(
-      id: id ?? this.id,
-    );
+  GiThespianTrick copyWith({String? id}) {
+    return GiThespianTrick(id: id ?? this.id);
   }
 
   /// Creates a [JsonMap] from this model.
   @override
   JsonMap toMap() {
-    return {
-      'id': id,
-    };
+    return {'id': id};
   }
 }

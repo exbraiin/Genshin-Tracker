@@ -11,28 +11,20 @@ class GiEnvisagedEcho extends _GiEnvisagedEcho {
   final String id;
 
   /// Creates a new [GiEnvisagedEcho] instance.
-  GiEnvisagedEcho({
-    required this.id,
-  });
+  GiEnvisagedEcho({required this.id});
 
   /// Creates a new [GiEnvisagedEcho] instance from the given map.
   GiEnvisagedEcho.fromJson(JsonMap m) : id = m['id'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override
-  GiEnvisagedEcho copyWith({
-    String? id,
-  }) {
-    return GiEnvisagedEcho(
-      id: id ?? this.id,
-    );
+  GiEnvisagedEcho copyWith({String? id}) {
+    return GiEnvisagedEcho(id: id ?? this.id);
   }
 
   /// Creates a [JsonMap] from this model.
   @override
   JsonMap toMap() {
-    return {
-      'id': id,
-    };
+    return {'id': id};
   }
 }

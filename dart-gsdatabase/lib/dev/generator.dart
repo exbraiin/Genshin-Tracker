@@ -29,12 +29,10 @@ class BuilderGeneratorGen extends GeneratorForAnnotation<BuilderGenerator> {
       throw 'Class Name does not start with "_"';
     }
 
-    final fields = [
-      ...element.allSupertypes.expand((e) => e.accessors),
-      ...element.accessors,
-    ]
-        .whereType<PropertyAccessorElement>()
-        .where((element) => _hasBuilderWire(element));
+    final fields =
+        [...element.allSupertypes.expand((e) => e.getters), ...element.getters]
+            .whereType<PropertyAccessorElement>()
+            .where((element) => _hasBuilderWire(element));
 
     final name = _classNameFromInterface(className);
     final buffer = StringBuffer()
@@ -165,18 +163,20 @@ class BuilderGeneratorGen extends GeneratorForAnnotation<BuilderGenerator> {
         if (arg != null) {
           final argName = arg.getDisplayString();
           final name = _classNameFromInterface(argName);
-          if (TypeChecker.fromRuntime(GeEnum).isAssignableFromType(arg)) {
+          if (TypeChecker.typeNamed(GeEnum).isAssignableFromType(arg)) {
             return (
               setter: '${e.displayName}.map((e) => e.id).toList()',
-              getter: '$argName.values.fromIds'
+              getter:
+                  '$argName.values.fromIds'
                   '((m[\'$wire\'] as List? ?? const []).cast<String>())',
             );
           }
 
-          if (TypeChecker.fromRuntime(GsModel).isAssignableFromType(arg)) {
+          if (TypeChecker.typeNamed(GsModel).isAssignableFromType(arg)) {
             return (
               setter: '${e.displayName}.map((e) => e.toMap()).toList()',
-              getter: '(m[\'$wire\'] as List? ?? const [])'
+              getter:
+                  '(m[\'$wire\'] as List? ?? const [])'
                   '.map((e) => $name.fromJson(e)).toList()',
             );
           }
@@ -199,13 +199,13 @@ class BuilderGeneratorGen extends GeneratorForAnnotation<BuilderGenerator> {
     }
 
     final name = _classNameFromInterface(typeName);
-    if (TypeChecker.fromRuntime(GsModel).isAssignableFromType(type)) {
+    if (TypeChecker.typeNamed(GsModel).isAssignableFromType(type)) {
       return (
         setter: '${e.displayName}.toMap()',
         getter: '$name.fromJson(m[\'$wire\'])',
       );
     }
-    if (TypeChecker.fromRuntime(GeEnum).isAssignableFromType(type)) {
+    if (TypeChecker.typeNamed(GeEnum).isAssignableFromType(type)) {
       return (
         setter: '${e.displayName}.id',
         getter: '$typeName.values.fromId(m[\'$wire\'])',
@@ -221,9 +221,11 @@ class BuilderGeneratorGen extends GeneratorForAnnotation<BuilderGenerator> {
     final name = _classNameFromInterface(element.displayName);
     yield '/// Creates a new [$name] instance from the given map.\n';
     yield '$name.fromJson(JsonMap m):';
-    yield fields.map((e) {
-      return '${e.displayName}= ${_getJsonGetter(e).getter}';
-    }).join(',');
+    yield fields
+        .map((e) {
+          return '${e.displayName}= ${_getJsonGetter(e).getter}';
+        })
+        .join(',');
     yield ';';
   }
 
@@ -265,7 +267,7 @@ class BuilderGeneratorGen extends GeneratorForAnnotation<BuilderGenerator> {
   }
 
   bool _hasBuilderWire(PropertyAccessorElement element) {
-    final checker = TypeChecker.fromRuntime(BuilderWire);
+    final checker = TypeChecker.typeNamed(BuilderWire);
     return checker.hasAnnotationOf(element);
   }
 
@@ -275,7 +277,7 @@ class BuilderGeneratorGen extends GeneratorForAnnotation<BuilderGenerator> {
   }
 
   BuilderWire _getBuilderWire(PropertyAccessorElement element) {
-    final checker = TypeChecker.fromRuntime(BuilderWire);
+    final checker = TypeChecker.typeNamed(BuilderWire);
     final annotation = checker.firstAnnotationOf(element);
     if (annotation == null) return BuilderWire(element.displayName);
     final reader = ConstantReader(annotation);

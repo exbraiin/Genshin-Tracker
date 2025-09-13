@@ -26,10 +26,10 @@ class GiAccountInfo extends _GiAccountInfo {
 
   /// Creates a new [GiAccountInfo] instance from the given map.
   GiAccountInfo.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        monThuChar = m['mon_thu_char'] as String? ?? '',
-        tueFriChar = m['tue_fri_char'] as String? ?? '',
-        wedSatChar = m['wed_sat_char'] as String? ?? '';
+    : id = m['id'] as String? ?? '',
+      monThuChar = m['mon_thu_char'] as String? ?? '',
+      tueFriChar = m['tue_fri_char'] as String? ?? '',
+      wedSatChar = m['wed_sat_char'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override

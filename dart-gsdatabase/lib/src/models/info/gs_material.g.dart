@@ -47,18 +47,19 @@ class GsMaterial extends _GsMaterial {
 
   /// Creates a new [GsMaterial] instance from the given map.
   GsMaterial.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        desc = m['desc'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        group = GeMaterialType.values.fromId(m['group']),
-        image = m['image'] as String? ?? '',
-        region = GeRegionType.values.fromId(m['region']),
-        subgroup = m['subgroup'] as int? ?? 0,
-        version = m['version'] as String? ?? '',
-        ingredient = m['ingredient'] as bool? ?? false,
-        weekdays = GeWeekdayType.values
-            .fromIds((m['weekdays'] as List? ?? const []).cast<String>());
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      desc = m['desc'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      group = GeMaterialType.values.fromId(m['group']),
+      image = m['image'] as String? ?? '',
+      region = GeRegionType.values.fromId(m['region']),
+      subgroup = m['subgroup'] as int? ?? 0,
+      version = m['version'] as String? ?? '',
+      ingredient = m['ingredient'] as bool? ?? false,
+      weekdays = GeWeekdayType.values.fromIds(
+        (m['weekdays'] as List? ?? const []).cast<String>(),
+      );
 
   /// Copies this model with the given parameters.
   @override

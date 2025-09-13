@@ -29,12 +29,12 @@ class GsVersion extends _GsVersion {
 
   /// Creates a new [GsVersion] instance from the given map.
   GsVersion.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        version = m['version'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        image = m['image'] as String? ?? '',
-        releaseDate =
-            DateTime.tryParse(m['release_date'].toString()) ?? DateTime(0);
+    : id = m['id'] as String? ?? '',
+      version = m['version'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      image = m['image'] as String? ?? '',
+      releaseDate =
+          DateTime.tryParse(m['release_date'].toString()) ?? DateTime(0);
 
   /// Copies this model with the given parameters.
   @override

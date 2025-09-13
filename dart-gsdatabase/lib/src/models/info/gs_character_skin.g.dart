@@ -38,14 +38,14 @@ class GsCharacterSkin extends _GsCharacterSkin {
 
   /// Creates a new [GsCharacterSkin] instance from the given map.
   GsCharacterSkin.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        name = m['name'] as String? ?? '',
-        image = m['image'] as String? ?? '',
-        version = m['version'] as String? ?? '',
-        character = m['character'] as String? ?? '',
-        sideImage = m['side_image'] as String? ?? '',
-        fullImage = m['full_image'] as String? ?? '';
+    : id = m['id'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      name = m['name'] as String? ?? '',
+      image = m['image'] as String? ?? '',
+      version = m['version'] as String? ?? '',
+      character = m['character'] as String? ?? '',
+      sideImage = m['side_image'] as String? ?? '',
+      fullImage = m['full_image'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override

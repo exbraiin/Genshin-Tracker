@@ -47,19 +47,19 @@ class GsRecipe extends _GsRecipe {
 
   /// Creates a new [GsRecipe] instance from the given map.
   GsRecipe.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        type = GeRecipeType.values.fromId(m['type']),
-        rarity = m['rarity'] as int? ?? 0,
-        version = m['version'] as String? ?? '',
-        image = m['image'] as String? ?? '',
-        effect = GeRecipeEffectType.values.fromId(m['effect']),
-        desc = m['desc'] as String? ?? '',
-        effectDesc = m['effect_desc'] as String? ?? '',
-        baseRecipe = m['base_recipe'] as String? ?? '',
-        ingredients = (m['list_ingredients'] as List? ?? const [])
-            .map((e) => GsIngredient.fromJson(e))
-            .toList();
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      type = GeRecipeType.values.fromId(m['type']),
+      rarity = m['rarity'] as int? ?? 0,
+      version = m['version'] as String? ?? '',
+      image = m['image'] as String? ?? '',
+      effect = GeRecipeEffectType.values.fromId(m['effect']),
+      desc = m['desc'] as String? ?? '',
+      effectDesc = m['effect_desc'] as String? ?? '',
+      baseRecipe = m['base_recipe'] as String? ?? '',
+      ingredients = (m['list_ingredients'] as List? ?? const [])
+          .map((e) => GsIngredient.fromJson(e))
+          .toList();
 
   /// Copies this model with the given parameters.
   @override
@@ -117,34 +117,22 @@ class GsIngredient extends _GsIngredient {
   final int amount;
 
   /// Creates a new [GsIngredient] instance.
-  GsIngredient({
-    required this.id,
-    required this.amount,
-  });
+  GsIngredient({required this.id, required this.amount});
 
   /// Creates a new [GsIngredient] instance from the given map.
   GsIngredient.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        amount = m['amount'] as int? ?? 0;
+    : id = m['id'] as String? ?? '',
+      amount = m['amount'] as int? ?? 0;
 
   /// Copies this model with the given parameters.
   @override
-  GsIngredient copyWith({
-    String? id,
-    int? amount,
-  }) {
-    return GsIngredient(
-      id: id ?? this.id,
-      amount: amount ?? this.amount,
-    );
+  GsIngredient copyWith({String? id, int? amount}) {
+    return GsIngredient(id: id ?? this.id, amount: amount ?? this.amount);
   }
 
   /// Creates a [JsonMap] from this model.
   @override
   JsonMap toMap() {
-    return {
-      'id': id,
-      'amount': amount,
-    };
+    return {'id': id, 'amount': amount};
   }
 }

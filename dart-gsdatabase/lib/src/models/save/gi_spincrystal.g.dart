@@ -11,28 +11,20 @@ class GiSpincrystal extends _GiSpincrystal {
   final String id;
 
   /// Creates a new [GiSpincrystal] instance.
-  GiSpincrystal({
-    required this.id,
-  });
+  GiSpincrystal({required this.id});
 
   /// Creates a new [GiSpincrystal] instance from the given map.
   GiSpincrystal.fromJson(JsonMap m) : id = m['id'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override
-  GiSpincrystal copyWith({
-    String? id,
-  }) {
-    return GiSpincrystal(
-      id: id ?? this.id,
-    );
+  GiSpincrystal copyWith({String? id}) {
+    return GiSpincrystal(id: id ?? this.id);
   }
 
   /// Creates a [JsonMap] from this model.
   @override
   JsonMap toMap() {
-    return {
-      'id': id,
-    };
+    return {'id': id};
   }
 }

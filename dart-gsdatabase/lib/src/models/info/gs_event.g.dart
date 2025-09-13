@@ -41,18 +41,17 @@ class GsEvent extends _GsEvent {
 
   /// Creates a new [GsEvent] instance from the given map.
   GsEvent.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        type = GeEventType.values.fromId(m['type']),
-        image = m['image'] as String? ?? '',
-        version = m['version'] as String? ?? '',
-        dateStart =
-            DateTime.tryParse(m['date_start'].toString()) ?? DateTime(0),
-        dateEnd = DateTime.tryParse(m['date_end'].toString()) ?? DateTime(0),
-        rewardsWeapons =
-            (m['rewards_weapons'] as List? ?? const []).cast<String>(),
-        rewardsCharacters =
-            (m['rewards_characters'] as List? ?? const []).cast<String>();
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      type = GeEventType.values.fromId(m['type']),
+      image = m['image'] as String? ?? '',
+      version = m['version'] as String? ?? '',
+      dateStart = DateTime.tryParse(m['date_start'].toString()) ?? DateTime(0),
+      dateEnd = DateTime.tryParse(m['date_end'].toString()) ?? DateTime(0),
+      rewardsWeapons = (m['rewards_weapons'] as List? ?? const [])
+          .cast<String>(),
+      rewardsCharacters = (m['rewards_characters'] as List? ?? const [])
+          .cast<String>();
 
   /// Copies this model with the given parameters.
   @override

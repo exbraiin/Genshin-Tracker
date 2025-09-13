@@ -35,13 +35,13 @@ class GsSpincrystal extends _GsSpincrystal {
 
   /// Creates a new [GsSpincrystal] instance from the given map.
   GsSpincrystal.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        number = m['number'] as int? ?? 0,
-        source = m['source'] as String? ?? '',
-        imageSource = m['image_source'] as String? ?? '',
-        region = GeRegionType.values.fromId(m['region']),
-        version = m['version'] as String? ?? '';
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      number = m['number'] as int? ?? 0,
+      source = m['source'] as String? ?? '',
+      imageSource = m['image_source'] as String? ?? '',
+      region = GeRegionType.values.fromId(m['region']),
+      version = m['version'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override

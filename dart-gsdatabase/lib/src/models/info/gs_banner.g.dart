@@ -44,17 +44,16 @@ class GsBanner extends _GsBanner {
 
   /// Creates a new [GsBanner] instance from the given map.
   GsBanner.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        image = m['image'] as String? ?? '',
-        dateStart =
-            DateTime.tryParse(m['date_start'].toString()) ?? DateTime(0),
-        dateEnd = DateTime.tryParse(m['date_end'].toString()) ?? DateTime(0),
-        version = m['version'] as String? ?? '',
-        type = GeBannerType.values.fromId(m['type']),
-        subtype = m['subtype'] as int? ?? 0,
-        feature4 = (m['feature_4'] as List? ?? const []).cast<String>(),
-        feature5 = (m['feature_5'] as List? ?? const []).cast<String>();
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      image = m['image'] as String? ?? '',
+      dateStart = DateTime.tryParse(m['date_start'].toString()) ?? DateTime(0),
+      dateEnd = DateTime.tryParse(m['date_end'].toString()) ?? DateTime(0),
+      version = m['version'] as String? ?? '',
+      type = GeBannerType.values.fromId(m['type']),
+      subtype = m['subtype'] as int? ?? 0,
+      feature4 = (m['feature_4'] as List? ?? const []).cast<String>(),
+      feature5 = (m['feature_5'] as List? ?? const []).cast<String>();
 
   /// Copies this model with the given parameters.
   @override

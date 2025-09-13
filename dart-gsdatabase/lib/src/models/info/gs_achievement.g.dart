@@ -35,15 +35,15 @@ class GsAchievement extends _GsAchievement {
 
   /// Creates a new [GsAchievement] instance from the given map.
   GsAchievement.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        group = m['group'] as String? ?? '',
-        hidden = m['hidden'] as bool? ?? false,
-        version = m['version'] as String? ?? '',
-        type = GeAchievementType.values.fromId(m['type']),
-        phases = (m['phases'] as List? ?? const [])
-            .map((e) => GsAchievementPhase.fromJson(e))
-            .toList();
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      group = m['group'] as String? ?? '',
+      hidden = m['hidden'] as bool? ?? false,
+      version = m['version'] as String? ?? '',
+      type = GeAchievementType.values.fromId(m['type']),
+      phases = (m['phases'] as List? ?? const [])
+          .map((e) => GsAchievementPhase.fromJson(e))
+          .toList();
 
   /// Copies this model with the given parameters.
   @override
@@ -99,17 +99,13 @@ class GsAchievementPhase extends _GsAchievementPhase {
 
   /// Creates a new [GsAchievementPhase] instance from the given map.
   GsAchievementPhase.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        desc = m['desc'] as String? ?? '',
-        reward = m['reward'] as int? ?? 0;
+    : id = m['id'] as String? ?? '',
+      desc = m['desc'] as String? ?? '',
+      reward = m['reward'] as int? ?? 0;
 
   /// Copies this model with the given parameters.
   @override
-  GsAchievementPhase copyWith({
-    String? id,
-    String? desc,
-    int? reward,
-  }) {
+  GsAchievementPhase copyWith({String? id, String? desc, int? reward}) {
     return GsAchievementPhase(
       id: id ?? this.id,
       desc: desc ?? this.desc,
@@ -120,10 +116,6 @@ class GsAchievementPhase extends _GsAchievementPhase {
   /// Creates a [JsonMap] from this model.
   @override
   JsonMap toMap() {
-    return {
-      'id': id,
-      'desc': desc,
-      'reward': reward,
-    };
+    return {'id': id, 'desc': desc, 'reward': reward};
   }
 }

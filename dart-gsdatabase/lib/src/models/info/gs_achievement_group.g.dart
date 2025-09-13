@@ -38,14 +38,14 @@ class GsAchievementGroup extends _GsAchievementGroup {
 
   /// Creates a new [GsAchievementGroup] instance from the given map.
   GsAchievementGroup.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        icon = m['icon'] as String? ?? '',
-        version = m['version'] as String? ?? '',
-        namecard = m['namecard'] as String? ?? '',
-        order = m['order'] as int? ?? 0,
-        rewards = m['rewards'] as int? ?? 0,
-        achievements = m['achievements'] as int? ?? 0;
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      icon = m['icon'] as String? ?? '',
+      version = m['version'] as String? ?? '',
+      namecard = m['namecard'] as String? ?? '',
+      order = m['order'] as int? ?? 0,
+      rewards = m['rewards'] as int? ?? 0,
+      achievements = m['achievements'] as int? ?? 0;
 
   /// Copies this model with the given parameters.
   @override

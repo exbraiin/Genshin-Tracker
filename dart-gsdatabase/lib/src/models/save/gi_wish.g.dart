@@ -29,11 +29,11 @@ class GiWish extends _GiWish {
 
   /// Creates a new [GiWish] instance from the given map.
   GiWish.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        number = m['number'] as int? ?? 0,
-        itemId = m['item'] as String? ?? '',
-        bannerId = m['banner'] as String? ?? '',
-        date = DateTime.tryParse(m['date'].toString()) ?? DateTime(0);
+    : id = m['id'] as String? ?? '',
+      number = m['number'] as int? ?? 0,
+      itemId = m['item'] as String? ?? '',
+      bannerId = m['banner'] as String? ?? '',
+      date = DateTime.tryParse(m['date'].toString()) ?? DateTime(0);
 
   /// Copies this model with the given parameters.
   @override

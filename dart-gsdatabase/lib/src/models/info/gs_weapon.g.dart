@@ -65,23 +65,23 @@ class GsWeapon extends _GsWeapon {
 
   /// Creates a new [GsWeapon] instance from the given map.
   GsWeapon.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        image = m['image'] as String? ?? '',
-        imageAsc = m['image_asc'] as String? ?? '',
-        type = GeWeaponType.values.fromId(m['type']),
-        statType = GeWeaponAscStatType.values.fromId(m['stat_type']),
-        desc = m['desc'] as String? ?? '',
-        version = m['version'] as String? ?? '',
-        source = GeItemSourceType.values.fromId(m['source']),
-        effectName = m['effect_name'] as String? ?? '',
-        effectDesc = m['effect_desc'] as String? ?? '',
-        matWeapon = m['mat_weapon'] as String? ?? '',
-        matCommon = m['mat_common'] as String? ?? '',
-        matElite = m['mat_elite'] as String? ?? '',
-        ascAtkValue = m['asc_atk_value'] as int? ?? 0,
-        ascStatValue = m['asc_stat_value'] as double? ?? 0;
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      image = m['image'] as String? ?? '',
+      imageAsc = m['image_asc'] as String? ?? '',
+      type = GeWeaponType.values.fromId(m['type']),
+      statType = GeWeaponAscStatType.values.fromId(m['stat_type']),
+      desc = m['desc'] as String? ?? '',
+      version = m['version'] as String? ?? '',
+      source = GeItemSourceType.values.fromId(m['source']),
+      effectName = m['effect_name'] as String? ?? '',
+      effectDesc = m['effect_desc'] as String? ?? '',
+      matWeapon = m['mat_weapon'] as String? ?? '',
+      matCommon = m['mat_common'] as String? ?? '',
+      matElite = m['mat_elite'] as String? ?? '',
+      ascAtkValue = m['asc_atk_value'] as int? ?? 0,
+      ascStatValue = m['asc_stat_value'] as double? ?? 0;
 
   /// Copies this model with the given parameters.
   @override

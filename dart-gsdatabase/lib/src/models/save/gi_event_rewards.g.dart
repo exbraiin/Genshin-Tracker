@@ -23,11 +23,11 @@ class GiEventRewards extends _GiEventRewards {
 
   /// Creates a new [GiEventRewards] instance from the given map.
   GiEventRewards.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        obtainedWeapons =
-            (m['obtained_weapons'] as List? ?? const []).cast<String>(),
-        obtainedCharacters =
-            (m['obtained_characters'] as List? ?? const []).cast<String>();
+    : id = m['id'] as String? ?? '',
+      obtainedWeapons = (m['obtained_weapons'] as List? ?? const [])
+          .cast<String>(),
+      obtainedCharacters = (m['obtained_characters'] as List? ?? const [])
+          .cast<String>();
 
   /// Copies this model with the given parameters.
   @override

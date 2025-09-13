@@ -35,13 +35,13 @@ class GsEnvisagedEcho extends _GsEnvisagedEcho {
 
   /// Creates a new [GsEnvisagedEcho] instance from the given map.
   GsEnvisagedEcho.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        description = m['desc'] as String? ?? '',
-        character = m['character'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        icon = m['icon'] as String? ?? '',
-        version = m['version'] as String? ?? '';
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      description = m['desc'] as String? ?? '',
+      character = m['character'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      icon = m['icon'] as String? ?? '',
+      version = m['version'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override

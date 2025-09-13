@@ -32,12 +32,12 @@ class GiCharacter extends _GiCharacter {
 
   /// Creates a new [GiCharacter] instance from the given map.
   GiCharacter.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        ascension = m['ascension'] as int? ?? 0,
-        friendship = m['friendship'] as int? ?? 1,
-        talent1 = m['talent1'] as int? ?? 1,
-        talent2 = m['talent2'] as int? ?? 1,
-        talent3 = m['talent3'] as int? ?? 1;
+    : id = m['id'] as String? ?? '',
+      ascension = m['ascension'] as int? ?? 0,
+      friendship = m['friendship'] as int? ?? 1,
+      talent1 = m['talent1'] as int? ?? 1,
+      talent2 = m['talent2'] as int? ?? 1,
+      talent3 = m['talent3'] as int? ?? 1;
 
   /// Copies this model with the given parameters.
   @override

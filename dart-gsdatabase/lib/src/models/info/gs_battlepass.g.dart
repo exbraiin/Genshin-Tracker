@@ -35,14 +35,13 @@ class GsBattlepass extends _GsBattlepass {
 
   /// Creates a new [GsBattlepass] instance from the given map.
   GsBattlepass.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        image = m['image'] as String? ?? '',
-        version = m['version'] as String? ?? '',
-        namecardId = m['namecard_id'] as String? ?? '',
-        dateStart =
-            DateTime.tryParse(m['date_start'].toString()) ?? DateTime(0),
-        dateEnd = DateTime.tryParse(m['date_end'].toString()) ?? DateTime(0);
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      image = m['image'] as String? ?? '',
+      version = m['version'] as String? ?? '',
+      namecardId = m['namecard_id'] as String? ?? '',
+      dateStart = DateTime.tryParse(m['date_start'].toString()) ?? DateTime(0),
+      dateEnd = DateTime.tryParse(m['date_end'].toString()) ?? DateTime(0);
 
   /// Copies this model with the given parameters.
   @override

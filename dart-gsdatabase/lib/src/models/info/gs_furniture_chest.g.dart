@@ -38,14 +38,14 @@ class GsFurnitureChest extends _GsFurnitureChest {
 
   /// Creates a new [GsFurnitureChest] instance from the given map.
   GsFurnitureChest.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        type = GeSereniteaSetType.values.fromId(m['type']),
-        image = m['image'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        energy = m['energy'] as int? ?? 0,
-        region = GeRegionType.values.fromId(m['region']),
-        version = m['version'] as String? ?? '';
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      type = GeSereniteaSetType.values.fromId(m['type']),
+      image = m['image'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      energy = m['energy'] as int? ?? 0,
+      region = GeRegionType.values.fromId(m['region']),
+      version = m['version'] as String? ?? '';
 
   /// Copies this model with the given parameters.
   @override

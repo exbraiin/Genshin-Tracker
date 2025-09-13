@@ -38,14 +38,14 @@ class GsSereniteaSet extends _GsSereniteaSet {
 
   /// Creates a new [GsSereniteaSet] instance from the given map.
   GsSereniteaSet.fromJson(JsonMap m)
-      : id = m['id'] as String? ?? '',
-        name = m['name'] as String? ?? '',
-        version = m['version'] as String? ?? '',
-        category = GeSereniteaSetType.values.fromId(m['category']),
-        image = m['image'] as String? ?? '',
-        rarity = m['rarity'] as int? ?? 0,
-        energy = m['energy'] as int? ?? 0,
-        chars = (m['chars'] as List? ?? const []).cast<String>();
+    : id = m['id'] as String? ?? '',
+      name = m['name'] as String? ?? '',
+      version = m['version'] as String? ?? '',
+      category = GeSereniteaSetType.values.fromId(m['category']),
+      image = m['image'] as String? ?? '',
+      rarity = m['rarity'] as int? ?? 0,
+      energy = m['energy'] as int? ?? 0,
+      chars = (m['chars'] as List? ?? const []).cast<String>();
 
   /// Copies this model with the given parameters.
   @override
