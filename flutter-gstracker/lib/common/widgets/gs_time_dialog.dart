@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/screens/widgets/button.dart';
@@ -22,12 +23,14 @@ class GsTimeDialog extends StatefulWidget {
   State<GsTimeDialog> createState() => _GsTimeDialogState();
 }
 
+typedef _Scroller = ({FixedExtentScrollController ctrl, int min, int max});
+
 class _GsTimeDialogState extends State<GsTimeDialog>
     with SingleTickerProviderStateMixin {
+  // This needs to be static for lock system.
   static DateTime? _savedTime;
-  late final AnimationController _animation;
-  late final FixedExtentScrollController year, month, day;
-  late final FixedExtentScrollController hour, minute, second;
+  late final _Scroller year, month, day;
+  late final _Scroller hour, minute, second;
 
   bool get _isLocked => _savedTime != null;
 
@@ -36,28 +39,26 @@ class _GsTimeDialogState extends State<GsTimeDialog>
     super.initState();
 
     final initial = _savedTime ?? widget.date ?? DateTime.now();
+    _Scroller scroller(int value, int min, int max) {
+      final ctrl = FixedExtentScrollController(initialItem: value - min);
+      return (ctrl: ctrl, min: min, max: max);
+    }
 
-    year = FixedExtentScrollController(initialItem: initial.year - 2010);
-    month = FixedExtentScrollController(initialItem: initial.month - 1);
-    day = FixedExtentScrollController(initialItem: initial.day - 1);
+    year = scroller(initial.year, 2010, 2050);
+    month = scroller(initial.month, 1, 12);
+    day = scroller(initial.day, 1, 31);
 
-    hour = FixedExtentScrollController(initialItem: initial.hour);
-    minute = FixedExtentScrollController(initialItem: initial.minute);
-    second = FixedExtentScrollController(initialItem: initial.second);
-
-    _animation = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    )..forward();
+    hour = scroller(initial.hour, 0, 23);
+    minute = scroller(initial.minute, 0, 59);
+    second = scroller(initial.second, 0, 59);
   }
 
   @override
   void dispose() {
     final controllers = [year, month, day, hour, minute, second];
     for (final element in controllers) {
-      element.dispose();
+      element.ctrl.dispose();
     }
-    _animation.dispose();
     super.dispose();
   }
 
@@ -102,17 +103,17 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                               style: style,
                             ),
                           ),
-                          _selector(year, 2010, 2031, style),
+                          _selector(year, style),
                           SizedBox(
                             width: 20,
                             child: Center(child: Text(' - ', style: style)),
                           ),
-                          _selector(month, 1, 13, style),
+                          _selector(month, style),
                           SizedBox(
                             width: 20,
                             child: Center(child: Text(' - ', style: style)),
                           ),
-                          _selector(day, 1, 32, style),
+                          _selector(day, style),
                         ],
                       ),
                       const SizedBox(height: GsSpacing.kGridSeparator),
@@ -127,27 +128,56 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                               style: style,
                             ),
                           ),
-                          _selector(hour, 0, 24, style),
+                          _selector(hour, style),
                           SizedBox(
                             width: 20,
                             child: Center(child: Text(' : ', style: style)),
                           ),
-                          _selector(minute, 0, 60, style),
+                          _selector(minute, style),
                           SizedBox(
                             width: 20,
                             child: Center(child: Text(' : ', style: style)),
                           ),
-                          _selector(second, 0, 60, style),
+                          _selector(second, style),
                         ],
                       ),
-                      const SizedBox(height: GsSpacing.kGridSeparator),
+                      const SizedBox(height: kSeparator8),
                       Row(
+                        spacing: 16,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Spacer(),
+                          SizedBox(),
+                          Expanded(
+                            child: SizedBox(
+                              width: 30,
+                              child: AnimatedOpacity(
+                                opacity: _isLocked ? kDisableOpacity : 1,
+                                duration: Duration(milliseconds: 400),
+                                curve: Curves.fastOutSlowIn,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints.tightFor(),
+                                  onPressed: _isLocked ? null : _pasteDate,
+                                  iconSize: 24,
+                                  color: Colors.white.withValues(alpha: 0.5),
+                                  icon: Column(
+                                    children: [
+                                      Icon(Icons.paste_rounded),
+                                      Text(
+                                        'Paste',
+                                        style: context.themeStyles.emptyState
+                                            .copyWith(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           MainButton(
                             color: context.themeColors.goodValue,
                             label: context.labels.ok(),
+                            padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
                             onPress: () {
                               final date = _getDate();
                               Navigator.of(context).maybePop(date);
@@ -164,14 +194,24 @@ class _GsTimeDialogState extends State<GsTimeDialog>
                                 }),
                                 iconSize: 24,
                                 color: Colors.white.withValues(alpha: 0.5),
-                                icon: Icon(
-                                  _isLocked
-                                      ? Icons.lock_outline
-                                      : Icons.lock_open,
+                                icon: Column(
+                                  children: [
+                                    Icon(
+                                      _isLocked
+                                          ? Icons.lock_outline
+                                          : Icons.lock_open,
+                                    ),
+                                    Text(
+                                      _isLocked ? 'Unlock' : 'Lock',
+                                      style: context.themeStyles.emptyState
+                                          .copyWith(fontSize: 12),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
+                          SizedBox(),
                         ],
                       ),
                     ],
@@ -185,14 +225,11 @@ class _GsTimeDialogState extends State<GsTimeDialog>
     );
   }
 
-  Widget _selector(
-    FixedExtentScrollController controller,
-    int min,
-    int max,
-    TextStyle style,
-  ) {
-    return Opacity(
+  Widget _selector(_Scroller scroller, TextStyle style) {
+    return AnimatedOpacity(
       opacity: _isLocked ? kDisableOpacity : 1,
+      duration: Duration(milliseconds: 400),
+      curve: Curves.fastOutSlowIn,
       child: Container(
         width: 44,
         height: 44,
@@ -217,17 +254,17 @@ class _GsTimeDialogState extends State<GsTimeDialog>
         child: ListWheelScrollView.useDelegate(
           childDelegate: ListWheelChildLoopingListDelegate(
             children: List.generate(
-              max - min,
+              scroller.max - scroller.min + 1,
               (index) => Center(
                 child: Text(
-                  (min + index).toString().padLeft(2, '0'),
+                  (scroller.min + index).toString().padLeft(2, '0'),
                   style: style,
                   strutStyle: style.toStrut(),
                 ),
               ),
             ),
           ),
-          controller: controller,
+          controller: scroller.ctrl,
           scrollBehavior: const ScrollBehavior().copyWith(
             dragDevices: {PointerDeviceKind.mouse},
             scrollbars: false,
@@ -241,17 +278,43 @@ class _GsTimeDialogState extends State<GsTimeDialog>
     );
   }
 
-  DateTime _getDate() {
-    int getValue(FixedExtentScrollController ctrl, int min, int max) =>
-        (ctrl.selectedItem % (max - min)) + min;
+  void _pasteDate() async {
+    final clip = await Clipboard.getData(Clipboard.kTextPlain);
+    final text = clip?.text;
+    if (text == null) return;
 
+    final date = DateTime.tryParse(text);
+    if (date == null) return;
+
+    setState(() => _setDate(date));
+  }
+
+  void _setDate(DateTime date) {
+    year.value = date.year;
+    month.value = date.month;
+    day.value = date.day;
+    hour.value = date.hour;
+    minute.value = date.minute;
+    second.value = date.second;
+  }
+
+  DateTime _getDate() {
     return DateTime(
-      getValue(year, 2010, 2031),
-      getValue(month, 1, 13),
-      getValue(day, 1, 32),
-      getValue(hour, 0, 24),
-      getValue(minute, 0, 60),
-      getValue(second, 0, 60),
+      year.value,
+      month.value,
+      day.value,
+      hour.value,
+      minute.value,
+      second.value,
     );
   }
+}
+
+extension on _Scroller {
+  set value(int value) => ctrl.animateToItem(
+    (value - min) % (max + 1 - min),
+    duration: Duration(milliseconds: 400),
+    curve: Curves.easeOut,
+  );
+  int get value => (ctrl.selectedItem % (max + 1 - min)) + min;
 }
