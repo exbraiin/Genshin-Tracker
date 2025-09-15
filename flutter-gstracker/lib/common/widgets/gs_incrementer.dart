@@ -26,12 +26,10 @@ class _GsIncrementerState extends State<GsIncrementer> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => widget.onTap?.call(),
-      onLongPressStart:
-          (e) =>
-              _timer = Timer.periodic(
-                const Duration(milliseconds: 100),
-                (e) => widget.onHold?.call(e.tick),
-              ),
+      onLongPressStart: (e) => _timer = Timer.periodic(
+        const Duration(milliseconds: 100),
+        (e) => widget.onHold?.call(e.tick),
+      ),
       onLongPressEnd: (e) => _timer?.cancel(),
       child: widget.child,
     );

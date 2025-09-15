@@ -53,10 +53,9 @@ class TextParserWidget extends StatelessWidget {
         fontWeight: bold.peek ?? style.fontWeight,
         fontStyle: italic.peek ?? style.fontStyle,
         decoration: underline.peek ?? style.decoration,
-        shadows:
-            color == context.themeColors.primary
-                ? GsSpacing.kMainShadowText
-                : null,
+        shadows: color == context.themeColors.primary
+            ? GsSpacing.kMainShadowText
+            : null,
       );
 
       final tag = idxs.minBy((e) => e.value);

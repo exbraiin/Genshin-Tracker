@@ -15,6 +15,6 @@ abstract class _GsVersion extends GsModel<GsVersion> {
 
   @override
   Iterable<Comparable Function(GsVersion e)> get sorters => [
-        (e) => e.releaseDate,
-      ];
+    (e) => e.releaseDate,
+  ];
 }

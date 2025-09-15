@@ -43,11 +43,8 @@ class AchievementListItem extends StatelessWidget {
           ...item.phases
               .mapIndexed<Widget>((idx, e) {
                 return InkWell(
-                  onTap:
-                      () => GsUtils.achievements.update(
-                        item.id,
-                        obtained: idx + 1,
-                      ),
+                  onTap: () =>
+                      GsUtils.achievements.update(item.id, obtained: idx + 1),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(
                       kSeparator4,

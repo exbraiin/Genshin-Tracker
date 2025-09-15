@@ -95,21 +95,19 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
     return ValueListenableBuilder(
       valueListenable: groupNotifier,
       builder: (context, item, child) {
-        final aList =
-            item != null
-                ? filter.match(_getAchievements(item, query)).sorted()
-                : const <GsAchievement>[];
+        final aList = item != null
+            ? filter.match(_getAchievements(item, query)).sorted()
+            : const <GsAchievement>[];
 
         final obtainFilter = filter.getFilterSectionByKey(FilterKey.obtain);
         final achv = GsUtils.achievements;
-        final aGroup =
-            (obtainFilter?.enabled.contains(false) ?? false)
-                ? groups.where((item) {
-                  final saved = achv.countSaved((e) => e.group == item.id);
-                  final total = achv.countTotal((e) => e.group == item.id);
-                  return saved != total;
-                }).toList()
-                : groups;
+        final aGroup = (obtainFilter?.enabled.contains(false) ?? false)
+            ? groups.where((item) {
+                final saved = achv.countSaved((e) => e.group == item.id);
+                final total = achv.countTotal((e) => e.group == item.id);
+                return saved != total;
+              }).toList()
+            : groups;
 
         return Row(
           children: [
@@ -173,9 +171,8 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
                   () => groupNotifier.value = item,
                 );
               },
-              separatorBuilder:
-                  (context, index) =>
-                      const SizedBox(height: GsSpacing.kGridSeparator),
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: GsSpacing.kGridSeparator),
             ),
           ),
         ),
@@ -192,8 +189,8 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
       key: ValueKey(list.length),
       itemCount: list.length,
       itemBuilder: (context, index) => AchievementListItem(list[index]),
-      separatorBuilder:
-          (context, index) => const SizedBox(height: GsSpacing.kListSeparator),
+      separatorBuilder: (context, index) =>
+          const SizedBox(height: GsSpacing.kListSeparator),
     );
   }
 
@@ -215,32 +212,29 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
       padding: const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator16),
       decoration: BoxDecoration(
         color: selected ? context.themeColors.mainColor1 : Colors.transparent,
-        image:
-            namecard != null && namecard.fullImage.isNotEmpty
-                ? DecorationImage(
-                  fit: BoxFit.cover,
-                  opacity: 0.4,
-                  alignment: Alignment.centerRight,
-                  image:
-                      CachedNetworkImageProvider(
-                        namecard.fullImage,
-                      ).resizeIfNeeded(),
-                )
-                : DecorationImage(
-                  fit: BoxFit.cover,
-                  opacity: 0.2,
-                  alignment: Alignment.centerRight,
-                  image: AssetImage(GsAssets.getRarityBgImage(1)),
-                ),
+        image: namecard != null && namecard.fullImage.isNotEmpty
+            ? DecorationImage(
+                fit: BoxFit.cover,
+                opacity: 0.4,
+                alignment: Alignment.centerRight,
+                image: CachedNetworkImageProvider(
+                  namecard.fullImage,
+                ).resizeIfNeeded(),
+              )
+            : DecorationImage(
+                fit: BoxFit.cover,
+                opacity: 0.2,
+                alignment: Alignment.centerRight,
+                image: AssetImage(GsAssets.getRarityBgImage(1)),
+              ),
         borderRadius: GsSpacing.kGridRadius,
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: GsSpacing.kGridRadius,
         border: Border.all(
-          color:
-              selected
-                  ? const Color(0xFFd8c090).withValues(alpha: 0.8)
-                  : Colors.transparent,
+          color: selected
+              ? const Color(0xFFd8c090).withValues(alpha: 0.8)
+              : Colors.transparent,
           width: 2,
         ),
       ),

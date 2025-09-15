@@ -63,29 +63,27 @@ class HomePlayerInfoWidget extends StatelessWidget {
                   ),
                   busy
                       ? Container(
-                        width: 24,
-                        height: 24,
-                        margin: const EdgeInsets.all(8),
-                        child: const CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
+                          width: 24,
+                          height: 24,
+                          margin: const EdgeInsets.all(8),
+                          child: const CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
                       : IconButton(
-                        color: Colors.white,
-                        disabledColor: context.themeColors.dimWhite,
-                        onPressed:
-                            info != null && hasValidId
-                                ? () => busyFetch(info.uid)
-                                : null,
-                        icon: const Icon(Icons.refresh_rounded),
-                      ),
+                          color: Colors.white,
+                          disabledColor: context.themeColors.dimWhite,
+                          onPressed: info != null && hasValidId
+                              ? () => busyFetch(info.uid)
+                              : null,
+                          icon: const Icon(Icons.refresh_rounded),
+                        ),
                 ],
               ),
-              child:
-                  info == null || info.nickname.isEmpty
-                      ? const GsNoResultsState.small()
-                      : _getWidgetContent(context, info),
+              child: info == null || info.nickname.isEmpty
+                  ? const GsNoResultsState.small()
+                  : _getWidgetContent(context, info),
             );
           },
         );
@@ -169,23 +167,19 @@ class HomePlayerInfoWidget extends StatelessWidget {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children:
-                        list
-                            .map((e) {
-                              final char = Database.instance
-                                  .infoOf<GsCharacter>()
-                                  .items
-                                  .firstOrNullWhere((c) => c.enkaId == e.key);
-                              if (char == null) return const SizedBox();
-                              return ItemGridWidget.character(
-                                char,
-                                size: kSize56,
-                              );
-                            })
-                            .separate(
-                              const SizedBox(width: GsSpacing.kGridSeparator),
-                            )
-                            .toList(),
+                    children: list
+                        .map((e) {
+                          final char = Database.instance
+                              .infoOf<GsCharacter>()
+                              .items
+                              .firstOrNullWhere((c) => c.enkaId == e.key);
+                          if (char == null) return const SizedBox();
+                          return ItemGridWidget.character(char, size: kSize56);
+                        })
+                        .separate(
+                          const SizedBox(width: GsSpacing.kGridSeparator),
+                        )
+                        .toList(),
                   );
                 })
                 .separate(const SizedBox(height: GsSpacing.kGridSeparator)),
@@ -199,17 +193,16 @@ class HomePlayerInfoWidget extends StatelessWidget {
       builder: (context, snaphot) {
         final url = snaphot.data;
         return Container(
-          decoration:
-              url != null
-                  ? BoxDecoration(
-                    borderRadius: GsSpacing.kGridRadius,
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(url).resizeIfNeeded(),
-                      fit: BoxFit.cover,
-                      opacity: 0.5,
-                    ),
-                  )
-                  : null,
+          decoration: url != null
+              ? BoxDecoration(
+                  borderRadius: GsSpacing.kGridRadius,
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(url).resizeIfNeeded(),
+                    fit: BoxFit.cover,
+                    opacity: 0.5,
+                  ),
+                )
+              : null,
           padding: const EdgeInsets.all(kSeparator4),
           child: child,
         );

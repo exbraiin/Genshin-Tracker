@@ -80,12 +80,11 @@ class _WishesScreenScreenState extends State<WishesScreen>
             );
 
             final tabs = _bannerType.map((bannerType) {
-              final banner =
-                  GsUtils.wishes
-                      .getReleasedInfoBannerByType(bannerType)
-                      .sortedBy((e) => e.dateStart)
-                      .thenByDescending((e) => e.subtype)
-                      .lastOrNull;
+              final banner = GsUtils.wishes
+                  .getReleasedInfoBannerByType(bannerType)
+                  .sortedBy((e) => e.dateStart)
+                  .thenByDescending((e) => e.subtype)
+                  .lastOrNull;
 
               return Container(
                 width: 100,
@@ -143,47 +142,44 @@ class _WishesScreenScreenState extends State<WishesScreen>
               ),
               child: TabBarView(
                 controller: _controller,
-                children:
-                    _bannerType.map((banner) {
-                      final banners =
-                          GsUtils.wishes
-                              .getReleasedInfoBannerByType(banner)
-                              .sortedByDescending((e) => e.dateStart)
-                              .thenBy((e) => e.subtype)
-                              .toList();
+                children: _bannerType.map((banner) {
+                  final banners = GsUtils.wishes
+                      .getReleasedInfoBannerByType(banner)
+                      .sortedByDescending((e) => e.dateStart)
+                      .thenBy((e) => e.subtype)
+                      .toList();
 
-                      final hide = filter.hasExtra(FilterExtras.hide);
-                      if (hide) {
-                        banners.removeWhere(
-                          (e) => !GsUtils.wishes.bannerHasWishes(e.id),
-                        );
-                      }
+                  final hide = filter.hasExtra(FilterExtras.hide);
+                  if (hide) {
+                    banners.removeWhere(
+                      (e) => !GsUtils.wishes.bannerHasWishes(e.id),
+                    );
+                  }
 
-                      return InventoryGridPage.builder(
-                        childWidth: 126 * 2 + 6,
-                        childHeight: 160,
-                        padding: EdgeInsets.zero,
-                        scrollableCard: false,
-                        itemCount: banners.length,
-                        itemBuilder: (context, state) {
-                          final banner = banners[state.index];
-                          return BannerListItem(
-                            banner,
-                            onTap: state.onSelect,
-                            selected: state.selected,
-                            disabled:
-                                !GsUtils.wishes.bannerHasWishes(banner.id),
-                          );
-                        },
-                        itemCardBuilder: (context, index) {
-                          return BannerDetailsCard(
-                            banners[index],
-                            filter,
-                            key: ValueKey(banners[index].id),
-                          );
-                        },
+                  return InventoryGridPage.builder(
+                    childWidth: 126 * 2 + 6,
+                    childHeight: 160,
+                    padding: EdgeInsets.zero,
+                    scrollableCard: false,
+                    itemCount: banners.length,
+                    itemBuilder: (context, state) {
+                      final banner = banners[state.index];
+                      return BannerListItem(
+                        banner,
+                        onTap: state.onSelect,
+                        selected: state.selected,
+                        disabled: !GsUtils.wishes.bannerHasWishes(banner.id),
                       );
-                    }).toList(),
+                    },
+                    itemCardBuilder: (context, index) {
+                      return BannerDetailsCard(
+                        banners[index],
+                        filter,
+                        key: ValueKey(banners[index].id),
+                      );
+                    },
+                  );
+                }).toList(),
               ),
             );
           },

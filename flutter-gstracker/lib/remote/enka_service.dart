@@ -88,12 +88,11 @@ class EnkaPlayerInfo {
 
   factory EnkaPlayerInfo._fromMap(Map<String, dynamic> json) {
     final info = (json['playerInfo'] as Map? ?? {}).cast<String, dynamic>();
-    final avtInfo =
-        (info['profilePicture'] as Map? ?? {}).cast<String, dynamic>();
+    final avtInfo = (info['profilePicture'] as Map? ?? {})
+        .cast<String, dynamic>();
     final avtId = avtInfo.getString('id');
-    final avatars =
-        (info['showAvatarInfoList'] as List? ?? [])
-            .cast<Map<String, dynamic>>();
+    final avatars = (info['showAvatarInfoList'] as List? ?? [])
+        .cast<Map<String, dynamic>>();
     return EnkaPlayerInfo._(
       uid: json.getString('uid'),
       pfpId: avtId,
@@ -111,10 +110,9 @@ class EnkaPlayerInfo {
       theaterStar: info.getInt('theaterStarIndex'),
       stygianIndex: info.getInt('stygianIndex'),
       stygianSeconds: info.getInt('stygianSeconds'),
-      avatars:
-          avatars
-              .map((e) => MapEntry(e.getString('avatarId'), e.getInt('level')))
-              .toMap(),
+      avatars: avatars
+          .map((e) => MapEntry(e.getString('avatarId'), e.getInt('level')))
+          .toMap(),
     );
   }
 

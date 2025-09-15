@@ -24,27 +24,22 @@ class CharaterTalentsLabel extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children:
-          CharTalentType.values
-              .map((talent) {
-                final value = talents.talentWithExtra(talent);
-                final hasExtra = talents.hasExtra(talent);
-                return Text(
-                  '$value',
-                  style: style.copyWith(
-                    color: hasExtra ? context.themeColors.extraTalent : null,
-                  ),
-                  strutStyle: style.toStrut(),
-                );
-              })
-              .separate(
-                Text(
-                  ' \u2022 ',
-                  style: subStyle,
-                  strutStyle: subStyle.toStrut(),
-                ),
-              )
-              .toList(),
+      children: CharTalentType.values
+          .map((talent) {
+            final value = talents.talentWithExtra(talent);
+            final hasExtra = talents.hasExtra(talent);
+            return Text(
+              '$value',
+              style: style.copyWith(
+                color: hasExtra ? context.themeColors.extraTalent : null,
+              ),
+              strutStyle: style.toStrut(),
+            );
+          })
+          .separate(
+            Text(' \u2022 ', style: subStyle, strutStyle: subStyle.toStrut()),
+          )
+          .toList(),
     );
   }
 }

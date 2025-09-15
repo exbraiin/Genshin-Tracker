@@ -176,12 +176,11 @@ class ItemGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var child =
-        urlImage.isNotEmpty
-            ? CachedImageWidget(urlImage)
-            : assetImage.isNotEmpty
-            ? Image.asset(assetImage)
-            : const SizedBox();
+    var child = urlImage.isNotEmpty
+        ? CachedImageWidget(urlImage)
+        : assetImage.isNotEmpty
+        ? Image.asset(assetImage)
+        : const SizedBox();
 
     if (labelWidget != null) {
       child = Stack(
@@ -234,13 +233,12 @@ class ItemGridWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.themeColors.mainColor1,
         borderRadius: GsSpacing.kGridRadius,
-        image:
-            rarity.between(1, 5)
-                ? DecorationImage(
-                  image: AssetImage(GsAssets.getRarityBgImage(rarity)),
-                  fit: BoxFit.cover,
-                )
-                : null,
+        image: rarity.between(1, 5)
+            ? DecorationImage(
+                image: AssetImage(GsAssets.getRarityBgImage(rarity)),
+                fit: BoxFit.cover,
+              )
+            : null,
       ),
       child: child,
     );
@@ -257,10 +255,9 @@ class ItemGridWidget extends StatelessWidget {
             foregroundDecoration: BoxDecoration(
               borderRadius: GsSpacing.kGridRadius,
               border: Border.all(
-                color:
-                    value
-                        ? context.themeColors.almostWhite
-                        : Colors.transparent,
+                color: value
+                    ? context.themeColors.almostWhite
+                    : Colors.transparent,
                 width: 2,
               ),
             ),
@@ -391,16 +388,17 @@ class ItemCircleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var child =
-        image.isNotEmpty
-            ? CachedImageWidget(image)
-            : asset.isNotEmpty
-            ? Image.asset(asset)
-            : const SizedBox();
+    var child = image.isNotEmpty
+        ? CachedImageWidget(image)
+        : asset.isNotEmpty
+        ? Image.asset(asset)
+        : const SizedBox();
 
     child = Stack(
       children: [
-        Positioned.fill(child: Padding(padding: padding, child: child)),
+        Positioned.fill(
+          child: Padding(padding: padding, child: child),
+        ),
         if (this.child != null)
           Padding(
             padding: const EdgeInsets.all(2),
@@ -434,16 +432,14 @@ class ItemCircleWidget extends StatelessWidget {
         color: bgColor ?? context.themeColors.mainColor0.withValues(alpha: 0.4),
         border: Border.all(color: context.themeColors.mainColor1, width: 2),
         shape: BoxShape.circle,
-        image:
-            1 <= rarity && rarity <= 5
-                ? DecorationImage(
-                  image: AssetImage(GsAssets.getRarityBgImage(rarity)),
-                  colorFilter:
-                      bgColor != null
-                          ? ColorFilter.mode(bgColor!, BlendMode.softLight)
-                          : null,
-                )
-                : null,
+        image: 1 <= rarity && rarity <= 5
+            ? DecorationImage(
+                image: AssetImage(GsAssets.getRarityBgImage(rarity)),
+                colorFilter: bgColor != null
+                    ? ColorFilter.mode(bgColor!, BlendMode.softLight)
+                    : null,
+              )
+            : null,
       ),
       foregroundDecoration: BoxDecoration(
         shape: BoxShape.circle,

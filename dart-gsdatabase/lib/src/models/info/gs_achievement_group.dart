@@ -23,6 +23,6 @@ abstract class _GsAchievementGroup extends GsModel<GsAchievementGroup>
 
   @override
   Iterable<Comparable Function(GsAchievementGroup a)> get sorters => [
-        (a) => a.order,
-      ];
+    (a) => a.order,
+  ];
 }

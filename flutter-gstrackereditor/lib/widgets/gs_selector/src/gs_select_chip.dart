@@ -37,10 +37,9 @@ class GsSelectChip<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final child = Opacity(
       opacity: hide ? 0.2 : 1,
-      child:
-          item.image != null && !disableImage
-              ? _selectBox(context)
-              : _selectChip(context),
+      child: item.image != null && !disableImage
+          ? _selectBox(context)
+          : _selectChip(context),
     );
     if (onTap == null) return child;
     return InkWell(onTap: () => onTap!(item.value), child: child);
@@ -61,19 +60,17 @@ class GsSelectChip<T> extends StatelessWidget {
                 width: 4,
                 color: selected ? Colors.white : Colors.transparent,
               ),
-              color:
-                  selected
-                      ? Colors.transparent
-                      : Colors.black.withValues(alpha: 0.4),
+              color: selected
+                  ? Colors.transparent
+                  : Colors.black.withValues(alpha: 0.4),
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 width: 2,
-                color:
-                    selected
-                        ? Colors.black
-                        : Color.lerp(item.color, Colors.white, 0.2)!,
+                color: selected
+                    ? Colors.black
+                    : Color.lerp(item.color, Colors.white, 0.2)!,
               ),
               gradient: LinearGradient(
                 colors: [
@@ -84,10 +81,9 @@ class GsSelectChip<T> extends StatelessWidget {
                 end: Alignment.bottomCenter,
               ),
             ),
-            child:
-                item.image!.isNotEmpty
-                    ? Image.network(item.image!.toFandom(46))
-                    : const Icon(Icons.question_mark_rounded),
+            child: item.image!.isNotEmpty
+                ? Image.network(item.image!.toFandom(46))
+                : const Icon(Icons.question_mark_rounded),
           ),
           Text(
             item.label,

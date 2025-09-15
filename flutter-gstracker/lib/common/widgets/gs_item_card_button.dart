@@ -89,21 +89,16 @@ class GsItemCardButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: MouseHoverBuilder(
-        builder:
-            (context, value, child) => AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              foregroundDecoration: BoxDecoration(
-                borderRadius: GsSpacing.kCardRadius,
-                border:
-                    value || selected
-                        ? Border.all(
-                          color: context.themeColors.almostWhite,
-                          width: 2,
-                        )
-                        : null,
-              ),
-              child: child,
-            ),
+        builder: (context, value, child) => AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          foregroundDecoration: BoxDecoration(
+            borderRadius: GsSpacing.kCardRadius,
+            border: value || selected
+                ? Border.all(color: context.themeColors.almostWhite, width: 2)
+                : null,
+          ),
+          child: child,
+        ),
         child: child,
       ),
     );
@@ -130,20 +125,15 @@ class GsItemCardButton extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(24),
                 ),
-                image:
-                    rarity != null
-                        ? DecorationImage(
-                          fit: BoxFit.cover,
-                          colorFilter:
-                              imageColor != null
-                                  ? ColorFilter.mode(
-                                    imageColor!,
-                                    BlendMode.modulate,
-                                  )
-                                  : null,
-                          image: AssetImage(GsAssets.getRarityBgImage(rarity!)),
-                        )
-                        : null,
+                image: rarity != null
+                    ? DecorationImage(
+                        fit: BoxFit.cover,
+                        colorFilter: imageColor != null
+                            ? ColorFilter.mode(imageColor!, BlendMode.modulate)
+                            : null,
+                        image: AssetImage(GsAssets.getRarityBgImage(rarity!)),
+                      )
+                    : null,
               ),
               child: Stack(
                 children: [

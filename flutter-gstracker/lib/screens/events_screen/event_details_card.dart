@@ -86,7 +86,7 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   String _eventDuration(BuildContext context) {
     return item.dateStart.year != 0 && item.dateEnd.year != 0
         ? '${DateLabels.format(context, item.dateStart, item.dateEnd)} '
-            '(${item.dateEnd.difference(item.dateStart).toShortTime(context)})'
+              '(${item.dateEnd.difference(item.dateStart).toShortTime(context)})'
         : context.labels.itemUpcoming();
   }
 
@@ -108,11 +108,8 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               return _item(
                 child: ItemGridWidget.character(
                   char,
-                  onTap:
-                      (context, char) => GsUtils.events.toggleObtainedCharacter(
-                        item.id,
-                        char.id,
-                      ),
+                  onTap: (context, char) =>
+                      GsUtils.events.toggleObtainedCharacter(item.id, char.id),
                 ),
                 marked: marked,
               );
@@ -122,11 +119,8 @@ class EventDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               return _item(
                 child: ItemGridWidget.weapon(
                   weapon,
-                  onTap:
-                      (context, weapon) => GsUtils.events.toggleObtainedtWeapon(
-                        item.id,
-                        weapon.id,
-                      ),
+                  onTap: (context, weapon) =>
+                      GsUtils.events.toggleObtainedtWeapon(item.id, weapon.id),
                 ),
                 marked: marked,
               );

@@ -68,20 +68,17 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     GsItemCardLabel(
                       asset: AppAssets.companionXp,
                       label: friendship.toString(),
-                      onTap:
-                          () => GsUtils.characters.increaseFriendshipCharacter(
-                            item.id,
-                          ),
+                      onTap: () => GsUtils.characters
+                          .increaseFriendshipCharacter(item.id),
                     ),
                   ],
                 ),
                 const SizedBox(height: kSeparator4),
                 Row(
                   spacing: GsSpacing.kGridSeparator,
-                  children:
-                      CharTalentType.values
-                          .map((e) => _talentLabel(info, e))
-                          .toList(),
+                  children: CharTalentType.values
+                      .map((e) => _talentLabel(info, e))
+                      .toList(),
                 ),
                 InkWell(
                   onTap: () => GsUtils.characters.increaseAscension(item.id),
@@ -165,17 +162,16 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       labels.affiliation(): Text(info.affiliation),
       labels.birthday(): Text(info.birthday.toPrettyDate(context)),
       labels.releaseDate(): Text(info.releaseDate.toPrettyDate(context)),
-      labels.specialDish():
-          dish != null
-              ? Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Flexible(child: Text(dish.name)),
-                  const SizedBox(width: kSeparator8),
-                  ItemGridWidget.recipe(dish, tooltip: ''),
-                ],
-              )
-              : Text(labels.wsNone()),
+      labels.specialDish(): dish != null
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Flexible(child: Text(dish.name)),
+                const SizedBox(width: kSeparator8),
+                ItemGridWidget.recipe(dish, tooltip: ''),
+              ],
+            )
+          : Text(labels.wsNone()),
     };
 
     return GsDataBox.info(
@@ -191,25 +187,24 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               width: 0.4,
             ),
           ),
-          children:
-              data.entries.map((entry) {
-                return TableRow(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
-                      child: Text(entry.key, style: stLabel),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
-                      child: DefaultTextStyle(
-                        style: stStyle,
-                        textAlign: TextAlign.end,
-                        child: entry.value,
-                      ),
-                    ),
-                  ],
-                );
-              }).toList(),
+          children: data.entries.map((entry) {
+            return TableRow(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+                  child: Text(entry.key, style: stLabel),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+                  child: DefaultTextStyle(
+                    style: stStyle,
+                    textAlign: TextAlign.end,
+                    child: entry.value,
+                  ),
+                ),
+              ],
+            );
+          }).toList(),
         ),
       ],
     );

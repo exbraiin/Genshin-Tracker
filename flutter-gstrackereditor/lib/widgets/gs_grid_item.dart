@@ -61,35 +61,31 @@ class GsGridItem extends StatelessWidget {
           transformAlignment: Alignment.center,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color:
-                rarityImg.isNotEmpty
-                    ? null
-                    : color?.withValues(alpha: hover ? 1 : 0.8),
-            image:
-                rarityImg.isNotEmpty
-                    ? DecorationImage(
-                      image: AssetImage(rarityImg),
-                      fit: BoxFit.cover,
-                      colorFilter:
-                          color != null
-                              ? ColorFilter.mode(
-                                Color.lerp(color, Colors.white, 0.4)!,
-                                BlendMode.modulate,
-                              )
-                              : null,
-                    )
-                    : null,
+            color: rarityImg.isNotEmpty
+                ? null
+                : color?.withValues(alpha: hover ? 1 : 0.8),
+            image: rarityImg.isNotEmpty
+                ? DecorationImage(
+                    image: AssetImage(rarityImg),
+                    fit: BoxFit.cover,
+                    colorFilter: color != null
+                        ? ColorFilter.mode(
+                            Color.lerp(color, Colors.white, 0.4)!,
+                            BlendMode.modulate,
+                          )
+                        : null,
+                  )
+                : null,
             borderRadius: BorderRadius.circular(8),
-            boxShadow:
-                hover
-                    ? const [
-                      BoxShadow(
-                        blurRadius: 8,
-                        color: Colors.black54,
-                        offset: Offset(2, 2),
-                      ),
-                    ]
-                    : null,
+            boxShadow: hover
+                ? const [
+                    BoxShadow(
+                      blurRadius: 8,
+                      color: Colors.black54,
+                      offset: Offset(2, 2),
+                    ),
+                  ]
+                : null,
           ),
           foregroundDecoration: BoxDecoration(
             border: Border.all(color: Colors.black54, width: 2),
@@ -110,9 +106,8 @@ class GsGridItem extends StatelessWidget {
                 width: 46,
                 height: 46,
                 fit: BoxFit.contain,
-                errorBuilder:
-                    (ctx, obj, stc) =>
-                        const Icon(Icons.info_outline_rounded, size: 32),
+                errorBuilder: (ctx, obj, stc) =>
+                    const Icon(Icons.info_outline_rounded, size: 32),
               ),
             ),
           Center(

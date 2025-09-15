@@ -40,8 +40,8 @@ class _GsNotifierProviderState<T> extends State<GsNotifierProvider<T>> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: notifier,
-      builder:
-          (context, value, child) => widget.builder(context, notifier, child),
+      builder: (context, value, child) =>
+          widget.builder(context, notifier, child),
       child: widget.child,
     );
   }

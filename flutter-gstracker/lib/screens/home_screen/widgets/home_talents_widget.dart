@@ -89,10 +89,9 @@ class HomeTalentsWidget extends StatelessWidget {
                   IconButton(
                     padding: EdgeInsets.all(2),
                     constraints: BoxConstraints.tightFor(),
-                    onPressed:
-                        () => Navigator.of(
-                          context,
-                        ).pushNamed(CharactersTableScreen.id),
+                    onPressed: () => Navigator.of(
+                      context,
+                    ).pushNamed(CharactersTableScreen.id),
                     icon: const Icon(Icons.list),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
@@ -101,10 +100,9 @@ class HomeTalentsWidget extends StatelessWidget {
                     padding: EdgeInsets.all(2),
                     constraints: BoxConstraints.tightFor(),
                     onPressed: () => notifier.value = !asc,
-                    icon:
-                        asc
-                            ? const Icon(Icons.arrow_circle_up_rounded)
-                            : const Icon(Icons.arrow_circle_down_rounded),
+                    icon: asc
+                        ? const Icon(Icons.arrow_circle_up_rounded)
+                        : const Icon(Icons.arrow_circle_down_rounded),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
                   SizedBox(width: kSeparator4),
@@ -114,58 +112,54 @@ class HomeTalentsWidget extends StatelessWidget {
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                 children: [
                   TableRow(
-                    children:
-                        farmableDays.map((days) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: kSeparator8),
-                            child: Text(
-                              '${days.day1.getLabel(context).substring(0, 3)} & '
-                              '${days.day2.getLabel(context).substring(0, 3)}',
-                              textAlign: TextAlign.center,
-                              style: context.themeStyles.label14n,
-                            ),
-                          );
-                        }).toList(),
+                    children: farmableDays.map((days) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: kSeparator8),
+                        child: Text(
+                          '${days.day1.getLabel(context).substring(0, 3)} & '
+                          '${days.day2.getLabel(context).substring(0, 3)}',
+                          textAlign: TextAlign.center,
+                          style: context.themeStyles.label14n,
+                        ),
+                      );
+                    }).toList(),
                   ),
                   TableRow(
-                    children:
-                        farmableDays.map((days) {
-                          final chars = charactersByDays[days] ?? <CharInfo>[];
-                          late final isToday =
-                              today == GeWeekdayType.sunday ||
-                              days.day1 == today ||
-                              days.day2 == today;
+                    children: farmableDays.map((days) {
+                      final chars = charactersByDays[days] ?? <CharInfo>[];
+                      late final isToday =
+                          today == GeWeekdayType.sunday ||
+                          days.day1 == today ||
+                          days.day2 == today;
 
-                          return Wrap(
-                            spacing: kSeparator4,
-                            runSpacing: kSeparator4,
-                            alignment: WrapAlignment.center,
-                            children:
-                                chars.take(kItemsPerDay).map((info) {
-                                  return ItemGridWidget.character(
-                                    info.item,
-                                    size: kItemSize,
-                                    disabled: !isToday,
-                                    labelWidget: CharaterTalentsLabel(info),
-                                  );
-                                }).toList(),
+                      return Wrap(
+                        spacing: kSeparator4,
+                        runSpacing: kSeparator4,
+                        alignment: WrapAlignment.center,
+                        children: chars.take(kItemsPerDay).map((info) {
+                          return ItemGridWidget.character(
+                            info.item,
+                            size: kItemSize,
+                            disabled: !isToday,
+                            labelWidget: CharaterTalentsLabel(info),
                           );
                         }).toList(),
+                      );
+                    }).toList(),
                   ),
                   TableRow(
-                    children:
-                        farmableDays.map((days) {
-                          final chars = charactersByDays[days] ?? <CharInfo>[];
-                          final total = chars.length;
-                          return Padding(
-                            padding: EdgeInsets.only(top: kSeparator8),
-                            child: Text(
-                              '${context.labels.total()} $total',
-                              textAlign: TextAlign.center,
-                              style: context.themeStyles.label12i,
-                            ),
-                          );
-                        }).toList(),
+                    children: farmableDays.map((days) {
+                      final chars = charactersByDays[days] ?? <CharInfo>[];
+                      final total = chars.length;
+                      return Padding(
+                        padding: EdgeInsets.only(top: kSeparator8),
+                        child: Text(
+                          '${context.labels.total()} $total',
+                          textAlign: TextAlign.center,
+                          style: context.themeStyles.label12i,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),

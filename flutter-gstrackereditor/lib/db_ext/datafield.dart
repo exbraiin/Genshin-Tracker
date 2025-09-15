@@ -38,24 +38,23 @@ class DataField<T extends GsModel<T>> {
     this.label,
     String Function(T item) content, {
     DUpdate<T>? swap,
-  }) : builder =
-           ((context, item, edit, level) => Row(
-             children: [
-               Expanded(
-                 child: Container(
-                   padding: const EdgeInsets.symmetric(vertical: 8),
-                   constraints: const BoxConstraints(minHeight: 36),
-                   alignment: Alignment.centerLeft,
-                   child: Text(content(item)),
-                 ),
-               ),
-               if (swap != null)
-                 IconButton(
-                   onPressed: () => edit(swap(item)),
-                   icon: const Icon(Icons.swap_horiz_rounded),
-                 ),
-             ],
-           )),
+  }) : builder = ((context, item, edit, level) => Row(
+         children: [
+           Expanded(
+             child: Container(
+               padding: const EdgeInsets.symmetric(vertical: 8),
+               constraints: const BoxConstraints(minHeight: 36),
+               alignment: Alignment.centerLeft,
+               child: Text(content(item)),
+             ),
+           ),
+           if (swap != null)
+             IconButton(
+               onPressed: () => edit(swap(item)),
+               icon: const Icon(Icons.swap_horiz_rounded),
+             ),
+         ],
+       )),
        validator = ((item) => GsValidLevel.good);
 
   DataField.button(
@@ -91,21 +90,19 @@ class DataField<T extends GsModel<T>> {
            children: [
              Expanded(
                child: Builder(
-                 builder:
-                     (context) => InkWell(
-                       onTap:
-                           () => GsTextEditorDialog(
-                             autoFormat: autoFormat,
-                             initialText: content(item),
-                             onConfirm: (value) => edit(update(item, value)),
-                           ).show(context),
-                       child: Container(
-                         padding: const EdgeInsets.symmetric(vertical: 8),
-                         constraints: const BoxConstraints(minHeight: 36),
-                         alignment: Alignment.centerLeft,
-                         child: Text(text),
-                       ),
-                     ),
+                 builder: (context) => InkWell(
+                   onTap: () => GsTextEditorDialog(
+                     autoFormat: autoFormat,
+                     initialText: content(item),
+                     onConfirm: (value) => edit(update(item, value)),
+                   ).show(context),
+                   child: Container(
+                     padding: const EdgeInsets.symmetric(vertical: 8),
+                     constraints: const BoxConstraints(minHeight: 36),
+                     alignment: Alignment.centerLeft,
+                     child: Text(text),
+                   ),
+                 ),
                ),
              ),
              IconButton(
@@ -162,16 +159,15 @@ class DataField<T extends GsModel<T>> {
                    IconButton(
                      tooltip: refresh.tooltip,
                      icon: refresh.icon ?? const Icon(Icons.upload_rounded),
-                     onPressed:
-                         () async =>
-                             edit(await refresh.callback(context, item)),
+                     onPressed: () async =>
+                         edit(await refresh.callback(context, item)),
                    ),
                  if (import != null)
                    IconButton(
                      tooltip: import.tooltip,
                      icon: import.icon ?? const Icon(Icons.bolt_outlined),
-                     onPressed:
-                         () async => edit(await import.callback(context, item)),
+                     onPressed: () async =>
+                         edit(await import.callback(context, item)),
                    ),
                  IconButton(
                    onPressed: () => edit(update(item, '')),
@@ -214,25 +210,19 @@ class DataField<T extends GsModel<T>> {
                    child: ExtendedTextField(
                      regExp: RegExp(r'[0-9]'),
                      initialValue: content(item).toString(),
-                     process:
-                         (value) =>
-                             _clamp(int.tryParse(value) ?? 0, range).toString(),
-                     onEdit:
-                         (value) => edit(
-                           update(
-                             item,
-                             _clamp(int.tryParse(value) ?? 0, range),
-                           ),
-                         ),
+                     process: (value) =>
+                         _clamp(int.tryParse(value) ?? 0, range).toString(),
+                     onEdit: (value) => edit(
+                       update(item, _clamp(int.tryParse(value) ?? 0, range)),
+                     ),
                    ),
                  ),
                  if (refresh != null)
                    IconButton(
                      tooltip: refresh.tooltip,
                      icon: refresh.icon ?? const Icon(Icons.upload_rounded),
-                     onPressed:
-                         () async =>
-                             edit(await refresh.callback(context, item)),
+                     onPressed: () async =>
+                         edit(await refresh.callback(context, item)),
                    ),
                  IconButton(
                    onPressed: () => edit(update(item, range.$1 ?? 0)),
@@ -275,12 +265,8 @@ class DataField<T extends GsModel<T>> {
                    child: ExtendedTextField(
                      regExp: RegExp(r'[0-9|\.]'),
                      initialValue: content(item).toString(),
-                     process:
-                         (value) =>
-                             _clamp(
-                               double.tryParse(value) ?? 0,
-                               range,
-                             ).toString(),
+                     process: (value) =>
+                         _clamp(double.tryParse(value) ?? 0, range).toString(),
                      onEdit: (value) {
                        final n = _clamp(double.tryParse(value) ?? 0, range);
                        edit(update(item, n));
@@ -291,9 +277,8 @@ class DataField<T extends GsModel<T>> {
                    IconButton(
                      tooltip: refresh.tooltip,
                      icon: refresh.icon ?? const Icon(Icons.upload_rounded),
-                     onPressed:
-                         () async =>
-                             edit(await refresh.callback(context, item)),
+                     onPressed: () async =>
+                         edit(await refresh.callback(context, item)),
                    ),
                  IconButton(
                    onPressed: () => edit(update(item, range.$1 ?? 0)),
@@ -335,8 +320,8 @@ class DataField<T extends GsModel<T>> {
            children: [
              Expanded(
                child: InkWell(
-                 onTap:
-                     () => showDatePicker(
+                 onTap: () =>
+                     showDatePicker(
                        context: context,
                        initialDate: content(
                          item,
@@ -383,12 +368,11 @@ class DataField<T extends GsModel<T>> {
       update,
       import: import,
       validator: validator,
-      process:
-          (value) => value
-              .split(',')
-              .map((e) => e.trim())
-              .where((e) => e.isNotBlank)
-              .join(', '),
+      process: (value) => value
+          .split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotBlank)
+          .join(', '),
     );
   }
 
@@ -471,13 +455,12 @@ class DataField<T extends GsModel<T>> {
              ),
              if (filtered != null)
                IconButton(
-                 onPressed:
-                     () => SelectDialog(
-                       title: 'Select',
-                       items: filtered(item),
-                       selected: value(item),
-                       onConfirm: (value) => edit(update(item, value ?? '')),
-                     ).show(context),
+                 onPressed: () => SelectDialog(
+                   title: 'Select',
+                   items: filtered(item),
+                   selected: value(item),
+                   onConfirm: (value) => edit(update(item, value ?? '')),
+                 ).show(context),
                  icon: const Icon(Icons.filter_alt_rounded),
                ),
            ],
@@ -522,10 +505,9 @@ class DataField<T extends GsModel<T>> {
           onConfirm: (value) => edit(update(item, value ?? items.first.value)),
         );
       },
-      validator:
-          validator != null
-              ? (item) => validator(item, defaultValidator(item))
-              : defaultValidator,
+      validator: validator != null
+          ? (item) => validator(item, defaultValidator(item))
+          : defaultValidator,
     );
   }
 
@@ -566,9 +548,8 @@ class DataField<T extends GsModel<T>> {
        });
 
   DataField.list(this.label, Iterable<DataField<T>> Function(T item) fields)
-    : builder =
-          ((context, item, edit, level) =>
-              getTableForFields(context, item, fields(item), edit)),
+    : builder = ((context, item, edit, level) =>
+          getTableForFields(context, item, fields(item), edit)),
       validator = ((item) {
         return fields(
               item,
@@ -604,15 +585,14 @@ class DataField<T extends GsModel<T>> {
                 bottom: BorderSide(color: Colors.grey),
               ),
               columnWidths: const {0: IntrinsicColumnWidth()},
-              children:
-                  list.map((child) {
-                    return _getFieldTableRow(
-                      context,
-                      child,
-                      build(item, child),
-                      (child) => edit(onFieldUpdated(item, child)),
-                    );
-                  }).toList(),
+              children: list.map((child) {
+                return _getFieldTableRow(
+                  context,
+                  child,
+                  build(item, child),
+                  (child) => edit(onFieldUpdated(item, child)),
+                );
+              }).toList(),
             ),
           ],
         );
@@ -648,26 +628,25 @@ class DataField<T extends GsModel<T>> {
                 bottom: BorderSide(color: Colors.grey),
               ),
               columnWidths: const {0: IntrinsicColumnWidth()},
-              children:
-                  list.mapIndexed((index, child) {
-                    return _getFieldTableRow(
-                      context,
-                      child,
-                      DataField<C>.list(
-                        '# $index',
-                        (child) => build(index, item, child),
-                      ),
-                      (child) => edit(update(item, list..[index] = child)),
-                      trailing: (color) {
-                        return IconButton(
-                          color: color,
-                          icon: const Icon(Icons.delete_rounded),
-                          onPressed:
-                              () => edit(update(item, list..removeAt(index))),
-                        );
-                      },
+              children: list.mapIndexed((index, child) {
+                return _getFieldTableRow(
+                  context,
+                  child,
+                  DataField<C>.list(
+                    '# $index',
+                    (child) => build(index, item, child),
+                  ),
+                  (child) => edit(update(item, list..[index] = child)),
+                  trailing: (color) {
+                    return IconButton(
+                      color: color,
+                      icon: const Icon(Icons.delete_rounded),
+                      onPressed: () =>
+                          edit(update(item, list..removeAt(index))),
                     );
-                  }).toList(),
+                  },
+                );
+              }).toList(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -716,12 +695,9 @@ Widget getTableForFields<T extends GsModel<T>>(
       bottom: BorderSide(color: Colors.grey),
     ),
     columnWidths: const {0: IntrinsicColumnWidth()},
-    children:
-        fields
-            .map(
-              (field) => _getFieldTableRow(context, value, field, updateItem),
-            )
-            .toList(),
+    children: fields
+        .map((field) => _getFieldTableRow(context, value, field, updateItem))
+        .toList(),
   );
 }
 
@@ -904,10 +880,9 @@ class _ExtendedTextFieldState extends State<ExtendedTextField> {
       focusNode: _node,
       controller: _controller,
       maxLines: 1,
-      inputFormatters:
-          widget.regExp != null
-              ? [FilteringTextInputFormatter.allow(widget.regExp!)]
-              : null,
+      inputFormatters: widget.regExp != null
+          ? [FilteringTextInputFormatter.allow(widget.regExp!)]
+          : null,
       decoration: InputDecoration.collapsed(hintText: widget.hintText),
       onChanged: (value) {
         value = widget.process?.call(value) ?? value;

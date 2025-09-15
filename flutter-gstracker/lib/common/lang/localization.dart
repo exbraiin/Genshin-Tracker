@@ -25,18 +25,17 @@ final class AppLocalization {
   AppLocalization(this._map);
 
   String valueOf(String key, {int? howMany, Map<String, dynamic>? params}) {
-    var value =
-        howMany != null
-            ? Intl.plural(
-              howMany,
-              zero: _map['$key.zero'],
-              one: _map['$key.one'],
-              two: _map['$key.two'],
-              few: _map['$key.few'],
-              many: _map['$key.many'],
-              other: _map[key] ?? '',
-            )
-            : _map[key] ?? '';
+    var value = howMany != null
+        ? Intl.plural(
+            howMany,
+            zero: _map['$key.zero'],
+            one: _map['$key.one'],
+            two: _map['$key.two'],
+            few: _map['$key.few'],
+            many: _map['$key.many'],
+            other: _map[key] ?? '',
+          )
+        : _map[key] ?? '';
     params?.forEach((k, v) => value = value.replaceAll('{$k}', '$v'));
     return value;
   }

@@ -316,74 +316,73 @@ class HomeWishesValues extends StatelessWidget {
                       runSpacing: GsSpacing.kGridSeparator,
                       alignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.start,
-                      children:
-                          summary.info5.wishes.reversed.map((wish) {
-                            final item = wish.item;
-                            final pity = wish.pity;
-                            final state = wish.state;
-                            final pityColor = context.themeColors.colorByPity(
-                              pity,
-                              maxPity,
-                            );
+                      children: summary.info5.wishes.reversed.map((wish) {
+                        final item = wish.item;
+                        final pity = wish.pity;
+                        final state = wish.state;
+                        final pityColor = context.themeColors.colorByPity(
+                          pity,
+                          maxPity,
+                        );
 
-                            return Column(
+                        return Column(
+                          children: [
+                            Stack(
+                              clipBehavior: Clip.none,
                               children: [
-                                Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    item.character != null
-                                        ? ItemGridWidget.character(
-                                          item.character!,
-                                          tooltip: '',
-                                        )
-                                        : item.weapon != null
-                                        ? ItemGridWidget.weapon(
-                                          item.weapon!,
-                                          tooltip: '',
-                                        )
-                                        : const SizedBox(),
-                                    if (state == WishState.won)
-                                      Positioned(
-                                        top: 0,
-                                        right: 0,
-                                        child: Icon(
-                                          Icons.star_rounded,
-                                          size: 20,
-                                          color: context.themeColors.starColor,
-                                          shadows: [
-                                            BoxShadow(
-                                              color: Colors.black.withValues(
-                                                alpha: 0.8,
-                                              ),
-                                              offset: const Offset(1, 1),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                                const SizedBox(height: kSeparator2),
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: pity.toString(),
-                                        style: style.copyWith(color: pityColor),
-                                      ),
-                                      if (state == WishState.guaranteed)
-                                        WidgetSpan(
-                                          child: GsWishStateIcon(
-                                            state,
-                                            color: pityColor,
-                                            padding: EdgeInsets.zero,
+                                item.character != null
+                                    ? ItemGridWidget.character(
+                                        item.character!,
+                                        tooltip: '',
+                                      )
+                                    : item.weapon != null
+                                    ? ItemGridWidget.weapon(
+                                        item.weapon!,
+                                        tooltip: '',
+                                      )
+                                    : const SizedBox(),
+                                if (state == WishState.won)
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: Icon(
+                                      Icons.star_rounded,
+                                      size: 20,
+                                      color: context.themeColors.starColor,
+                                      shadows: [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(
+                                            alpha: 0.8,
                                           ),
+                                          offset: const Offset(1, 1),
                                         ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
                               ],
-                            );
-                          }).toList(),
+                            ),
+                            const SizedBox(height: kSeparator2),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: pity.toString(),
+                                    style: style.copyWith(color: pityColor),
+                                  ),
+                                  if (state == WishState.guaranteed)
+                                    WidgetSpan(
+                                      child: GsWishStateIcon(
+                                        state,
+                                        color: pityColor,
+                                        padding: EdgeInsets.zero,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),

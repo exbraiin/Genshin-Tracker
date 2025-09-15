@@ -60,8 +60,9 @@ class FileImageSafe extends FileImage {
       codec: _loadAsync(key, decode),
       scale: key.scale,
       debugLabel: key.file.path,
-      informationCollector:
-          () => <DiagnosticsNode>[ErrorDescription('Path: ${file.path}')],
+      informationCollector: () => <DiagnosticsNode>[
+        ErrorDescription('Path: ${file.path}'),
+      ],
     );
   }
 

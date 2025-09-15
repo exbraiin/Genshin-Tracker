@@ -42,8 +42,9 @@ class GsEventExt extends GsModelExt<GsEvent> {
         (item) => item.type,
         (item, value) => item.copyWith(
           type: value,
-          dateEnd:
-              value == GeEventType.permanent ? GsModelExt.kPermanentDate : null,
+          dateEnd: value == GeEventType.permanent
+              ? GsModelExt.kPermanentDate
+              : null,
         ),
         invalid: [GeEventType.none],
       ),
@@ -65,8 +66,8 @@ class GsEventExt extends GsModelExt<GsEvent> {
         'Date Start',
         (item) => item.dateStart,
         (item, value) => item.copyWith(dateStart: value),
-        validator:
-            (item) => vdVersion.validateDate(item.version, item.dateStart),
+        validator: (item) =>
+            vdVersion.validateDate(item.version, item.dateStart),
       ),
       DataField.dateTime(
         'Date End',

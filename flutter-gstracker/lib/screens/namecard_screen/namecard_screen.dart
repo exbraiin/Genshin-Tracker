@@ -17,14 +17,13 @@ class NamecardScreen extends StatelessWidget {
       icon: AppAssets.menuIconArchive,
       title: context.labels.namecards(),
       versionSort: (item) => item.version,
-      itemBuilder:
-          (context, state) => NamecardListItem(
-            state.item,
-            onTap: state.onSelect,
-            selected: state.selected,
-          ),
-      itemCardBuilder:
-          (context, item) => NamecardDetailsCard(item, key: ValueKey(item.id)),
+      itemBuilder: (context, state) => NamecardListItem(
+        state.item,
+        onTap: state.onSelect,
+        selected: state.selected,
+      ),
+      itemCardBuilder: (context, item) =>
+          NamecardDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

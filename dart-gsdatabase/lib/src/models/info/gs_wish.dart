@@ -19,35 +19,27 @@ class GsWish extends GsModel<GsWish> with GsVersionable {
   bool get isWeapon => weapon != null;
   bool get isCharacter => character != null;
 
-  GsWish._({
-    this.weapon,
-    this.character,
-    this.featured = false,
-  });
+  GsWish._({this.weapon, this.character, this.featured = false});
 
-  GsWish.fromWeapon(this.weapon)
-      : character = null,
-        featured = false;
+  GsWish.fromWeapon(this.weapon) : character = null, featured = false;
 
-  GsWish.fromCharacter(this.character)
-      : weapon = null,
-        featured = false;
+  GsWish.fromCharacter(this.character) : weapon = null, featured = false;
 
   @override
   JsonMap toMap() => weapon?.toMap() ?? character?.toMap() ?? {};
 
   @override
   GsWish copyWith({String? id, bool? featured}) => GsWish._(
-        weapon: weapon,
-        character: character,
-        featured: featured ?? this.featured,
-      );
+    weapon: weapon,
+    character: character,
+    featured: featured ?? this.featured,
+  );
 
   @override
   Iterable<Comparable Function(GsWish a)> get sorters => [
-        (a) => a.rarity,
-        (a) => a.isCharacter ? 0 : 1,
-        (a) => a.featured ? 0 : 1,
-        (a) => a.name,
-      ];
+    (a) => a.rarity,
+    (a) => a.isCharacter ? 0 : 1,
+    (a) => a.featured ? 0 : 1,
+    (a) => a.name,
+  ];
 }

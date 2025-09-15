@@ -22,8 +22,8 @@ abstract class _GsAchievement extends GsModel<GsAchievement>
 
   @override
   Iterable<Comparable Function(GsAchievement e)> get sorters => [
-        (e) => e.version,
-      ];
+    (e) => e.version,
+  ];
 }
 
 @BuilderGenerator()

@@ -77,16 +77,14 @@ class _MainScreenState extends State<MainScreen> {
         width: double.infinity,
         padding: const EdgeInsets.all(kSeparator2),
         decoration: BoxDecoration(
-          color:
-              idx == 0
-                  ? context.themeColors.primary
-                  : context.themeColors.mainColor0,
+          color: idx == 0
+              ? context.themeColors.primary
+              : context.themeColors.mainColor0,
           borderRadius: GsSpacing.kGridRadius,
           border: Border.all(
-            color:
-                selected
-                    ? context.themeColors.almostWhite.withValues(alpha: 0.4)
-                    : Colors.transparent,
+            color: selected
+                ? context.themeColors.almostWhite.withValues(alpha: 0.4)
+                : Colors.transparent,
             width: 2,
           ),
         ),
@@ -111,11 +109,10 @@ class _MainScreenState extends State<MainScreen> {
         valueListenable: _page,
         builder: (context, value, child) {
           return ListView(
-            children:
-                _menus
-                    .mapIndexed(button)
-                    .separate(const SizedBox(height: GsSpacing.kListSeparator))
-                    .toList(),
+            children: _menus
+                .mapIndexed(button)
+                .separate(const SizedBox(height: GsSpacing.kListSeparator))
+                .toList(),
           );
         },
       ),

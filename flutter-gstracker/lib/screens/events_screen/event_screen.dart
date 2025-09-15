@@ -23,12 +23,11 @@ class EventScreen extends StatelessWidget {
       sortOrder: SortOrder.descending,
       childSize: const Size(126 * 2 + 6, 160),
       title: context.labels.filterEvent(),
-      itemBuilder:
-          (context, state) => EventListItem(
-            state.item,
-            onTap: state.onSelect,
-            selected: state.selected,
-          ),
+      itemBuilder: (context, state) => EventListItem(
+        state.item,
+        onTap: state.onSelect,
+        selected: state.selected,
+      ),
       itemCardBuilder: (context, item) => EventDetailsCard(item),
       // itemCardFooter: const EventsScrollView(),
     );
@@ -41,18 +40,17 @@ class EventsScrollView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now().date;
-    final events =
-        Database.instance
-            .infoOf<GsEvent>()
-            .items
-            .where((e) => e.dateEnd.difference(e.dateStart).inDays < 60)
-            .where(
-              (e) =>
-                  now.difference(e.dateStart).inDays.abs() < 5 ||
-                  now.difference(e.dateEnd).inDays.abs() < 5 ||
-                  now.between(e.dateStart, e.dateEnd),
-            )
-            .sorted();
+    final events = Database.instance
+        .infoOf<GsEvent>()
+        .items
+        .where((e) => e.dateEnd.difference(e.dateStart).inDays < 60)
+        .where(
+          (e) =>
+              now.difference(e.dateStart).inDays.abs() < 5 ||
+              now.difference(e.dateEnd).inDays.abs() < 5 ||
+              now.between(e.dateStart, e.dateEnd),
+        )
+        .sorted();
 
     if (events.isEmpty) {
       return const GsNoResultsState.xSmall();
@@ -77,8 +75,8 @@ class EventsScrollView extends StatelessWidget {
     final dst = events.maxBy((e) => e.dateEnd)!.dateEnd;
     final totalDays = dst.difference(src).inDays.abs() + 1;
     final end = src.add(Duration(days: totalDays));
-    final dates =
-        events.expand((e) => [e.dateStart, e.dateEnd]).toSet()..add(end);
+    final dates = events.expand((e) => [e.dateStart, e.dateEnd]).toSet()
+      ..add(end);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -93,95 +91,88 @@ class EventsScrollView extends StatelessWidget {
               ...rows
                   .map<Widget>((e) {
                     return Stack(
-                      children:
-                          e.map((e) {
-                            final offset =
-                                src.difference(e.dateStart).inDays.abs();
-                            final days =
-                                e.dateStart.difference(e.dateEnd).inDays.abs();
-                            return Container(
-                              height: daySize,
-                              width: days * daySize - 8,
-                              margin: EdgeInsets.only(
-                                left: daySize * offset + 4,
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                color: context.themeColors.colorByRarityBg(
-                                  e.type == GeEventType.flagship ? 5 : 4,
-                                ),
-                                borderRadius: BorderRadius.circular(daySize),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Positioned.fill(
-                                    right: null,
-                                    child: SizedBox(
-                                      width: 200,
-                                      child: Opacity(
-                                        opacity: kDisableOpacity * 2,
-                                        child: ShaderMask(
-                                          shaderCallback: (rect) {
-                                            return LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              colors: [
-                                                Colors.black.withValues(
-                                                  alpha: 0,
-                                                ),
-                                                Colors.black,
-                                              ],
-                                              stops: const [0, 0.8],
-                                            ).createShader(rect);
-                                          },
-                                          blendMode: BlendMode.dstOut,
-                                          child: CachedImageWidget(
-                                            e.image,
-                                            fit: BoxFit.cover,
-                                            alignment: Alignment.centerLeft,
-                                            showPlaceholder: false,
-                                          ),
-                                        ),
+                      children: e.map((e) {
+                        final offset = src.difference(e.dateStart).inDays.abs();
+                        final days = e.dateStart
+                            .difference(e.dateEnd)
+                            .inDays
+                            .abs();
+                        return Container(
+                          height: daySize,
+                          width: days * daySize - 8,
+                          margin: EdgeInsets.only(left: daySize * offset + 4),
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            color: context.themeColors.colorByRarityBg(
+                              e.type == GeEventType.flagship ? 5 : 4,
+                            ),
+                            borderRadius: BorderRadius.circular(daySize),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                right: null,
+                                child: SizedBox(
+                                  width: 200,
+                                  child: Opacity(
+                                    opacity: kDisableOpacity * 2,
+                                    child: ShaderMask(
+                                      shaderCallback: (rect) {
+                                        return LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Colors.black.withValues(alpha: 0),
+                                            Colors.black,
+                                          ],
+                                          stops: const [0, 0.8],
+                                        ).createShader(rect);
+                                      },
+                                      blendMode: BlendMode.dstOut,
+                                      child: CachedImageWidget(
+                                        e.image,
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.centerLeft,
+                                        showPlaceholder: false,
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: kSeparator8,
-                                      vertical: kSeparator2,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              e.name,
-                                              maxLines: 2,
-                                              style: context
-                                                  .themeStyles
-                                                  .label14n
-                                                  .copyWith(
-                                                    shadows:
-                                                        GsSpacing.kMainShadow,
-                                                  ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: kSeparator6),
-                                        Text(
-                                          e.dateEnd
-                                              .difference(now)
-                                              .endOrEndedIn(context),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            );
-                          }).toList(),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: kSeparator8,
+                                  vertical: kSeparator2,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          e.name,
+                                          maxLines: 2,
+                                          style: context.themeStyles.label14n
+                                              .copyWith(
+                                                shadows: GsSpacing.kMainShadow,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: kSeparator6),
+                                    Text(
+                                      e.dateEnd
+                                          .difference(now)
+                                          .endOrEndedIn(context),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
                     );
                   })
                   .separate(const SizedBox(height: GsSpacing.kGridSeparator)),
@@ -193,42 +184,40 @@ class EventsScrollView extends StatelessWidget {
               final show = date.isAtSameDayAs(now) || dates.contains(date);
               return Transform.translate(
                 offset: const Offset(-daySize / 2, 0),
-                child:
-                    !show
-                        ? const SizedBox(width: daySize)
-                        : Container(
-                          width: daySize,
-                          height:
-                              daySize +
-                              rows.length * daySize +
-                              rows.length * GsSpacing.kGridSeparator,
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              Container(
-                                height: daySize,
-                                alignment: Alignment.center,
-                                decoration:
-                                    date.isAtSameDayAs(now)
-                                        ? BoxDecoration(
-                                          color: context.themeColors.primary80,
-                                          shape: BoxShape.circle,
-                                        )
-                                        : null,
-                                child: Text(
-                                  date.day.toString().padLeft(2, '0'),
-                                  style: context.themeStyles.label12n,
-                                ),
+                child: !show
+                    ? const SizedBox(width: daySize)
+                    : Container(
+                        width: daySize,
+                        height:
+                            daySize +
+                            rows.length * daySize +
+                            rows.length * GsSpacing.kGridSeparator,
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: daySize,
+                              alignment: Alignment.center,
+                              decoration: date.isAtSameDayAs(now)
+                                  ? BoxDecoration(
+                                      color: context.themeColors.primary80,
+                                      shape: BoxShape.circle,
+                                    )
+                                  : null,
+                              child: Text(
+                                date.day.toString().padLeft(2, '0'),
+                                style: context.themeStyles.label12n,
                               ),
-                              Expanded(
-                                child: VerticalDivider(
-                                  color: context.themeColors.almostWhite
-                                      .withValues(alpha: kDisableOpacity),
-                                ),
+                            ),
+                            Expanded(
+                              child: VerticalDivider(
+                                color: context.themeColors.almostWhite
+                                    .withValues(alpha: kDisableOpacity),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                      ),
               );
             }),
           ),

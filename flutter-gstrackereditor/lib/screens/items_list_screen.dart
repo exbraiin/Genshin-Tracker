@@ -46,13 +46,12 @@ class _ItemsListScreenState<T extends GsModel<T>>
   void initState() {
     super.initState();
     final versionLabel = GsFieldFilter<T>.version((e) => '').label;
-    _selectedFilters =
-        widget.filters.map((e) {
-          if (widget.version != null && e.label == versionLabel) {
-            return <String>{widget.version!};
-          }
-          return <String>{};
-        }).toList();
+    _selectedFilters = widget.filters.map((e) {
+      if (widget.version != null && e.label == versionLabel) {
+        return <String>{widget.version!};
+      }
+      return <String>{};
+    }).toList();
   }
 
   @override
@@ -67,10 +66,9 @@ class _ItemsListScreenState<T extends GsModel<T>>
         actions: [
           if (sortByVersion)
             IconButton(
-              icon:
-                  _sortByVersion
-                      ? const Icon(Icons.arrow_drop_down_rounded)
-                      : const Icon(Icons.arrow_drop_up_rounded),
+              icon: _sortByVersion
+                  ? const Icon(Icons.arrow_drop_down_rounded)
+                  : const Icon(Icons.arrow_drop_up_rounded),
               onPressed: () => setState(() => _sortByVersion = !_sortByVersion),
             ),
           IconButton(
@@ -80,11 +78,10 @@ class _ItemsListScreenState<T extends GsModel<T>>
           ),
           IconButton(
             icon: const Icon(Icons.search_rounded),
-            onPressed:
-                () => _GsSearchItem(
-                  _searchQuery,
-                  (value) => setState(() => _searchQuery = value),
-                ).show(context),
+            onPressed: () => _GsSearchItem(
+              _searchQuery,
+              (value) => setState(() => _searchQuery = value),
+            ).show(context),
           ),
           if (widget.filters.isNotEmpty)
             IconButton(
@@ -102,17 +99,16 @@ class _ItemsListScreenState<T extends GsModel<T>>
         stream: Database.i.modified,
         builder: (context, snapshot) {
           final versions = Database.i.of<GsVersion>();
-          final collection =
-              _sortByVersion && sortByVersion
-                  ? widget
-                      .list()
-                      .sortedByDescending((e) {
-                        final version = widget.getDecor(e).version;
-                        return versions.getItem(version) ??
-                            GsVersion.fromJson({});
-                      })
-                      .thenWith((a, b) => a.compareTo(b))
-                  : widget.list();
+          final collection = _sortByVersion && sortByVersion
+              ? widget
+                    .list()
+                    .sortedByDescending((e) {
+                      final version = widget.getDecor(e).version;
+                      return versions.getItem(version) ??
+                          GsVersion.fromJson({});
+                    })
+                    .thenWith((a, b) => a.compareTo(b))
+              : widget.list();
 
           final list = collection.where((item) {
             // Apply filters...
@@ -132,17 +128,16 @@ class _ItemsListScreenState<T extends GsModel<T>>
           });
 
           return GsGridView(
-            children:
-                list.map((item) {
-                  final level = DataValidator.i.getLevel<T>(item.id);
-                  final decor = widget.getDecor(item);
-                  return GsGridItem.decor(
-                    decor,
-                    validLevel: level,
-                    onTap: () => widget.onTap?.call(context, item),
-                    child: decor.child,
-                  );
-                }).toList(),
+            children: list.map((item) {
+              final level = DataValidator.i.getLevel<T>(item.id);
+              final decor = widget.getDecor(item);
+              return GsGridItem.decor(
+                decor,
+                validLevel: level,
+                onTap: () => widget.onTap?.call(context, item),
+                child: decor.child,
+              );
+            }).toList(),
           );
         },
       ),
@@ -170,44 +165,35 @@ class _ItemsListScreenState<T extends GsModel<T>>
                     return ListView(
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(8),
-                      children:
-                          filters.mapIndexed((i, e) {
-                            return Column(
-                              children: [
-                                Text(e.label),
-                                const SizedBox(height: 4),
-                                Wrap(
-                                  spacing: 4,
-                                  runSpacing: 4,
-                                  alignment: WrapAlignment.center,
-                                  children:
-                                      e.filters.map((e) {
-                                        final contained = selected[i].contains(
-                                          e.value,
-                                        );
-                                        return GsSelectChip(
-                                          e,
-                                          selected: contained,
-                                          onTap: (item) {
-                                            value.value++;
-                                            setState(
-                                              () =>
-                                                  contained
-                                                      ? selected[i].remove(
-                                                        e.value,
-                                                      )
-                                                      : selected[i].add(
-                                                        e.value,
-                                                      ),
-                                            );
-                                          },
-                                        );
-                                      }).toList(),
-                                ),
-                                const SizedBox(height: 8),
-                              ],
-                            );
-                          }).toList(),
+                      children: filters.mapIndexed((i, e) {
+                        return Column(
+                          children: [
+                            Text(e.label),
+                            const SizedBox(height: 4),
+                            Wrap(
+                              spacing: 4,
+                              runSpacing: 4,
+                              alignment: WrapAlignment.center,
+                              children: e.filters.map((e) {
+                                final contained = selected[i].contains(e.value);
+                                return GsSelectChip(
+                                  e,
+                                  selected: contained,
+                                  onTap: (item) {
+                                    value.value++;
+                                    setState(
+                                      () => contained
+                                          ? selected[i].remove(e.value)
+                                          : selected[i].add(e.value),
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        );
+                      }).toList(),
                     );
                   },
                 ),

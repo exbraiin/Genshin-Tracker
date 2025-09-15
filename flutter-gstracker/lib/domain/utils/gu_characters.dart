@@ -171,10 +171,9 @@ final class CharTalents {
   int get totalCrownless => _data.values.sumBy((e) => e.$1.coerceAtMost(9));
 
   CharTalents(GsCharacter item, GiCharacter info, int cons)
-    : _data =
-          CharTalentType.values
-              .map((tal) => MapEntry(tal, _parseTalent(item, info, tal, cons)))
-              .toMap();
+    : _data = CharTalentType.values
+          .map((tal) => MapEntry(tal, _parseTalent(item, info, tal, cons)))
+          .toMap();
 
   static (int, int) _parseTalent(
     GsCharacter item,

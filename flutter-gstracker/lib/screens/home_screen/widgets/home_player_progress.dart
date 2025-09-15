@@ -17,57 +17,56 @@ class HomePlayerProgress extends StatelessWidget {
       builder: (context, snapshot) {
         return GsDataBox.info(
           title: Text(context.labels.progress()),
-          children:
-              <Widget>[
-                _ProgressInfo(
-                  AppAssets.menuIconAchievements,
-                  context.labels.achievements(),
-                  GsUtils.achievements.countSaved(),
-                  GsUtils.achievements.countTotal(),
-                ),
-                _ProgressInfo(
-                  AppAssets.menuIconRecipes,
-                  context.labels.recipes(),
-                  GsUtils.recipes.totalPermanent(owned: true),
-                  GsUtils.recipes.totalPermanent(),
-                ),
-                _ProgressInfo(
-                  AppAssets.menuIconRecipes,
-                  context.labels.filterProficiency(),
-                  GsUtils.recipes.totalMastered(owned: true),
-                  GsUtils.recipes.totalMastered(),
-                ),
-                _ProgressInfo(
-                  AppAssets.menuIconMap,
-                  context.labels.remarkableChests(),
-                  GsUtils.furnitureChests.owned,
-                  GsUtils.furnitureChests.total,
-                ),
-                _ProgressInfo(
-                  AppAssets.menuEnvisagedEchoes,
-                  context.labels.envisagedEchoes(),
-                  GsUtils.envisagedEchos.owned,
-                  GsUtils.envisagedEchos.total,
-                ),
-                _ProgressInfo(
-                  AppAssets.menuIconThespianTricks,
-                  context.labels.thespianTricks(),
-                  GsUtils.thespianTricks.owned,
-                  GsUtils.thespianTricks.total,
-                ),
-                _ProgressInfo(
-                  AppAssets.menuIconPreciousItems,
-                  context.labels.spincrystals(),
-                  GsUtils.spincrystals.owned,
-                  GsUtils.spincrystals.total,
-                ),
-                _ProgressInfo(
-                  AppAssets.menuIconSereniteaSets,
-                  context.labels.sereniteaSets(),
-                  GsUtils.sereniteaSets.owned,
-                  GsUtils.sereniteaSets.total,
-                ),
-              ].separate(const SizedBox(height: kSeparator16)).toList(),
+          children: <Widget>[
+            _ProgressInfo(
+              AppAssets.menuIconAchievements,
+              context.labels.achievements(),
+              GsUtils.achievements.countSaved(),
+              GsUtils.achievements.countTotal(),
+            ),
+            _ProgressInfo(
+              AppAssets.menuIconRecipes,
+              context.labels.recipes(),
+              GsUtils.recipes.totalPermanent(owned: true),
+              GsUtils.recipes.totalPermanent(),
+            ),
+            _ProgressInfo(
+              AppAssets.menuIconRecipes,
+              context.labels.filterProficiency(),
+              GsUtils.recipes.totalMastered(owned: true),
+              GsUtils.recipes.totalMastered(),
+            ),
+            _ProgressInfo(
+              AppAssets.menuIconMap,
+              context.labels.remarkableChests(),
+              GsUtils.furnitureChests.owned,
+              GsUtils.furnitureChests.total,
+            ),
+            _ProgressInfo(
+              AppAssets.menuEnvisagedEchoes,
+              context.labels.envisagedEchoes(),
+              GsUtils.envisagedEchos.owned,
+              GsUtils.envisagedEchos.total,
+            ),
+            _ProgressInfo(
+              AppAssets.menuIconThespianTricks,
+              context.labels.thespianTricks(),
+              GsUtils.thespianTricks.owned,
+              GsUtils.thespianTricks.total,
+            ),
+            _ProgressInfo(
+              AppAssets.menuIconPreciousItems,
+              context.labels.spincrystals(),
+              GsUtils.spincrystals.owned,
+              GsUtils.spincrystals.total,
+            ),
+            _ProgressInfo(
+              AppAssets.menuIconSereniteaSets,
+              context.labels.sereniteaSets(),
+              GsUtils.sereniteaSets.owned,
+              GsUtils.sereniteaSets.total,
+            ),
+          ].separate(const SizedBox(height: kSeparator16)).toList(),
         );
       },
     );
@@ -104,10 +103,9 @@ class _ProgressInfo extends StatelessWidget {
                     owned.format(),
                     textAlign: TextAlign.end,
                     style: style.copyWith(
-                      color:
-                          missing > 0
-                              ? context.themeColors.badValue
-                              : Colors.white,
+                      color: missing > 0
+                          ? context.themeColors.badValue
+                          : Colors.white,
                     ),
                   ),
                   if (missing > 0)

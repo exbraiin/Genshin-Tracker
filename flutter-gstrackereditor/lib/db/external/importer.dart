@@ -82,10 +82,9 @@ abstract final class PaimonMoeImporter {
         'group': groupName.toDbId(),
         'hidden': first['hidden'],
         'version': parseVersion(first['ver']),
-        'phases':
-            list
-                .map((e) => {'desc': e['desc'], 'reward': e['reward']})
-                .toList(),
+        'phases': list
+            .map((e) => {'desc': e['desc'], 'reward': e['reward']})
+            .toList(),
       };
     }
 
@@ -103,13 +102,9 @@ abstract final class PaimonMoeImporter {
 
       achs.addAll(
         (group['achievements'] as List? ?? []).map(
-          (ach) =>
-              ach is List
-                  ? parseAchievement(
-                    groupName,
-                    ach.cast<Map<String, dynamic>>(),
-                  )
-                  : parseAchievement(groupName, [ach]),
+          (ach) => ach is List
+              ? parseAchievement(groupName, ach.cast<Map<String, dynamic>>())
+              : parseAchievement(groupName, [ach]),
         ),
       );
     }
@@ -178,8 +173,9 @@ abstract final class FandomImporter {
     final affiliation = document.querySelector(affiliationSel)?.text;
 
     const constellationSel = 'div[data-source="constellation"] div a';
-    final constellation =
-        document.querySelector(constellationSel)?.attributes['title'];
+    final constellation = document
+        .querySelector(constellationSel)
+        ?.attributes['title'];
 
     const foodSel = 'div[data-source="dish"] .item_text';
     final food = document.querySelector(foodSel)?.text;
@@ -289,12 +285,11 @@ abstract final class FandomImporter {
     final thumbSrc = thumb?.attributes['src'] ?? '';
 
     final versionEl = document.querySelector('div.change-history-header > div');
-    final version =
-        versionEl?.text
-            .split(' ')
-            .skipWhile((e) => e.toLowerCase() != 'version')
-            .skip(1)
-            .firstOrNull;
+    final version = versionEl?.text
+        .split(' ')
+        .skipWhile((e) => e.toLowerCase() != 'version')
+        .skip(1)
+        .firstOrNull;
 
     return item.copyWith(
       id: '${name}_$character'.toDbId(),

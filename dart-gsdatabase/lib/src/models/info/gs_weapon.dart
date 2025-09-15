@@ -43,7 +43,5 @@ abstract class _GsWeapon extends GsModel<GsWeapon> with GsVersionable {
   double get ascStatValue;
 
   @override
-  Iterable<Comparable Function(GsWeapon e)> get sorters => [
-        (e) => e.rarity,
-      ];
+  Iterable<Comparable Function(GsWeapon e)> get sorters => [(e) => e.rarity];
 }

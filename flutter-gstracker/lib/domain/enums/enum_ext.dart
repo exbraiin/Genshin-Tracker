@@ -182,10 +182,9 @@ extension GeCharacterAscStatTypeExt on GeCharacterAscStatType {
     });
 
     late final dc = value.toStringAsFixed(1).split('.').last;
-    final str =
-        format
-            ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
-            : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
+    final str = format
+        ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
+        : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
     return !percentage.contains(this) ? str : '$str%';
   }
 }
@@ -317,10 +316,9 @@ extension GeWeaponAscStatTypeExt on GeWeaponAscStatType {
     });
 
     late final dc = value.toStringAsFixed(1).split('.').last;
-    final str =
-        format
-            ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
-            : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
+    final str = format
+        ? '${value.toInt().format()}${dc != '0' ? '.$dc' : ''}'
+        : value.toStringAsFixed(value == value.toInt() ? 0 : 1);
     return !percentage.contains(this) ? str : '$str%';
   }
 }

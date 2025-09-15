@@ -15,11 +15,11 @@ abstract class _GiWish extends GsModel<GiWish> {
 
   @override
   Iterable<Comparable Function(GiWish a)> get sorters => [
-        (a) => a.date,
-        (a) => a.number,
-        (a) => a.bannerId,
-        (a) => a.bannerDate,
-      ];
+    (a) => a.date,
+    (a) => a.number,
+    (a) => a.bannerId,
+    (a) => a.bannerDate,
+  ];
 }
 
 extension GiWishExt on GiWish {

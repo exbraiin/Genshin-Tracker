@@ -43,44 +43,43 @@ class ArtifactDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             title: Text(context.labels.pieces()),
             content: Column(
               spacing: kSeparator8,
-              children:
-                  item.pieces.map((e) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.only(right: kSeparator8),
-                          child: CachedImageWidget(e.icon),
-                        ),
-                        Expanded(
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(minHeight: 64),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  e.name,
-                                  style: context.themeStyles.label14b.copyWith(
-                                    color: context.themeColors.mainColor0,
-                                  ),
-                                ),
-                                const SizedBox(height: kSeparator2),
-                                Text(
-                                  e.desc,
-                                  style: context.themeStyles.label12n.copyWith(
-                                    color: context.themeColors.mainColor1,
-                                  ),
-                                ),
-                              ],
+              children: item.pieces.map((e) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 64,
+                      height: 64,
+                      margin: const EdgeInsets.only(right: kSeparator8),
+                      child: CachedImageWidget(e.icon),
+                    ),
+                    Expanded(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(minHeight: 64),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              e.name,
+                              style: context.themeStyles.label14b.copyWith(
+                                color: context.themeColors.mainColor0,
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: kSeparator2),
+                            Text(
+                              e.desc,
+                              style: context.themeStyles.label12n.copyWith(
+                                color: context.themeColors.mainColor1,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    );
-                  }).toList(),
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           ),
         ],

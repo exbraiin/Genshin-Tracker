@@ -116,10 +116,9 @@ class Home extends StatelessWidget {
             stream: Database.i.modified,
             builder: (context, snapshot) {
               return GsGridView(
-                children:
-                    GsConfigs.getAllConfigs()
-                        .map((e) => e.toGridItem(context))
-                        .toList(),
+                children: GsConfigs.getAllConfigs()
+                    .map((e) => e.toGridItem(context))
+                    .toList(),
               );
             },
           );

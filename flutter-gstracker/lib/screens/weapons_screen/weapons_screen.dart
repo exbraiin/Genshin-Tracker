@@ -18,15 +18,14 @@ class WeaponsScreen extends StatelessWidget {
       icon: AppAssets.menuIconWeapons,
       title: context.labels.weapons(),
       versionSort: (item) => item.version,
-      itemBuilder:
-          (context, state) => WeaponListItem(
-            showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
-            item: state.item,
-            selected: state.selected,
-            onTap: state.onSelect,
-          ),
-      itemCardBuilder:
-          (context, item) => WeaponDetailsCard(item, key: ValueKey(item.id)),
+      itemBuilder: (context, state) => WeaponListItem(
+        showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
+        item: state.item,
+        selected: state.selected,
+        onTap: state.onSelect,
+      ),
+      itemCardBuilder: (context, item) =>
+          WeaponDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

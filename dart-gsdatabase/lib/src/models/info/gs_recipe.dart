@@ -30,9 +30,9 @@ abstract class _GsRecipe extends GsModel<GsRecipe> with GsVersionable {
 
   @override
   Iterable<Comparable Function(GsRecipe e)> get sorters => [
-        (e) => e.rarity,
-        (e) => e.version,
-      ];
+    (e) => e.rarity,
+    (e) => e.version,
+  ];
 }
 
 @BuilderGenerator()

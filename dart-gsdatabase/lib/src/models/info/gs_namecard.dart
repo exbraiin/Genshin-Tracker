@@ -23,7 +23,7 @@ abstract class _GsNamecard extends GsModel<GsNamecard> with GsVersionable {
 
   @override
   Iterable<Comparable Function(GsNamecard e)> get sorters => [
-        (e) => e.type.index,
-        (e) => e.version,
-      ];
+    (e) => e.type.index,
+    (e) => e.version,
+  ];
 }

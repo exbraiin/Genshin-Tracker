@@ -53,10 +53,9 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                   IconButton(
                     tooltip: context.labels.hideTableCharacters(),
                     onPressed: () => toggle(FilterExtras.hide),
-                    icon:
-                        filter.hasExtra(FilterExtras.hide)
-                            ? Icon(Icons.visibility_off_rounded)
-                            : Icon(Icons.visibility_rounded),
+                    icon: filter.hasExtra(FilterExtras.hide)
+                        ? Icon(Icons.visibility_off_rounded)
+                        : Icon(Icons.visibility_rounded),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
                   IconButton(
@@ -67,10 +66,9 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                   button,
                 ],
               ),
-              child:
-                  filter.hasExtra(FilterExtras.versionSort)
-                      ? _MatsList(list)
-                      : InventoryBox(child: _getTableList(context, list)),
+              child: filter.hasExtra(FilterExtras.versionSort)
+                  ? _MatsList(list)
+                  : InventoryBox(child: _getTableList(context, list)),
             );
           },
         );
@@ -103,43 +101,41 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
     return Column(
       children: [
         Row(
-          children:
-              builders.mapIndexed((index, builder) {
-                final child = InkWell(
-                  onTap:
-                      builder.sortBy != null
-                          ? () => applySort(builder, index)
-                          : null,
-                  child: Container(
-                    padding: const EdgeInsets.all(kSeparator8),
-                    child: Row(
-                      children: [
-                        Text(
-                          builder.label,
-                          textAlign: !builder.expand ? TextAlign.center : null,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Icon(
-                          sortItem == builder
-                              ? _ascending
-                                  ? Icons.arrow_drop_up_rounded
-                                  : Icons.arrow_drop_down_rounded
-                              : null,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ],
+          children: builders.mapIndexed((index, builder) {
+            final child = InkWell(
+              onTap: builder.sortBy != null
+                  ? () => applySort(builder, index)
+                  : null,
+              child: Container(
+                padding: const EdgeInsets.all(kSeparator8),
+                child: Row(
+                  children: [
+                    Text(
+                      builder.label,
+                      textAlign: !builder.expand ? TextAlign.center : null,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                );
+                    Icon(
+                      sortItem == builder
+                          ? _ascending
+                                ? Icons.arrow_drop_up_rounded
+                                : Icons.arrow_drop_down_rounded
+                          : null,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ),
+            );
 
-                return builder.expand
-                    ? Expanded(child: child)
-                    : SizedBox(width: builder.width, child: child);
-              }).toList(),
+            return builder.expand
+                ? Expanded(child: child)
+                : SizedBox(width: builder.width, child: child);
+          }).toList(),
         ),
         GsDivider(),
         Expanded(
@@ -157,31 +153,30 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
               return SizedBox(
                 height: 44,
                 child: Row(
-                  children:
-                      builders.map((builder) {
-                        Widget child = Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: kSeparator4,
-                            horizontal: kSeparator8,
-                          ),
-                          child: Opacity(
-                            opacity: item.isOwned ? 1 : kDisableOpacity,
-                            child: builder.builder(item),
-                          ),
-                        );
+                  children: builders.map((builder) {
+                    Widget child = Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: kSeparator4,
+                        horizontal: kSeparator8,
+                      ),
+                      child: Opacity(
+                        opacity: item.isOwned ? 1 : kDisableOpacity,
+                        child: builder.builder(item),
+                      ),
+                    );
 
-                        if (builder.onTap != null &&
-                            (builder.allowTap || item.isOwned)) {
-                          child = InkWell(
-                            onTap: () => builder.onTap!(item),
-                            child: child,
-                          );
-                        }
+                    if (builder.onTap != null &&
+                        (builder.allowTap || item.isOwned)) {
+                      child = InkWell(
+                        onTap: () => builder.onTap!(item),
+                        child: child,
+                      );
+                    }
 
-                        return builder.expand
-                            ? Expanded(child: child)
-                            : SizedBox(width: builder.width, child: child);
-                      }).toList(),
+                    return builder.expand
+                        ? Expanded(child: child)
+                        : SizedBox(width: builder.width, child: child);
+                  }).toList(),
                 ),
               );
             },
@@ -235,52 +230,48 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
       _TableItem(
         label: context.labels.tableTitleFriendship(),
         sortBy: (e) => e.isOwned ? e.friendship : unowned(),
-        builder:
-            (info) => Text(
-              info.isOwned ? '${info.friendship}' : context.labels.tableEmpty(),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: getGoodColor(info.friendship, 10)),
-            ),
-        onTap:
-            (info) =>
-                GsUtils.characters.increaseFriendshipCharacter(info.item.id),
+        builder: (info) => Text(
+          info.isOwned ? '${info.friendship}' : context.labels.tableEmpty(),
+          textAlign: TextAlign.center,
+          style: TextStyle(color: getGoodColor(info.friendship, 10)),
+        ),
+        onTap: (info) =>
+            GsUtils.characters.increaseFriendshipCharacter(info.item.id),
       ),
       _TableItem(
         label: context.labels.tableTitleAscension(),
         sortBy: (e) => e.isOwned ? e.ascension : unowned(),
-        builder:
-            (info) => Text(
-              info.isOwned
-                  ? context.labels.tableNumAsc(info.ascension)
-                  : context.labels.tableEmpty(),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: getGoodColor(info.ascension, 6)),
-            ),
+        builder: (info) => Text(
+          info.isOwned
+              ? context.labels.tableNumAsc(info.ascension)
+              : context.labels.tableEmpty(),
+          textAlign: TextAlign.center,
+          style: TextStyle(color: getGoodColor(info.ascension, 6)),
+        ),
         onTap: (info) => GsUtils.characters.increaseAscension(info.item.id),
       ),
       _TableItem(
         label: context.labels.tableTitleConstellation(),
         sortBy: (e) => e.isOwned ? e.totalConstellations : unowned(),
-        builder:
-            (info) => Text.rich(
-              info.isOwned
-                  ? TextSpan(
-                    children: [
+        builder: (info) => Text.rich(
+          info.isOwned
+              ? TextSpan(
+                  children: [
+                    TextSpan(
+                      text: context.labels.tableNumCons(info.constellations),
+                    ),
+                    if (info.extraConstellations > 0)
                       TextSpan(
-                        text: context.labels.tableNumCons(info.constellations),
-                      ),
-                      if (info.extraConstellations > 0)
-                        TextSpan(
-                          text: ' +${info.extraConstellations}',
-                          style: context.themeStyles.label12i.copyWith(
-                            fontSize: 10,
-                          ),
+                        text: ' +${info.extraConstellations}',
+                        style: context.themeStyles.label12i.copyWith(
+                          fontSize: 10,
                         ),
-                    ],
-                  )
-                  : TextSpan(text: context.labels.tableEmpty()),
-              textAlign: TextAlign.center,
-            ),
+                      ),
+                  ],
+                )
+              : TextSpan(text: context.labels.tableEmpty()),
+          textAlign: TextAlign.center,
+        ),
       ),
       ...CharTalentType.values.map((e) => _talentTableItem(e)),
       _TableItem(
@@ -294,13 +285,12 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                 info.talents?.total.toString() ?? context.labels.tableEmpty(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color:
-                      info.talentsTotal >= CharTalents.kTotal
-                          ? context.themeColors.starColor
-                          : getGoodColor(
-                            info.talentsTotal,
-                            CharTalents.kTotalCrownless,
-                          ),
+                  color: info.talentsTotal >= CharTalents.kTotal
+                      ? context.themeColors.starColor
+                      : getGoodColor(
+                          info.talentsTotal,
+                          CharTalents.kTotalCrownless,
+                        ),
                 ),
               ),
               if (info.talentsTotal >= CharTalents.kTotal)
@@ -467,28 +457,26 @@ class _MatsListState extends State<_MatsList> {
       final tal = utils.getCharTalentsMissing;
       final asc = utils.getCharAscensionMissing;
 
-      final tals =
-          characters
-              .map((info) => (info, tal(info.item, info.info, maxTalent)))
-              .toList();
-      final ascs =
-          characters
-              .map((info) => (info, asc(info.item, info.info, maxAscension)))
-              .toList();
+      final tals = characters
+          .map((info) => (info, tal(info.item, info.info, maxTalent)))
+          .toList();
+      final ascs = characters
+          .map((info) => (info, asc(info.item, info.info, maxAscension)))
+          .toList();
 
-      final total =
-          [...tals, ...ascs].groupBy((e) => e.$1.item.id).values.map((entry) {
-            final item = entry.first.$1;
-            final mats =
-                entry
-                    .expand((e) => e.$2.entries)
-                    .groupBy((e) => e.key.id)
-                    .values
-                    .map((e) => MapEntry(e.first.key, e.sumBy((n) => n.value)))
-                    .toMap();
+      final total = [...tals, ...ascs].groupBy((e) => e.$1.item.id).values.map((
+        entry,
+      ) {
+        final item = entry.first.$1;
+        final mats = entry
+            .expand((e) => e.$2.entries)
+            .groupBy((e) => e.key.id)
+            .values
+            .map((e) => MapEntry(e.first.key, e.sumBy((n) => n.value)))
+            .toMap();
 
-            return (item, mats);
-          }).toList();
+        return (item, mats);
+      }).toList();
 
       return (total: total, talents: tals, ascension: ascs);
     }
@@ -588,25 +576,24 @@ class _MatsListState extends State<_MatsList> {
     return Wrap(
       spacing: kSeparator4,
       runSpacing: kSeparator4,
-      children:
-          list
-              .sortedBy((e) => e.$1.talentsTotalCrownless)
-              .thenBy((e) => e.$1.item.rarity)
-              .map((e) {
-                const kTal = GeMaterialType.talentMaterials;
-                final mat = e.$2.keys.firstOrNullWhere((e) => e.group == kTal);
-                final enable = (mat?.isFarmableToday ?? false) && e.$1.isOwned;
-                return ItemGridWidget.character(
-                  e.$1.item,
-                  disabled: !enable,
-                  labelWidget: CharaterTalentsLabel(
-                    e.$1,
-                    style: context.themeStyles.label12n,
-                  ),
-                  tooltip: '',
-                );
-              })
-              .toList(),
+      children: list
+          .sortedBy((e) => e.$1.talentsTotalCrownless)
+          .thenBy((e) => e.$1.item.rarity)
+          .map((e) {
+            const kTal = GeMaterialType.talentMaterials;
+            final mat = e.$2.keys.firstOrNullWhere((e) => e.group == kTal);
+            final enable = (mat?.isFarmableToday ?? false) && e.$1.isOwned;
+            return ItemGridWidget.character(
+              e.$1.item,
+              disabled: !enable,
+              labelWidget: CharaterTalentsLabel(
+                e.$1,
+                style: context.themeStyles.label12n,
+              ),
+              tooltip: '',
+            );
+          })
+          .toList(),
     );
   }
 
@@ -614,25 +601,24 @@ class _MatsListState extends State<_MatsList> {
     return Wrap(
       spacing: kSeparator4,
       runSpacing: kSeparator4,
-      children:
-          list
-              .expand((e) => e.$2.entries)
-              .groupBy((e) => e.key.id)
-              .values
-              .where((e) => e.firstOrNull != null)
-              .map((e) => (e.first.key, e.sumBy((e) => e.value)))
-              .sortedBy((e) => e.$1.group.index)
-              .thenBy((e) => e.$1.subgroup)
-              .thenBy((e) => e.$1.region.index)
-              .map((e) {
-                return ItemGridWidget.material(
-                  e.$1,
-                  disabled: !e.$1.isFarmableToday,
-                  label: e.$2.compact(),
-                  tooltip: '',
-                );
-              })
-              .toList(),
+      children: list
+          .expand((e) => e.$2.entries)
+          .groupBy((e) => e.key.id)
+          .values
+          .where((e) => e.firstOrNull != null)
+          .map((e) => (e.first.key, e.sumBy((e) => e.value)))
+          .sortedBy((e) => e.$1.group.index)
+          .thenBy((e) => e.$1.subgroup)
+          .thenBy((e) => e.$1.region.index)
+          .map((e) {
+            return ItemGridWidget.material(
+              e.$1,
+              disabled: !e.$1.isFarmableToday,
+              label: e.$2.compact(),
+              tooltip: '',
+            );
+          })
+          .toList(),
     );
   }
 
@@ -671,10 +657,9 @@ class _MatsListState extends State<_MatsList> {
                 divisions: max - min,
                 label: value.toString(),
                 padding: EdgeInsets.symmetric(horizontal: kSeparator8),
-                onChanged:
-                    (i) => setState(() {
-                      setValue(i.toInt());
-                    }),
+                onChanged: (i) => setState(() {
+                  setValue(i.toInt());
+                }),
                 onChangeEnd: (value) {
                   setState(() {
                     future = _missingMaterials(
@@ -693,9 +678,8 @@ class _MatsListState extends State<_MatsList> {
 }
 
 typedef _CharMats = (CharInfo, Map<GsMaterial, int>);
-typedef _MissMats =
-    ({
-      List<_CharMats> total,
-      List<_CharMats> talents,
-      List<_CharMats> ascension,
-    });
+typedef _MissMats = ({
+  List<_CharMats> total,
+  List<_CharMats> talents,
+  List<_CharMats> ascension,
+});

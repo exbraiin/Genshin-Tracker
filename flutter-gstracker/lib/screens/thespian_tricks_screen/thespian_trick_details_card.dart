@@ -42,9 +42,8 @@ class ThespianTrickDetailsCard extends StatelessWidget
                 alignment: Alignment.bottomRight,
                 child: GsIconButton.owned(
                   owned: owned,
-                  onPress:
-                      (own) =>
-                          GsUtils.thespianTricks.update(item.id, obtained: own),
+                  onPress: (own) =>
+                      GsUtils.thespianTricks.update(item.id, obtained: own),
                 ),
               ),
             ],

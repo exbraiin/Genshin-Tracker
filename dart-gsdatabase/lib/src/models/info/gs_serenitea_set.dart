@@ -24,7 +24,7 @@ abstract class _GsSereniteaSet extends GsModel<GsSereniteaSet>
 
   @override
   Iterable<Comparable Function(GsSereniteaSet e)> get sorters => [
-        (e) => e.category.index,
-        (e) => e.version,
-      ];
+    (e) => e.category.index,
+    (e) => e.version,
+  ];
 }

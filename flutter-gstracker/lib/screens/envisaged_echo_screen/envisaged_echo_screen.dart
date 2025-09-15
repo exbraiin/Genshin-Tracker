@@ -17,15 +17,13 @@ class EnvisagedEchoScreen extends StatelessWidget {
       icon: AppAssets.menuEnvisagedEchoes,
       title: context.labels.envisagedEchoes(),
       versionSort: (item) => item.version,
-      itemBuilder:
-          (context, state) => EnvisagedEchoListItem(
-            state.item,
-            selected: state.selected,
-            onTap: state.onSelect,
-          ),
-      itemCardBuilder:
-          (context, item) =>
-              EnvisagedEchoDetailsCard(item, key: ValueKey(item.id)),
+      itemBuilder: (context, state) => EnvisagedEchoListItem(
+        state.item,
+        selected: state.selected,
+        onTap: state.onSelect,
+      ),
+      itemCardBuilder: (context, item) =>
+          EnvisagedEchoDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

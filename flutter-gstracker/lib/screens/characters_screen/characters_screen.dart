@@ -18,13 +18,12 @@ class CharactersScreen extends StatelessWidget {
       icon: AppAssets.menuIconCharacters,
       title: context.labels.characters(),
       versionSort: (item) => item.version,
-      itemBuilder:
-          (context, state) => CharacterListItem(
-            state.item,
-            showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
-            onTap: state.onSelect,
-            selected: state.selected,
-          ),
+      itemBuilder: (context, state) => CharacterListItem(
+        state.item,
+        showItem: !state.filter!.isSectionEmpty(FilterKey.weekdays),
+        onTap: state.onSelect,
+        selected: state.selected,
+      ),
       itemCardBuilder: (context, item) => CharacterDetailsCard(item),
     );
   }

@@ -229,10 +229,9 @@ final class GuMaterials {
     for (final item in items) {
       for (final entry in listMats) {
         final index = indexes[entry.key]?.call(item) ?? 0;
-        final material =
-            index == 0
-                ? entry.value.firstOrNullWhere((e) => e.id == entry.key)
-                : entry.value.elementAtOrNull(index);
+        final material = index == 0
+            ? entry.value.firstOrNullWhere((e) => e.id == entry.key)
+            : entry.value.elementAtOrNull(index);
         if (material == null) continue;
         final amount = amounts[entry.key]?.call(item) ?? 0;
         total[material.id] = (total[material.id] ?? 0) + amount;

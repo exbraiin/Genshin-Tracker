@@ -56,8 +56,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     alignment: Alignment.bottomRight,
                     child: GsIconButton.owned(
                       owned: saved != null,
-                      onPress:
-                          (own) => GsUtils.recipes.update(item.id, own: own),
+                      onPress: (own) =>
+                          GsUtils.recipes.update(item.id, own: own),
                     ),
                   ),
                 if (!isSpecial && owned)
@@ -98,8 +98,8 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                                   divisions: item.maxProficiency,
                                   value: notifier.value.toDouble(),
                                   onChanged: (i) => notifier.value = i.toInt(),
-                                  onChangeEnd:
-                                      (i) => _setProficiency(i.toInt()),
+                                  onChangeEnd: (i) =>
+                                      _setProficiency(i.toInt()),
                                 );
                               },
                             ),

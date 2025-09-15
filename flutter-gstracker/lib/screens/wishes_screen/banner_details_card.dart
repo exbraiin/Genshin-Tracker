@@ -74,56 +74,54 @@ class BannerDetailsCard extends StatelessWidget {
           ),
         ],
       ),
-      child:
-          bannerWishes.isNotEmpty
-              ? Column(
+      child: bannerWishes.isNotEmpty
+          ? Column(
+              children: [
+                _header(context),
+                const SizedBox(height: GsSpacing.kListSeparator),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: filteredWishes.length,
+                    itemBuilder: (context, index) {
+                      final wish = filteredWishes[index];
+                      return WishListItem(
+                        pity: wish.pity,
+                        index: index,
+                        wish: wish.wish,
+                        wishState: wish.state,
+                        type: WishListItem.getListType(filteredWishes, index),
+                        bannerType: item.type,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            )
+          : Padding(
+              padding: const EdgeInsets.all(kSeparator8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _header(context),
-                  const SizedBox(height: GsSpacing.kListSeparator),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: filteredWishes.length,
-                      itemBuilder: (context, index) {
-                        final wish = filteredWishes[index];
-                        return WishListItem(
-                          pity: wish.pity,
-                          index: index,
-                          wish: wish.wish,
-                          wishState: wish.state,
-                          type: WishListItem.getListType(filteredWishes, index),
-                          bannerType: item.type,
-                        );
-                      },
+                  ItemIconWidget.asset(AppAssets.empty, size: 100),
+                  const SizedBox(height: kSeparator4),
+                  Text(
+                    context.labels.noWishes(),
+                    style: context.themeStyles.label14n.copyWith(
+                      color: context.themeColors.mainColor1,
                     ),
                   ),
+                  const SizedBox(height: kSeparator8),
+                  GsButton(
+                    color: context.themeColors.mainColor1,
+                    borderRadius: GsSpacing.kListRadius,
+                    onPressed: () => Navigator.of(
+                      context,
+                    ).pushNamed(AddWishScreen.id, arguments: item),
+                    child: Text(context.labels.addWishes()),
+                  ),
                 ],
-              )
-              : Padding(
-                padding: const EdgeInsets.all(kSeparator8),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ItemIconWidget.asset(AppAssets.empty, size: 100),
-                    const SizedBox(height: kSeparator4),
-                    Text(
-                      context.labels.noWishes(),
-                      style: context.themeStyles.label14n.copyWith(
-                        color: context.themeColors.mainColor1,
-                      ),
-                    ),
-                    const SizedBox(height: kSeparator8),
-                    GsButton(
-                      color: context.themeColors.mainColor1,
-                      borderRadius: GsSpacing.kListRadius,
-                      onPressed:
-                          () => Navigator.of(
-                            context,
-                          ).pushNamed(AddWishScreen.id, arguments: item),
-                      child: Text(context.labels.addWishes()),
-                    ),
-                  ],
-                ),
               ),
+            ),
     );
   }
 
@@ -227,22 +225,20 @@ class BannerDetailsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GsIconButton.remove(
-                onPress:
-                    GsUtils.wishes.bannerHasWishes(item.id)
-                        ? () {
-                          RemoveDialog.show(context, item.name).then((value) {
-                            if (!value) return;
-                            GsUtils.wishes.removeLastWish(item.id);
-                          });
-                        }
-                        : null,
+                onPress: GsUtils.wishes.bannerHasWishes(item.id)
+                    ? () {
+                        RemoveDialog.show(context, item.name).then((value) {
+                          if (!value) return;
+                          GsUtils.wishes.removeLastWish(item.id);
+                        });
+                      }
+                    : null,
               ),
               const SizedBox(height: kSeparator8),
               GsIconButton.add(
-                onPress:
-                    () => Navigator.of(
-                      context,
-                    ).pushNamed(AddWishScreen.id, arguments: item),
+                onPress: () => Navigator.of(
+                  context,
+                ).pushNamed(AddWishScreen.id, arguments: item),
               ),
             ],
           ),

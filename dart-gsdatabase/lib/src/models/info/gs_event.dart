@@ -25,8 +25,8 @@ abstract class _GsEvent extends GsModel<GsEvent> with GsVersionable {
 
   @override
   Iterable<Comparable Function(GsEvent e)> get sorters => [
-        (e) => e.version,
-        (e) => e.dateStart,
-        (e) => e.type.index,
-      ];
+    (e) => e.version,
+    (e) => e.dateStart,
+    (e) => e.type.index,
+  ];
 }

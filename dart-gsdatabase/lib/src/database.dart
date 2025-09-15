@@ -141,8 +141,9 @@ final class Items<T extends GsModel<T>> {
 
   Future<void> _load(JsonMap map, GsDatabase db) async {
     _db = db;
-    final items = (map[collectionId] as JsonMap? ?? {})
-        .map((k, v) => MapEntry(k, parser({'id': k, ...v})));
+    final items = (map[collectionId] as JsonMap? ?? {}).map(
+      (k, v) => MapEntry(k, parser({'id': k, ...v})),
+    );
     _data.addAll(items);
   }
 

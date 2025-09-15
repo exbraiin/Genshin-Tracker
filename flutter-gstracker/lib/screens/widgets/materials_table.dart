@@ -46,10 +46,9 @@ class _MaterialsTableState extends State<MaterialsTable> {
                   IconButton(
                     color: widget.color,
                     onPressed: () => setState(() => _expanded = !_expanded),
-                    icon:
-                        _expanded
-                            ? Icon(Icons.expand_less_rounded)
-                            : Icon(Icons.expand_more_rounded),
+                    icon: _expanded
+                        ? Icon(Icons.expand_less_rounded)
+                        : Icon(Icons.expand_more_rounded),
                   ),
                 ],
               ),
@@ -64,15 +63,14 @@ class _MaterialsTableState extends State<MaterialsTable> {
             children: [
               GsDivider(color: widget.color),
               _getTable(
-                children:
-                    widget.matsByLevel
-                        .map(
-                          (e) => _getTableRow(
-                            Text('${widget.levelLabel?.call(e.$1) ?? e.$1}'),
-                            e.$2,
-                          ),
-                        )
-                        .toList(),
+                children: widget.matsByLevel
+                    .map(
+                      (e) => _getTableRow(
+                        Text('${widget.levelLabel?.call(e.$1) ?? e.$1}'),
+                        e.$2,
+                      ),
+                    )
+                    .toList(),
               ),
             ],
           ),
@@ -115,21 +113,18 @@ class _MaterialsTableState extends State<MaterialsTable> {
             spacing: kSeparator4,
             runSpacing: kSeparator4,
             textDirection: TextDirection.rtl,
-            children:
-                widget
-                    .sort(mats.entries)
-                    .thenBy((e) => e.key.group.index)
-                    .thenBy((e) => e.key.subgroup)
-                    .thenBy((e) => e.key.rarity)
-                    .thenBy((e) => e.key.name)
-                    .reversed
-                    .map(
-                      (e) => ItemGridWidget.material(
-                        e.key,
-                        label: e.value.compact(),
-                      ),
-                    )
-                    .toList(),
+            children: widget
+                .sort(mats.entries)
+                .thenBy((e) => e.key.group.index)
+                .thenBy((e) => e.key.subgroup)
+                .thenBy((e) => e.key.rarity)
+                .thenBy((e) => e.key.name)
+                .reversed
+                .map(
+                  (e) =>
+                      ItemGridWidget.material(e.key, label: e.value.compact()),
+                )
+                .toList(),
           ),
         ),
       ],

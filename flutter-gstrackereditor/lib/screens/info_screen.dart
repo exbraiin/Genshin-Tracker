@@ -70,53 +70,50 @@ class _InfoScreenState extends State<InfoScreen> {
   Widget _getInvalidList() {
     return ListView(
       padding: const EdgeInsets.all(8),
-      children:
-          _validateList(context).expand((record) {
-            final color0 = GsStyle.getVersionColor(record.version);
-            final color1 = Color.lerp(color0, Colors.black, 0.6)!;
-            return [
-              Container(
-                height: 44,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [color0, color1],
-                    stops: const [0, 0.25],
-                  ),
-                  border: Border.all(width: 2, color: color1),
-                ),
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.only(bottom: 8),
-                child: Text('Version ${record.version}'),
+      children: _validateList(context).expand((record) {
+        final color0 = GsStyle.getVersionColor(record.version);
+        final color1 = Color.lerp(color0, Colors.black, 0.6)!;
+        return [
+          Container(
+            height: 44,
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [color0, color1],
+                stops: const [0, 0.25],
               ),
-              ...record.items.map((record) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 4),
-                  padding: const EdgeInsets.only(bottom: 4),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Color(0x66FFFFFF)),
+              border: Border.all(width: 2, color: color1),
+            ),
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(bottom: 8),
+            child: Text('Version ${record.version}'),
+          ),
+          ...record.items.map((record) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 4),
+              padding: const EdgeInsets.only(bottom: 4),
+              decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(color: Color(0x66FFFFFF))),
+              ),
+              child: Row(
+                children: [
+                  Expanded(flex: 2, child: Text(record.label)),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    flex: 6,
+                    child: Wrap(
+                      spacing: 4,
+                      runSpacing: 4,
+                      children: record.items.toList(),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(flex: 2, child: Text(record.label)),
-                      const SizedBox(width: 8),
-                      Flexible(
-                        flex: 6,
-                        child: Wrap(
-                          spacing: 4,
-                          runSpacing: 4,
-                          children: record.items.toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-              const SizedBox(height: 24),
-            ];
-          }).toList(),
+                ],
+              ),
+            );
+          }),
+          const SizedBox(height: 24),
+        ];
+      }).toList(),
     );
   }
 
@@ -144,31 +141,28 @@ class _InfoScreenState extends State<InfoScreen> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children:
-                GsConfigs.getAllConfigs()
-                    .where((e) => e.collection.parser({}) is GsVersionable)
-                    .map((config) {
-                      final amount = config.collection.items
-                          .cast<GsVersionable>()
-                          .count((e) => e.version == version.id);
-                      final color =
-                          amount < 1 ? Colors.deepOrange : Colors.lightGreen;
-                      return SizedBox(
-                        width: 80,
-                        height: 80,
-                        child: GsGridItem(
-                          color: color,
-                          label: config.title,
-                          onTap:
-                              () => config.openListScreen(
-                                context,
-                                version: version.id,
-                              ),
-                          child: GsOrderOrb(amount.toString()),
-                        ),
-                      );
-                    })
-                    .toList(),
+            children: GsConfigs.getAllConfigs()
+                .where((e) => e.collection.parser({}) is GsVersionable)
+                .map((config) {
+                  final amount = config.collection.items
+                      .cast<GsVersionable>()
+                      .count((e) => e.version == version.id);
+                  final color = amount < 1
+                      ? Colors.deepOrange
+                      : Colors.lightGreen;
+                  return SizedBox(
+                    width: 80,
+                    height: 80,
+                    child: GsGridItem(
+                      color: color,
+                      label: config.title,
+                      onTap: () =>
+                          config.openListScreen(context, version: version.id),
+                      child: GsOrderOrb(amount.toString()),
+                    ),
+                  );
+                })
+                .toList(),
           ),
           SizedBox(height: 8),
         ],
@@ -180,13 +174,12 @@ class _InfoScreenState extends State<InfoScreen> {
       builder: (context, value, child) {
         return ListView(
           padding: const EdgeInsets.all(8).copyWith(bottom: 0),
-          children:
-              Database.i
-                  .of<GsVersion>()
-                  .items
-                  .sortedByDescending((e) => e.releaseDate)
-                  .map(getChild)
-                  .toList(),
+          children: Database.i
+              .of<GsVersion>()
+              .items
+              .sortedByDescending((e) => e.releaseDate)
+              .map(getChild)
+              .toList(),
         );
       },
     );
@@ -213,16 +206,15 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
       }
 
       final config = GsConfigs.of<T>();
-      final items =
-          values.map((value) {
-            final decor = value != null ? config?.itemDecoration(value) : null;
-            final color = GsStyle.getRarityColor(decor?.rarity ?? 1);
+      final items = values.map((value) {
+        final decor = value != null ? config?.itemDecoration(value) : null;
+        final color = GsStyle.getRarityColor(decor?.rarity ?? 1);
 
-            return GsSelectChip(
-              GsSelectItem(value, decor?.label ?? T.toString(), color: color),
-              onTap: (item) => config?.openEditScreen(context, item),
-            );
-          }).toList();
+        return GsSelectChip(
+          GsSelectItem(value, decor?.label ?? T.toString(), color: color),
+          onTap: (item) => config?.openEditScreen(context, item),
+        );
+      }).toList();
       buffer.add((items: items, label: label));
     }
 

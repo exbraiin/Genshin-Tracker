@@ -19,15 +19,14 @@ class RecipesScreen extends StatelessWidget {
       icon: AppAssets.menuIconRecipes,
       title: context.labels.recipes(),
       versionSort: (item) => item.version,
-      itemBuilder:
-          (context, state) => RecipesListItem(
-            recipe: state.item,
-            selected: state.selected,
-            onTap: state.onSelect,
-            savedRecipe: saveRecipes.getItem(state.item.id),
-          ),
-      itemCardBuilder:
-          (context, item) => RecipeDetailsCard(item, key: ValueKey(item.id)),
+      itemBuilder: (context, state) => RecipesListItem(
+        recipe: state.item,
+        selected: state.selected,
+        onTap: state.onSelect,
+        savedRecipe: saveRecipes.getItem(state.item.id),
+      ),
+      itemCardBuilder: (context, item) =>
+          RecipeDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

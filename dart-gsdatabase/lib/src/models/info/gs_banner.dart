@@ -27,8 +27,8 @@ abstract class _GsBanner extends GsModel<GsBanner> with GsVersionable {
 
   @override
   Iterable<Comparable Function(GsBanner e)> get sorters => [
-        (e) => e.type.index,
-        (e) => e.dateStart,
-        (e) => e.subtype,
-      ];
+    (e) => e.type.index,
+    (e) => e.dateStart,
+    (e) => e.subtype,
+  ];
 }

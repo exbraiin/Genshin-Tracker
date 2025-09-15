@@ -29,11 +29,10 @@ class ScreenFilterBuilder<T extends GsModel<T>> extends StatelessWidget {
       valueListenable: notifier,
       builder: (context, value, child) {
         final button = IconButton(
-          onPressed:
-              () => _GsFilterDialog.show(
-                context,
-                filter,
-              ).then((value) => notifier.value = !notifier.value),
+          onPressed: () => _GsFilterDialog.show(
+            context,
+            filter,
+          ).then((value) => notifier.value = !notifier.value),
           icon: const Icon(Icons.filter_alt_rounded),
         );
         return builder(context, filter, button, (v) {
@@ -207,10 +206,9 @@ class FilterSection<T, I> {
         return eMats.any((e) => iMats.contains(e.id));
       },
       (c) => c.labels.materials(),
-      (c, i) =>
-          i == GeWeekdayType.values.today
-              ? '✦ ${i.getLabel(c)}'
-              : i.getLabel(c),
+      (c, i) => i == GeWeekdayType.values.today
+          ? '✦ ${i.getLabel(c)}'
+          : i.getLabel(c),
       key: FilterKey.weekdays,
     );
   }
@@ -356,10 +354,9 @@ class ScreenFilters {
                       return saved.obtainedWeapons.isNotEmpty ||
                           saved.obtainedCharacters.isNotEmpty;
                     },
-                    filter:
-                        (item) =>
-                            item.rewardsWeapons.isNotEmpty ||
-                            item.rewardsCharacters.isNotEmpty,
+                    filter: (item) =>
+                        item.rewardsWeapons.isNotEmpty ||
+                        item.rewardsCharacters.isNotEmpty,
                   ),
                   FilterSection.version((item) => item.version),
                   FilterSection<GeEventType, GsEvent>(
@@ -395,10 +392,9 @@ class ScreenFilters {
                         _db.saveOf<GiRecipe>().getItem(item.id)?.proficiency ==
                         item.maxProficiency,
                     (c) => c.labels.filterProficiency(),
-                    (c, e) =>
-                        e
-                            ? c.labels.filterComplete()
-                            : c.labels.filterIncomplete(),
+                    (c, e) => e
+                        ? c.labels.filterComplete()
+                        : c.labels.filterIncomplete(),
                     filter: (i) => _db.saveOf<GiRecipe>().exists(i.id),
                   ),
                   FilterSection.state(
@@ -445,12 +441,11 @@ class ScreenFilters {
                   FilterSection.rarity((item) => item.rarity),
                   FilterSection.version((item) => item.version),
                   FilterSection.weekdaysMaterials(
-                    (item) =>
-                        GsUtils.materials
-                            .getWeaponAscension(item)
-                            .keys
-                            .map((e) => e.id)
-                            .toSet(),
+                    (item) => GsUtils.materials
+                        .getWeaponAscension(item)
+                        .keys
+                        .map((e) => e.id)
+                        .toSet(),
                   ),
                   FilterSection<GeWeaponAscStatType, GsWeapon>(
                     GeWeaponAscStatType.values.toSet(),
@@ -487,20 +482,18 @@ class ScreenFilters {
                   FilterSection.state(
                     (item) => GsUtils.characters.isCharMaxAscended(item.id),
                     (c) => c.labels.ascension(),
-                    (c, i) =>
-                        i
-                            ? c.labels.filterComplete()
-                            : c.labels.filterIncomplete(),
+                    (c, i) => i
+                        ? c.labels.filterComplete()
+                        : c.labels.filterIncomplete(),
                     filter: (i) => GsUtils.characters.hasCaracter(i.id),
                   ),
                   FilterSection.state(
                     (item) =>
                         GsUtils.characters.getCharFriendship(item.id) == 10,
                     (c) => c.labels.friendship(),
-                    (c, i) =>
-                        i
-                            ? c.labels.filterComplete()
-                            : c.labels.filterIncomplete(),
+                    (c, i) => i
+                        ? c.labels.filterComplete()
+                        : c.labels.filterIncomplete(),
                     filter: (i) => GsUtils.characters.hasCaracter(i.id),
                   ),
                   FilterSection.rarity((item) => item.rarity, 4),
@@ -729,11 +722,10 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
                     valueListenable: _changeNotifier,
                     builder: (context, value, child) {
                       return ListView(
-                        children:
-                            widget.filter.sections
-                                .map((section) => _layoutSection(section))
-                                .spaced(kSeparator16)
-                                .toList(),
+                        children: widget.filter.sections
+                            .map((section) => _layoutSection(section))
+                            .spaced(kSeparator16)
+                            .toList(),
                       );
                     },
                   ),
@@ -762,20 +754,19 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
     }
 
     final buttons = Column(
-      children:
-          section.values
-              .chunked(2)
-              .map((e) {
-                return Row(
-                  children: [
-                    expandedButton(e.elementAtOrNull(0)),
-                    SizedBox(width: GsSpacing.kListSeparator),
-                    expandedButton(e.elementAtOrNull(1)),
-                  ],
-                );
-              })
-              .spaced(GsSpacing.kListSeparator)
-              .toList(),
+      children: section.values
+          .chunked(2)
+          .map((e) {
+            return Row(
+              children: [
+                expandedButton(e.elementAtOrNull(0)),
+                SizedBox(width: GsSpacing.kListSeparator),
+                expandedButton(e.elementAtOrNull(1)),
+              ],
+            );
+          })
+          .spaced(GsSpacing.kListSeparator)
+          .toList(),
     );
 
     return Column(
@@ -813,10 +804,9 @@ class _GsFilterDialogState extends State<_GsFilterDialog> {
           margin: EdgeInsets.all(selected ? 0 : 1),
           decoration: BoxDecoration(
             border: Border.all(
-              color:
-                  selected
-                      ? context.themeColors.almostWhite
-                      : context.themeColors.divider,
+              color: selected
+                  ? context.themeColors.almostWhite
+                  : context.themeColors.divider,
               width: selected ? 2 : 1,
             ),
           ),

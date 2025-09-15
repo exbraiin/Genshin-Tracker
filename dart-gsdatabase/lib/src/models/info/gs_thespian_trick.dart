@@ -21,6 +21,6 @@ abstract class _GsThespianTrick extends GsModel<GsThespianTrick>
 
   @override
   Iterable<Comparable Function(GsThespianTrick a)> get sorters => [
-        (e) => e.season,
-      ];
+    (e) => e.season,
+  ];
 }

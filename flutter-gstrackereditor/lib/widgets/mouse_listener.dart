@@ -18,14 +18,12 @@ class MouseListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Listener(
-      onPointerUp:
-          onButtonUp != null
-              ? (event) => onButtonUp!(_fromValue(event.buttons))
-              : null,
-      onPointerDown:
-          onButtonDown != null
-              ? (event) => onButtonDown!(_fromValue(event.buttons))
-              : null,
+      onPointerUp: onButtonUp != null
+          ? (event) => onButtonUp!(_fromValue(event.buttons))
+          : null,
+      onPointerDown: onButtonDown != null
+          ? (event) => onButtonDown!(_fromValue(event.buttons))
+          : null,
       child: child,
     );
   }

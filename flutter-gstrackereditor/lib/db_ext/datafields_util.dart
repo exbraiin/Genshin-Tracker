@@ -27,10 +27,9 @@ class ValidateModels<T extends GsModel<T>> {
   }) {
     assert(items == null || filter == null, 'Provide only items or filter');
     if (items == null) {
-      items =
-          filter == null
-              ? Database.i.of<T>().items
-              : Database.i.of<T>().items.where(filter);
+      items = filter == null
+          ? Database.i.of<T>().items
+          : Database.i.of<T>().items.where(filter);
       items = sorter?.call(items) ?? items.sorted();
     }
     decorator ??= GsModelDecorator.of<T>();
@@ -70,30 +69,28 @@ class ValidateModels<T extends GsModel<T>> {
     GeMaterialType? type1,
   ]) {
     return ValidateModels<GsMaterial>._create(
-      items:
-          Database.i
-              .getMaterialGroups(type, type1)
-              .sortedBy((element) => element.region.index)
-              .thenBy((element) => element.rarity)
-              .thenBy((element) => element.version)
-              .thenBy((element) => element.name)
-              .toList(),
+      items: Database.i
+          .getMaterialGroups(type, type1)
+          .sortedBy((element) => element.region.index)
+          .thenBy((element) => element.rarity)
+          .thenBy((element) => element.version)
+          .thenBy((element) => element.name)
+          .toList(),
       extra: (items) => items.map((e) => MapEntry(e.id, e.region)).toMap(),
       decorator: GsModelDecorator(
         label: (item) => item.name,
         image: (item) => item.image,
-        color:
-            (item) => switch (type) {
-              GeMaterialType.ascensionGems ||
-              GeMaterialType.normalBossDrops ||
-              GeMaterialType.regionMaterials ||
-              GeMaterialType.talentMaterials ||
-              GeMaterialType.weaponMaterials ||
-              GeMaterialType.weeklyBossDrops => GsStyle.getRegionElementColor(
-                item.region,
-              ),
-              _ => GsStyle.getRarityColor(item.rarity),
-            },
+        color: (item) => switch (type) {
+          GeMaterialType.ascensionGems ||
+          GeMaterialType.normalBossDrops ||
+          GeMaterialType.regionMaterials ||
+          GeMaterialType.talentMaterials ||
+          GeMaterialType.weaponMaterials ||
+          GeMaterialType.weeklyBossDrops => GsStyle.getRegionElementColor(
+            item.region,
+          ),
+          _ => GsStyle.getRarityColor(item.rarity),
+        },
       ),
     );
   }
@@ -108,11 +105,10 @@ class ValidateModels<T extends GsModel<T>> {
   static ValidateModels<GsRecipe> baseRecipesWithIngredients(GsRecipe item) {
     return ValidateModels._create(
       noneId: '',
-      filter:
-          (e) =>
-              e.baseRecipe.isEmpty &&
-              e.type == GeRecipeType.permanent &&
-              e.hasSameIngredientsOf(item),
+      filter: (e) =>
+          e.baseRecipe.isEmpty &&
+          e.type == GeRecipeType.permanent &&
+          e.hasSameIngredientsOf(item),
     );
   }
 
@@ -125,23 +121,20 @@ class ValidateModels<T extends GsModel<T>> {
 
     return ValidateModels<GsRecipe>._create(
       noneId: allowNone ? 'none' : null,
-      filter:
-          savedId == null
-              ? (item) => item.baseRecipe.isNotEmpty
-              : (item) =>
-                  item.id == savedId ||
-                  (item.baseRecipe.isNotEmpty && !usedIds.contains(item.id)),
+      filter: savedId == null
+          ? (item) => item.baseRecipe.isNotEmpty
+          : (item) =>
+                item.id == savedId ||
+                (item.baseRecipe.isNotEmpty && !usedIds.contains(item.id)),
     );
   }
 
   static ValidateModels<GsVersion> versions() {
     return ValidateModels._create(
-      extra:
-          (items) =>
-              items.mapIndexed((i, e) {
-                final next = i + 1 < items.length ? items[i + 1] : null;
-                return MapEntry(e.id, (e.releaseDate, next?.releaseDate));
-              }).toMap(),
+      extra: (items) => items.mapIndexed((i, e) {
+        final next = i + 1 < items.length ? items[i + 1] : null;
+        return MapEntry(e.id, (e.releaseDate, next?.releaseDate));
+      }).toMap(),
     );
   }
 
@@ -163,10 +156,9 @@ class ValidateModels<T extends GsModel<T>> {
     };
 
     return ValidateModels._create(
-      items:
-          savedId == null
-              ? items
-              : items.where((e) => e.id == savedId || !usedIds.contains(e.id)),
+      items: savedId == null
+          ? items
+          : items.where((e) => e.id == savedId || !usedIds.contains(e.id)),
       noneId: allowNone ? 'none' : null,
     );
   }

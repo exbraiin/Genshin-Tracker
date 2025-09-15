@@ -26,11 +26,10 @@ class HomeSereniteaWidget extends StatelessWidget {
         final ic = Database.instance.infoOf<GsCharacter>();
         final totalTotal = sets.expand((e) => e.chars).count(ic.exists);
         final totalObtain = sets.expand((e) => e.chars.where(hasChar)).length;
-        final totalOwned =
-            sets.expand((e) {
-              final saved = ss.getItem(e.id);
-              return e.chars.where((c) => saved?.chars.contains(c) ?? false);
-            }).length;
+        final totalOwned = sets.expand((e) {
+          final saved = ss.getItem(e.id);
+          return e.chars.where((c) => saved?.chars.contains(c) ?? false);
+        }).length;
 
         return GsDataBox.info(
           title: Row(
@@ -39,7 +38,7 @@ class HomeSereniteaWidget extends StatelessWidget {
               Text(
                 totalOwned < totalObtain
                     ? '${(totalOwned * primogems).format()} / '
-                        '${(totalObtain * primogems).format()}'
+                          '${(totalObtain * primogems).format()}'
                     : (totalOwned * primogems).format(),
                 style: const TextStyle(
                   fontSize: 14,

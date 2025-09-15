@@ -161,9 +161,8 @@ class _GsTextEditorDialogState<T> extends State<GsTextEditorDialog> {
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: GsSelectChip(
             const GsSelectItem('auto', 'Auto'),
-            onTap:
-                (item) =>
-                    _controller.text = widget.autoFormat!(_controller.text),
+            onTap: (item) =>
+                _controller.text = widget.autoFormat!(_controller.text),
           ),
         ),
       Padding(
@@ -191,10 +190,8 @@ class _GsTextEditorDialogState<T> extends State<GsTextEditorDialog> {
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: GsSelectChip(
           const GsSelectItem('list', 'List'),
-          onTap:
-              (item) => _insertText(
-                (s) => s.split('\n').map((e) => '● $e').join('\n'),
-              ),
+          onTap: (item) =>
+              _insertText((s) => s.split('\n').map((e) => '● $e').join('\n')),
         ),
       ),
     ];
@@ -207,10 +204,9 @@ class _GsTextEditorDialogState<T> extends State<GsTextEditorDialog> {
     final nSrc = textSelection.start;
     final nDst = textSelection.end;
     if (nSrc == -1 || nDst == -1) return;
-    final vText =
-        nSrc != nDst && nSrc != -1 && nDst != -1
-            ? text.substring(nSrc, nDst)
-            : '';
+    final vText = nSrc != nDst && nSrc != -1 && nDst != -1
+        ? text.substring(nSrc, nDst)
+        : '';
 
     final myText = nText(vText);
     final newText = text.replaceRange(nSrc, nDst, myText);

@@ -27,10 +27,10 @@ abstract class _GsArtifact extends GsModel<GsArtifact> with GsVersionable {
 
   @override
   Iterable<Comparable Function(GsArtifact e)> get sorters => [
-        (e) => e.region.index,
-        (e) => e.rarity,
-        (e) => e.version,
-      ];
+    (e) => e.region.index,
+    (e) => e.rarity,
+    (e) => e.version,
+  ];
 }
 
 @BuilderGenerator()

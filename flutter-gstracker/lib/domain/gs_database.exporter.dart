@@ -197,9 +197,9 @@ extension on Sheet {
   void applyStyleToRow(int index, CellStyle style) {
     final row = this.row(index);
     row.forEachIndexed(
-      (_, i) =>
-          cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: index))
-              .cellStyle = style,
+      (_, i) => cell(
+        CellIndex.indexByColumnRow(columnIndex: i, rowIndex: index),
+      ).cellStyle = style,
     );
   }
 }

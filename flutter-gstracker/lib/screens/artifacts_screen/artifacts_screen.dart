@@ -17,14 +17,13 @@ class ArtifactsScreen extends StatelessWidget {
       icon: AppAssets.menuIconArtifacts,
       title: context.labels.artifacts(),
       versionSort: (item) => item.version,
-      itemBuilder:
-          (context, state) => ArtifactListItem(
-            state.item,
-            onTap: state.onSelect,
-            selected: state.selected,
-          ),
-      itemCardBuilder:
-          (context, item) => ArtifactDetailsCard(item, key: ValueKey(item.id)),
+      itemBuilder: (context, state) => ArtifactListItem(
+        state.item,
+        onTap: state.onSelect,
+        selected: state.selected,
+      ),
+      itemCardBuilder: (context, item) =>
+          ArtifactDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

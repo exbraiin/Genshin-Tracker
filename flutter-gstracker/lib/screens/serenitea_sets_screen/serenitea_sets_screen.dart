@@ -18,15 +18,13 @@ class SereniteaSetsScreen extends StatelessWidget {
       icon: AppAssets.menuIconSereniteaSets,
       title: context.labels.sereniteaSets(),
       versionSort: (item) => item.version,
-      itemBuilder:
-          (context, state) => SereniteaSetListItem(
-            state.item,
-            onTap: state.onSelect,
-            selected: state.selected,
-          ),
-      itemCardBuilder:
-          (context, item) =>
-              SereniteaSetDetailsCard(item, key: ValueKey(item.id)),
+      itemBuilder: (context, state) => SereniteaSetListItem(
+        state.item,
+        onTap: state.onSelect,
+        selected: state.selected,
+      ),
+      itemCardBuilder: (context, item) =>
+          SereniteaSetDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

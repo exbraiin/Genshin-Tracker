@@ -61,8 +61,9 @@ final class GuWishes {
   /// Gets all saved wishes summary for a banner [type] in ascending order.
   List<WishSummary> getSaveWishesSummaryByBannerType(GeBannerType type) {
     final l = getReleasedInfoBannerByType(type).map((e) => e.id);
-    final wishes =
-        _items.svWishes.items.where((e) => l.contains(e.bannerId)).sorted();
+    final wishes = _items.svWishes.items
+        .where((e) => l.contains(e.bannerId))
+        .sorted();
 
     WishState getWishState(
       String itemId,
@@ -246,14 +247,13 @@ final class GuWishes {
   }
 }
 
-typedef WishesInfo =
-    ({
-      int last,
-      int total,
-      double average,
-      double percentage,
-      List<WishSummary> wishes,
-    });
+typedef WishesInfo = ({
+  int last,
+  int total,
+  double average,
+  double percentage,
+  List<WishSummary> wishes,
+});
 
 class WishesSummary {
   final int total;

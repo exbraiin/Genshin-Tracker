@@ -53,10 +53,9 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 spacing: kSeparator4,
                 runSpacing: kSeparator4,
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children:
-                    materials
-                        .map((e) => ItemGridWidget.material(e, onTap: null))
-                        .toList(),
+                children: materials
+                    .map((e) => ItemGridWidget.material(e, onTap: null))
+                    .toList(),
               ),
             ),
         ],

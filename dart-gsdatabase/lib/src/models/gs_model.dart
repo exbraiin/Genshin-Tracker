@@ -30,9 +30,5 @@ class BuilderWire<T> {
   final String wire;
   final bool fullDate;
   final T? value;
-  const BuilderWire(
-    this.wire, {
-    this.value,
-    this.fullDate = false,
-  });
+  const BuilderWire(this.wire, {this.value, this.fullDate = false});
 }

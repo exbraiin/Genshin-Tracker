@@ -31,11 +31,11 @@ abstract class _GsMaterial extends GsModel<GsMaterial> with GsVersionable {
 
   @override
   Iterable<Comparable Function(GsMaterial e)> get sorters => [
-        (e) => e.group.index,
-        (e) => e.region.index,
-        (e) => e.subgroup,
-        (e) => e.rarity,
-        (e) => e.version,
-        (e) => e.name,
-      ];
+    (e) => e.group.index,
+    (e) => e.region.index,
+    (e) => e.subgroup,
+    (e) => e.rarity,
+    (e) => e.version,
+    (e) => e.name,
+  ];
 }

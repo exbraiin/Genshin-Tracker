@@ -32,10 +32,9 @@ class MainButton extends StatelessWidget {
         ),
         foregroundDecoration: BoxDecoration(
           borderRadius: GsSpacing.kGridRadius,
-          border:
-              selected
-                  ? Border.all(color: context.themeColors.almostWhite, width: 2)
-                  : null,
+          border: selected
+              ? Border.all(color: context.themeColors.almostWhite, width: 2)
+              : null,
         ),
         child: InkWell(
           onTap: onPress,

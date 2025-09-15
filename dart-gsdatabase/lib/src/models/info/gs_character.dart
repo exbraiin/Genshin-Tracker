@@ -74,7 +74,5 @@ abstract class _GsCharacter extends GsModel<GsCharacter> with GsVersionable {
   int get talentQConstellation;
 
   @override
-  Iterable<Comparable Function(GsCharacter e)> get sorters => [
-        (e) => e.rarity,
-      ];
+  Iterable<Comparable Function(GsCharacter e)> get sorters => [(e) => e.rarity];
 }

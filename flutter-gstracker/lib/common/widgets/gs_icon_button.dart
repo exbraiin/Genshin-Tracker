@@ -53,11 +53,8 @@ class GsIconButton extends StatelessWidget {
   }) {
     return GsIconButton(
       size: 26,
-      onColor:
-          (context) =>
-              owned
-                  ? context.themeColors.goodValue
-                  : context.themeColors.badValue,
+      onColor: (context) =>
+          owned ? context.themeColors.goodValue : context.themeColors.badValue,
       icon: owned ? Icons.check : Icons.close,
       onPress: () => onPress(!owned),
     );

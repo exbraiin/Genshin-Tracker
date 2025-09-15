@@ -65,11 +65,9 @@ class GsSereniteaSetExt extends GsModelExt<GsSereniteaSet> {
         (item) => item.chars,
         (item) => vdCharacters.filters,
         (item, value) => item.copyWith(chars: value),
-        validator:
-            (item) =>
-                item.chars.isEmpty
-                    ? GsValidLevel.warn1
-                    : vdCharacters.validateAll(item.chars),
+        validator: (item) => item.chars.isEmpty
+            ? GsValidLevel.warn1
+            : vdCharacters.validateAll(item.chars),
       ),
     ];
   }

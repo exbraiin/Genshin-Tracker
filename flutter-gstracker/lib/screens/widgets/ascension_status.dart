@@ -23,21 +23,20 @@ class AscensionStatus extends StatelessWidget {
           width: 0.4,
         ),
       ),
-      children:
-          data.entries.map((entry) {
-            return TableRow(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 4, 16, 4),
-                  child: Text(entry.key),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
-                  child: Text(entry.value, textAlign: TextAlign.right),
-                ),
-              ],
-            );
-          }).toList(),
+      children: data.entries.map((entry) {
+        return TableRow(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 4, 16, 4),
+              child: Text(entry.key),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+              child: Text(entry.value, textAlign: TextAlign.right),
+            ),
+          ],
+        );
+      }).toList(),
     );
   }
 

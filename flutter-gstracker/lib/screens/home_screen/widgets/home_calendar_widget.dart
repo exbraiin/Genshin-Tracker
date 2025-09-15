@@ -53,28 +53,25 @@ class HomeCalendarWidget extends StatelessWidget {
 
     yield Row(
       mainAxisSize: MainAxisSize.min,
-      children:
-          kWeek
-              .map<Widget>((i) {
-                return Container(
-                  width: _kItemSize,
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(
-                    bottom: GsSpacing.kGridSeparator,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: GsSpacing.kListRadius,
-                    color: context.themeColors.mainColor1,
-                  ),
-                  child: Text(
-                    DateLabels.humanizedWeekday(context, i).substring(0, 3),
-                    style: context.themeStyles.label14n,
-                    strutStyle: context.themeStyles.label14n.toStrut(),
-                  ),
-                );
-              })
-              .separate(const SizedBox(width: GsSpacing.kGridSeparator))
-              .toList(),
+      children: kWeek
+          .map<Widget>((i) {
+            return Container(
+              width: _kItemSize,
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(bottom: GsSpacing.kGridSeparator),
+              decoration: BoxDecoration(
+                borderRadius: GsSpacing.kListRadius,
+                color: context.themeColors.mainColor1,
+              ),
+              child: Text(
+                DateLabels.humanizedWeekday(context, i).substring(0, 3),
+                style: context.themeStyles.label14n,
+                strutStyle: context.themeStyles.label14n.toStrut(),
+              ),
+            );
+          })
+          .separate(const SizedBox(width: GsSpacing.kGridSeparator))
+          .toList(),
     );
 
     final dates = _getDatesInfo(now);
@@ -82,14 +79,11 @@ class HomeCalendarWidget extends StatelessWidget {
     yield* Iterable<Widget>.generate(weeks, (w) {
       return Row(
         mainAxisSize: MainAxisSize.min,
-        children:
-            Iterable<Widget>.generate(DateTime.daysPerWeek, (d) {
-                  final idx = w * DateTime.daysPerWeek + d;
-                  final date = dates[idx];
-                  return _CalendarDay(info: date, now: now);
-                })
-                .separate(const SizedBox(width: GsSpacing.kGridSeparator))
-                .toList(),
+        children: Iterable<Widget>.generate(DateTime.daysPerWeek, (d) {
+          final idx = w * DateTime.daysPerWeek + d;
+          final date = dates[idx];
+          return _CalendarDay(info: date, now: now);
+        }).separate(const SizedBox(width: GsSpacing.kGridSeparator)).toList(),
       );
     }).separate(const SizedBox(height: GsSpacing.kGridSeparator));
   }
@@ -227,12 +221,11 @@ List<_DayInfo> _getDatesInfo(DateTime now) {
       .where((e) => datesIntersect(e.dateStart, e.dateEnd, stDay, edDay))
       .toList(growable: false);
 
-  final mBanners =
-      banners.items
-          .where((e) => e.type == GeBannerType.character)
-          .where((e) => datesIntersect(e.dateStart, e.dateEnd, stDay, edDay))
-          .groupBy((e) => e.dateStart)
-          .values;
+  final mBanners = banners.items
+      .where((e) => e.type == GeBannerType.character)
+      .where((e) => datesIntersect(e.dateStart, e.dateEnd, stDay, edDay))
+      .groupBy((e) => e.dateStart)
+      .values;
 
   Color getBannersColor(List<GsBanner> banners) {
     return banners
@@ -247,15 +240,13 @@ List<_DayInfo> _getDatesInfo(DateTime now) {
         return (
           date: d,
           version: mVersions[d],
-          banners:
-              mBanners
-                  .where((e) => d.between(e.first.dateStart, e.first.dateEnd))
-                  .map((e) => (getBannersColor(e), e))
-                  .toList(),
-          battlepasses:
-              mBattlepasses
-                  .where((e) => d.between(e.dateStart, e.dateEnd))
-                  .toList(),
+          banners: mBanners
+              .where((e) => d.between(e.first.dateStart, e.first.dateEnd))
+              .map((e) => (getBannersColor(e), e))
+              .toList(),
+          battlepasses: mBattlepasses
+              .where((e) => d.between(e.dateStart, e.dateEnd))
+              .toList(),
           birthdays: mCharacters[d] ?? [],
         );
       })
@@ -266,14 +257,13 @@ bool datesIntersect(DateTime st0, DateTime ed0, DateTime st1, DateTime ed1) {
   return !st0.isAfter(ed1) && !st1.isAfter(ed0);
 }
 
-typedef _DayInfo =
-    ({
-      DateTime date,
-      GsVersion? version,
-      List<GsCharacter> birthdays,
-      List<GsBattlepass> battlepasses,
-      List<(Color, List<GsBanner>)> banners,
-    });
+typedef _DayInfo = ({
+  DateTime date,
+  GsVersion? version,
+  List<GsCharacter> birthdays,
+  List<GsBattlepass> battlepasses,
+  List<(Color, List<GsBanner>)> banners,
+});
 
 class _CalendarDay extends StatelessWidget {
   final _DayInfo info;
@@ -304,16 +294,15 @@ class _CalendarDay extends StatelessWidget {
           borderRadius: GsSpacing.kGridRadius,
           color: context.themeColors.mainColor1,
         ),
-        foregroundDecoration:
-            now.isAtSameDayAs(date)
-                ? BoxDecoration(
-                  borderRadius: GsSpacing.kGridRadius,
-                  border: Border.all(
-                    color: context.themeColors.almostWhite,
-                    width: 2,
-                  ),
-                )
-                : null,
+        foregroundDecoration: now.isAtSameDayAs(date)
+            ? BoxDecoration(
+                borderRadius: GsSpacing.kGridRadius,
+                border: Border.all(
+                  color: context.themeColors.almostWhite,
+                  width: 2,
+                ),
+              )
+            : null,
         child: Tooltip(
           message: tooltip,
           child: Stack(

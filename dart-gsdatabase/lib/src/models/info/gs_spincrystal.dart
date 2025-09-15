@@ -22,8 +22,8 @@ abstract class _GsSpincrystal extends GsModel<GsSpincrystal>
 
   @override
   Iterable<Comparable Function(GsSpincrystal e)> get sorters => [
-        (e) => e.number,
-      ];
+    (e) => e.number,
+  ];
 }
 
 extension GsSpincrystalExt on GsSpincrystal {

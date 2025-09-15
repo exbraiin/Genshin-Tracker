@@ -17,14 +17,13 @@ class MaterialsScreen extends StatelessWidget {
       icon: AppAssets.menuIconMaterials,
       title: context.labels.materials(),
       versionSort: (item) => item.version,
-      itemBuilder:
-          (context, state) => MaterialListItem(
-            state.item,
-            onTap: state.onSelect,
-            selected: state.selected,
-          ),
-      itemCardBuilder:
-          (context, item) => MaterialDetailsCard(item, key: ValueKey(item.id)),
+      itemBuilder: (context, state) => MaterialListItem(
+        state.item,
+        onTap: state.onSelect,
+        selected: state.selected,
+      ),
+      itemCardBuilder: (context, item) =>
+          MaterialDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

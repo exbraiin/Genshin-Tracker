@@ -25,7 +25,7 @@ abstract class _GsFurnitureChest extends GsModel<GsFurnitureChest>
 
   @override
   Iterable<Comparable Function(GsFurnitureChest e)> get sorters => [
-        (e) => e.region.index,
-        (e) => e.rarity,
-      ];
+    (e) => e.region.index,
+    (e) => e.rarity,
+  ];
 }

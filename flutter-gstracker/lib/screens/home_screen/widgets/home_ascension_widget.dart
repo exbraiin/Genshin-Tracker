@@ -45,21 +45,19 @@ class HomeAscensionWidget extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children:
-                        list
-                            .map<Widget>((info) {
-                              return ItemGridWidget.character(
-                                info,
-                                label: '✦${chars.getCharAscension(info.id)}',
-                                onAdd:
-                                    (ctx) => GsUtils.characters
-                                        .increaseAscension(info.id),
-                              );
-                            })
-                            .separate(
-                              const SizedBox(width: GsSpacing.kGridSeparator),
-                            )
-                            .toList(),
+                    children: list
+                        .map<Widget>((info) {
+                          return ItemGridWidget.character(
+                            info,
+                            label: '✦${chars.getCharAscension(info.id)}',
+                            onAdd: (ctx) =>
+                                GsUtils.characters.increaseAscension(info.id),
+                          );
+                        })
+                        .separate(
+                          const SizedBox(width: GsSpacing.kGridSeparator),
+                        )
+                        .toList(),
                   ),
                 ],
               );

@@ -100,10 +100,9 @@ final class _Downloader {
 
     try {
       _busy = true;
-      final localVersion =
-          await File(_kDataPath).exists()
-              ? await _loadFileVersion()
-              : _Version();
+      final localVersion = await File(_kDataPath).exists()
+          ? await _loadFileVersion()
+          : _Version();
 
       // Check if we can skip the version check
       if (localVersion.shouldSkip) {
@@ -211,10 +210,9 @@ class _Version {
 
   _Version.fromJson(JsonMap json)
     : version = json['version'] as String? ?? '',
-      lastUpdate =
-          json['updated'] != null
-              ? DateTime.tryParse(json['updated']!) ?? DateTime(0)
-              : DateTime(0);
+      lastUpdate = json['updated'] != null
+          ? DateTime.tryParse(json['updated']!) ?? DateTime(0)
+          : DateTime(0);
 
   bool isAfter(_Version v1) {
     return _isAfterOther(this, v1);

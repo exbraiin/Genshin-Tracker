@@ -20,6 +20,6 @@ abstract class _GsBattlepass extends GsModel<GsBattlepass> with GsVersionable {
 
   @override
   Iterable<Comparable Function(GsBattlepass e)> get sorters => [
-        (e) => e.dateStart,
-      ];
+    (e) => e.dateStart,
+  ];
 }

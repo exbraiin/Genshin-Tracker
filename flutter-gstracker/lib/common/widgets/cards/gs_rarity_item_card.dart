@@ -57,17 +57,15 @@ class GsRarityItemCard extends StatelessWidget {
         child: HoverDetector(
           onTap: onTap,
           child: _getChild(context),
-          decoration:
-              ({bool hover = false}) => BoxDecoration(
-                borderRadius: radius,
-                border: Border.all(
-                  width: 1.2,
-                  color:
-                      hover
-                          ? context.themeColors.almostWhite
-                          : Colors.transparent,
-                ),
-              ),
+          decoration: ({bool hover = false}) => BoxDecoration(
+            borderRadius: radius,
+            border: Border.all(
+              width: 1.2,
+              color: hover
+                  ? context.themeColors.almostWhite
+                  : Colors.transparent,
+            ),
+          ),
         ),
       ),
     );

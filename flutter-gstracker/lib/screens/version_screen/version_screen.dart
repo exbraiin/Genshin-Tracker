@@ -58,14 +58,13 @@ class VersionScreen extends StatelessWidget {
           ),
         ];
       },
-      itemBuilder:
-          (context, state) => VersionListItem(
-            state.item,
-            onTap: state.onSelect,
-            selected: state.selected,
-          ),
-      itemCardBuilder:
-          (context, item) => VersionDetailsCard(item, key: ValueKey(item.id)),
+      itemBuilder: (context, state) => VersionListItem(
+        state.item,
+        onTap: state.onSelect,
+        selected: state.selected,
+      ),
+      itemCardBuilder: (context, item) =>
+          VersionDetailsCard(item, key: ValueKey(item.id)),
     );
   }
 }

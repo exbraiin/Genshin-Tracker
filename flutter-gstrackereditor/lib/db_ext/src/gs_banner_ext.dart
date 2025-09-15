@@ -40,23 +40,21 @@ class GsBannerExt extends GsModelExt<GsBanner> {
         'Date Start',
         (item) => item.dateStart,
         (item, value) => item.copyWith(dateStart: value),
-        validator:
-            (item) => vdVersion.validateDates(
-              item.version,
-              item.dateStart,
-              item.type.isPermanent ? null : item.dateEnd,
-            ),
+        validator: (item) => vdVersion.validateDates(
+          item.version,
+          item.dateStart,
+          item.type.isPermanent ? null : item.dateEnd,
+        ),
       ),
       DataField.dateTime(
         'Date End',
         (item) => item.dateEnd,
         (item, value) => item.copyWith(dateEnd: value),
-        validator:
-            (item) => vdVersion.validateDates(
-              item.version,
-              item.dateStart,
-              item.type.isPermanent ? null : item.dateEnd,
-            ),
+        validator: (item) => vdVersion.validateDates(
+          item.version,
+          item.dateStart,
+          item.type.isPermanent ? null : item.dateEnd,
+        ),
       ),
       DataField.multiSelect<GsBanner, String>(
         'Feature 4',
