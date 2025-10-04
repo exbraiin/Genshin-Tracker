@@ -36,19 +36,11 @@ class LunarArcanaDetailsCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            opacity: 0.2,
-            image: NetworkImage(item.image),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ItemDetailsCardInfo.description(text: Text(item.description)),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ItemDetailsCardInfo.description(text: Text(item.description)),
+        ],
       ),
     );
   }
