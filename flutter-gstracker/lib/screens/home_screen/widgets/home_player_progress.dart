@@ -24,7 +24,7 @@ class HomePlayerProgress extends StatelessWidget {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedChildSize(
-                childWidth: 115,
+                childWidth: 93,
                 childHeight: 115,
                 mainAxisSpacing: GsSpacing.kGridSeparator,
                 crossAxisSpacing: GsSpacing.kGridSeparator,
@@ -79,6 +79,12 @@ class HomePlayerProgress extends StatelessWidget {
                   GsUtils.sereniteaSets.owned,
                   GsUtils.sereniteaSets.total,
                 ),
+                _ProgressInfo(
+                  AppAssets.menuLunarArcana,
+                  context.labels.lunarArcana(),
+                  GsUtils.lunarArcana.owned,
+                  GsUtils.lunarArcana.total,
+                ),
               ]),
             ),
           ),
@@ -125,38 +131,48 @@ class _ProgressInfo extends StatelessWidget {
           ],
         ),
         SizedBox(height: kSeparator2),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              owned.format(),
-              textAlign: TextAlign.end,
-              style: style.copyWith(
-                color: missing > 0
-                    ? context.themeColors.badValue
-                    : Colors.white,
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: SizedBox(
+            width: 100,
+            child: Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    owned.format(),
+                    textAlign: TextAlign.end,
+                    style: style.copyWith(
+                      color: missing > 0
+                          ? context.themeColors.badValue
+                          : Colors.white,
+                    ),
+                  ),
+                  if (missing > 0)
+                    Text(
+                      '+${missing.format()}',
+                      style: style.copyWith(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 10,
+                        color: context.themeColors.goodValue,
+                      ),
+                      strutStyle: style.copyWith(fontSize: 10).toStrut(),
+                    ),
+                  Text(
+                    ' / ${total.format()}',
+                    textAlign: TextAlign.end,
+                    style: style,
+                  ),
+                ],
               ),
             ),
-            if (missing > 0)
-              Text(
-                ' +${missing.format()}',
-                style: style.copyWith(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 10,
-                  color: context.themeColors.goodValue,
-                ),
-                strutStyle: style.copyWith(fontSize: 10).toStrut(),
-              ),
-            Text(
-              ' / ${total.format()}',
-              textAlign: TextAlign.end,
-              style: style,
-            ),
-          ],
+          ),
         ),
         Text(
           label,
+          maxLines: 2,
           textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
           style: context.themeStyles.label12n,
         ),
       ],

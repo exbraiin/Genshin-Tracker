@@ -10,6 +10,7 @@ final class GuCollections {
   final Items<GsVersion> inVersions;
   final Items<GsMaterial> inMaterials;
   final Items<GsCharacter> inCharacters;
+  final Items<GsLunarArcana> inLunarArcana;
   final Items<GsAchievement> inAchievements;
   final Items<GsSpincrystal> inSpincrystals;
   final Items<GsSereniteaSet> inSereniteaSet;
@@ -21,6 +22,7 @@ final class GuCollections {
   final Items<GiRecipe> svRecipes;
   final Items<GiCharacter> svCharacters;
   final Items<GiAchievement> svAchievements;
+  final Items<GiLunarArcana> svLunarArcana;
   final Items<GiSpincrystal> svSpincrystals;
   final Items<GiEventRewards> svEventRewards;
   final Items<GiSereniteaSet> svSereniteaSet;
@@ -39,6 +41,7 @@ final class GuCollections {
       inVersions = db.infoOf<GsVersion>(),
       inMaterials = db.infoOf<GsMaterial>(),
       inCharacters = db.infoOf<GsCharacter>(),
+      inLunarArcana = db.infoOf<GsLunarArcana>(),
       inAchievements = db.infoOf<GsAchievement>(),
       inSpincrystals = db.infoOf<GsSpincrystal>(),
       inSereniteaSet = db.infoOf<GsSereniteaSet>(),
@@ -50,6 +53,7 @@ final class GuCollections {
       svRecipes = db.saveOf<GiRecipe>(),
       svCharacters = db.saveOf<GiCharacter>(),
       svAchievements = db.saveOf<GiAchievement>(),
+      svLunarArcana = db.saveOf<GiLunarArcana>(),
       svSpincrystals = db.saveOf<GiSpincrystal>(),
       svEventRewards = db.saveOf<GiEventRewards>(),
       svSereniteaSet = db.saveOf<GiSereniteaSet>(),

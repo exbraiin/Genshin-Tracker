@@ -15,6 +15,7 @@ export 'src/gs_character_ext.dart';
 export 'src/gs_character_outfit_ext.dart';
 export 'src/gs_envisaged_echo_ext.dart';
 export 'src/gs_event_ext.dart';
+export 'src/gs_lunar_arcana_ext.dart';
 export 'src/gs_material_ext.dart';
 export 'src/gs_namecard_ext.dart';
 export 'src/gs_recipe_ext.dart';

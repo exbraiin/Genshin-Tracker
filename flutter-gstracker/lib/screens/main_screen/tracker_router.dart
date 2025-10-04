@@ -7,6 +7,7 @@ import 'package:tracker/screens/characters_screen/characters_table_screen.dart';
 import 'package:tracker/screens/envisaged_echo_screen/envisaged_echo_screen.dart';
 import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
+import 'package:tracker/screens/lunar_arcana_screen/lunar_arcana_screen.dart';
 import 'package:tracker/screens/materials_screen/materials_screen.dart';
 import 'package:tracker/screens/namecard_screen/namecard_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
@@ -32,6 +33,7 @@ class TrackerRouter {
     WeaponsScreen.id: () => const WeaponsScreen(),
     ArtifactsScreen.id: () => const ArtifactsScreen(),
     CharactersScreen.id: () => const CharactersScreen(),
+    LunarArcanaScreen.id: () => const LunarArcanaScreen(),
     NamecardScreen.id: () => const NamecardScreen(),
     MaterialsScreen.id: () => const MaterialsScreen(),
     EventScreen.id: () => const EventScreen(),

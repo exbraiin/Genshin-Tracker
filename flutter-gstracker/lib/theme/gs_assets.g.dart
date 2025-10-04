@@ -139,6 +139,9 @@ abstract final class AppAssets {
   /// menu_icon_wish.png
   static const menuIconWish = 'assets/image/icons/menu_icon_wish.png';
 
+  /// menu_lunar_arcana.png
+  static const menuLunarArcana = 'assets/image/icons/menu_lunar_arcana.png';
+
   /// missing_icon.png
   static const missingIcon = 'assets/image/icons/missing_icon.png';
 

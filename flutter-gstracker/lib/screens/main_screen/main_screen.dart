@@ -9,6 +9,7 @@ import 'package:tracker/screens/characters_screen/characters_screen.dart';
 import 'package:tracker/screens/envisaged_echo_screen/envisaged_echo_screen.dart';
 import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/home_screen/home_screen.dart';
+import 'package:tracker/screens/lunar_arcana_screen/lunar_arcana_screen.dart';
 import 'package:tracker/screens/main_screen/save_toast.dart';
 import 'package:tracker/screens/main_screen/tracker_router.dart';
 import 'package:tracker/screens/materials_screen/materials_screen.dart';
@@ -160,6 +161,7 @@ final _menus = [
   _Menu(icon: AppAssets.menuIconMap, page: RemarkableChestsScreen.id),
   _Menu(icon: AppAssets.menuEnvisagedEchoes, page: EnvisagedEchoScreen.id),
   _Menu(icon: AppAssets.menuIconThespianTricks, page: ThespianTricksScreen.id),
+  _Menu(icon: AppAssets.menuLunarArcana, page: LunarArcanaScreen.id),
   _Menu(icon: AppAssets.menuIconPreciousItems, page: SpincrystalsScreen.id),
   _Menu(icon: AppAssets.menuIconSereniteaSets, page: SereniteaSetsScreen.id),
   _Menu(icon: AppAssets.menuIconArtifacts, page: ArtifactsScreen.id),

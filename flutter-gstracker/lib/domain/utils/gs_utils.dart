@@ -6,6 +6,7 @@ import 'package:tracker/domain/utils/gu_envisaged_echos.dart';
 import 'package:tracker/domain/utils/gu_events.dart';
 import 'package:tracker/domain/utils/gu_furniture_chests.dart';
 import 'package:tracker/domain/utils/gu_items.dart';
+import 'package:tracker/domain/utils/gu_lunar_arcana.dart';
 import 'package:tracker/domain/utils/gu_materials.dart';
 import 'package:tracker/domain/utils/gu_player_configs.dart';
 import 'package:tracker/domain/utils/gu_recipes.dart';
@@ -41,6 +42,7 @@ abstract final class GsUtils {
   static final versions = GuVersions(_items);
   static final materials = GuMaterials(_items);
   static final characters = GuCharacters(_items);
+  static final lunarArcana = GuLunarArcana(_items);
   static final achievements = GuAchievements(_items);
   static final spincrystals = GuSpincrystals(_items);
   static final sereniteaSets = GuSereniteaSets(_items);

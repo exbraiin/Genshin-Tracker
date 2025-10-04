@@ -381,6 +381,23 @@ class GsConfigs<T extends GsModel<T>> {
         GsFieldFilter.fromEnum('Type', GeEventType.values, (i) => i.type),
       ],
     ),
+    GsLunarArcana: GsConfigs<GsLunarArcana>._(
+      title: 'Lunar Arcana',
+      pageBuilder: const vd.GsLunarArcanaExt(),
+      itemDecoration: (item) => GsItemDecor.color(
+        label: item.name,
+        version: item.version,
+        color: GsStyle.getVersionColor(item.version),
+        child: GsOrderOrb(item.number.toString()),
+      ),
+      import: [
+        DataButton(
+          'Import from fandom URL',
+          icon: _fandomIcon,
+          (ctx, item) => FandomImporter.importLunarArcana(item),
+        ),
+      ],
+    ),
     GsWeapon: GsConfigs<GsWeapon>._(
       title: 'Weapons',
       pageBuilder: const vd.GsWeaponExt(),

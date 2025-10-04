@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -224,6 +225,38 @@ abstract final class FandomImporter {
       specialDish: food?.toDbId(),
       birthday: bday != null ? parseDate(bday) : null,
       fullImage: wish,
+    );
+  }
+
+  static FutureOr<GsLunarArcana> importLunarArcana(GsLunarArcana item) async {
+    final document = await _downloadDocument();
+
+    const nameSel = 'h2[data-source="title"]';
+    final name = document.querySelector(nameSel)?.text;
+    final id = name?.toDbId();
+
+    final numberStr = document.querySelector(
+      'section.pi-item div[data-source="id"] div',
+    );
+    final number = int.tryParse(numberStr?.text ?? '') ?? 0;
+
+    final descElm = document
+        .getElementById('Description')
+        ?.parent
+        ?.nextElementSibling;
+    final description = descElm?.innerHtml.replaceAll('<br>', '\n').trim();
+
+    final imgElm = document.querySelector('figure[data-source="image"] img');
+    final imgSrc = imgElm?.attributes['src'] ?? '';
+    final image = _processImage(imgSrc);
+
+    return item.copyWith(
+      id: id,
+      name: name,
+      image: image,
+      number: number,
+      description: description,
+      version: '',
     );
   }
 

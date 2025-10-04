@@ -85,6 +85,9 @@ abstract final class LocalizationKeys {
   /// Weapons
   static const weapons = 'weapons';
 
+  /// Lunar Arcana
+  static const lunarArcana = 'lunar_arcana';
+
   /// Character
   static const character = 'character';
 
@@ -981,6 +984,11 @@ class LocalizationMethods {
   /// Weapons
   String weapons() {
     return provider(LocalizationKeys.weapons);
+  }
+
+  /// Lunar Arcana
+  String lunarArcana() {
+    return provider(LocalizationKeys.lunarArcana);
   }
 
   /// Character
