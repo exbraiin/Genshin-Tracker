@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Comfortaa',
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF202020),
+          backgroundColor: Color(0xFF151515),
           surfaceTintColor: Colors.transparent,
         ),
         actionIconTheme: ActionIconThemeData(

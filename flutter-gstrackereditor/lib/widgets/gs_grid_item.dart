@@ -76,7 +76,7 @@ class GsGridItem extends StatelessWidget {
                         : null,
                   )
                 : null,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
             boxShadow: hover
                 ? const [
                     BoxShadow(
@@ -87,10 +87,6 @@ class GsGridItem extends StatelessWidget {
                   ]
                 : null,
           ),
-          foregroundDecoration: BoxDecoration(
-            border: Border.all(color: Colors.black54, width: 2),
-            borderRadius: BorderRadius.circular(8),
-          ),
           child: child,
         );
       },
@@ -99,8 +95,8 @@ class GsGridItem extends StatelessWidget {
         children: [
           if (image.isNotEmpty)
             Positioned(
-              right: 2,
-              bottom: 2,
+              right: 0,
+              bottom: 0,
               child: Image.network(
                 image.toFandom(46),
                 width: 46,
@@ -125,11 +121,11 @@ class GsGridItem extends StatelessWidget {
           ),
           if (circleColor != null)
             Positioned(
-              right: 4,
-              bottom: 4,
+              left: 2,
+              bottom: 2,
               child: Container(
-                width: 16,
-                height: 16,
+                width: 24,
+                height: 24,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(20),

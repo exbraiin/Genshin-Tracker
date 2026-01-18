@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -60,6 +61,6 @@ class _AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
 
   @override
   bool shouldReload(covariant LocalizationsDelegate<AppLocalization> old) {
-    return false;
+    return kDebugMode;
   }
 }

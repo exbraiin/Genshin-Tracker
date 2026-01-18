@@ -38,7 +38,7 @@ abstract final class GsStyle {
     image: DecorationImage(
       fit: BoxFit.cover,
       colorFilter: ColorFilter.mode(
-        Colors.black.withValues(alpha: 0.6),
+        Colors.black.withValues(alpha: 0.8),
         BlendMode.multiply,
       ),
       image: const AssetImage(Assets.bg),
