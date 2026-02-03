@@ -30,6 +30,14 @@ const _menuWidth = 80.0;
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
+  static void navigateTo(BuildContext context, String id) {
+    final state = context.findAncestorStateOfType<_MainScreenState>();
+    if (state == null) return;
+    final idx = _menus.indexWhere((e) => e.page == id);
+    if (idx == -1) return;
+    state.changePage(idx);
+  }
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -47,6 +55,15 @@ class _MainScreenState extends State<MainScreen> {
   void dispose() {
     _page.dispose();
     super.dispose();
+  }
+
+  void changePage(int idx) {
+    if (_page.value == idx) {
+      final key = _menus[idx].navigator.key as GlobalKey?;
+      final ctx = key?.currentContext;
+      if (ctx != null) Navigator.of(ctx).maybePop();
+    }
+    _page.value = idx;
   }
 
   @override
@@ -90,14 +107,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         child: InkWell(
-          onTap: () {
-            if (_page.value == idx) {
-              final key = _menus[idx].navigator.key as GlobalKey?;
-              final ctx = key?.currentContext;
-              if (ctx != null) Navigator.of(ctx).maybePop();
-            }
-            _page.value = idx;
-          },
+          onTap: () => changePage(idx),
           child: Image.asset(menu.icon, height: 40, width: 40),
         ),
       );
