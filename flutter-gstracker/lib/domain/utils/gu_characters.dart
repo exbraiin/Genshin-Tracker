@@ -163,7 +163,8 @@ final class CharInfo {
 final class CharTalents {
   static const kTotal = 30;
   static const kMaxLevel = 10;
-  static const kTotalCrownless = 9 * 3;
+  static const kCrownless = 9;
+  static const kTotalCrownless = kCrownless * 3;
   final Map<CharTalentType, (int, int)> _data;
 
   int get lowest => _data.values.minBy((e) => e.$1)?.$1 ?? 1;

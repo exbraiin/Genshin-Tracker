@@ -10,8 +10,8 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/domain/utils/gu_materials.dart';
-import 'package:tracker/screens/characters_screen/character_details_card.dart';
 import 'package:tracker/screens/characters_screen/character_widgets.dart';
+import 'package:tracker/screens/characters_screen/utils_sort_characters.dart';
 import 'package:tracker/screens/screen_filters/screen_filter_builder.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
@@ -27,23 +27,25 @@ class CharactersTableScreen extends StatefulWidget {
 }
 
 class _CharactersTableScreenState extends State<CharactersTableScreen> {
-  var _sortIndex = -1;
-  var _ascending = false;
-  var _idSortedList = <String>[];
+  final _listType = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final items = Database.instance.infoOf<GsCharacter>().items;
+        final utilsChars = GsUtils.characters;
+        final listOfChars = Database.instance.infoOf<GsCharacter>().items;
+
         return ScreenFilterBuilder<GsCharacter>(
           builder: (context, filter, button, toggle) {
-            final list = _getCharsSorted(filter.match(items)).where(
-              (e) =>
-                  !filter.hasExtra(FilterExtras.hide) ||
-                  e.talentsTotal < CharTalents.kTotalCrownless && e.isOwned,
-            );
+            final list = filter
+                .match(listOfChars)
+                .map((e) => utilsChars.getCharInfo(e.id))
+                .whereNotNull()
+                .toList();
+            final grouped = groupCharactersByDays(list);
+            final sorted = sortCharactersByDays(grouped);
 
             return InventoryPage(
               appBar: InventoryAppBar(
@@ -51,351 +53,134 @@ class _CharactersTableScreenState extends State<CharactersTableScreen> {
                 iconAsset: AppAssets.menuIconCharacters,
                 actions: [
                   IconButton(
-                    tooltip: context.labels.hideTableCharacters(),
-                    onPressed: () => toggle(FilterExtras.hide),
-                    icon: filter.hasExtra(FilterExtras.hide)
-                        ? Icon(Icons.visibility_off_rounded)
-                        : Icon(Icons.visibility_rounded),
-                    color: Colors.white.withValues(alpha: 0.5),
-                  ),
-                  IconButton(
-                    onPressed: () => toggle(FilterExtras.versionSort),
+                    onPressed: () => _listType.value = !_listType.value,
                     icon: Icon(Icons.swap_horiz_rounded),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
                   button,
                 ],
               ),
-              child: filter.hasExtra(FilterExtras.versionSort)
-                  ? _MatsList(list)
-                  : InventoryBox(child: _getTableList(context, list)),
+              child: ValueListenableBuilder(
+                valueListenable: _listType,
+                builder: (context, value, child) {
+                  if (!value) {
+                    return _MatsByDays(sorted);
+                  }
+                  return _MatsList(list);
+                },
+              ),
             );
           },
         );
       },
     );
   }
+}
 
-  Widget _getTableList(BuildContext context, Iterable<CharInfo> characters) {
-    final builders = _getBuilders(context);
-    final sortItem = builders.elementAtOrNull(_sortIndex);
+class _MatsByDays extends StatelessWidget {
+  final DaysMap mapOfCharacters;
 
-    void applySort(_TableItem item, int index) {
-      setState(() {
-        if (sortItem == null || sortItem != item) {
-          _ascending = true;
-          _sortIndex = index;
-        } else if (_ascending) {
-          _ascending = false;
-        } else {
-          _ascending = true;
-          _sortIndex = -1;
-        }
+  const _MatsByDays(this.mapOfCharacters);
 
-        final sorter = builders.elementAtOrNull(_sortIndex);
-        _idSortedList = _getCharsIdsSorted(characters, sorter);
-      });
+  @override
+  Widget build(BuildContext context) {
+    final today = GeWeekdayType.values.today;
+
+    if (mapOfCharacters.values.every((e) => e.isEmpty)) {
+      return InventoryBox(child: Center(child: GsNoResultsState.small()));
     }
 
-    final list = characters.toList();
-    return Column(
-      children: [
-        Row(
-          children: builders.mapIndexed((index, builder) {
-            final child = InkWell(
-              onTap: builder.sortBy != null
-                  ? () => applySort(builder, index)
-                  : null,
-              child: Container(
-                padding: const EdgeInsets.all(kSeparator8),
-                child: Row(
-                  children: [
-                    Text(
-                      builder.label,
-                      textAlign: !builder.expand ? TextAlign.center : null,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Icon(
-                      sortItem == builder
-                          ? _ascending
-                                ? Icons.arrow_drop_up_rounded
-                                : Icons.arrow_drop_down_rounded
-                          : null,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ],
-                ),
-              ),
-            );
+    return Row(
+      spacing: GsSpacing.kGridSeparator,
+      children: mapOfCharacters.entries.map((entry) {
+        final days = entry.key;
+        final chars = entry.value;
+        late final isToday =
+            today == GeWeekdayType.sunday ||
+            days.day1 == today ||
+            days.day2 == today;
 
-            return builder.expand
-                ? Expanded(child: child)
-                : SizedBox(width: builder.width, child: child);
-          }).toList(),
-        ),
-        GsDivider(),
-        Expanded(
-          child: ListView.separated(
-            itemCount: list.length,
-            separatorBuilder: (context, index) {
-              return Divider(
-                color: Colors.white.withValues(alpha: 0.09),
-                indent: kSeparator16,
-                endIndent: kSeparator16,
-              );
-            },
-            itemBuilder: (context, index) {
-              final item = list[index];
-              return SizedBox(
-                height: 44,
-                child: Row(
-                  children: builders.map((builder) {
-                    Widget child = Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: kSeparator4,
-                        horizontal: kSeparator8,
-                      ),
-                      child: Opacity(
-                        opacity: item.isOwned ? 1 : kDisableOpacity,
-                        child: builder.builder(item),
-                      ),
-                    );
-
-                    if (builder.onTap != null &&
-                        (builder.allowTap || item.isOwned)) {
-                      child = InkWell(
-                        onTap: () => builder.onTap!(item),
-                        child: child,
-                      );
-                    }
-
-                    return builder.expand
-                        ? Expanded(child: child)
-                        : SizedBox(width: builder.width, child: child);
-                  }).toList(),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  List<_TableItem> _getBuilders(BuildContext context) {
-    Color getGoodColor(int value, int max) {
-      return context.themeColors.colorByPity(max - value, max);
-    }
-
-    double unowned() => _ascending ? double.infinity : double.negativeInfinity;
-    return [
-      _TableItem(
-        label: context.labels.tableTitleCharacter(),
-        sortBy: (e) => e.item.element.index,
-        builder: (info) {
-          return Center(
-            child: Stack(
-              clipBehavior: Clip.none,
+        return Expanded(
+          child: InventoryBox(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ItemCircleWidget(
-                  image: info.item.image,
-                  rarity: info.item.rarity,
-                  size: kSize50,
-                ),
-                Positioned(
-                  right: -6,
-                  bottom: -6,
-                  child: ItemIconWidget.asset(
-                    info.item.element.assetPath,
-                    size: 24,
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(kSeparator8),
+                  child: Text(
+                    '${days.day1.getLabel(context).substring(0, 3)} & '
+                    '${days.day2.getLabel(context).substring(0, 3)}',
+                    style: context.themeStyles.label14b,
                   ),
+                ),
+                GsDivider(),
+                Expanded(
+                  child: chars.isEmpty
+                      ? Center(child: GsNoResultsState.small())
+                      : ListView.separated(
+                          padding: EdgeInsets.all(kSeparator8),
+                          itemCount: chars.length,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: kSeparator4),
+                          itemBuilder: (context, index) {
+                            final info = chars[index];
+                            final mats = GsUtils.materials
+                                .getCharTalentsMissing(
+                                  info.item,
+                                  info.info,
+                                  CharTalents.kCrownless,
+                                );
+
+                            return Row(
+                              spacing: kSeparator8,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ItemGridWidget.character(
+                                  info.item,
+                                  disabled: !isToday,
+                                  labelWidget: CharaterTalentsLabel(info),
+                                ),
+                                SizedBox(
+                                  height: kSize50,
+                                  child: Center(
+                                    child: Text(
+                                      '\u2022',
+                                      style: context.themeStyles.label14n,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Wrap(
+                                    spacing: kSeparator4,
+                                    runSpacing: kSeparator4,
+                                    alignment: WrapAlignment.start,
+                                    children: mats.entries.map((mat) {
+                                      return ItemGridWidget.material(
+                                        mat.key,
+                                        disabled: !isToday,
+                                        label: mat.value.compact(),
+                                        tooltip: '',
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                 ),
               ],
             ),
-          );
-        },
-        allowTap: true,
-        onTap: (info) => CharacterDetailsCard(info.item).show(context),
-      ),
-      _TableItem(
-        expand: true,
-        label: context.labels.tableTitleName(),
-        sortBy: (e) => e.item.name,
-        builder: (info) => Text(info.item.name),
-      ),
-      _TableItem(
-        label: context.labels.tableTitleFriendship(),
-        sortBy: (e) => e.isOwned ? e.friendship : unowned(),
-        builder: (info) => Text(
-          info.isOwned ? '${info.friendship}' : context.labels.tableEmpty(),
-          textAlign: TextAlign.center,
-          style: TextStyle(color: getGoodColor(info.friendship, 10)),
-        ),
-        onTap: (info) =>
-            GsUtils.characters.increaseFriendshipCharacter(info.item.id),
-      ),
-      _TableItem(
-        label: context.labels.tableTitleAscension(),
-        sortBy: (e) => e.isOwned ? e.ascension : unowned(),
-        builder: (info) => Text(
-          info.isOwned
-              ? context.labels.tableNumAsc(info.ascension)
-              : context.labels.tableEmpty(),
-          textAlign: TextAlign.center,
-          style: TextStyle(color: getGoodColor(info.ascension, 6)),
-        ),
-        onTap: (info) => GsUtils.characters.increaseAscension(info.item.id),
-      ),
-      _TableItem(
-        label: context.labels.tableTitleConstellation(),
-        sortBy: (e) => e.isOwned ? e.totalConstellations : unowned(),
-        builder: (info) => Text.rich(
-          info.isOwned
-              ? TextSpan(
-                  children: [
-                    TextSpan(
-                      text: context.labels.tableNumCons(info.constellations),
-                    ),
-                    if (info.extraConstellations > 0)
-                      TextSpan(
-                        text: ' +${info.extraConstellations}',
-                        style: context.themeStyles.label12i.copyWith(
-                          fontSize: 10,
-                        ),
-                      ),
-                  ],
-                )
-              : TextSpan(text: context.labels.tableEmpty()),
-          textAlign: TextAlign.center,
-        ),
-      ),
-      ...CharTalentType.values.map((e) => _talentTableItem(e)),
-      _TableItem(
-        label: context.labels.tableTitleTalTotal(),
-        sortBy: (e) => e.talents?.total ?? unowned(),
-        builder: (info) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                info.talents?.total.toString() ?? context.labels.tableEmpty(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: info.talentsTotal >= CharTalents.kTotal
-                      ? context.themeColors.starColor
-                      : getGoodColor(
-                          info.talentsTotal,
-                          CharTalents.kTotalCrownless,
-                        ),
-                ),
-              ),
-              if (info.talentsTotal >= CharTalents.kTotal)
-                Padding(
-                  padding: EdgeInsets.only(left: kSeparator2),
-                  child: Icon(
-                    Icons.star_rounded,
-                    color: context.themeColors.starColor,
-                  ),
-                ),
-            ],
-          );
-        },
-      ),
-    ];
-  }
-
-  _TableItem _talentTableItem(CharTalentType tal) {
-    double unowned() => _ascending ? double.infinity : double.negativeInfinity;
-
-    final label = switch (tal) {
-      CharTalentType.attack => context.labels.tableTitleTalAttack(),
-      CharTalentType.skill => context.labels.tableTitleTalSkill(),
-      CharTalentType.burst => context.labels.tableTitleTalBurst(),
-    };
-
-    return _TableItem(
-      label: label,
-      sortBy: (e) => e.talents?.talent(tal) ?? unowned(),
-      builder: (info) {
-        final value = info.talents?.talentWithExtra(tal);
-        final hasExtra = info.talents?.hasExtra(tal) ?? false;
-        return Text(
-          value?.toString() ?? context.labels.tableEmpty(),
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: hasExtra ? context.themeColors.extraTalent : null,
           ),
         );
-      },
-      onTap: (info) => GsUtils.characters.increaseTalent(info.item.id, tal),
+      }).toList(),
     );
   }
-
-  Iterable<CharInfo> _getCharsSorted(Iterable<GsCharacter> characters) {
-    final info = GsUtils.characters.getCharInfo;
-    var chars = characters.map((e) => info(e.id)).whereNotNull();
-
-    if (_idSortedList.isNotEmpty) {
-      chars = chars.sortedBy((e) => _idSortedList.indexOf(e.item.id));
-    }
-    return chars;
-  }
-
-  List<String> _getCharsIdsSorted(
-    Iterable<CharInfo> chars,
-    _TableItem? sortItem,
-  ) {
-    if (sortItem == null) return const [];
-
-    final sorted = _ascending ? chars.sortedBy : chars.sortedByDescending;
-    return sorted((e) => sortItem.sortBy?.call(e) ?? 0)
-        .thenByDescending((e) => e.item.releaseDate)
-        .thenBy((e) => e.item.name)
-        .map((e) => e.item.id)
-        .toList();
-  }
-}
-
-class _TableItem {
-  final String label;
-  final bool expand;
-  final bool allowTap;
-  final Comparable Function(CharInfo)? sortBy;
-  final void Function(CharInfo info)? onTap;
-  final Widget Function(CharInfo info) builder;
-
-  late final width = () {
-    final painter = TextPainter(
-      text: TextSpan(
-        text: label,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          fontFamily: defaultFontFamily,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    );
-    painter.layout();
-    return painter.size.width + kSeparator8 * 2 + 28;
-  }();
-
-  _TableItem({
-    this.sortBy,
-    required this.label,
-    required this.builder,
-    this.onTap,
-    this.expand = false,
-    this.allowTap = false,
-  });
 }
 
 class _MatsList extends StatefulWidget {
-  final Iterable<CharInfo> characters;
+  final List<CharInfo> characters;
 
   const _MatsList(this.characters);
 
@@ -481,8 +266,7 @@ class _MatsListState extends State<_MatsList> {
       return (total: total, talents: tals, ascension: ascs);
     }
 
-    final list = widget.characters.toList();
-    return compute(callback, (GsUtils.materials, list));
+    return compute(callback, (GsUtils.materials, widget.characters));
   }
 
   Widget _materialsBox({
