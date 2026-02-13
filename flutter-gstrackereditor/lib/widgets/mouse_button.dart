@@ -23,7 +23,6 @@ class _MouseButtonState extends State<MouseButton> {
     return GestureDetector(
       onTap: widget.onTap,
       child: MouseRegion(
-        cursor: SystemMouseCursors.click,
         onEnter: (e) => setState(() => _hover = true),
         onExit: (e) => setState(() => _hover = false),
         child: widget.builder(context, _hover, widget.child),
