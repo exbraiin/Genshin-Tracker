@@ -41,7 +41,7 @@ class GsDataBox extends StatelessWidget {
             ),
             GsDivider(),
           ],
-          if (child != null) child!,
+          ?child,
           ...children,
         ],
       ),

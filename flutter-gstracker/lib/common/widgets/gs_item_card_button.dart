@@ -176,7 +176,7 @@ class GsItemCardButton extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: context.themeStyles.fgLabel12b,
                     ),
-                  if (subChild != null) subChild!,
+                  ?subChild,
                 ],
               ),
             ),

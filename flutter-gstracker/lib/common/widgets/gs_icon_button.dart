@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/common/widgets/gs_incrementer.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
 class GsCircleIcon extends StatelessWidget {
@@ -79,41 +78,4 @@ class GsIconButton extends StatelessWidget {
       ),
     );
   }
-}
-
-class GsIconButtonHold extends StatelessWidget {
-  final IconData icon;
-  final double size;
-  final Color color;
-  final void Function(int i)? onPress;
-
-  const GsIconButtonHold({
-    super.key,
-    required this.icon,
-    this.size = 24,
-    this.onPress,
-    this.color = Colors.black,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GsIncrementer(
-      onTap: onPress != null ? () => onPress!(1) : null,
-      onHold: onPress != null ? (i) => onPress!(_intFromTick(i)) : null,
-      child: Opacity(
-        opacity: onPress != null ? 1 : kDisableOpacity,
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GsCircleIcon(size: size, icon: icon, color: color),
-        ),
-      ),
-    );
-  }
-}
-
-int _intFromTick(int tick) {
-  if (tick < 50) return 1;
-  if (tick < 100) return 10;
-  if (tick < 150) return 100;
-  return 1000;
 }

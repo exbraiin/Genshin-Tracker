@@ -142,7 +142,7 @@ class GsGridItem extends StatelessWidget {
             ),
           _getDurationBanner(),
           _getVersionBanner(),
-          if (child != null) child!,
+          ?child,
           _getStateBanner(),
           _getInvalidBanner(),
         ],
