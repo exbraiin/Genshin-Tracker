@@ -284,6 +284,135 @@ class _CalendarDay extends StatelessWidget {
     final showBirthday = birthdays.isNotEmpty;
     final tooltip = birthdays.map((e) => e.name).join(' | ');
 
+    Widget child = Stack(
+      children: [
+        if (showBirthday)
+          ...birthdays.mapIndexed((i, e) {
+            return Positioned.fill(
+              child: ClipRect(
+                clipper: _RectClipperBuilder(
+                  (size) => Rect.fromLTWH(
+                    i * size.width / birthdays.length,
+                    0,
+                    size.width / birthdays.length,
+                    size.height,
+                  ),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(GsAssets.getRarityBgImage(e.rarity)),
+                    ),
+                  ),
+                  child: CachedImageWidget(e.image),
+                ),
+              ),
+            );
+          }),
+        ...battlepasses.map((info) {
+          final src = info.dateStart.isAtSameDayAs(date);
+          final end = info.dateEnd.isAtSameDayAs(date);
+          final msg = info.name;
+
+          return Positioned.fill(
+            top: null,
+            left: src ? _kItemSize / 2 + 4 : 0,
+            right: end ? _kItemSize / 2 + 4 : 0,
+            bottom: 5,
+            child: _ImagesTooltip(
+              images: [info.image],
+              message: msg,
+              size: const Size(150, 54),
+              child: Container(
+                height: 4,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: context.themeColors.primary,
+                  borderRadius: BorderRadius.horizontal(
+                    left: src ? const Radius.circular(8) : Radius.zero,
+                    right: end ? const Radius.circular(8) : Radius.zero,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+        ...banners.map((info) {
+          final (color, list) = info;
+
+          final banner = list.first;
+          final src = banner.dateStart.isAtSameDayAs(date);
+          final end = banner.dateEnd.isAtSameDayAs(date);
+          final message = list.map((e) => e.name).join('\n');
+
+          return Positioned.fill(
+            top: null,
+            left: src ? _kItemSize / 2 + 4 : 0,
+            right: end ? _kItemSize / 2 + 4 : 0,
+            child: _ImagesTooltip(
+              images: list.map((e) => e.image),
+              message: message,
+              child: Container(
+                height: 4,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.horizontal(
+                    left: src ? const Radius.circular(8) : Radius.zero,
+                    right: end ? const Radius.circular(8) : Radius.zero,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+        Positioned(
+          right: 2,
+          bottom: 2,
+          child: Icon(
+            showBirthday ? Icons.cake_rounded : null,
+            size: 20,
+            color: context.themeColors.almostWhite,
+            shadows: const [BoxShadow(offset: Offset(1, 1), blurRadius: 5)],
+          ),
+        ),
+        if (showVersion)
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Transform.translate(
+              offset: const Offset(12, 12),
+              child: Banner(
+                message: GsUtils.versions.getName(version.id),
+                color: context.themeColors.primary80,
+                location: BannerLocation.bottomEnd,
+              ),
+            ),
+          ),
+        Container(
+          width: 20,
+          height: 20,
+          alignment: Alignment.center,
+          margin: const EdgeInsets.all(kSeparator2),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: context.themeColors.mainColor0.withValues(alpha: 0.4),
+            border: Border.all(color: context.themeColors.mainColor1, width: 2),
+          ),
+          child: Text(
+            date.day.toString(),
+            style: context.themeStyles.label12n,
+            strutStyle: context.themeStyles.label12n.toStrut(),
+          ),
+        ),
+      ],
+    );
+
+    if (tooltip.isNotEmpty) {
+      child = Tooltip(message: tooltip, child: child);
+    }
+
     return Opacity(
       opacity: date.isAtSameMonthAs(now) ? 1 : kDisableOpacity,
       child: Container(
@@ -303,140 +432,7 @@ class _CalendarDay extends StatelessWidget {
                 ),
               )
             : null,
-        child: Tooltip(
-          message: tooltip,
-          child: Stack(
-            children: [
-              if (showBirthday)
-                ...birthdays.mapIndexed((i, e) {
-                  return Positioned.fill(
-                    child: ClipRect(
-                      clipper: _RectClipperBuilder(
-                        (size) => Rect.fromLTWH(
-                          i * size.width / birthdays.length,
-                          0,
-                          size.width / birthdays.length,
-                          size.height,
-                        ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              GsAssets.getRarityBgImage(e.rarity),
-                            ),
-                          ),
-                        ),
-                        child: CachedImageWidget(e.image),
-                      ),
-                    ),
-                  );
-                }),
-              ...battlepasses.map((info) {
-                final src = info.dateStart.isAtSameDayAs(date);
-                final end = info.dateEnd.isAtSameDayAs(date);
-                final msg = info.name;
-
-                return Positioned.fill(
-                  top: null,
-                  left: src ? _kItemSize / 2 + 4 : 0,
-                  right: end ? _kItemSize / 2 + 4 : 0,
-                  bottom: 5,
-                  child: _ImagesTooltip(
-                    images: [info.image],
-                    message: msg,
-                    size: const Size(150, 54),
-                    child: Container(
-                      height: 4,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: context.themeColors.primary,
-                        borderRadius: BorderRadius.horizontal(
-                          left: src ? const Radius.circular(8) : Radius.zero,
-                          right: end ? const Radius.circular(8) : Radius.zero,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-              ...banners.map((info) {
-                final (color, list) = info;
-
-                final banner = list.first;
-                final src = banner.dateStart.isAtSameDayAs(date);
-                final end = banner.dateEnd.isAtSameDayAs(date);
-                final message = list.map((e) => e.name).join('\n');
-
-                return Positioned.fill(
-                  top: null,
-                  left: src ? _kItemSize / 2 + 4 : 0,
-                  right: end ? _kItemSize / 2 + 4 : 0,
-                  child: _ImagesTooltip(
-                    images: list.map((e) => e.image),
-                    message: message,
-                    child: Container(
-                      height: 4,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: BorderRadius.horizontal(
-                          left: src ? const Radius.circular(8) : Radius.zero,
-                          right: end ? const Radius.circular(8) : Radius.zero,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-              Positioned(
-                right: 2,
-                bottom: 2,
-                child: Icon(
-                  showBirthday ? Icons.cake_rounded : null,
-                  size: 20,
-                  color: context.themeColors.almostWhite,
-                  shadows: const [
-                    BoxShadow(offset: Offset(1, 1), blurRadius: 5),
-                  ],
-                ),
-              ),
-              if (showVersion)
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Transform.translate(
-                    offset: const Offset(12, 12),
-                    child: Banner(
-                      message: GsUtils.versions.getName(version.id),
-                      color: context.themeColors.primary80,
-                      location: BannerLocation.bottomEnd,
-                    ),
-                  ),
-                ),
-              Container(
-                width: 20,
-                height: 20,
-                alignment: Alignment.center,
-                margin: const EdgeInsets.all(kSeparator2),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: context.themeColors.mainColor0.withValues(alpha: 0.4),
-                  border: Border.all(
-                    color: context.themeColors.mainColor1,
-                    width: 2,
-                  ),
-                ),
-                child: Text(
-                  date.day.toString(),
-                  style: context.themeStyles.label12n,
-                  strutStyle: context.themeStyles.label12n.toStrut(),
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: child,
       ),
     );
   }

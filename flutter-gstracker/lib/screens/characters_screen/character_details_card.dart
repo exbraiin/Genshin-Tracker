@@ -168,7 +168,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               children: [
                 Flexible(child: Text(dish.name)),
                 const SizedBox(width: kSeparator8),
-                ItemGridWidget.recipe(dish, tooltip: ''),
+                ItemGridWidget.recipe(dish),
               ],
             )
           : Text(labels.wsNone()),

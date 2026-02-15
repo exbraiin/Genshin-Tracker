@@ -150,7 +150,6 @@ class _MatsByDays extends StatelessWidget {
                 mat.key,
                 disabled: !isToday,
                 label: mat.value.compact(),
-                tooltip: '',
               );
             }).toList(),
           ),

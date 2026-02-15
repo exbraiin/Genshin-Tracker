@@ -36,7 +36,6 @@ class ItemGridWidget extends StatelessWidget {
   final bool disabled;
   final String label;
   final Widget? labelWidget;
-  final String tooltip;
   final String urlImage;
   final String assetImage;
   final void Function(BuildContext ctx)? onTap;
@@ -49,7 +48,6 @@ class ItemGridWidget extends StatelessWidget {
     this.label = '',
     this.labelWidget,
     this.rarity = 1,
-    this.tooltip = '',
     this.urlImage = '',
     this.assetImage = '',
     this.disabled = false,
@@ -67,10 +65,8 @@ class ItemGridWidget extends StatelessWidget {
     this.disabled = false,
     this.onAdd,
     this.onRemove,
-    String? tooltip,
     ContextCallback<GsMaterial>? onTap = _callMaterial,
   }) : rarity = info.rarity,
-       tooltip = tooltip ?? info.name,
        urlImage = info.image,
        assetImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
@@ -84,10 +80,8 @@ class ItemGridWidget extends StatelessWidget {
     this.disabled = false,
     this.onAdd,
     this.onRemove,
-    String? tooltip,
     ContextCallback<GsRecipe>? onTap = _callRecipe,
   }) : rarity = info.rarity,
-       tooltip = tooltip ?? info.name,
        urlImage = info.image,
        assetImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
@@ -101,10 +95,8 @@ class ItemGridWidget extends StatelessWidget {
     this.disabled = false,
     this.onAdd,
     this.onRemove,
-    String? tooltip,
     ContextCallback<GsWeapon>? onTap = _callWeapon,
   }) : rarity = info.rarity,
-       tooltip = tooltip ?? info.name,
        urlImage = info.image,
        assetImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
@@ -118,10 +110,8 @@ class ItemGridWidget extends StatelessWidget {
     this.disabled = false,
     this.onAdd,
     this.onRemove,
-    String? tooltip,
     ContextCallback<GsCharacter>? onTap = _callCharacter,
   }) : rarity = info.rarity,
-       tooltip = tooltip ?? info.name,
        urlImage = info.image,
        assetImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
@@ -137,7 +127,6 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsSereniteaSet>? onTap = _callSerenitea,
   }) : rarity = info.rarity,
-       tooltip = info.name,
        urlImage = info.image,
        assetImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
@@ -153,7 +142,6 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsFurnitureChest>? onTap = _callFurnitureChest,
   }) : rarity = info.rarity,
-       tooltip = info.name,
        urlImage = info.image,
        assetImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
@@ -169,7 +157,6 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsNamecard>? onTap = _callNamecard,
   }) : rarity = info.rarity,
-       tooltip = info.name,
        urlImage = info.image,
        assetImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
@@ -242,10 +229,6 @@ class ItemGridWidget extends StatelessWidget {
       ),
       child: child,
     );
-
-    if (tooltip.isNotEmpty) {
-      child = Tooltip(message: tooltip, child: child);
-    }
 
     if (onTap != null) {
       child = MouseHoverBuilder(

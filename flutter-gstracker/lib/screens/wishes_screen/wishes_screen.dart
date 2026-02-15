@@ -117,6 +117,7 @@ class _WishesScreenScreenState extends State<WishesScreen>
                     Positioned.fill(
                       child: Center(
                         child: TabBar(
+                          mouseCursor: WidgetStateMouseCursor.adaptiveClickable,
                           indicatorSize: TabBarIndicatorSize.label,
                           controller: _controller,
                           tabs: tabs.toList(),

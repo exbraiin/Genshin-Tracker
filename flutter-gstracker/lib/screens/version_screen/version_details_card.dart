@@ -129,7 +129,6 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             (e) => ItemGridWidget(
               urlImage: e.image,
               rarity: e.rarity,
-              tooltip: e.name,
               onTap: null,
             ),
           ),
@@ -166,8 +165,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           mapItems(
             banners,
             context.labels.wishes(),
-            (e) =>
-                ItemGridWidget(urlImage: e.image, tooltip: e.name, onTap: null),
+            (e) => ItemGridWidget(urlImage: e.image, onTap: null),
           ),
           mapItems(
             chests,

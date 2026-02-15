@@ -331,15 +331,9 @@ class HomeWishesValues extends StatelessWidget {
                               clipBehavior: Clip.none,
                               children: [
                                 item.character != null
-                                    ? ItemGridWidget.character(
-                                        item.character!,
-                                        tooltip: '',
-                                      )
+                                    ? ItemGridWidget.character(item.character!)
                                     : item.weapon != null
-                                    ? ItemGridWidget.weapon(
-                                        item.weapon!,
-                                        tooltip: '',
-                                      )
+                                    ? ItemGridWidget.weapon(item.weapon!)
                                     : const SizedBox(),
                                 if (state == WishState.won)
                                   Positioned(
