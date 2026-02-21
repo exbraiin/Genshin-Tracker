@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/localization.dart';
@@ -26,10 +27,9 @@ class MyApp extends StatelessWidget {
         Expanded(
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            scrollBehavior: const MaterialScrollBehavior().copyWith(
+            scrollBehavior: CupertinoScrollBehavior().copyWith(
               dragDevices: {PointerDeviceKind.mouse},
               scrollbars: false,
-              physics: const BouncingScrollPhysics(),
             ),
             localizationsDelegates: [
               AppLocalization.createDelegate(

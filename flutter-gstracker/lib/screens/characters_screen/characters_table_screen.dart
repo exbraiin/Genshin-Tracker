@@ -99,11 +99,26 @@ class _MatsByDays extends StatelessWidget {
                           itemCount: chars.length,
                           separatorBuilder: (context, index) =>
                               SizedBox(height: kSeparator4),
-                          itemBuilder: (context, index) => _listItem(
-                            context,
-                            chars[index],
-                            isToday: isToday,
-                          ),
+                          itemBuilder: (context, index) {
+                            final widget = _listItem(
+                              context,
+                              chars[index],
+                              isToday: isToday,
+                            );
+
+                            late final cRarity = chars[index].item.rarity;
+                            late final pRarity = chars[index - 1].item.rarity;
+                            if (index == 0 || cRarity != pRarity) {
+                              return _raritySeparator(
+                                context,
+                                rarity: cRarity,
+                                isToday: isToday,
+                                hasTopPadding: index > 0,
+                                child: widget,
+                              );
+                            }
+                            return widget;
+                          },
                         ),
                 ),
               ],
@@ -111,6 +126,41 @@ class _MatsByDays extends StatelessWidget {
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _raritySeparator(
+    BuildContext context, {
+    required int rarity,
+    required bool hasTopPadding,
+    required bool isToday,
+    required Widget child,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (hasTopPadding) SizedBox(height: kSeparator16),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(
+            rarity,
+            (i) => Transform.translate(
+              offset: Offset(i * -4, 0),
+              child: Opacity(
+                opacity: isToday ? 1 : kDisableOpacity,
+                child: Icon(
+                  Icons.star_rounded,
+                  size: 18,
+                  color: context.themeColors.starColor,
+                  shadows: GsSpacing.kMainShadow,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: kSeparator6),
+        child,
+      ],
     );
   }
 
