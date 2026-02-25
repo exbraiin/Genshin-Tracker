@@ -23,9 +23,14 @@ final class YattaImporter implements ImportApi {
     String endpoint, {
     bool isStatic = false,
     bool useCache = true,
+    Map<String, String>? queryParams,
   }) async {
     final url = isStatic ? '/api/v2/static/$endpoint' : '/api/v2/en/$endpoint';
-    final page = await _cache.fetchPage(url, useCache: useCache);
+    final page = await _cache.fetchPage(
+      url,
+      useCache: useCache,
+      queryParams: queryParams,
+    );
     return page.getJsonMap('data');
   }
 
@@ -91,7 +96,7 @@ final class YattaImporter implements ImportApi {
   @override
   Future<List<ImportItem>> fetchCharacters() async {
     const url = '$_kBaseUrl/assets/UI';
-    final data = await _fetchPage('avatar');
+    final data = await _fetchPage('avatar', queryParams: {'vh': '9999'});
     final items = data['items'] as Map<String, dynamic>;
 
     return items.values.cast<JsonMap>().map((m) {

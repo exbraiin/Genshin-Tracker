@@ -43,7 +43,7 @@ class GsEnkaChar {
       rarity = rarityNameToLevel(map['QualityType']),
       element = elementNameToType(map['Element']);
 
-  static int rarityNameToLevel(String name, [int? fallback]) {
+  static int rarityNameToLevel(String? name, [int? fallback]) {
     return switch (name) {
       'QUALITY_ORANGE_SP' => 5,
       'QUALITY_ORANGE' => 5,
@@ -53,7 +53,7 @@ class GsEnkaChar {
   }
 
   static GeElementType elementNameToType(
-    String name, [
+    String? name, [
     GeElementType? fallback,
   ]) {
     return switch (name) {

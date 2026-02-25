@@ -179,6 +179,18 @@ class _MatsByDays extends StatelessWidget {
       spacing: kSeparator8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(
+          width: 30,
+          height: kSize50,
+          child: Align(
+            alignment: AlignmentGeometry.centerRight,
+            child: Text(
+              '${info.talentsTotal} \u2022',
+              maxLines: 1,
+              style: context.themeStyles.label14n,
+            ),
+          ),
+        ),
         ItemGridWidget.character(
           info.item,
           disabled: !isToday,
