@@ -50,12 +50,10 @@ extension GeWeekdayTypeExt on GeWeekdayType {
     };
   }
 
-  bool get isMonOrThu =>
-      this == GeWeekdayType.monday || this == GeWeekdayType.thursday;
-  bool get isTueOrFri =>
-      this == GeWeekdayType.tuesday || this == GeWeekdayType.friday;
-  bool get isWedOrSat =>
-      this == GeWeekdayType.wednesday || this == GeWeekdayType.saturday;
+  bool get isFarmableToday {
+    final today = GeWeekdayType.values.today;
+    return this == today || today == GeWeekdayType.sunday;
+  }
 }
 
 extension GeWeekdayTypeListExt on List<GeWeekdayType> {

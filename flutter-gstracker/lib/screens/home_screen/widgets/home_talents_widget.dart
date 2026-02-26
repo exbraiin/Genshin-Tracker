@@ -33,7 +33,6 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
     return ValueStreamBuilder(
       stream: Database.instance.loaded,
       builder: (context, snapshot) {
-        final today = GeWeekdayType.values.today;
         final characters = groupCharactersByDays();
 
         final isEmpty = characters.values.every((list) => list.isEmpty);
@@ -44,6 +43,8 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
           );
         }
 
+        final today = GeWeekdayType.values.today;
+        final isLimitedDaysToday = isLimitedDays();
         const kItemSize = kSize56;
         return ValueListenableBuilder(
           valueListenable: _ascending,
@@ -60,10 +61,9 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                         Text(context.labels.talents()),
                         Text(
                           ' \u2022 ${today.getLabel(context)}',
-                          style: context.themeStyles.label14b.copyWith(
+                          style: context.themeStyles.label12i.copyWith(
                             color: context.themeColors.sectionContent,
                           ),
-                          strutStyle: context.themeStyles.label14b.toStrut(),
                         ),
                       ],
                     ),
@@ -102,7 +102,11 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                           '${days.day1.getLabel(context).substring(0, 3)} & '
                           '${days.day2.getLabel(context).substring(0, 3)}',
                           textAlign: TextAlign.center,
-                          style: context.themeStyles.label14n,
+                          style: context.themeStyles.label14n.copyWith(
+                            color: isLimitedDaysToday
+                                ? context.themeColors.starColor
+                                : null,
+                          ),
                         ),
                       );
                     }).toList(),
@@ -111,10 +115,10 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                     children: charactersByDays.entries.map((entry) {
                       final days = entry.key;
                       final chars = entry.value;
-                      late final isToday =
-                          today == GeWeekdayType.sunday ||
-                          days.day1 == today ||
-                          days.day2 == today;
+                      late final isFarmable =
+                          days.day1.isFarmableToday ||
+                          days.day2.isFarmableToday ||
+                          isLimitedDaysToday;
 
                       return Wrap(
                         spacing: kSeparator4,
@@ -124,7 +128,7 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                           return ItemGridWidget.character(
                             info.item,
                             size: kItemSize,
-                            disabled: !isToday,
+                            disabled: !isFarmable,
                             labelWidget: CharaterTalentsLabel(info),
                           );
                         }).toList(),

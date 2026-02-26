@@ -50,6 +50,12 @@ DaysMap sortCharactersByDays(DaysMap map, {bool asc = false}) {
   }).toMap();
 }
 
+bool isLimitedDays() {
+  final releaseDate = GsUtils.versions.getCurrentVersion()?.releaseDate;
+  final endOfLimited = releaseDate?.add(Duration(days: DateTime.daysPerWeek));
+  return endOfLimited != null && DateTime.now().date.isBefore(endOfLimited);
+}
+
 extension<E> on SortedList<E> {
   SortedList<E> thenByOrder(Comparable Function(E element) selector, bool asc) {
     return asc ? thenBy(selector) : thenByDescending(selector);

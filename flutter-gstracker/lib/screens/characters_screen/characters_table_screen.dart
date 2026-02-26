@@ -60,21 +60,20 @@ class _MatsByDays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final today = GeWeekdayType.values.today;
-
     if (mapOfCharacters.values.every((e) => e.isEmpty)) {
       return InventoryBox(child: Center(child: GsNoResultsState.small()));
     }
 
+    final isLimitedDaysToday = isLimitedDays();
     return Row(
       spacing: GsSpacing.kGridSeparator,
       children: mapOfCharacters.entries.map((entry) {
         final days = entry.key;
         final chars = entry.value;
-        late final isToday =
-            today == GeWeekdayType.sunday ||
-            days.day1 == today ||
-            days.day2 == today;
+        late final isFarmable =
+            days.day1.isFarmableToday ||
+            days.day2.isFarmableToday ||
+            isLimitedDaysToday;
 
         return Expanded(
           child: InventoryBox(
@@ -84,10 +83,21 @@ class _MatsByDays extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.all(kSeparator8),
-                  child: Text(
-                    '${days.day1.getLabel(context).substring(0, 3)} & '
-                    '${days.day2.getLabel(context).substring(0, 3)}',
-                    style: context.themeStyles.label14b,
+                  child: Row(
+                    children: [
+                      Text(
+                        '${days.day1.getLabel(context).substring(0, 3)} & '
+                        '${days.day2.getLabel(context).substring(0, 3)}',
+                        style: context.themeStyles.label14b,
+                      ),
+                      if (isLimitedDaysToday)
+                        Text(
+                          '  \u2022  Limited Days',
+                          style: context.themeStyles.label12i.copyWith(
+                            color: context.themeColors.starColor,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 GsDivider(),
@@ -103,7 +113,7 @@ class _MatsByDays extends StatelessWidget {
                             final widget = _listItem(
                               context,
                               chars[index],
-                              isToday: isToday,
+                              isToday: isFarmable,
                             );
 
                             late final cRarity = chars[index].item.rarity;
@@ -112,7 +122,7 @@ class _MatsByDays extends StatelessWidget {
                               return _raritySeparator(
                                 context,
                                 rarity: cRarity,
-                                isToday: isToday,
+                                isToday: isFarmable,
                                 hasTopPadding: index > 0,
                                 child: widget,
                               );
