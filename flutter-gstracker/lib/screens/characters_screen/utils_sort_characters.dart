@@ -50,6 +50,40 @@ DaysMap sortCharactersByDays(DaysMap map, {bool asc = false}) {
   }).toMap();
 }
 
+List<({GsMaterial material, int amount})> getCharactersMissingMaterials({
+  List<CharInfo>? infos,
+  int maxTalent = CharTalents.kCrownless,
+}) {
+  late final chars = GsUtils.characters;
+  late final iChar = Database.instance.infoOf<GsCharacter>();
+  late final fallback = iChar.items
+      .map((e) => chars.getCharInfo(e.id))
+      .whereNotNull();
+
+  final missing = GsUtils.materials.getCharTalentsMissing;
+  final versions = Database.instance.infoOf<GsVersion>();
+  DateTime versionRelease(String version) {
+    return versions.getItem(version)?.releaseDate ?? DateTime(0);
+  }
+
+  return (infos ?? fallback)
+      .where((e) => e.talents?.isMissing(crownless: true) ?? false)
+      .map((e) => missing(e.item, e.info, CharTalents.kCrownless))
+      .expand((e) => e.entries)
+      .groupBy((e) => e.key.id)
+      .map((k, v) {
+        final sum = v.sumBy((e) => e.value);
+        return MapEntry(v.first.key, sum);
+      })
+      .entries
+      .map((e) => (material: e.key, amount: e.value))
+      .sortedByDescending((e) => e.material.group.index)
+      .thenByDescending((e) => e.material.rarity)
+      .thenBy((e) => e.material.region.index)
+      .thenBy((e) => versionRelease(e.material.version))
+      .toList();
+}
+
 bool isLimitedDays() {
   final releaseDate = GsUtils.versions.getCurrentVersion()?.releaseDate;
   final endOfLimited = releaseDate?.add(Duration(days: DateTime.daysPerWeek));

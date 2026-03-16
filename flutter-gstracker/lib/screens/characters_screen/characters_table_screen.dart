@@ -97,6 +97,14 @@ class _MatsByDays extends StatelessWidget {
                             color: context.themeColors.starColor,
                           ),
                         ),
+                      Spacer(),
+                      Text('${chars.length}'),
+                      SizedBox(width: kSeparator4),
+                      Image.asset(
+                        AppAssets.menuIconCharacters,
+                        width: 20,
+                        height: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -179,6 +187,7 @@ class _MatsByDays extends StatelessWidget {
     CharInfo info, {
     required bool isToday,
   }) {
+    final double size = 60.0;
     final mats = GsUtils.materials.getCharTalentsMissing(
       info.item,
       info.info,
@@ -191,7 +200,7 @@ class _MatsByDays extends StatelessWidget {
       children: [
         SizedBox(
           width: 30,
-          height: kSize50,
+          height: size,
           child: Align(
             alignment: AlignmentGeometry.centerRight,
             child: Text(
@@ -203,14 +212,14 @@ class _MatsByDays extends StatelessWidget {
         ),
         ItemGridWidget.character(
           info.item,
+          size: size,
           disabled: !isToday,
           labelWidget: CharaterTalentsLabel(info),
         ),
         SizedBox(
-          height: kSize50,
-          child: Center(
-            child: Text('\u2022', style: context.themeStyles.label14n),
-          ),
+          height: size,
+          width: 24,
+          child: Image.asset(GsAssets.iconRegionType(info.item.region)),
         ),
         Expanded(
           child: Wrap(
@@ -220,6 +229,7 @@ class _MatsByDays extends StatelessWidget {
             children: mats.entries.map((mat) {
               return ItemGridWidget.material(
                 mat.key,
+                size: size,
                 disabled: !isToday,
                 label: mat.value.compact(),
               );

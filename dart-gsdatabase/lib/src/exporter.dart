@@ -49,6 +49,7 @@ export 'models/save/gi_event_rewards.dart' show GiEventRewards;
 export 'models/save/gi_furnishing.dart' show GiFurnishing;
 export 'models/save/gi_furniture_chest.dart' show GiFurnitureChest;
 export 'models/save/gi_lunar_arcana.dart' show GiLunarArcana;
+export 'models/save/gi_material.dart' show GiMaterial;
 export 'models/save/gi_player_info.dart' show GiPlayerInfo;
 export 'models/save/gi_recipe.dart' show GiRecipe;
 export 'models/save/gi_serenitea_set.dart' show GiSereniteaSet;

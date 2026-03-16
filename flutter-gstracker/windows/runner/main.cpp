@@ -31,9 +31,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   int windowHeight = 900;
   int screenWidth = GetSystemMetrics(SM_CXFULLSCREEN);
   int screenHeight = GetSystemMetrics(SM_CYFULLSCREEN);
+  int windowPosX = (screenWidth - windowWidth) / 2;
+  int windowPosY = (screenHeight - windowHeight) / 2;
 
   FlutterWindow window(project);
-  Win32Window::Point origin((screenWidth - windowWidth) / 2, (screenHeight - windowHeight) / 2);
+  Win32Window::Point origin(windowPosX, windowPosY);
   Win32Window::Size size(windowWidth, windowHeight);
   if (!window.Create(L"Genshin Tracker", origin, size)) {
     return EXIT_FAILURE;

@@ -92,6 +92,11 @@ class GsEventExt extends GsModelExt<GsEvent> {
           };
         },
       ),
+      DataField.textField(
+        'Other Rewards',
+        (item) => item.rewardsOther,
+        (item, value) => item.copyWith(rewardsOther: value),
+      ),
       DataField.multiSelect<GsEvent, String>(
         'Weapon Rewards',
         (item) => item.rewardsWeapons,
@@ -123,5 +128,6 @@ class GsEventExt extends GsModelExt<GsEvent> {
 bool _invalidRewards(GsEvent item) {
   return item.type == GeEventType.flagship &&
       item.rewardsWeapons.isEmpty &&
-      item.rewardsCharacters.isEmpty;
+      item.rewardsCharacters.isEmpty &&
+      item.rewardsOther.isEmpty;
 }

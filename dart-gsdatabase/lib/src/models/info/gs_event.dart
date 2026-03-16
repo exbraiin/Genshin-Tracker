@@ -18,6 +18,8 @@ abstract class _GsEvent extends GsModel<GsEvent> with GsVersionable {
   DateTime get dateStart;
   @BuilderWire('date_end')
   DateTime get dateEnd;
+  @BuilderWire('rewards_other')
+  String get rewardsOther;
   @BuilderWire('rewards_weapons')
   List<String> get rewardsWeapons;
   @BuilderWire('rewards_characters')
