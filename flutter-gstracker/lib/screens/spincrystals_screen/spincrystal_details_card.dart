@@ -41,7 +41,7 @@ class SpincrystalDetailsCard extends StatelessWidget
                 alignment: Alignment.bottomRight,
                 child: GsIconButton.owned(
                   owned: owned,
-                  onPress: (own) =>
+                  onPressed: (own) =>
                       GsUtils.spincrystals.update(item.number, obtained: own),
                 ),
               ),

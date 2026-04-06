@@ -56,7 +56,7 @@ class RecipeDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     alignment: Alignment.bottomRight,
                     child: GsIconButton.owned(
                       owned: saved != null,
-                      onPress: (own) =>
+                      onPressed: (own) =>
                           GsUtils.recipes.update(item.id, own: own),
                     ),
                   ),

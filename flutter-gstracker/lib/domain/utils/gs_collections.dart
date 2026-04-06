@@ -20,6 +20,7 @@ final class GuCollections {
 
   final Items<GiWish> svWishes;
   final Items<GiRecipe> svRecipes;
+  final Items<GiMaterial> svMaterials;
   final Items<GiCharacter> svCharacters;
   final Items<GiAchievement> svAchievements;
   final Items<GiLunarArcana> svLunarArcana;
@@ -51,6 +52,7 @@ final class GuCollections {
       //
       svWishes = db.saveOf<GiWish>(),
       svRecipes = db.saveOf<GiRecipe>(),
+      svMaterials = db.saveOf<GiMaterial>(),
       svCharacters = db.saveOf<GiCharacter>(),
       svAchievements = db.saveOf<GiAchievement>(),
       svLunarArcana = db.saveOf<GiLunarArcana>(),

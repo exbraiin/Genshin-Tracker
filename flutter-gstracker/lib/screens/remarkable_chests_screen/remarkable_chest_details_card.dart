@@ -61,7 +61,7 @@ class RemarkableChestDetailsCard extends StatelessWidget
                 alignment: Alignment.bottomRight,
                 child: GsIconButton.owned(
                   owned: owned,
-                  onPress: (own) =>
+                  onPressed: (own) =>
                       GsUtils.furnitureChests.update(item.id, obtained: own),
                 ),
               ),

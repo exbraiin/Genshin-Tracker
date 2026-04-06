@@ -35,45 +35,45 @@ class GsIconButton extends StatelessWidget {
   final double size;
   final Color? color;
   final Color Function(BuildContext color)? onColor;
-  final VoidCallback? onPress;
+  final VoidCallback? onPressed;
 
   const GsIconButton({
     super.key,
     required this.icon,
     this.size = 24,
-    this.onPress,
+    this.onPressed,
     this.onColor,
     this.color,
   });
 
   factory GsIconButton.owned({
     required bool owned,
-    required void Function(bool own) onPress,
+    required void Function(bool own) onPressed,
   }) {
     return GsIconButton(
       size: 26,
       onColor: (context) =>
           owned ? context.themeColors.goodValue : context.themeColors.badValue,
       icon: owned ? Icons.check : Icons.close,
-      onPress: () => onPress(!owned),
+      onPressed: () => onPressed(!owned),
     );
   }
 
-  factory GsIconButton.add({VoidCallback? onPress}) {
-    return GsIconButton(icon: Icons.add, onPress: onPress);
+  factory GsIconButton.add({VoidCallback? onPressed}) {
+    return GsIconButton(icon: Icons.add, onPressed: onPressed);
   }
 
-  factory GsIconButton.remove({VoidCallback? onPress}) {
-    return GsIconButton(icon: Icons.remove, onPress: onPress);
+  factory GsIconButton.remove({VoidCallback? onPressed}) {
+    return GsIconButton(icon: Icons.remove, onPressed: onPressed);
   }
 
   @override
   Widget build(BuildContext context) {
     final color = this.color ?? onColor?.call(context) ?? Colors.black;
     return Opacity(
-      opacity: onPress != null ? 1 : kDisableOpacity,
+      opacity: onPressed != null ? 1 : kDisableOpacity,
       child: InkWell(
-        onTap: () => onPress?.call(),
+        onTap: () => onPressed?.call(),
         child: GsCircleIcon(size: size, icon: icon, color: color),
       ),
     );

@@ -244,6 +244,22 @@ final class GuMaterials {
         .map((e) => MapEntry(e.$1!, e.$2))
         .toMap();
   }
+
+  int getMaterialOwnedAmount(String id) {
+    final saved = _items.svMaterials.getItem(id);
+    return saved?.amount ?? 0;
+  }
+
+  void updateMaterialOwned(String id, int Function(int) update) {
+    final saved = _items.svMaterials.getItem(id);
+    final item = saved ?? GiMaterial(id: id, amount: 0);
+    final amount = update(item.amount).clamp(0, 10000);
+    if (amount <= 0) {
+      _items.svMaterials.removeItem(id);
+    } else if (item.amount != amount) {
+      _items.svMaterials.setItem(item.copyWith(amount: amount));
+    }
+  }
 }
 
 extension GsMaterialExt on GsMaterial {

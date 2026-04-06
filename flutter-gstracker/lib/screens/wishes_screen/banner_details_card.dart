@@ -225,7 +225,7 @@ class BannerDetailsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GsIconButton.remove(
-                onPress: GsUtils.wishes.bannerHasWishes(item.id)
+                onPressed: GsUtils.wishes.bannerHasWishes(item.id)
                     ? () {
                         RemoveDialog.show(context, item.name).then((value) {
                           if (!value) return;
@@ -236,7 +236,7 @@ class BannerDetailsCard extends StatelessWidget {
               ),
               const SizedBox(height: kSeparator8),
               GsIconButton.add(
-                onPress: () => Navigator.of(
+                onPressed: () => Navigator.of(
                   context,
                 ).pushNamed(AddWishScreen.id, arguments: item),
               ),

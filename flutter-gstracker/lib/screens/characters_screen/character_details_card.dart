@@ -135,13 +135,26 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   Widget _talentLabel(CharInfo? info, CharTalentType tal) {
     return GsItemCardLabel(
       label: info?.talents?.talentWithExtra(tal).toString() ?? '-',
-      onTap: () => GsUtils.characters.increaseTalent(item.id, tal),
+      onTap: () {
+        if (info == null) return;
+        _decreaseMaterials(info, tal);
+        GsUtils.characters.increaseTalent(item.id, tal);
+      },
       fgColor: (ctx) {
         return info?.talents?.hasExtra(tal) ?? false
             ? ctx.themeColors.extraTalent
             : Colors.white;
       },
     );
+  }
+
+  void _decreaseMaterials(CharInfo info, CharTalentType tal) {
+    final level = info.talents?.talent(tal) ?? 0;
+    final mats = GsUtils.materials.getCharTalent(info.item, level + 1);
+    for (final mat in mats.entries) {
+      if (mat.key.group != GeMaterialType.weeklyBossDrops) continue;
+      GsUtils.materials.updateMaterialOwned(mat.key.id, (v) => v - mat.value);
+    }
   }
 
   Widget _getAttributes(BuildContext context, GsCharacter info) {

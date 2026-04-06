@@ -43,7 +43,7 @@ DaysMap sortCharactersByDays(DaysMap map, {bool asc = false}) {
   return map.entries.map((entry) {
     final list = entry.value
         .sortedByDescending((e) => e.item.rarity)
-        .thenByOrder((e) => e.lowestTalent, asc)
+        .thenByOrder((c) => c.lowestTalent, asc)
         .thenBy((c) => c.item.releaseDate)
         .thenBy((c) => c.item.id);
     return MapEntry(entry.key, list);
@@ -85,6 +85,7 @@ List<({GsMaterial material, int amount})> getCharactersMissingMaterials({
 }
 
 bool isLimitedDays() {
+  // TODO: Check if it is after release or after the banner...
   final releaseDate = GsUtils.versions.getCurrentVersion()?.releaseDate;
   final endOfLimited = releaseDate?.add(Duration(days: DateTime.daysPerWeek));
   return endOfLimited != null && DateTime.now().date.isBefore(endOfLimited);

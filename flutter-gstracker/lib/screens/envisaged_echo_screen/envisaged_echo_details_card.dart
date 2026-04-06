@@ -28,7 +28,7 @@ class EnvisagedEchoDetailsCard extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: GsIconButton.owned(
               owned: owned,
-              onPress: (own) =>
+              onPressed: (own) =>
                   GsUtils.envisagedEchos.update(item.id, own: own),
             ),
           ),

@@ -215,6 +215,9 @@ class ThemeStyles extends ThemeExtension<ThemeStyles> {
   /// 16 | normal | white
   final TextStyle label16n;
 
+  /// 16 | bold | white
+  final TextStyle label16b;
+
   /// 14 | normal | white
   final TextStyle label14n;
 
@@ -239,6 +242,7 @@ class ThemeStyles extends ThemeExtension<ThemeStyles> {
     required this.title20n,
     required this.title18n,
     required this.label16n,
+    required this.label16b,
     required this.label14n,
     required this.label14b,
     required this.label12n,
@@ -253,6 +257,7 @@ class ThemeStyles extends ThemeExtension<ThemeStyles> {
       title20n = _style(20, Colors.white),
       title18n = _style(18, Colors.white),
       label16n = _style(16, Colors.white),
+      label16b = _style(16, Colors.white, w: FontWeight.bold),
       label14n = _style(14, Colors.white),
       label14b = _style(14, Colors.white, w: FontWeight.bold),
       label12n = _style(12, Colors.white),
@@ -296,6 +301,7 @@ class ThemeStyles extends ThemeExtension<ThemeStyles> {
       title20n: tlerp((c) => c.title20n),
       title18n: tlerp((c) => c.title18n),
       label16n: tlerp((c) => c.label16n),
+      label16b: tlerp((c) => c.label16b),
       label14n: tlerp((c) => c.label14n),
       label14b: tlerp((c) => c.label14b),
       label12n: tlerp((c) => c.label12n),

@@ -169,7 +169,7 @@ class ItemGridWidget extends StatelessWidget {
         ? Image.asset(assetImage)
         : const SizedBox();
 
-    if (labelWidget != null) {
+    if (labelWidget != null || label.isNotEmpty) {
       child = Stack(
         children: [
           Positioned.fill(child: child),
@@ -179,33 +179,12 @@ class ItemGridWidget extends StatelessWidget {
             right: -1,
             bottom: -1,
             child: Container(
+              padding: EdgeInsets.all(1),
               color: context.themeColors.mainColor1.withValues(alpha: 0.8),
               alignment: Alignment.center,
               child: DefaultTextStyle(
-                style: context.themeStyles.label14n,
-                child: labelWidget!,
-              ),
-            ),
-          ),
-        ],
-      );
-    } else if (label.isNotEmpty) {
-      child = Stack(
-        children: [
-          Positioned.fill(child: child),
-          Positioned.fill(
-            top: null,
-            left: -1,
-            right: -1,
-            bottom: -1,
-            child: Container(
-              color: context.themeColors.mainColor1.withValues(alpha: 0.8),
-              alignment: Alignment.center,
-              child: Text(
-                label,
-                maxLines: 1,
-                style: context.themeStyles.label14n,
-                strutStyle: context.themeStyles.label14n.toStrut(),
+                style: context.themeStyles.label14n.copyWith(height: 1.4),
+                child: labelWidget ?? Text(label),
               ),
             ),
           ),

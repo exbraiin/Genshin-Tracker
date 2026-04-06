@@ -30,7 +30,7 @@ class LunarArcanaDetailsCard extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: GsIconButton.owned(
               owned: owned,
-              onPress: (own) =>
+              onPressed: (own) =>
                   GsUtils.lunarArcana.update(item.id, obtained: own),
             ),
           ),
