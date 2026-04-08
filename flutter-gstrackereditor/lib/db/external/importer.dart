@@ -60,16 +60,6 @@ abstract final class PaimonMoeImporter {
     final responseJson = await _getUrl(url);
     final data = jsonDecode(responseJson) as Map;
 
-    String parseVersion(dynamic version) {
-      final ver = version?.toString();
-      if (ver?.startsWith('6.') ?? false) {
-        const i = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
-        final n = int.tryParse(ver!.substring(2)) ?? 0;
-        return 'luna-${i[n.clamp(0, i.length)]}';
-      }
-      return ver ?? '1.0';
-    }
-
     Map<String, dynamic> parseAchievement(
       String groupName,
       List<Map<String, dynamic>> list,
@@ -82,7 +72,7 @@ abstract final class PaimonMoeImporter {
         'type': first.containsKey('commissions') ? 'commission' : '',
         'group': groupName.toDbId(),
         'hidden': first['hidden'],
-        'version': parseVersion(first['ver']),
+        'version': first['ver']?.toString() ?? '1.0',
         'phases': list
             .map((e) => {'desc': e['desc'], 'reward': e['reward']})
             .toList(),

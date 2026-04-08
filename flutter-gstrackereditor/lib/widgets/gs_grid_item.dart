@@ -165,7 +165,7 @@ class GsGridItem extends StatelessWidget {
   Widget _getVersionBanner() {
     if (version.isEmpty) return const SizedBox();
     final versions = Database.i.of<GsVersion>();
-    final versionName = versions.getItem(version)?.version ?? '';
+    final versionName = versions.getItem(version)?.label ?? '';
     return Transform.translate(
       offset: const Offset(10, -10),
       child: Banner(

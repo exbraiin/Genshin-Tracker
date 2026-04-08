@@ -193,7 +193,9 @@ class ValidateModels<T extends GsModel<T>> {
     final id = item.id;
     final expected = expectedId(item);
     if (id.isEmpty) return GsValidLevel.error;
-    final check = id != expected ? GsValidLevel.warn1 : GsValidLevel.good;
+    final check = expected.isNotEmpty && id != expected
+        ? GsValidLevel.warn1
+        : GsValidLevel.good;
     final withoutSelf = ids.where((e) => e != editId);
     return !withoutSelf.contains(id) ? check : GsValidLevel.error;
   }
@@ -268,7 +270,7 @@ class GsModelDecorator<T extends GsModel<T>> {
             color: (item) => GsStyle.getRarityColor(item.rarity),
           ),
           const (GsVersion) => GsModelDecorator<GsVersion>(
-            label: (item) => item.version,
+            label: (item) => item.label,
             color: (item) => GsStyle.getVersionColor(item.id),
           ),
           const (GsMaterial) => GsModelDecorator<GsMaterial>(

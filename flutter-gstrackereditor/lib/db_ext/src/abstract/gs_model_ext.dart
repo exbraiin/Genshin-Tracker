@@ -32,7 +32,7 @@ String expectedId(GsModel item) {
   }
 
   return switch (item) {
-    final GsVersion item => item.version.toLowerCase().replaceAll(' ', '-'),
+    final GsVersion _ => '',
     final GsBanner item => bannerId(item),
     final GsEvent item => '${item.name}_${item.version}'.toDbId(),
     final GsAchievement item => '${item.group}_${item.name}'.toDbId(),

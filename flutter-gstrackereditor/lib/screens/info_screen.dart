@@ -71,7 +71,7 @@ class _InfoScreenState extends State<InfoScreen> {
     return ListView(
       padding: const EdgeInsets.all(8),
       children: _validateList(context).expand((record) {
-        final color0 = GsStyle.getVersionColor(record.version);
+        final color0 = GsStyle.getVersionColor(record.version.id);
         final color1 = Color.lerp(color0, Colors.black, 0.6)!;
         return [
           Container(
@@ -86,7 +86,7 @@ class _InfoScreenState extends State<InfoScreen> {
             ),
             padding: const EdgeInsets.all(8),
             margin: const EdgeInsets.only(bottom: 8),
-            child: Text('Version ${record.version}'),
+            child: Text('Version ${record.version.label}'),
           ),
           ...record.items.map((record) {
             return Container(
@@ -187,7 +187,7 @@ class _InfoScreenState extends State<InfoScreen> {
 }
 
 typedef _InvalidLine = ({Iterable<GsSelectChip> items, String label});
-typedef _VersionLine = ({String version, List<_InvalidLine> items});
+typedef _VersionLine = ({GsVersion version, List<_InvalidLine> items});
 
 Iterable<_VersionLine> _validateList(BuildContext context) sync* {
   Iterable<T> items<T extends GsModel<T>>() => Database.i.of<T>().items;
@@ -242,7 +242,9 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
       addItems<GsMaterial>('Missing region:', matRegion);
     }
 
-    const minEvents = 5;
+    // This is here, because after after miliastra the number
+    // of events per patch was reduced from 5 to 4
+    final minEvents = (double.tryParse(version.id) ?? 1.0) > 6.2 ? 4 : 5;
     final events = items<GsEvent>().count((e) => e.version == version.id);
     if (events < minEvents) {
       final missing = minEvents - events;
@@ -276,6 +278,7 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
     }
 
     // Ignore version 1.0
+    // This is because 1.0 characters did not appears in a banner when they released.
     final charMissingBanner = chars.where(
       (e) =>
           e.version != '1.0' &&
@@ -341,7 +344,7 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
 
     next = version;
     if (buffer.isNotEmpty) {
-      yield (version: version.version, items: buffer);
+      yield (version: version, items: buffer);
     }
   }
 }

@@ -31,6 +31,6 @@ final class GuVersions {
   }
 
   String getName(String version) {
-    return _items.inVersions.getItem(version)?.version ?? version;
+    return _items.inVersions.getItem(version)?.label ?? version;
   }
 }

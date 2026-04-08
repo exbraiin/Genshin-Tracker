@@ -444,7 +444,7 @@ class GsConfigs<T extends GsModel<T>> {
       title: 'Versions',
       pageBuilder: const vd.GsVersionExt(),
       itemDecoration: (item) => GsItemDecor.color(
-        label: item.version,
+        label: item.label,
         version: item.id,
         color: GsStyle.getVersionColor(item.id),
       ),

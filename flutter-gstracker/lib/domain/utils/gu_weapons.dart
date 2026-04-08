@@ -11,13 +11,16 @@ final class GuWeapons {
   }
 
   bool hasWeapon(String id) {
-    return _items.svWishes.items.any((e) => e.itemId == id) ||
-        _items.svEventRewards.items.any((e) => e.obtainedWeapons.contains(id));
+    final hasEventWeapon = _items.svEventRewards.items.any(
+      (e) => _items.isValidEvent(e.id) && e.obtainedWeapons.contains(id),
+    );
+
+    return hasEventWeapon || _items.svWishes.items.any((e) => e.itemId == id);
   }
 
   int eventWeapons(String id) {
     return _items.svEventRewards.items.count(
-      (e) => e.obtainedWeapons.contains(id),
+      (e) => _items.isValidEvent(e.id) && e.obtainedWeapons.contains(id),
     );
   }
 }

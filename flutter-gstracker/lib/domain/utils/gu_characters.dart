@@ -16,7 +16,7 @@ final class GuCharacters {
 
   int eventCharacters(String id) {
     return _items.svEventRewards.items.count(
-      (e) => e.obtainedCharacters.contains(id),
+      (e) => _items.isValidEvent(e.id) && e.obtainedCharacters.contains(id),
     );
   }
 

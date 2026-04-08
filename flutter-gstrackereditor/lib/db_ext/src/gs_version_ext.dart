@@ -17,15 +17,11 @@ class GsVersionExt extends GsModelExt<GsVersion> {
         (item) => item.id,
         (item, value) => item.copyWith(id: value),
         validator: (item) => vdVersion.validateItemId(item, editId),
-        refresh: DataButton(
-          'Generate Id',
-          (context, item) => item.copyWith(id: expectedId(item)),
-        ),
       ),
       DataField.textField(
-        'Version',
-        (item) => item.version,
-        (item, value) => item.copyWith(version: value),
+        'Label',
+        (item) => item.label,
+        (item, value) => item.copyWith(label: value),
         empty: GsValidLevel.warn2,
       ),
       DataField.textField(

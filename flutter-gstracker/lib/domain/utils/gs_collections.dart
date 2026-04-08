@@ -81,9 +81,14 @@ final class GuCollections {
   /// Whether the user has this character or not.
   bool hasCaracter(String id) {
     late final hasEvent = svEventRewards.items.any(
-      (e) => e.obtainedCharacters.contains(id),
+      (e) => isValidEvent(e.id) && e.obtainedCharacters.contains(id),
     );
     late final hasWish = svWishes.items.any((e) => e.itemId == id);
     return hasEvent || hasWish;
+  }
+
+  /// Checks whether the event is valid
+  bool isValidEvent(String eventId) {
+    return inEvents.ids.contains(eventId);
   }
 }

@@ -22,7 +22,7 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         return ItemDetailsCard(
           name: item.name,
           fgImage: item.image,
-          version: item.version,
+          version: item.label,
           contentPadding: EdgeInsets.all(kSeparator16),
           showRarityStars: false,
           child: _content(context),
@@ -108,14 +108,14 @@ class VersionDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
       );
     }
 
-    final version = GsUtils.versions.getName(item.version);
+    final versionName = GsUtils.versions.getName(item.id);
     return Column(
       spacing: kSeparator16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ItemDetailsCardInfo.section(
           title: Text(context.labels.version()),
-          content: Text(version),
+          content: Text(versionName),
         ),
         ...<Widget?>[
           mapItems(
