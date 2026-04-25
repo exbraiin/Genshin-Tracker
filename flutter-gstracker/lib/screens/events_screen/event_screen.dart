@@ -29,7 +29,6 @@ class EventScreen extends StatelessWidget {
         selected: state.selected,
       ),
       itemCardBuilder: (context, item) => EventDetailsCard(item),
-      // itemCardFooter: const EventsScrollView(),
     );
   }
 }
@@ -39,15 +38,18 @@ class EventsScrollView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const kEventRange = 10;
     final now = DateTime.now().date;
+    final version = GsUtils.versions.getCurrentVersion();
     final events = Database.instance
         .infoOf<GsEvent>()
         .items
         .where((e) => e.dateEnd.difference(e.dateStart).inDays < 60)
         .where(
           (e) =>
-              now.difference(e.dateStart).inDays.abs() < 5 ||
-              now.difference(e.dateEnd).inDays.abs() < 5 ||
+              e.version == version?.id ||
+              now.difference(e.dateStart).inDays.abs() < kEventRange ||
+              now.difference(e.dateEnd).inDays.abs() < kEventRange ||
               now.between(e.dateStart, e.dateEnd),
         )
         .sorted();

@@ -8,6 +8,7 @@ import 'package:tracker/common/widgets/gs_item_card_button.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/screens/widgets/expand_widget.dart';
 import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/screens/widgets/primogem_icon.dart';
@@ -143,7 +144,12 @@ class HomeWishesValues extends StatelessWidget {
             '   $_kArrow ${context.labels.weapon()}',
             context.themeColors.colorByRarityFg(4),
           ),
-          _getWishesList(style: style, summary: summary, maxPity: maxPity),
+          _getWishesList(
+            context,
+            style: style,
+            summary: summary,
+            maxPity: maxPity,
+          ),
         ],
       ),
     );
@@ -268,123 +274,92 @@ class HomeWishesValues extends StatelessWidget {
     );
   }
 
-  Widget _getWishesList({
+  Widget _getWishesList(
+    BuildContext context, {
     required TextStyle style,
     required WishesSummary summary,
     required int maxPity,
   }) {
-    var expanded = false;
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return Column(
-          children: [
-            Center(
-              child: Visibility(
-                visible: summary.info5.total > 0,
-                maintainSize: true,
-                maintainState: true,
-                maintainAnimation: true,
-                maintainInteractivity: false,
-                child: IconButton(
-                  onPressed: () => setState(() => expanded = !expanded),
-                  padding: const EdgeInsets.all(kSeparator4),
-                  constraints: const BoxConstraints.tightFor(),
-                  icon: AnimatedRotation(
-                    turns: expanded ? 0.5 : 1,
-                    duration: const Duration(milliseconds: 200),
-                    child: const Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            AnimatedContainer(
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 400),
-              constraints: BoxConstraints(maxHeight: expanded ? 300 : 0),
-              child: InventoryBox(
-                padding: EdgeInsets.zero,
-                child: Align(
-                  heightFactor: 1,
-                  alignment: Alignment.topCenter,
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(kSeparator4),
-                    child: Wrap(
-                      spacing: GsSpacing.kGridSeparator,
-                      runSpacing: GsSpacing.kGridSeparator,
-                      alignment: WrapAlignment.start,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      children: summary.info5.wishes.reversed.map((wish) {
-                        final item = wish.item;
-                        final pity = wish.pity;
-                        final state = wish.state;
-                        final pityColor = context.themeColors.colorByPity(
-                          pity,
-                          maxPity,
-                        );
+    if (summary.info5.total < 1) return SizedBox.shrink();
+    return ExpandWidget(
+      child: InventoryBox(
+        padding: EdgeInsets.zero,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 300),
+          child: Align(
+            heightFactor: 1,
+            alignment: Alignment.topCenter,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(kSeparator4),
+              child: Wrap(
+                spacing: GsSpacing.kGridSeparator,
+                runSpacing: GsSpacing.kGridSeparator,
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: summary.info5.wishes.reversed.map((wish) {
+                  final item = wish.item;
+                  final pity = wish.pity;
+                  final state = wish.state;
+                  final pityColor = context.themeColors.colorByPity(
+                    pity,
+                    maxPity,
+                  );
 
-                        return Column(
-                          children: [
-                            Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                item.character != null
-                                    ? ItemGridWidget.character(item.character!)
-                                    : item.weapon != null
-                                    ? ItemGridWidget.weapon(item.weapon!)
-                                    : const SizedBox(),
-                                if (state == WishState.won)
-                                  Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: Icon(
-                                      Icons.star_rounded,
-                                      size: 20,
-                                      color: context.themeColors.starColor,
-                                      shadows: [
-                                        BoxShadow(
-                                          color: Colors.black.withValues(
-                                            alpha: 0.8,
-                                          ),
-                                          offset: const Offset(1, 1),
-                                        ),
-                                      ],
-                                    ),
+                  return Column(
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          item.character != null
+                              ? ItemGridWidget.character(item.character!)
+                              : item.weapon != null
+                              ? ItemGridWidget.weapon(item.weapon!)
+                              : const SizedBox(),
+                          if (state == WishState.won)
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Icon(
+                                Icons.star_rounded,
+                                size: 20,
+                                color: context.themeColors.starColor,
+                                shadows: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.8),
+                                    offset: const Offset(1, 1),
                                   ),
-                              ],
-                            ),
-                            const SizedBox(height: kSeparator2),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: pity.toString(),
-                                    style: style.copyWith(color: pityColor),
-                                  ),
-                                  if (state == WishState.guaranteed)
-                                    WidgetSpan(
-                                      child: GsWishStateIcon(
-                                        state,
-                                        color: pityColor,
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                    ),
                                 ],
                               ),
                             ),
+                        ],
+                      ),
+                      const SizedBox(height: kSeparator2),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: pity.toString(),
+                              style: style.copyWith(color: pityColor),
+                            ),
+                            if (state == WishState.guaranteed)
+                              WidgetSpan(
+                                child: GsWishStateIcon(
+                                  state,
+                                  color: pityColor,
+                                  padding: EdgeInsets.zero,
+                                ),
+                              ),
                           ],
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
               ),
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ),
     );
   }
 

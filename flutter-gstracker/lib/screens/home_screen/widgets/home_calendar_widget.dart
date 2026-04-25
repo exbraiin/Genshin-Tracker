@@ -8,6 +8,9 @@ import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/swap_widget.dart';
 import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/screens/events_screen/event_screen.dart';
+import 'package:tracker/screens/widgets/expand_widget.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
 const _kItemSize = kSize50;
@@ -31,11 +34,20 @@ class HomeCalendarWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: Center(
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Column(children: _getItems(context, now).toList()),
-        ),
+      child: Column(
+        spacing: kSeparator6,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(children: _getItems(context, now).toList()),
+            ),
+          ),
+          ExpandWidget(
+            child: InventoryBox(child: Center(child: EventsScrollView())),
+          ),
+        ],
       ),
     );
   }
@@ -209,11 +221,9 @@ List<_DayInfo> _getDatesInfo(DateTime now) {
     mVersions[version.releaseDate] = version;
   }
 
-  final mCharacters = <DateTime, List<GsCharacter>>{};
-  for (final character in characters.items) {
-    final date = character.birthday.copyWith(year: now.year);
-    mCharacters[date] = [...?mCharacters[date], character];
-  }
+  final mCharacters = characters.items.groupBy(
+    (e) => e.birthday.copyWith(year: now.year),
+  );
 
   final stDay = dates.first;
   final edDay = dates.last;
@@ -236,18 +246,18 @@ List<_DayInfo> _getDatesInfo(DateTime now) {
   }
 
   return dates
-      .map((d) {
+      .map((date) {
         return (
-          date: d,
-          version: mVersions[d],
+          date: date,
+          version: mVersions[date],
           banners: mBanners
-              .where((e) => d.between(e.first.dateStart, e.first.dateEnd))
+              .where((e) => date.between(e.first.dateStart, e.first.dateEnd))
               .map((e) => (getBannersColor(e), e))
               .toList(),
           battlepasses: mBattlepasses
-              .where((e) => d.between(e.dateStart, e.dateEnd))
+              .where((e) => date.between(e.dateStart, e.dateEnd))
               .toList(),
-          birthdays: mCharacters[d] ?? [],
+          birthdays: mCharacters[date] ?? [],
         );
       })
       .sortedBy((e) => e.date);
@@ -274,11 +284,7 @@ class _CalendarDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = info.date;
-    final version = info.version;
-    final banners = info.banners;
-    final birthdays = info.birthdays;
-    final battlepasses = info.battlepasses;
+    final (:date, :version, :banners, :battlepasses, :birthdays) = info;
 
     final showVersion = version != null;
     final showBirthday = birthdays.isNotEmpty;
