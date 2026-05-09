@@ -19,6 +19,9 @@ extension StringExt on String {
   List<String> toStringList([String separator = ',']) =>
       split(separator).map((e) => e.trim()).toList();
 
+  bool compareCaseInsensitive(String other) =>
+      trim().toLowerCase() == other.trim().toLowerCase();
+
   String toDbId() {
     return String.fromCharCodes(
       toLowerCase()

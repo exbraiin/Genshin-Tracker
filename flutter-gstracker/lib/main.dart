@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
             ),
             localizationsDelegates: [
               AppLocalization.createDelegate(
+                fallback: AppAssets.en,
                 assets: {Locale('en'): AppAssets.en},
               ),
             ],

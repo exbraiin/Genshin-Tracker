@@ -15,45 +15,18 @@ import 'package:html/parser.dart' as html;
 
 typedef JsonMap = Map<String, dynamic>;
 
-class Changes {
-  final int achRmv, achMdf, achAdd;
-  final int grpRmv, grpMdf, grpAdd;
-
-  Changes(
-    this.achRmv,
-    this.achMdf,
-    this.achAdd,
-    this.grpRmv,
-    this.grpMdf,
-    this.grpAdd,
-  );
-
-  factory Changes.fromData(
-    Iterable<GsAchievementGroup> oldGrps,
-    Iterable<GsAchievementGroup> newGrps,
-    Iterable<GsAchievement> oldAchs,
-    Iterable<GsAchievement> newAchs,
-  ) {
-    final achRmv = oldAchs.count((a) => !newAchs.any((b) => b.id == a.id));
-    final achAdd = newAchs.count((a) => !oldAchs.any((b) => b.id == a.id));
-    final achMdf = newAchs.count((a) {
-      final b = oldAchs.firstOrNullWhere((b) => b.id == a.id);
-      return b != null && !a.equalsTo(b);
-    });
-
-    final grpRmv = oldGrps.count((a) => !newGrps.any((b) => b.id == a.id));
-    final grpAdd = newGrps.count((a) => !oldGrps.any((b) => b.id == a.id));
-    final grpMdf = newGrps.count((a) {
-      final b = oldGrps.firstOrNullWhere((b) => b.id == a.id);
-      return b != null && !a.equalsTo(b);
-    });
-
-    return Changes(achRmv, achMdf, achAdd, grpRmv, grpMdf, grpAdd);
-  }
+abstract class ExternalImporter {
+  static final ExternalImporter i = _ExternalImporterImpl();
+  Future<Achievements?> importAchievements();
+  Future<GsCharacter> importCharacter(GsCharacter item);
+  Future<GsLunarArcana> importLunarArcana(GsLunarArcana item);
+  Future<GsSereniteaSet> importSereniteaSet(GsSereniteaSet item);
+  Future<GsThespianTrick> importThespianTrick(GsThespianTrick item);
 }
 
-abstract final class PaimonMoeImporter {
-  static Future<Changes?> importAchievements() async {
+final class _ExternalImporterImpl implements ExternalImporter {
+  @override
+  Future<Achievements?> importAchievements() async {
     const url =
         'https://raw.githubusercontent.com/MadeBaruna/'
         'paimon-moe/main/src/data/achievement/en.json';
@@ -132,12 +105,11 @@ abstract final class PaimonMoeImporter {
     await DataValidator.i.checkAll();
     Database.i.modified.add(null);
 
-    return Changes.fromData(inDbGrps, impGrps, inDbAchs, impAchs);
+    return Achievements.fromData(inDbGrps, impGrps, inDbAchs, impAchs);
   }
-}
 
-abstract final class FandomImporter {
-  static Future<GsCharacter> importCharacter(GsCharacter item) async {
+  @override
+  Future<GsCharacter> importCharacter(GsCharacter item) async {
     final document = await _downloadDocument();
 
     const nameSel = 'h2[data-source="name"]';
@@ -218,7 +190,8 @@ abstract final class FandomImporter {
     );
   }
 
-  static FutureOr<GsLunarArcana> importLunarArcana(GsLunarArcana item) async {
+  @override
+  Future<GsLunarArcana> importLunarArcana(GsLunarArcana item) async {
     final document = await _downloadDocument();
 
     const nameSel = 'h2[data-source="title"]';
@@ -250,7 +223,8 @@ abstract final class FandomImporter {
     );
   }
 
-  static Future<GsSereniteaSet> importSereniteaSet(GsSereniteaSet item) async {
+  @override
+  Future<GsSereniteaSet> importSereniteaSet(GsSereniteaSet item) async {
     final document = await _downloadDocument();
 
     const nameSel = 'h2[data-source="title"]';
@@ -277,9 +251,8 @@ abstract final class FandomImporter {
     );
   }
 
-  static Future<GsThespianTrick> importThespianTrick(
-    GsThespianTrick item,
-  ) async {
+  @override
+  Future<GsThespianTrick> importThespianTrick(GsThespianTrick item) async {
     final document = await _downloadDocument();
 
     final name = document.querySelector('h2.pi-title')?.text ?? '';
@@ -308,11 +281,17 @@ abstract final class FandomImporter {
     final thumbSrc = thumb?.attributes['src'] ?? '';
 
     final versionEl = document.querySelector('div.change-history-header > div');
-    final version = versionEl?.text
-        .split(' ')
-        .skipWhile((e) => e.toLowerCase() != 'version')
-        .skip(1)
-        .firstOrNull;
+    final exp = RegExp(r'version(.+)', caseSensitive: false);
+    final match = exp.firstMatch(versionEl?.text ?? '');
+    final version = match != null && match.groupCount > 0
+        ? match.group(1)?.replaceAll('"', '')
+        : null;
+
+    final versionId = Database.i
+        .of<GsVersion>()
+        .items
+        .firstOrNullWhere((e) => e.label.compareCaseInsensitive(version ?? ''))
+        ?.id;
 
     return item.copyWith(
       id: '${name}_$character'.toDbId(),
@@ -321,31 +300,55 @@ abstract final class FandomImporter {
       rarity: 4,
       season: season,
       image: _processImage(thumbSrc),
-      version: version,
+      version: versionId,
     );
   }
+}
 
-  static Future<html.Document> _downloadDocument({
-    String? url,
-    bool useFile = kDebugMode,
-  }) async {
-    const format = Clipboard.kTextPlain;
-    url ??= (await Clipboard.getData(format))?.text ?? '';
+class Achievements {
+  final int achRmv, achMdf, achAdd;
+  final int grpRmv, grpMdf, grpAdd;
 
-    late final String raw;
-    if (useFile) {
-      final file = File('temp.html');
-      if (!await file.exists()) {
-        raw = await _getUrl(url);
-        await file.writeAsString(raw);
-      } else {
-        raw = await file.readAsString();
-      }
-    } else {
+  Achievements.fromData(
+    Iterable<GsAchievementGroup> oldGrps,
+    Iterable<GsAchievementGroup> newGrps,
+    Iterable<GsAchievement> oldAchs,
+    Iterable<GsAchievement> newAchs,
+  ) : achRmv = oldAchs.count((a) => !newAchs.any((b) => b.id == a.id)),
+      achAdd = newAchs.count((a) => !oldAchs.any((b) => b.id == a.id)),
+      achMdf = newAchs.count((a) {
+        final b = oldAchs.firstOrNullWhere((b) => b.id == a.id);
+        return b != null && !a.equalsTo(b);
+      }),
+      grpRmv = oldGrps.count((a) => !newGrps.any((b) => b.id == a.id)),
+      grpAdd = newGrps.count((a) => !oldGrps.any((b) => b.id == a.id)),
+      grpMdf = newGrps.count((a) {
+        final b = oldGrps.firstOrNullWhere((b) => b.id == a.id);
+        return b != null && !a.equalsTo(b);
+      });
+}
+
+Future<html.Document> _downloadDocument({
+  String? url,
+  bool useFile = kDebugMode,
+}) async {
+  const format = Clipboard.kTextPlain;
+  url ??= (await Clipboard.getData(format))?.text ?? '';
+
+  late final String raw;
+  if (useFile) {
+    final file = File('.cache/temp.html');
+    await file.parent.create(recursive: true);
+    if (!await file.exists()) {
       raw = await _getUrl(url);
+      await file.writeAsString(raw);
+    } else {
+      raw = await file.readAsString();
     }
-    return html.parse(raw);
+  } else {
+    raw = await _getUrl(url);
   }
+  return html.parse(raw);
 }
 
 final _cache = <String, String>{};

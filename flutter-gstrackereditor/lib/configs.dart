@@ -1,8 +1,8 @@
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/database.dart';
+import 'package:data_editor/db/external/external_importer.dart';
 import 'package:data_editor/db/external/gs_ambr/gs_import_dialog.dart';
 import 'package:data_editor/db/external/gs_ambr/src/import_api.dart';
-import 'package:data_editor/db/external/importer.dart';
 import 'package:data_editor/db/ge_enums.dart';
 import 'package:data_editor/db/model_ext.dart';
 import 'package:data_editor/db_ext/data_validator.dart' as vd;
@@ -154,7 +154,7 @@ class GsConfigs<T extends GsModel<T>> {
         DataButton(
           'Import from fandom URL',
           icon: _fandomIcon,
-          (ctx, item) => FandomImporter.importCharacter(item),
+          (ctx, item) => ExternalImporter.i.importCharacter(item),
         ),
       ],
       filters: [
@@ -318,7 +318,7 @@ class GsConfigs<T extends GsModel<T>> {
         DataButton(
           'Import from fandom URL',
           icon: _fandomIcon,
-          (ctx, item) => FandomImporter.importSereniteaSet(item),
+          (ctx, item) => ExternalImporter.i.importSereniteaSet(item),
         ),
       ],
     ),
@@ -363,7 +363,7 @@ class GsConfigs<T extends GsModel<T>> {
         DataButton(
           'Import from fandom URL',
           icon: _fandomIcon,
-          (ctx, item) => FandomImporter.importThespianTrick(item),
+          (ctx, item) => ExternalImporter.i.importThespianTrick(item),
         ),
       ],
     ),
@@ -394,7 +394,7 @@ class GsConfigs<T extends GsModel<T>> {
         DataButton(
           'Import from fandom URL',
           icon: _fandomIcon,
-          (ctx, item) => FandomImporter.importLunarArcana(item),
+          (ctx, item) => ExternalImporter.i.importLunarArcana(item),
         ),
       ],
     ),

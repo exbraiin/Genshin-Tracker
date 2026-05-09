@@ -17,9 +17,10 @@ final class AppLocalization {
 
   static _AppLocalizationDelegate? _delegate;
   static LocalizationsDelegate<AppLocalization> createDelegate({
+    required String fallback,
     required Map<Locale, String> assets,
   }) {
-    return _delegate ??= _AppLocalizationDelegate(assets);
+    return _delegate ??= _AppLocalizationDelegate(fallback, assets);
   }
 
   final Map<String, String> _map;
@@ -43,12 +44,13 @@ final class AppLocalization {
 }
 
 class _AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
+  final String fallback;
   final Map<Locale, String> assets;
-  _AppLocalizationDelegate(this.assets);
+  _AppLocalizationDelegate(this.fallback, this.assets);
 
   @override
   Future<AppLocalization> load(Locale locale) async {
-    final asset = assets[locale] ?? assets.values.first;
+    final asset = assets[locale] ?? fallback;
     final data = await rootBundle.loadString(asset);
     final map = (jsonDecode(data) as Map).cast<String, String>();
     return AppLocalization(map);

@@ -1,6 +1,6 @@
 import 'package:data_editor/configs.dart';
 import 'package:data_editor/db/database.dart';
-import 'package:data_editor/db/external/importer.dart';
+import 'package:data_editor/db/external/external_importer.dart';
 import 'package:data_editor/screens/info_screen.dart';
 import 'package:data_editor/style/style.dart';
 import 'package:data_editor/style/utils.dart';
@@ -131,7 +131,7 @@ class Home extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     final bgColor = Theme.of(context).scaffoldBackgroundColor;
     try {
-      final c = await PaimonMoeImporter.importAchievements();
+      final c = await ExternalImporter.i.importAchievements();
       if (c == null) return;
 
       String changesToText(int rmv, int mdf, int add) {
