@@ -92,12 +92,6 @@ class GsEventExt extends GsModelExt<GsEvent> {
           };
         },
       ),
-      DataField.intField(
-        'Primogems',
-        (item) => item.primogems,
-        (item, value) => item.copyWith(primogems: value),
-        range: (0, null),
-      ),
       DataField.textField(
         'Other Rewards',
         (item) => item.rewardsOther,

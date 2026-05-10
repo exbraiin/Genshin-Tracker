@@ -22,8 +22,6 @@ class GsEvent extends _GsEvent {
   @override
   final DateTime dateEnd;
   @override
-  final int primogems;
-  @override
   final String rewardsOther;
   @override
   final List<String> rewardsWeapons;
@@ -39,7 +37,6 @@ class GsEvent extends _GsEvent {
     required this.version,
     required this.dateStart,
     required this.dateEnd,
-    this.primogems = -1,
     required this.rewardsOther,
     required this.rewardsWeapons,
     required this.rewardsCharacters,
@@ -54,7 +51,6 @@ class GsEvent extends _GsEvent {
       version = m['version'] as String? ?? '',
       dateStart = DateTime.tryParse(m['date_start'].toString()) ?? DateTime(0),
       dateEnd = DateTime.tryParse(m['date_end'].toString()) ?? DateTime(0),
-      primogems = m['primogems'] as int? ?? -1,
       rewardsOther = m['rewards_other'] as String? ?? '',
       rewardsWeapons = (m['rewards_weapons'] as List? ?? const [])
           .cast<String>(),
@@ -71,7 +67,6 @@ class GsEvent extends _GsEvent {
     String? version,
     DateTime? dateStart,
     DateTime? dateEnd,
-    int? primogems,
     String? rewardsOther,
     List<String>? rewardsWeapons,
     List<String>? rewardsCharacters,
@@ -84,7 +79,6 @@ class GsEvent extends _GsEvent {
       version: version ?? this.version,
       dateStart: dateStart ?? this.dateStart,
       dateEnd: dateEnd ?? this.dateEnd,
-      primogems: primogems ?? this.primogems,
       rewardsOther: rewardsOther ?? this.rewardsOther,
       rewardsWeapons: rewardsWeapons ?? this.rewardsWeapons,
       rewardsCharacters: rewardsCharacters ?? this.rewardsCharacters,
@@ -102,7 +96,6 @@ class GsEvent extends _GsEvent {
       'version': version,
       'date_start': dateStart.toString(),
       'date_end': dateEnd.toString(),
-      'primogems': primogems,
       'rewards_other': rewardsOther,
       'rewards_weapons': rewardsWeapons,
       'rewards_characters': rewardsCharacters,
