@@ -243,12 +243,13 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
     }
 
     // This is here, because after after miliastra the number
-    // of events per patch was reduced from 5 to 4
-    final minEvents = (double.tryParse(version.id) ?? 1.0) > 6.2 ? 4 : 5;
-    final events = items<GsEvent>().count((e) => e.version == version.id);
-    if (events < minEvents) {
-      final missing = minEvents - events;
-      addItems<GsEvent>('Missing $missing events!', [null]);
+    // of events per patch was reduced from 5 to 4.
+    // Well... I guess the developers are even greedier, so we now only have
+    // 3 events per patch T_T, so i'ts time to change this value to the main event only.
+    // If we lose the flagship event, I will not maintain this project nor play genshin anymore.
+    final hasFlagship = items<GsEvent>().any((e) => e.type == .flagship);
+    if (!hasFlagship) {
+      addItems<GsEvent>('Missing flagship event!', [null]);
     }
 
     final banners = items<GsBanner>().where((e) => e.version == version.id);
