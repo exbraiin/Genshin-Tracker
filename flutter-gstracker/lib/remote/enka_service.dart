@@ -9,8 +9,7 @@ const _gitBaseUrl = 'https://raw.githubusercontent.com/EnkaNetwork';
 
 class EnkaService {
   static final i = EnkaService._();
-
-  final cache = <String, JsonMap>{};
+  final _cache = <String, JsonMap>{};
 
   EnkaService._();
 
@@ -22,12 +21,12 @@ class EnkaService {
   }
 
   Future<JsonMap> _getCache(String url) async {
-    if (cache[url] == null) {
-      cache[url] = <String, dynamic>{};
+    if (_cache[url] == null) {
+      _cache[url] = <String, dynamic>{};
       final data = await Network.downloadString(url);
-      if (data != null) cache[url]?.addAll(jsonDecode(data));
+      if (data != null) _cache[url]?.addAll(jsonDecode(data));
     }
-    return cache[url]!;
+    return _cache[url]!;
   }
 
   Future<String> getNamecardUrl(int namecardId) async {
