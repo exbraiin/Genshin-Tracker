@@ -95,7 +95,8 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                 children: [
                   TableRow(
-                    children: charactersByDays.keys.map((days) {
+                    children: charactersByDays.map((entry) {
+                      final days = entry.days;
                       return Padding(
                         padding: const EdgeInsets.only(bottom: kSeparator8),
                         child: Text(
@@ -112,9 +113,8 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                     }).toList(),
                   ),
                   TableRow(
-                    children: charactersByDays.entries.map((entry) {
-                      final days = entry.key;
-                      final chars = entry.value;
+                    children: charactersByDays.map((entry) {
+                      final (:days, :list) = entry;
                       late final isFarmable =
                           days.day1.isFarmableToday ||
                           days.day2.isFarmableToday ||
@@ -124,7 +124,7 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                         spacing: kSeparator4,
                         runSpacing: kSeparator4,
                         alignment: WrapAlignment.center,
-                        children: chars.take(kItemsPerDay).map((info) {
+                        children: list.take(kItemsPerDay).map((info) {
                           return ItemGridWidget.character(
                             info.item,
                             size: kItemSize,
@@ -136,8 +136,8 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                     }).toList(),
                   ),
                   TableRow(
-                    children: charactersByDays.values.map((chars) {
-                      final total = chars.length;
+                    children: charactersByDays.map((entry) {
+                      final total = entry.list.length;
                       return Padding(
                         padding: EdgeInsets.only(top: kSeparator8),
                         child: Text(

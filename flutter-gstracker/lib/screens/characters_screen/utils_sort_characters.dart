@@ -5,6 +5,7 @@ import 'package:tracker/domain/gs_database.dart';
 
 typedef DaysGroup = ({GeWeekdayType day1, GeWeekdayType day2});
 typedef DaysMap = Map<DaysGroup, List<CharInfo>>;
+typedef DaysList = List<({DaysGroup days, List<CharInfo> list})>;
 
 DaysMap groupCharactersByDays([List<CharInfo>? infos]) {
   late final chars = GsUtils.characters;
@@ -39,15 +40,17 @@ DaysMap groupCharactersByDays([List<CharInfo>? infos]) {
   return grouped;
 }
 
-DaysMap sortCharactersByDays(DaysMap map, {bool asc = false}) {
-  return map.entries.map((entry) {
-    final list = entry.value
-        .sortedByDescending((e) => e.item.rarity)
-        .thenByOrder((c) => c.lowestTalent, asc)
-        .thenBy((c) => c.item.releaseDate)
-        .thenBy((c) => c.item.id);
-    return MapEntry(entry.key, list);
-  }).toMap();
+DaysList sortCharactersByDays(DaysMap map, {bool asc = false}) {
+  return map.entries
+      .map((entry) {
+        final list = entry.value
+            .sortedByDescending((e) => e.item.rarity)
+            .thenByOrder((c) => c.lowestTalent, asc)
+            .thenBy((c) => c.item.releaseDate)
+            .thenBy((c) => c.item.id);
+        return (days: entry.key, list: list);
+      })
+      .sortedBy((e) => e.days.day1.index);
 }
 
 List<({GsMaterial material, int amount})> getCharactersMissingMaterials({
@@ -85,7 +88,6 @@ List<({GsMaterial material, int amount})> getCharactersMissingMaterials({
 }
 
 bool isLimitedDays() {
-  // TODO: Check if it is after release or after the banner...
   final releaseDate = GsUtils.versions.getCurrentVersion()?.releaseDate;
   final endOfLimited = releaseDate?.add(Duration(days: DateTime.daysPerWeek));
   return endOfLimited != null && DateTime.now().date.isBefore(endOfLimited);

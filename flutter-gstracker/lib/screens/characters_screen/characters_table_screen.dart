@@ -55,13 +55,13 @@ class CharactersTableScreen extends StatelessWidget {
 }
 
 class _MatsByDays extends StatelessWidget {
-  final DaysMap mapOfCharacters;
+  final DaysList mapOfCharacters;
 
   const _MatsByDays(this.mapOfCharacters);
 
   @override
   Widget build(BuildContext context) {
-    if (mapOfCharacters.values.every((e) => e.isEmpty)) {
+    if (mapOfCharacters.every((e) => e.list.isEmpty)) {
       return InventoryBox(child: Center(child: GsNoResultsState.small()));
     }
 
@@ -134,10 +134,9 @@ class _MatsByDays extends StatelessWidget {
     final isLimitedDaysToday = isLimitedDays();
     return Row(
       spacing: GsSpacing.kGridSeparator,
-      children: mapOfCharacters.entries
+      children: mapOfCharacters
           .map<Widget>((entry) {
-            final days = entry.key;
-            final chars = entry.value;
+            final (:days, :list) = entry;
             late final isFarmable =
                 days.day1.isFarmableToday ||
                 days.day2.isFarmableToday ||
@@ -166,7 +165,7 @@ class _MatsByDays extends StatelessWidget {
                               ),
                             ),
                           Spacer(),
-                          Text('${chars.length}'),
+                          Text('${list.length}'),
                           SizedBox(width: kSeparator4),
                           Image.asset(
                             AppAssets.menuIconCharacters,
@@ -178,23 +177,23 @@ class _MatsByDays extends StatelessWidget {
                     ),
                     GsDivider(),
                     Expanded(
-                      child: chars.isEmpty
+                      child: list.isEmpty
                           ? Center(child: GsNoResultsState.small())
                           : ListView.separated(
                               padding: EdgeInsets.all(kSeparator8),
-                              itemCount: chars.length,
+                              itemCount: list.length,
                               separatorBuilder: (context, index) =>
                                   SizedBox(height: kSeparator4),
                               itemBuilder: (context, index) {
                                 final widget = _listItem(
                                   context,
-                                  chars[index],
+                                  list[index],
                                   isToday: isFarmable,
                                 );
 
-                                late final cRarity = chars[index].item.rarity;
+                                late final cRarity = list[index].item.rarity;
                                 late final pRarity =
-                                    chars[index - 1].item.rarity;
+                                    list[index - 1].item.rarity;
                                 if (index == 0 || cRarity != pRarity) {
                                   return _raritySeparator(
                                     context,
