@@ -65,155 +65,85 @@ class _MatsByDays extends StatelessWidget {
       return InventoryBox(child: Center(child: GsNoResultsState.small()));
     }
 
-    final size = kSize56;
-    final versions = Database.instance.infoOf<GsVersion>();
-    final weekMats = Database.instance
-        .infoOf<GsMaterial>()
-        .items
-        .where((e) => e.group == GeMaterialType.weeklyBossDrops)
-        .sortedBy((e) => e.region.index)
-        .thenBy((e) => versions.getItem(e.version)?.releaseDate ?? DateTime(0))
-        .thenBy((e) => e.id);
-    final listMats = InventoryBox(
-      width: size + GsSpacing.kListPadding.left + GsSpacing.kListPadding.right,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(kSeparator8),
-            child: Image.asset(
-              AppAssets.menuIconMaterials,
-              width: 20,
-              height: 20,
-            ),
-          ),
-          GsDivider(),
-          Expanded(
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(vertical: kSeparator8),
-              itemCount: weekMats.length,
-              separatorBuilder: (context, index) =>
-                  SizedBox(height: kSeparator4),
-              itemBuilder: (context, index) {
-                final item = weekMats[index];
-                final child = ItemGridWidget.material(
-                  item,
-                  size: size,
-                  label: GsUtils.materials
-                      .getMaterialOwnedAmount(item.id)
-                      .compact(),
-                  onTap: (context, item) => MaterialDetailsCard(
-                    item,
-                    allowEditing: true,
-                  ).show(context),
-                );
-                if (index == 0 ||
-                    item.region != weekMats.elementAt(index - 1).region) {
-                  return Column(
-                    spacing: kSeparator8,
-                    children: [
-                      if (index != 0) SizedBox(height: kSeparator8),
-                      SizedBox(
-                        width: size / 2,
-                        height: size / 2,
-                        child: Image.asset(
-                          GsAssets.iconRegionType(item.region),
-                        ),
-                      ),
-                      child,
-                    ],
-                  );
-                }
-                return child;
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-
     final isLimitedDaysToday = isLimitedDays();
     return Row(
       spacing: GsSpacing.kGridSeparator,
-      children: mapOfCharacters
-          .map<Widget>((entry) {
-            final (:days, :list) = entry;
-            late final isFarmable =
-                days.day1.isFarmableToday ||
-                days.day2.isFarmableToday ||
-                isLimitedDaysToday;
+      children: mapOfCharacters.map<Widget>((entry) {
+        final (:days, :list) = entry;
+        late final isFarmable =
+            days.day1.isFarmableToday ||
+            days.day2.isFarmableToday ||
+            isLimitedDaysToday;
 
-            return Expanded(
-              child: InventoryBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.all(kSeparator8),
-                      child: Row(
-                        children: [
-                          Text(
-                            '${days.day1.getLabel(context).substring(0, 3)} & '
-                            '${days.day2.getLabel(context).substring(0, 3)}',
-                            style: context.themeStyles.label14b,
-                          ),
-                          if (isLimitedDaysToday)
-                            Text(
-                              '  \u2022  Limited Days',
-                              style: context.themeStyles.label12i.copyWith(
-                                color: context.themeColors.starColor,
-                              ),
-                            ),
-                          Spacer(),
-                          Text('${list.length}'),
-                          SizedBox(width: kSeparator4),
-                          Image.asset(
-                            AppAssets.menuIconCharacters,
-                            width: 20,
-                            height: 20,
-                          ),
-                        ],
+        return Expanded(
+          child: InventoryBox(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(kSeparator8),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${days.day1.getLabel(context).substring(0, 3)} & '
+                        '${days.day2.getLabel(context).substring(0, 3)}',
+                        style: context.themeStyles.label14b,
                       ),
-                    ),
-                    GsDivider(),
-                    Expanded(
-                      child: list.isEmpty
-                          ? Center(child: GsNoResultsState.small())
-                          : ListView.separated(
-                              padding: EdgeInsets.all(kSeparator8),
-                              itemCount: list.length,
-                              separatorBuilder: (context, index) =>
-                                  SizedBox(height: kSeparator4),
-                              itemBuilder: (context, index) {
-                                final widget = _listItem(
-                                  context,
-                                  list[index],
-                                  isToday: isFarmable,
-                                );
-
-                                late final cRarity = list[index].item.rarity;
-                                late final pRarity =
-                                    list[index - 1].item.rarity;
-                                if (index == 0 || cRarity != pRarity) {
-                                  return _raritySeparator(
-                                    context,
-                                    rarity: cRarity,
-                                    isToday: isFarmable,
-                                    hasTopPadding: index > 0,
-                                    child: widget,
-                                  );
-                                }
-                                return widget;
-                              },
-                            ),
-                    ),
-                  ],
+                      if (isLimitedDaysToday)
+                        Text(
+                          '  \u2022  Limited Days',
+                          style: context.themeStyles.label12i.copyWith(
+                            color: context.themeColors.starColor,
+                          ),
+                        ),
+                      Spacer(),
+                      Text('${list.length}'),
+                      SizedBox(width: kSeparator4),
+                      Image.asset(
+                        AppAssets.menuIconCharacters,
+                        width: 20,
+                        height: 20,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          })
-          .appendElement(listMats)
-          .toList(),
+                GsDivider(),
+                Expanded(
+                  child: list.isEmpty
+                      ? Center(child: GsNoResultsState.small())
+                      : ListView.separated(
+                          padding: EdgeInsets.all(kSeparator8),
+                          itemCount: list.length,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: kSeparator4),
+                          itemBuilder: (context, index) {
+                            final widget = _listItem(
+                              context,
+                              list[index],
+                              isToday: isFarmable,
+                            );
+
+                            late final cRarity = list[index].item.rarity;
+                            late final pRarity = list[index - 1].item.rarity;
+                            if (index == 0 || cRarity != pRarity) {
+                              return _raritySeparator(
+                                context,
+                                rarity: cRarity,
+                                isToday: isFarmable,
+                                hasTopPadding: index > 0,
+                                child: widget,
+                              );
+                            }
+                            return widget;
+                          },
+                        ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -301,10 +231,11 @@ class _MatsByDays extends StatelessWidget {
                 mat.key,
                 size: size,
                 disabled: !isToday,
-                label: mat.key.group == GeMaterialType.weeklyBossDrops
-                    ? '${GsUtils.materials.getMaterialOwnedAmount(mat.key.id).compact()} /${mat.value.compact()}'
-                    : mat.value.compact(),
                 labelWidget: _materialAmountLabel(context, mat.key, mat.value),
+                onTap: (context, item) => MaterialDetailsCard(
+                  item,
+                  allowEditing: mat.key.group == GeMaterialType.weeklyBossDrops,
+                ).show(context),
               );
             }).toList(),
           ),

@@ -1,12 +1,27 @@
-import 'package:dartx/dartx.dart';
-
 extension IntExt on int {
   String format([String separator = ' ']) {
-    final list = toString().characters.reversed;
-    return Iterable.generate(
-      (list.length / 3).ceil(),
-      (i) => list.skip(i * 3).take(3).reversed.join(),
-    ).reversed.join(separator);
+    final str = toString();
+    final neg = str.startsWith('-');
+    final src = neg ? 1 : 0;
+
+    final buffer = StringBuffer();
+    if (neg) buffer.write('-');
+
+    final digits = str.length - src;
+    var firstGroup = digits % 3;
+    if (firstGroup == 0) firstGroup = 3;
+
+    for (var i = src; i < str.length; ++i) {
+      if (i > src && firstGroup == 0) {
+        buffer.write(separator);
+        firstGroup = 3;
+      }
+
+      buffer.write(str[i]);
+      firstGroup--;
+    }
+
+    return buffer.toString();
   }
 
   String compact() {

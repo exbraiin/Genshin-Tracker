@@ -51,6 +51,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
               builder: (context, notifier, child) {
                 return PopScope(
                   onPopInvokedWithResult: (didPop, result) {
+                    if (amount == notifier.value) return;
                     GsUtils.materials.updateMaterialOwned(
                       item.id,
                       (_) => notifier.value,
