@@ -56,7 +56,7 @@ class ImportCache {
     Map<String, String>? queryParams,
   }) async {
     final url = '$baseUrl$endpoint';
-    var filename = '.cache$endpoint';
+    var filename = '.cache$endpoint'.replaceAll('?', '_');
     if (!filename.endsWith('.json')) filename += '.json';
     final file = kDebugMode ? File(filename) : null;
 

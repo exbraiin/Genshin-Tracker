@@ -25,7 +25,18 @@ final class YattaImporter implements ImportApi {
     bool useCache = true,
     Map<String, String>? queryParams,
   }) async {
-    final url = isStatic ? '/api/v2/static/$endpoint' : '/api/v2/en/$endpoint';
+    final version = Database.i
+        .of<GsVersion>()
+        .items
+        .sortedBy((e) => e.releaseDate)
+        .lastOrNull
+        ?.id
+        .replaceAll('.', '');
+
+    final vh = version != null ? '?vh=${version}F0' : '';
+    final url = isStatic
+        ? '/api/v2/static/$endpoint'
+        : '/api/v2/en/$endpoint$vh';
     final page = await _cache.fetchPage(
       url,
       useCache: useCache,
