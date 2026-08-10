@@ -343,6 +343,25 @@ Iterable<_VersionLine> _validateList(BuildContext context) sync* {
       addItems('Recipes dont have same effect:', notSameEffect);
     }
 
+    final spRecipes = recipes.where((e) => e.baseRecipe.isNotEmpty);
+    final spRecipesIds = spRecipes.map((e) => e.id).toSet();
+    final invalidDishes = chars.where(
+      (e) => e.specialDish != 'none' && !spRecipesIds.contains(e.specialDish),
+    );
+    if (invalidDishes.isNotEmpty) {
+      addItems<GsCharacter>('Invalid Special Dishes', invalidDishes);
+    }
+
+    final invalidUsedRecipes = invalidDishes.mapNotNull(
+      (e) => recipes.firstOrNullWhere((d) => d.id == e.specialDish),
+    );
+    if (invalidUsedRecipes.isNotEmpty) {
+      addItems<GsRecipe>(
+        'Used Recipes without base recipe',
+        invalidUsedRecipes,
+      );
+    }
+
     next = version;
     if (buffer.isNotEmpty) {
       yield (version: version, items: buffer);
@@ -405,7 +424,8 @@ extension on GsWeapon {
           source != GeItemSourceType.none;
     }
     return source == GeItemSourceType.wishesWeaponBanner ||
-        source == GeItemSourceType.wishesStandard;
+        source == GeItemSourceType.wishesStandard ||
+        source == GeItemSourceType.exploration;
   }
 }
 
