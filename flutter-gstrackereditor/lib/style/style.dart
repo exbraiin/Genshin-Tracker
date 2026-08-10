@@ -87,9 +87,10 @@ abstract final class GsStyle {
       return GeElementType.cryo.color;
     }
     final idx = (double.tryParse(id) ?? 1.0).toInt();
-    if (!idx.between(1, GeElementType.values.length)) {
-      return GeElementType.none.color;
-    }
-    return GeElementType.values[idx + 1].color;
+    if (idx >= 7) return GeElementType.cryo.color;
+
+    return GeElementType.values
+        .elementAtOrElse(idx + 1, (_) => GeElementType.none)
+        .color;
   }
 }

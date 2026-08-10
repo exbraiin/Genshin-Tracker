@@ -92,6 +92,17 @@ final class GsImportDialog {
     );
   }
 
+  Future<GsMaterial> fetchMaterial(BuildContext ctx, GsMaterial item) {
+    return _fetch(
+      ctx,
+      item,
+      'Materials',
+      ImportApi.i.fetchMaterials,
+      ImportApi.i.fetchMaterial,
+      searchText: item.name,
+    );
+  }
+
   Future<GsSereniteaSet> fetchSereniteaSet(
     BuildContext ctx,
     GsSereniteaSet item,

@@ -571,6 +571,78 @@ final class YattaImporter implements ImportApi {
   }
 
   @override
+  Future<List<ImportItem>> fetchMaterials() async {
+    const url = '$_kBaseUrl/assets/UI';
+    final data = await _fetchPage('material');
+    final items = data['items'] as Map<String, dynamic>;
+
+    return items.values.map((m) {
+      return ImportItem(
+        m['id'].toString(),
+        m['name'],
+        '$url/${m['icon']}.png',
+        m['rank'],
+      );
+    }).toList();
+  }
+
+  @override
+  Future<GsMaterial> fetchMaterial(String id, [GsMaterial? other]) async {
+    final data = await _fetchPage('material/$id');
+    final name = data.getString('name');
+
+    final desc = data.getString('description');
+    final rank = data.getInt('rank');
+    final type = data.getString('type');
+
+    const days = GeWeekdayType.values;
+    final weekdays = data
+        .getJsonMapList('source')
+        .firstOrNullWhere((e) => e.containsKey('days'))
+        ?.getList<String>('days')
+        .mapNotNull((e) => days.firstOrNullWhere((t) => t.name == e))
+        .toList();
+
+    final map = {
+      'Adventure Item': () => GeMaterialType.oculi,
+      'Character Ascension': () => GeMaterialType.ascensionGems,
+      'Forging Ore': () => GeMaterialType.forging,
+      'Material': () => GeMaterialType.furnishing,
+      'Character and Weapon': () => other?.group ?? GeMaterialType.none,
+      'Character Level-Up': () => rank == 5
+          ? GeMaterialType.weeklyBossDrops
+          : GeMaterialType.normalBossDrops,
+      'Local Specialty': () => GeMaterialType.regionMaterials,
+      'Character Talent': () => GeMaterialType.talentMaterials,
+      'Weapon Ascension': () => GeMaterialType.weaponMaterials,
+    };
+    final group =
+        map.entries.firstOrNullWhere((e) => type.startsWith(e.key))?.value() ??
+        GeMaterialType.none;
+
+    final region = group == GeMaterialType.regionMaterials
+        ? GeRegionType.values.firstWhere(
+            (e) => type.toLowerCase().contains(e.name),
+            orElse: () => GeRegionType.none,
+          )
+        : GeRegionType.none;
+
+    return GsMaterial(
+      id: name.toDbId(),
+      name: name,
+      desc: desc,
+      rarity: rank,
+      group: group,
+      image: other?.image ?? '',
+      region: region,
+      subgroup: other?.subgroup ?? 0,
+      version: other?.version ?? '',
+      ingredient: type == 'Cooking Ingredient',
+      weekdays: weekdays ?? [],
+    );
+  }
+
+  @override
   Future<List<ImportItem>> fetchSereniteaSets() async {
     const url = '$_kBaseUrl/assets/UI';
     final data = await _fetchPage('furnitureSuite');

@@ -205,6 +205,13 @@ class GsConfigs<T extends GsModel<T>> {
         regionColor: GsStyle.getRegionElementColor(item.region),
         child: item.subgroup != 0 ? GsOrderOrb(item.subgroup.toString()) : null,
       ),
+      import: [
+        DataButton(
+          'Import from ${ImportApi.i.name}',
+          icon: ImportApi.i.icon,
+          GsImportDialog.i.fetchMaterial,
+        ),
+      ],
       filters: [
         GsFieldFilter.version((i) => i.version),
         GsFieldFilter.rarity((i) => i.rarity),

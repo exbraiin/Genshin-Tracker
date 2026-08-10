@@ -34,6 +34,9 @@ abstract class ImportApi {
   Future<GsWeapon> fetchWeapon(String id, [GsWeapon? other]);
   Future<List<ImportItem>> fetchWeapons();
 
+  Future<GsMaterial> fetchMaterial(String id, [GsMaterial? other]);
+  Future<List<ImportItem>> fetchMaterials();
+
   Future<GsSereniteaSet> fetchSereniteaSet(String id, [GsSereniteaSet? other]);
   Future<List<ImportItem>> fetchSereniteaSets();
 
