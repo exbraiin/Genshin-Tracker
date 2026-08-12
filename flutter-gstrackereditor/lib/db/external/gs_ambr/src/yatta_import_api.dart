@@ -25,24 +25,24 @@ final class YattaImporter implements ImportApi {
     bool useCache = true,
     Map<String, String>? queryParams,
   }) async {
-    final version = Database.i
-        .of<GsVersion>()
-        .items
-        .sortedBy((e) => e.releaseDate)
-        .lastOrNull
-        ?.id
-        .replaceAll('.', '');
+    late final vh = _getVersionParam();
+    if (!isStatic && vh.isNotEmpty) {
+      queryParams?.putIfAbsent('vh', () => vh);
+    }
 
-    final vh = version != null ? '?vh=${version}F0' : '';
-    final url = isStatic
-        ? '/api/v2/static/$endpoint'
-        : '/api/v2/en/$endpoint$vh';
     final page = await _cache.fetchPage(
-      url,
+      isStatic ? '/api/v2/static/$endpoint' : '/api/v2/en/$endpoint',
       useCache: useCache,
       queryParams: queryParams,
     );
     return page.getJsonMap('data');
+  }
+
+  String _getVersionParam() {
+    final items = Database.i.of<GsVersion>().items;
+    final version = items.sortedBy((e) => e.releaseDate).lastOrNull;
+    final id = version?.id.replaceAll('.', '');
+    return version != null ? '${id}F0' : '';
   }
 
   @override
@@ -107,7 +107,7 @@ final class YattaImporter implements ImportApi {
   @override
   Future<List<ImportItem>> fetchCharacters() async {
     const url = '$_kBaseUrl/assets/UI';
-    final data = await _fetchPage('avatar', queryParams: {'vh': '9999'});
+    final data = await _fetchPage('avatar');
     final items = data['items'] as Map<String, dynamic>;
 
     return items.values.cast<JsonMap>().map((m) {
