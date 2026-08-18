@@ -1,4 +1,5 @@
 import 'package:data_editor/db/ge_enums.dart';
+import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:data_editor/db_ext/datafield.dart';
 import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
@@ -56,6 +57,9 @@ class GsFurnitureChestExt extends GsModelExt<GsFurnitureChest> {
         GeRegionType.values.toChips(),
         (item) => item.region,
         (item, value) => item.copyWith(region: value),
+        validator: (item, level) => item.region != GeRegionType.none
+            ? GsValidLevel.good
+            : GsValidLevel.warn3,
       ),
       DataField.singleSelect(
         'Version',

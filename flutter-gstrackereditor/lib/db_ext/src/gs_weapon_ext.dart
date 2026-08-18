@@ -65,6 +65,7 @@ class GsWeaponExt extends GsModelExt<GsWeapon> {
         validator: (item, level) {
           if (item.rarity == 5) {
             const valid = [
+              GeItemSourceType.exploration,
               GeItemSourceType.wishesStandard,
               GeItemSourceType.wishesWeaponBanner,
             ];
@@ -94,12 +95,10 @@ class GsWeaponExt extends GsModelExt<GsWeapon> {
         (item) => item.ascStatValue,
         (item, value) => item.copyWith(ascStatValue: value),
         validator: (item) {
-          if (!(item.ascStatValue != 0 ||
-              item.ascStatValue == 0 &&
-                  item.statType == GeWeaponAscStatType.none)) {
-            return GsValidLevel.warn3;
-          }
-          return GsValidLevel.good;
+          final hasStat = item.ascStatValue != 0;
+          final hasNoStat = !hasStat && item.statType == .none;
+          final isValid = hasStat || hasNoStat;
+          return isValid ? GsValidLevel.good : GsValidLevel.warn3;
         },
       ),
       DataField.textField(
