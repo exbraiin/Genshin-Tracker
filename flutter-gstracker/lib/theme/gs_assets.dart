@@ -37,7 +37,7 @@ abstract final class GsAssets {
       GeRegionType.fontaine => AppAssets.fontaine,
       GeRegionType.natlan => AppAssets.natlan,
       GeRegionType.nodkrai => AppAssets.nodKrai,
-      GeRegionType.snezhnaya => AppAssets.unknown,
+      GeRegionType.snezhnaya => AppAssets.snezhnaya,
     };
   }
 
