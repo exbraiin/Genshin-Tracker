@@ -1,11 +1,19 @@
 import 'package:dartx/dartx.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/src/iterable_ext.dart';
+import 'package:tracker/domain/enums/enum_ext.dart';
 import 'package:tracker/domain/gs_database.dart';
 
 typedef DaysGroup = ({GeWeekdayType day1, GeWeekdayType day2});
 typedef DaysMap = Map<DaysGroup, List<CharInfo>>;
 typedef DaysList = List<({DaysGroup days, List<CharInfo> list})>;
+typedef AllMats = ({GsMaterial mat, bool isFarmableToday, int amount});
+
+const _farmableDays = [
+  (day1: GeWeekdayType.monday, day2: GeWeekdayType.thursday),
+  (day1: GeWeekdayType.tuesday, day2: GeWeekdayType.friday),
+  (day1: GeWeekdayType.wednesday, day2: GeWeekdayType.saturday),
+];
 
 DaysMap groupCharactersByDays([List<CharInfo>? infos]) {
   late final chars = GsUtils.characters;
@@ -15,16 +23,11 @@ DaysMap groupCharactersByDays([List<CharInfo>? infos]) {
       .map((e) => chars.getCharInfo(e.id))
       .whereNotNull();
 
-  final farmableDays = [
-    (day1: GeWeekdayType.monday, day2: GeWeekdayType.thursday),
-    (day1: GeWeekdayType.tuesday, day2: GeWeekdayType.friday),
-    (day1: GeWeekdayType.wednesday, day2: GeWeekdayType.saturday),
-  ];
   final grouped = (infos ?? fallback)
       .where((e) => e.talents?.isMissing(crownless: true) ?? false)
       .groupBy((e) {
         final weekdays = iMats.getItem(e.item.talentMaterial)?.weekdays ?? [];
-        return farmableDays.firstOrNullWhere((e) => weekdays.contains(e.day1));
+        return _farmableDays.firstOrNullWhere((e) => weekdays.contains(e.day1));
       })
       .entries
       .where((entry) => entry.key != null)
@@ -32,7 +35,7 @@ DaysMap groupCharactersByDays([List<CharInfo>? infos]) {
       .toMap();
 
   grouped.addEntries(
-    farmableDays
+    _farmableDays
         .where((e) => !grouped.containsKey(e))
         .map((e) => MapEntry(e, <CharInfo>[])),
   );
@@ -85,6 +88,34 @@ List<({GsMaterial material, int amount})> getCharactersMissingMaterials({
       .thenBy((e) => e.material.region.index)
       .thenBy((e) => versionRelease(e.material.version))
       .toList();
+}
+
+List<AllMats> getAllMaterials(List<CharInfo> list) {
+  final isLimitedDaysToday = isLimitedDays();
+  return list
+      .where((e) => e.talents?.isMissing(crownless: true) ?? false)
+      .expand(
+        (e) => GsUtils.materials
+            .getCharTalentsMissing(e.item, e.info, CharTalents.kCrownless)
+            .entries,
+      )
+      .groupBy((e) => e.key.id)
+      .entries
+      .map((e) {
+        final mat = e.value.first.key;
+        final amount = e.value.sumBy((e) => e.value);
+        final days = _farmableDays.firstOrNullWhere(
+          (e) => mat.weekdays.contains(e.day1),
+        );
+        final isFarmable =
+            days == null ||
+            days.day1.isFarmableToday ||
+            days.day2.isFarmableToday ||
+            isLimitedDaysToday;
+
+        return (mat: mat, isFarmableToday: isFarmable, amount: amount);
+      })
+      .sortedBy((e) => e.mat);
 }
 
 bool isLimitedDays() {

@@ -16,10 +16,23 @@ import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/screens/widgets/item_info_widget.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
-class CharactersTableScreen extends StatelessWidget {
+class CharactersTableScreen extends StatefulWidget {
   static const id = 'characters_table_screen';
 
   const CharactersTableScreen({super.key});
+
+  @override
+  State<CharactersTableScreen> createState() => _CharactersTableScreenState();
+}
+
+class _CharactersTableScreenState extends State<CharactersTableScreen> {
+  final _showMaterials = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    _showMaterials.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +56,30 @@ class CharactersTableScreen extends StatelessWidget {
               appBar: InventoryAppBar(
                 label: context.labels.characters(),
                 iconAsset: AppAssets.menuIconCharacters,
-                actions: [button],
+                actions: [
+                  ValueListenableBuilder(
+                    valueListenable: _showMaterials,
+                    builder: (context, value, child) {
+                      return IconButton(
+                        onPressed: () => _showMaterials.value = !value,
+                        icon: value
+                            ? Image.asset(AppAssets.menuIconCharacters)
+                            : Image.asset(AppAssets.menuIconMaterials),
+                      );
+                    },
+                  ),
+                  button,
+                ],
               ),
-              child: _MatsByDays(sorted),
+              child: ValueListenableBuilder(
+                valueListenable: _showMaterials,
+                builder: (context, value, child) {
+                  if (value) {
+                    return _AllMats(list);
+                  }
+                  return _MatsByDays(sorted);
+                },
+              ),
             );
           },
         );
@@ -243,25 +277,62 @@ class _MatsByDays extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _materialAmountLabel(
-    BuildContext context,
-    GsMaterial material,
-    int amount,
-  ) {
-    if (material.group != GeMaterialType.weeklyBossDrops) {
-      return Text(amount.compact(), maxLines: 1);
+class _AllMats extends StatelessWidget {
+  final List<CharInfo> list;
+
+  const _AllMats(this.list);
+
+  @override
+  Widget build(BuildContext context) {
+    if (list.isEmpty) {
+      return InventoryBox(child: Center(child: GsNoResultsState.small()));
     }
 
-    final owned = GsUtils.materials.getMaterialOwnedAmount(material.id);
-    final color = owned < amount
-        ? context.themeColors.badValue
-        : context.themeColors.goodValue;
-
-    return Text(
-      '${owned.compact()} /${amount.compact()}',
-      maxLines: 1,
-      style: TextStyle(color: color, fontWeight: FontWeight.bold),
+    final double size = 60.0;
+    return InventoryBox(
+      child: Align(
+        alignment: .topCenter,
+        child: Wrap(
+          spacing: kSeparator4,
+          runSpacing: kSeparator4,
+          alignment: WrapAlignment.start,
+          children: getAllMaterials(list).map((info) {
+            return ItemGridWidget.material(
+              info.mat,
+              size: size,
+              disabled: !info.isFarmableToday,
+              labelWidget: _materialAmountLabel(context, info.mat, info.amount),
+              onTap: (context, item) => MaterialDetailsCard(
+                item,
+                allowEditing: info.mat.group == GeMaterialType.weeklyBossDrops,
+              ).show(context),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
+}
+
+Widget _materialAmountLabel(
+  BuildContext context,
+  GsMaterial material,
+  int amount,
+) {
+  if (material.group != GeMaterialType.weeklyBossDrops) {
+    return Text(amount.compact(), maxLines: 1);
+  }
+
+  final owned = GsUtils.materials.getMaterialOwnedAmount(material.id);
+  final color = owned < amount
+      ? context.themeColors.badValue
+      : context.themeColors.goodValue;
+
+  return Text(
+    '${owned.compact()} /${amount.compact()}',
+    maxLines: 1,
+    style: TextStyle(color: color, fontWeight: FontWeight.bold),
+  );
 }
