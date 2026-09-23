@@ -4,7 +4,7 @@ version: 1.2.2
 # repository: https://github.com/exbraiin/dart-gsdatabase
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.13.4
 
 # Add regular dependencies here.
 dependencies:
@@ -14,5 +14,5 @@ dev_dependencies:
   lints: ^6.0.0
   build: ^4.0.0
   source_gen: ^4.0.1
-  analyzer: ^8.1.1
+  analyzer: ^14.4.0
   build_runner: ^2.4.7
