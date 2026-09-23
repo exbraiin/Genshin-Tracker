@@ -23,11 +23,11 @@ final class YattaImporter implements ImportApi {
     String endpoint, {
     bool isStatic = false,
     bool useCache = true,
-    Map<String, String>? queryParams,
+    Map<String, String> queryParams = const {},
   }) async {
     late final vh = _getVersionParam();
     if (!isStatic && vh.isNotEmpty) {
-      queryParams?.putIfAbsent('vh', () => vh);
+      queryParams = {...queryParams, 'vh': vh};
     }
 
     final page = await _cache.fetchPage(
