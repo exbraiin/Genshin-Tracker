@@ -127,7 +127,6 @@ class _ItemEditScreenState<T extends GsModel<T>>
                       GsValidLevel.error;
 
                   void onSave() {
-                    widget.collection.delete(widget.item?.id);
                     widget.collection.updateItem(value);
                     Navigator.of(context).maybePop();
                   }

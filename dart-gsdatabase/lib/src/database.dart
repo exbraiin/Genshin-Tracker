@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:gsdatabase/src/exporter.dart';
+import 'package:gsdatabase/src/utils/async.dart';
 
 Iterable<Items> get _infoCollections {
   const kCategories = 'achievement_categories';
@@ -49,10 +50,21 @@ Iterable<Items> get _saveCollections {
   ];
 }
 
+enum OperationType { insert, delete }
+
+class Operation<T extends GsModel<T>> {
+  final T? item;
+  final OperationType operation;
+  Operation.insert(this.item) : operation = .insert;
+  Operation.delete(this.item) : operation = .delete;
+}
+
 final class GsDatabase {
   final Iterable<Items> collections;
-  final _notifier = StreamController<void>.broadcast();
-  Stream<void> get didUpdate => _notifier.stream;
+  late final Stream<Operation<GsModel>> didUpdate =
+      mergeStreams<Operation<GsModel>>(
+        collections.map((e) => e.onItemUpdated as Stream<Operation<GsModel>>),
+      );
 
   GsDatabase.info() : collections = _infoCollections;
   GsDatabase.save() : collections = _saveCollections;
@@ -73,7 +85,7 @@ final class GsDatabase {
       }
     }
     await Future.value(jsonMap)
-        .then((value) => collections.map((e) => e._load(value, this)))
+        .then((value) => collections.map((e) => e._load(value)))
         .then((value) => Future.wait(value));
   }
 
@@ -105,10 +117,11 @@ final class GsDatabase {
 }
 
 final class Items<T extends GsModel<T>> {
-  GsDatabase? _db;
   final _data = <String, T>{};
   final String collectionId;
   final T Function(JsonMap map) parser;
+  final _notifier = StreamController<Operation<T>>.broadcast();
+  Stream<Operation<T>> get onItemUpdated => _notifier.stream;
 
   Iterable<String> get ids => _data.keys;
   Iterable<T> get items => _data.values;
@@ -125,13 +138,13 @@ final class Items<T extends GsModel<T>> {
   /// Replaces the item with the given one based on the id.
   void setItem(T item) {
     _data[item.id] = item;
-    _db?._notifier.add(null);
+    _notifier.add(Operation.insert(item));
   }
 
   /// Removes the item with the given id from db.
   void removeItem(String id) {
-    _data.remove(id);
-    _db?._notifier.add(null);
+    final item = _data.remove(id);
+    _notifier.add(Operation.delete(item));
   }
 
   /// Edits the item, if the item does not exists a new one is created.
@@ -142,8 +155,7 @@ final class Items<T extends GsModel<T>> {
     return edited != null ? setItem(edited) : removeItem(id);
   }
 
-  Future<void> _load(JsonMap map, GsDatabase db) async {
-    _db = db;
+  Future<void> _load(JsonMap map) async {
     final items = (map[collectionId] as JsonMap? ?? {}).map(
       (k, v) => MapEntry(k, parser({'id': k, ...v})),
     );
