@@ -62,6 +62,7 @@ class HomePlayerProgress extends StatelessWidget {
                   onPressed: () {
                     ScreenFilters.setFilterValues<GsRecipe>({
                       FilterKey.obtained: false,
+                      FilterKey.permanent: GeRecipeType.permanent,
                     });
                     MainScreen.navigateTo(context, RecipesScreen.id);
                   },

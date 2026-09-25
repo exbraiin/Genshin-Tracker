@@ -43,7 +43,7 @@ class ScreenFilterBuilder<T extends GsModel<T>> extends StatelessWidget {
   }
 }
 
-enum FilterKey { none, weekdays, obtained, maxProficiency }
+enum FilterKey { none, weekdays, obtained, maxProficiency, permanent }
 
 enum FilterExtras { hide, versionSort }
 
@@ -393,6 +393,7 @@ class ScreenFilters {
           (item) => item.type,
           (c) => c.labels.type(),
           (c, i) => i.label(c),
+          key: FilterKey.permanent,
         ),
       ], queryMatcher: (item) => item.name),
       const (GsFurnitureChest) => ScreenFilter<GsFurnitureChest>([
