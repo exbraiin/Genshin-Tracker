@@ -3,9 +3,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:dartx/dartx.dart';
-import 'package:flutter/foundation.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tracker/common/utils/logger.dart';
 import 'package:tracker/common/utils/network.dart';
 
 export 'package:tracker/domain/utils/gs_utils.dart';
@@ -49,7 +49,7 @@ class Database {
     _loaded.add(false);
 
     final dir = File(_kDataPath).parent;
-    if (!await dir.exists()) await dir.create(recursive: true);
+    await dir.create(recursive: true);
 
     await Future.wait([_loadData(), _loadSave()]);
     _loaded.add(true);
@@ -106,24 +106,24 @@ final class _Downloader {
 
       // Check if we can skip the version check
       if (localVersion.shouldSkip) {
-        if (kDebugMode) print('Skipping version check...');
+        Monitor.debug('Skipping version check...');
         _version = localVersion;
         return;
       }
 
       // Download and check version
-      if (kDebugMode) print('Downloading version file...');
+      Monitor.debug('Downloading version file...');
       final remoteVersion = await _downloadVersion(_kGitVersionUrl);
 
       // Check if we can skip the version
       if (!remoteVersion.isAfter(localVersion)) {
-        if (kDebugMode) print('Skipping version ${remoteVersion.version}!');
+        Monitor.debug('Skipping version ${remoteVersion.version}!');
         _version = remoteVersion;
         return;
       }
 
       // Download database
-      if (kDebugMode) print('Downloading database file...');
+      Monitor.debug('Downloading database file...');
       await _downloadDatabase(_kGitDataUrl);
       _version = remoteVersion;
     } finally {
@@ -141,11 +141,11 @@ final class _Downloader {
       final remoteVersion = await _downloadVersion(_kGitVersionUrl);
 
       if (!remoteVersion.isAfter(localVersion)) {
-        if (kDebugMode) print('Skipping version ${remoteVersion.version}!');
+        Monitor.debug('Skipping version ${remoteVersion.version}!');
         return false;
       }
 
-      if (kDebugMode) print('Downloading database file...');
+      Monitor.debug('Downloading database file...');
       _version = remoteVersion;
       await _downloadDatabase(_kGitDataUrl);
       return true;
@@ -157,7 +157,7 @@ final class _Downloader {
 
   Future<_Version> _loadFileVersion() async {
     final versionFile = File(_kVersPath);
-    if (!await versionFile.parent.exists()) await versionFile.parent.create();
+    await versionFile.parent.create();
     if (!await versionFile.exists()) return _Version();
     final map = jsonDecode(await versionFile.readAsString()) as JsonMap;
     return _Version.fromJson(map);
@@ -166,12 +166,12 @@ final class _Downloader {
   Future<_Version> _downloadVersion(String url) async {
     final version = await Network.downloadString(url);
     if (version == null) {
-      if (kDebugMode) print('Failed to download version...');
+      Monitor.debug('Failed to download version...');
       return _Version();
     }
     final model = _Version(version);
     final versionFile = File(_kVersPath);
-    if (!await versionFile.parent.exists()) await versionFile.parent.create();
+    await versionFile.parent.create();
     await versionFile.writeAsString(jsonEncode(model.toJson()));
     return model;
   }
@@ -179,11 +179,11 @@ final class _Downloader {
   Future<void> _downloadDatabase(String url) async {
     final bytes = await Network.downloadBytes(url);
     if (bytes == null) {
-      if (kDebugMode) print('Failed to download version...');
+      Monitor.debug('Failed to download version...');
       return;
     }
     final dataFile = File(_kDataPath);
-    if (!await dataFile.parent.exists()) await dataFile.parent.create();
+    await dataFile.parent.create();
 
     final eUtf8 = gzip.decode(bytes);
     final eJson = utf8.decode(eUtf8);

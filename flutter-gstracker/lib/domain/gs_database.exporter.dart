@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:excel/excel.dart';
-import 'package:flutter/foundation.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
+import 'package:tracker/common/utils/logger.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/theme/theme.dart';
 
@@ -27,7 +27,7 @@ abstract class GsDatabaseExporter {
     await Directory('export').create();
     await File('export/$date.xlsx').writeAsBytes(bytes);
     if (Platform.isWindows) await Process.run('explorer', ['.']);
-    if (kDebugMode) print('\x1b[31mComplete!');
+    Monitor.debug('\x1b[31mComplete!');
   }
 
   static void writeWishes(Excel excel, String sheetName, GeBannerType type) {
@@ -197,9 +197,10 @@ extension on Sheet {
   void applyStyleToRow(int index, CellStyle style) {
     final row = this.row(index);
     row.forEachIndexed(
-      (_, i) => cell(
-        CellIndex.indexByColumnRow(columnIndex: i, rowIndex: index),
-      ).cellStyle = style,
+      (_, i) =>
+          cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: index))
+                  .cellStyle =
+              style,
     );
   }
 }

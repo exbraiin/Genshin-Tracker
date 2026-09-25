@@ -63,7 +63,7 @@ final class GsDatabase {
   final Iterable<Items> collections;
   late final Stream<Operation<GsModel>> didUpdate =
       mergeStreams<Operation<GsModel>>(
-        collections.map((e) => e.onItemUpdated as Stream<Operation<GsModel>>),
+        collections.map((e) => e.onItemUpdated.cast<Operation<GsModel>>()),
       );
 
   GsDatabase.info() : collections = _infoCollections;
@@ -84,9 +84,7 @@ final class GsDatabase {
         jsonMap = jsonDecode(string);
       }
     }
-    await Future.value(jsonMap)
-        .then((value) => collections.map((e) => e._load(value)))
-        .then((value) => Future.wait(value));
+    await collections.map((e) => e._load(jsonMap)).wait;
   }
 
   Future<void> save({required String path, bool encoded = false}) async {

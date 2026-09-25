@@ -84,9 +84,7 @@ class ImportCache {
     if (useCache) {
       _cache[endpoint] = data;
       if (file != null && !await file.exists()) {
-        if (!await file.parent.exists()) {
-          await file.parent.create(recursive: true);
-        }
+        await file.parent.create(recursive: true);
         await file.writeAsString(jsonEncode(data));
       }
     }
