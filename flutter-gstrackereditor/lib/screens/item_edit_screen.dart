@@ -127,12 +127,16 @@ class _ItemEditScreenState<T extends GsModel<T>>
                       GsValidLevel.error;
 
                   void onSave() {
+                    if (widget.item?.id != value.id) {
+                      // Id changed we need to delete the previous item
+                      widget.collection.delete(widget.item?.id);
+                    }
                     widget.collection.updateItem(value);
                     Navigator.of(context).maybePop();
                   }
 
                   void onDelete() {
-                    widget.collection.delete(_notifier.value.id);
+                    widget.collection.delete(value.id);
                     Navigator.of(context).maybePop();
                   }
 
