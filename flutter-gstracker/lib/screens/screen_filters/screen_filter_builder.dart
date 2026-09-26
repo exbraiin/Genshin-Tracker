@@ -341,6 +341,7 @@ class ScreenFilters {
           filter: (item) =>
               item.rewardsWeapons.isNotEmpty ||
               item.rewardsCharacters.isNotEmpty,
+          key: FilterKey.obtained,
         ),
         FilterSection.version((item) => item.version),
         FilterSection<GeEventType, GsEvent>(

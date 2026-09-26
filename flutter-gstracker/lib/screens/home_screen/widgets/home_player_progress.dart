@@ -9,6 +9,7 @@ import 'package:tracker/common/widgets/static/value_stream_builder.dart';
 import 'package:tracker/domain/gs_database.dart';
 import 'package:tracker/screens/achievements_screen/achievement_groups_screen.dart';
 import 'package:tracker/screens/envisaged_echo_screen/envisaged_echo_screen.dart';
+import 'package:tracker/screens/events_screen/event_screen.dart';
 import 'package:tracker/screens/lunar_arcana_screen/lunar_arcana_screen.dart';
 import 'package:tracker/screens/main_screen/main_screen.dart';
 import 'package:tracker/screens/recipes_screen/recipes_screen.dart';
@@ -149,6 +150,18 @@ class HomePlayerProgress extends StatelessWidget {
                       FilterKey.obtained: false,
                     });
                     MainScreen.navigateTo(context, LunarArcanaScreen.id);
+                  },
+                ),
+                _ProgressInfo(
+                  AppAssets.menuIconEvent,
+                  context.labels.filterEvent(),
+                  GsUtils.events.owned,
+                  GsUtils.events.total,
+                  onPressed: () {
+                    ScreenFilters.setFilterValues<GsEvent>({
+                      FilterKey.obtained: false,
+                    });
+                    MainScreen.navigateTo(context, EventScreen.id);
                   },
                 ),
               ]),

@@ -6,6 +6,24 @@ final class GuEvents {
   final GuCollections _items;
   const GuEvents(this._items);
 
+  int get owned {
+    return _items.inEvents.items.where(_hasRewards).count(_hasObtained);
+  }
+
+  int get total {
+    return _items.inEvents.items.count(_hasRewards);
+  }
+
+  bool _hasRewards(GsEvent event) =>
+      event.rewardsWeapons.isNotEmpty || event.rewardsCharacters.isNotEmpty;
+
+  bool _hasObtained(GsEvent event) {
+    final saved = _items.svEventRewards.getItem(event.id);
+    if (saved == null) return false;
+    return saved.obtainedWeapons.isNotEmpty ||
+        saved.obtainedCharacters.isNotEmpty;
+  }
+
   /// Gets the event characters
   List<GsCharacter> getEventCharacters(String id) {
     final list = _items.inEvents.getItem(id)?.rewardsCharacters;
