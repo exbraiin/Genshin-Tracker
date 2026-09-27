@@ -293,6 +293,7 @@ class _AllMats extends StatelessWidget {
     final mats = getAllMaterials(list)
         .groupBy((e) => e.mat.region)
         .entries
+        .map((e) => MapEntry(e.key, e.value.sortedBy((e) => e.mat)))
         .toList();
 
     final double size = 60.0;

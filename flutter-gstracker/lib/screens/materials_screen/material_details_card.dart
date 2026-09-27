@@ -34,6 +34,18 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         .thenBy((element) => element.id == item.id ? 0 : 1)
         .distinctBy((element) => element.rarity);
 
+    final ids = materials.map((e) => e.id).toSet();
+    final characters = Database.instance.infoOf<GsCharacter>().items.where((e) {
+      final mats = [
+        e.bossMaterial,
+        e.commonMaterial,
+        e.regionMaterial,
+        e.talentMaterial,
+        e.weeklyMaterial,
+      ];
+      return mats.any((e) => ids.contains(e));
+    }).sorted();
+
     late final amount = GsUtils.materials.getMaterialOwnedAmount(item.id);
     return ItemDetailsCard(
       name: item.name,
@@ -97,7 +109,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
             ItemDetailsCardInfo.description(text: TextParserWidget(item.desc)),
           if (item.weekdays.isNotEmpty)
             ItemDetailsCardInfo.section(
-              title: Text(context.labels.weeklyTasks()),
+              title: Text(context.labels.weeklyDays()),
               content: Text(weekdays),
             ),
           if (materials.length > 1 && item.group != GeMaterialType.none)
@@ -109,6 +121,18 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: materials
                     .map((e) => ItemGridWidget.material(e, onTap: null))
+                    .toList(),
+              ),
+            ),
+          if (characters.length > 1)
+            ItemDetailsCardInfo.section(
+              title: Text('Characters'),
+              content: Wrap(
+                spacing: kSeparator4,
+                runSpacing: kSeparator4,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: characters
+                    .map((e) => ItemGridWidget.character(e, onTap: null))
                     .toList(),
               ),
             ),

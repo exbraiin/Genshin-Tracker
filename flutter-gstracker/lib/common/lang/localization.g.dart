@@ -196,8 +196,8 @@ abstract final class LocalizationKeys {
   /// 5★ Pity
   static const l5sPity = 'l5s_pity';
 
-  /// Weekly Tasks
-  static const weeklyTasks = 'weekly_tasks';
+  /// Weekly Days
+  static const weeklyDays = 'weekly_days';
 
   /// Obtained {amount}
   static const amountObtained = 'amount_obtained';
@@ -1171,9 +1171,9 @@ class LocalizationMethods {
     return provider(LocalizationKeys.l5sPity);
   }
 
-  /// Weekly Tasks
-  String weeklyTasks() {
-    return provider(LocalizationKeys.weeklyTasks);
+  /// Weekly Days
+  String weeklyDays() {
+    return provider(LocalizationKeys.weeklyDays);
   }
 
   /// Obtained {amount}

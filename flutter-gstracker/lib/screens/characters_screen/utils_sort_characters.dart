@@ -90,7 +90,7 @@ List<({GsMaterial material, int amount})> getCharactersMissingMaterials({
       .toList();
 }
 
-List<AllMats> getAllMaterials(List<CharInfo> list) {
+Iterable<AllMats> getAllMaterials(List<CharInfo> list) {
   final isLimitedDaysToday = isLimitedDays();
   return list
       .where((e) => e.talents?.isMissing(crownless: true) ?? false)
@@ -123,9 +123,7 @@ List<AllMats> getAllMaterials(List<CharInfo> list) {
             isLimitedDaysToday;
 
         return (mat: mat, isFarmableToday: isFarmable, amount: amount);
-      })
-      .sortedBy((e) => e.mat.region.index)
-      .thenBy((e) => e.mat);
+      });
 }
 
 bool isLimitedDays() {
