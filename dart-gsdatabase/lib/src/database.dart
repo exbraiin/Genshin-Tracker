@@ -60,17 +60,17 @@ class Operation<T extends GsModel<T>> {
 }
 
 final class GsDatabase {
-  final Iterable<Items> collections;
+  final Iterable<Items> _collections;
   late final Stream<Operation<GsModel>> didUpdate =
       mergeStreams<Operation<GsModel>>(
-        collections.map((e) => e.onItemUpdated.cast<Operation<GsModel>>()),
+        _collections.map((e) => e.onItemUpdated.cast<Operation<GsModel>>()),
       );
 
-  GsDatabase.info() : collections = _infoCollections;
-  GsDatabase.save() : collections = _saveCollections;
+  GsDatabase.info() : _collections = _infoCollections;
+  GsDatabase.save() : _collections = _saveCollections;
 
   Items<T> of<T extends GsModel<T>>() =>
-      collections.firstWhere((e) => e is Items<T>) as Items<T>;
+      _collections.firstWhere((e) => e is Items<T>) as Items<T>;
 
   Future<void> load({required String path, bool encoded = false}) async {
     final file = File(path);
@@ -84,13 +84,13 @@ final class GsDatabase {
         jsonMap = jsonDecode(string);
       }
     }
-    await collections.map((e) => e._load(jsonMap)).wait;
+    await _collections.map((e) => e._load(jsonMap)).wait;
   }
 
   Future<void> save({required String path, bool encoded = false}) async {
     final file = File(path);
     final map = <String, dynamic>{};
-    await Future.wait(collections.map((e) => e._save(map)));
+    await Future.wait(_collections.map((e) => e._save(map)));
 
     if (encoded) {
       final bytes = _encodeJsonMapToBytes(map);

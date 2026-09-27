@@ -99,6 +99,15 @@ List<AllMats> getAllMaterials(List<CharInfo> list) {
             .getCharTalentsMissing(e.item, e.info, CharTalents.kCrownless)
             .entries,
       )
+      .expand((data) {
+        if (data.key.group != .weeklyBossDrops) {
+          return [data];
+        }
+        final group = GsUtils.materials
+            .getGroupMaterials(data.key)
+            .map((e) => MapEntry(e, 0));
+        return [data, ...group];
+      })
       .groupBy((e) => e.key.id)
       .entries
       .map((e) {
@@ -115,7 +124,8 @@ List<AllMats> getAllMaterials(List<CharInfo> list) {
 
         return (mat: mat, isFarmableToday: isFarmable, amount: amount);
       })
-      .sortedBy((e) => e.mat);
+      .sortedBy((e) => e.mat.region.index)
+      .thenBy((e) => e.mat);
 }
 
 bool isLimitedDays() {

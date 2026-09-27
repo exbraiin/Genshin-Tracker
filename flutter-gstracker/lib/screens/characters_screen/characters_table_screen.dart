@@ -290,27 +290,95 @@ class _AllMats extends StatelessWidget {
       return InventoryBox(child: Center(child: GsNoResultsState.small()));
     }
 
+    final mats = getAllMaterials(list)
+        .groupBy((e) => e.mat.region)
+        .entries
+        .toList();
+
     final double size = 60.0;
     return InventoryBox(
       child: Align(
         alignment: .topCenter,
-        child: Wrap(
-          spacing: kSeparator4,
-          runSpacing: kSeparator4,
-          alignment: WrapAlignment.start,
-          children: getAllMaterials(list).map((info) {
-            return ItemGridWidget.material(
-              info.mat,
-              size: size,
-              disabled: !info.isFarmableToday,
-              labelWidget: _materialAmountLabel(context, info.mat, info.amount),
-              onTap: (context, item) => MaterialDetailsCard(
-                item,
-                allowEditing: info.mat.group == GeMaterialType.weeklyBossDrops,
-              ).show(context),
+        child: ListView.separated(
+          itemCount: mats.length,
+          padding: EdgeInsets.all(12),
+          separatorBuilder: (context, index) => SizedBox(height: 12),
+          itemBuilder: (context, index) {
+            final prev = index > 0 ? mats[index - 1] : null;
+            final item = mats[index];
+
+            final list = item.value;
+            final child = Wrap(
+              spacing: kSeparator4,
+              runSpacing: kSeparator4,
+              alignment: WrapAlignment.start,
+              children: list.mapIndexed((i, info) {
+                return ItemGridWidget.material(
+                  info.mat,
+                  size: size,
+                  disabled: !info.isFarmableToday,
+                  labelWidget: _materialAmountLabel(
+                    context,
+                    info.mat,
+                    info.amount,
+                  ),
+                  onTap: (context, item) => MaterialDetailsCard(
+                    item,
+                    allowEditing:
+                        info.mat.group == GeMaterialType.weeklyBossDrops,
+                  ).show(context),
+                );
+              }).toList(),
             );
-          }).toList(),
+
+            if (prev == null || prev.key != item.key) {
+              return Row(
+                spacing: 8,
+                children: [
+                  prev != null
+                      ? SizedBox(
+                          width: size,
+                          height: size,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Image.asset(
+                              GsAssets.iconRegionType(item.key),
+                            ),
+                          ),
+                        )
+                      : SizedBox(width: size, height: size),
+                  child,
+                ],
+              );
+            }
+
+            return child;
+          },
         ),
+        /*
+            Wrap(
+              spacing: kSeparator4,
+              runSpacing: kSeparator4,
+              alignment: WrapAlignment.start,
+              children: mats.map((info) {
+                return ItemGridWidget.material(
+                  info.mat,
+                  size: size,
+                  disabled: !info.isFarmableToday,
+                  labelWidget: _materialAmountLabel(
+                    context,
+                    info.mat,
+                    info.amount,
+                  ),
+                  onTap: (context, item) => MaterialDetailsCard(
+                    item,
+                    allowEditing:
+                        info.mat.group == GeMaterialType.weeklyBossDrops,
+                  ).show(context),
+                );
+              }).toList(),
+            ),
+            */
       ),
     );
   }
