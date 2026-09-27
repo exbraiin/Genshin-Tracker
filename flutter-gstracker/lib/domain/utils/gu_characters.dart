@@ -71,6 +71,18 @@ final class GuCharacters {
     );
   }
 
+  Iterable<GsCharacter> getCharsUsingAnyMaterial(Set<String> ids) {
+    return _items.inCharacters.items.where(
+      (char) => ids.containsAny({
+        char.bossMaterial,
+        char.commonMaterial,
+        char.regionMaterial,
+        char.talentMaterial,
+        char.weeklyMaterial,
+      }),
+    );
+  }
+
   /// Sets the character friendship
   ///
   /// {@macro db_update}

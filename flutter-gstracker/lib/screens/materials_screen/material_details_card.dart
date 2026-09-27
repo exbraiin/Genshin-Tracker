@@ -35,16 +35,7 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
         .distinctBy((element) => element.rarity);
 
     final ids = materials.map((e) => e.id).toSet();
-    final characters = Database.instance.infoOf<GsCharacter>().items.where((e) {
-      final mats = [
-        e.bossMaterial,
-        e.commonMaterial,
-        e.regionMaterial,
-        e.talentMaterial,
-        e.weeklyMaterial,
-      ];
-      return mats.any((e) => ids.contains(e));
-    }).sorted();
+    final chars = GsUtils.characters.getCharsUsingAnyMaterial(ids).sorted();
 
     late final amount = GsUtils.materials.getMaterialOwnedAmount(item.id);
     return ItemDetailsCard(
@@ -124,14 +115,14 @@ class MaterialDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                     .toList(),
               ),
             ),
-          if (characters.length > 1)
+          if (chars.isNotEmpty)
             ItemDetailsCardInfo.section(
-              title: Text('Characters'),
+              title: Text(context.labels.characters()),
               content: Wrap(
                 spacing: kSeparator4,
                 runSpacing: kSeparator4,
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children: characters
+                children: chars
                     .map((e) => ItemGridWidget.character(e, onTap: null))
                     .toList(),
               ),
