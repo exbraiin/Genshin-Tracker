@@ -116,11 +116,24 @@ class HomeWishesValues extends StatelessWidget {
               thickness: 1,
               height: 8,
             ),
-            _getWonInfo(
+            _getInfoByState(
               context,
               summary.info5,
               '   $_kArrow ${banner.getWonLabel(context, 5)}',
               context.themeColors.colorByRarityFg(5),
+              WishState.won,
+            ),
+            Divider(
+              color: context.themeColors.divider,
+              thickness: 1,
+              height: 8,
+            ),
+            _getInfoByState(
+              context,
+              summary.info5,
+              '   $_kArrow ${banner.getLostLabel(context, 5)}',
+              context.themeColors.colorByRarityFg(5),
+              WishState.lost,
             ),
           ],
           Divider(color: context.themeColors.divider, thickness: 1, height: 8),
@@ -473,17 +486,18 @@ class HomeWishesValues extends StatelessWidget {
     ]);
   }
 
-  Widget _getWonInfo(
+  Widget _getInfoByState(
     BuildContext context,
     WishesInfo info,
     String label,
     Color color,
+    WishState state,
   ) {
     final total = info.wishes.where(
       (e) => e.state == WishState.won || e.state == WishState.lost,
     );
-    final won = total.count((e) => e.state == WishState.won);
-    final percent = won / total.length.coerceAtLeast(1) * 100;
-    return _getInfo(context, label, color, [won, percent, null]);
+    final byState = total.count((e) => e.state == state);
+    final percent = byState / total.length.coerceAtLeast(1) * 100;
+    return _getInfo(context, label, color, [byState, percent, null]);
   }
 }
