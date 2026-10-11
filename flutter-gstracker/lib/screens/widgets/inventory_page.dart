@@ -222,7 +222,7 @@ class _InventoryGridPageState extends State<InventoryGridPage> {
   void didUpdateWidget(covariant InventoryGridPage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.itemCount == widget.itemCount) return;
-    _selectedIndex = 0;
+    _selectedIndex = _selectedIndex.clamp(0, widget.itemCount - 1);
   }
 
   @override
@@ -255,7 +255,7 @@ class _InventoryGridPageState extends State<InventoryGridPage> {
                     ),
             ),
           ),
-          if (widget.itemCardBuilder != null)
+          if (widget.itemCardBuilder != null && widget.itemCount > 0)
             Column(
               children: [
                 Expanded(

@@ -24,7 +24,7 @@ final class AppLocalization {
   }
 
   final Map<String, String> _map;
-  AppLocalization(this._map);
+  AppLocalization._(this._map);
 
   String valueOf(String key, {int? howMany, Map<String, dynamic>? params}) {
     var value = howMany != null
@@ -53,7 +53,7 @@ class _AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
     final asset = assets[locale] ?? fallback;
     final data = await rootBundle.loadString(asset);
     final map = (jsonDecode(data) as Map).cast<String, String>();
-    return AppLocalization(map);
+    return AppLocalization._(map);
   }
 
   @override

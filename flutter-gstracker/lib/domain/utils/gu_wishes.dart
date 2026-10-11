@@ -110,9 +110,8 @@ final class GuWishes {
   }
 
   WishesSummary getWishesSummary(GeBannerType type) {
-    final wishes = getSaveWishesSummaryByBannerType(
-      type,
-    ).sortedByDescending((e) => e.wish);
+    final wishes = getSaveWishesSummaryByBannerType(type)
+        .sortedByDescending((e) => e.wish);
 
     final info4 = <WishSummary>[];
     final info4Weapon = <WishSummary>[];
@@ -219,6 +218,15 @@ final class GuWishes {
   void updateWishDate(GiWish wish, DateTime date) {
     if (!_items.svWishes.exists(wish.id)) return;
     final newWish = wish.copyWith(date: date);
+    _items.svWishes.setItem(newWish);
+  }
+
+  /// Updates the given [wish] item.
+  ///
+  /// {@macro db_update}
+  void updateWishItem(GiWish wish, String itemId) {
+    if (!_items.svWishes.exists(wish.id)) return;
+    final newWish = wish.copyWith(itemId: itemId);
     _items.svWishes.setItem(newWish);
   }
 

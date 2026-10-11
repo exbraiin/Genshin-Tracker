@@ -46,6 +46,7 @@
     "current": "Current",
     "max": "Max",
     "remove": "Remove",
+    "update_wish": "Update Wish",
     "you_sure": "Are you sure?",
     "remove_wish": "Do you want to remove \"{name}\" last wish?",
     "status": "Status",

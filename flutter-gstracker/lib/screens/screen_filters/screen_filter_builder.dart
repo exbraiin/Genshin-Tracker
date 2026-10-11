@@ -306,7 +306,7 @@ class ScreenFilters {
       const (GsWish) => ScreenFilter<GsWish>([
         FilterSection.itemType((item) => item.isWeapon),
         FilterSection.rarity((item) => item.rarity, 3),
-      ]),
+      ], queryMatcher: (item) => item.name),
       const (GiWish) => ScreenFilter<GiWish>([
         FilterSection.itemType((item) => _getItem(item.itemId).isWeapon),
         FilterSection.rarity((item) => _getItem(item.itemId).rarity, 3),

@@ -14,8 +14,8 @@ import 'package:tracker/theme/gs_assets.dart';
 const _bannerType = [
   GeBannerType.character,
   GeBannerType.weapon,
-  GeBannerType.chronicled,
   GeBannerType.standard,
+  GeBannerType.chronicled,
   GeBannerType.beginner,
 ];
 
@@ -86,6 +86,14 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   .thenByDescending((e) => e.subtype)
                   .lastOrNull;
 
+              final title = switch (bannerType) {
+                .weapon => context.labels.weaponWishes(),
+                .standard => context.labels.stndWishes(),
+                .beginner => context.labels.noviceWishes(),
+                .character => context.labels.charWishes(),
+                .chronicled => context.labels.chronicledWishes(),
+              };
+
               return Container(
                 width: 100,
                 height: 56,
@@ -99,11 +107,35 @@ class _WishesScreenScreenState extends State<WishesScreen>
                   ),
                 ),
                 margin: const EdgeInsets.only(bottom: 4),
-                child: CachedImageWidget(
-                  banner?.image,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.bottomCenter,
-                  imageAspectRatio: 2,
+                child: Stack(
+                  fit: .expand,
+                  children: [
+                    CachedImageWidget(
+                      banner?.image,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.bottomCenter,
+                      imageAspectRatio: 2,
+                    ),
+                    Positioned.fill(
+                      top: null,
+                      child: Container(
+                        color: context.themeColors.almostWhite,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 2,
+                          horizontal: 4,
+                        ),
+                        alignment: .center,
+                        child: FittedBox(
+                          fit: .scaleDown,
+                          child: Text(
+                            title,
+                            maxLines: 1,
+                            style: TextStyle(color: Colors.black, fontSize: 12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             });

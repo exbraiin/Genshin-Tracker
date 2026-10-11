@@ -145,6 +145,9 @@ abstract final class LocalizationKeys {
   /// Remove
   static const remove = 'remove';
 
+  /// Update Wish
+  static const updateWish = 'update_wish';
+
   /// Are you sure?
   static const youSure = 'you_sure';
 
@@ -1084,6 +1087,11 @@ class LocalizationMethods {
   /// Remove
   String remove() {
     return provider(LocalizationKeys.remove);
+  }
+
+  /// Update Wish
+  String updateWish() {
+    return provider(LocalizationKeys.updateWish);
   }
 
   /// Are you sure?

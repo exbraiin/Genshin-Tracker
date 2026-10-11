@@ -4,10 +4,14 @@ import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/gs_confirm_dialog.dart';
+import 'package:tracker/common/widgets/gs_grid_view.dart';
+import 'package:tracker/common/widgets/gs_no_results_state.dart';
 import 'package:tracker/common/widgets/gs_time_dialog.dart';
 import 'package:tracker/common/widgets/gs_wish_state_icon.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/domain/gs_database.dart';
+import 'package:tracker/screens/add_wish_screen/add_wish_item_data_list_item.dart';
+import 'package:tracker/screens/widgets/inventory_page.dart';
 import 'package:tracker/theme/gs_assets.dart';
 
 enum ListType { none, top, middle, bottom }
@@ -110,19 +114,35 @@ class WishListItem extends StatelessWidget {
             ),
           ),
           wishPity(),
-          Container(
-            width: 44,
-            margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
-            child: CachedImageWidget(item.image, fit: BoxFit.cover),
-          ),
-          const SizedBox(width: 8),
-          Expanded(child: Text(item.name)),
-          SizedBox(
-            width: 44,
-            child: Text(
-              wish.number.toString(),
-              style: style,
-              textAlign: TextAlign.center,
+          Expanded(
+            child: GestureDetector(
+              onLongPress: () async {
+                final banners = Database.instance.infoOf<GsBanner>();
+                final banner = banners.getItem(wish.bannerId);
+                if (banner == null) return;
+                final result = await _ItemSelectorDialog.show(context, banner);
+                if (result == null || wish.itemId == result) return;
+                GsUtils.wishes.updateWishItem(wish, result);
+              },
+              child: Row(
+                children: [
+                  Container(
+                    width: 44,
+                    margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
+                    child: CachedImageWidget(item.image, fit: BoxFit.cover),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(item.name)),
+                  SizedBox(
+                    width: 44,
+                    child: Text(
+                      wish.number.toString(),
+                      style: style,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -184,5 +204,77 @@ class WishListItem extends StatelessWidget {
     if (isMid) return ListType.middle;
     if (isBot) return ListType.bottom;
     return ListType.none;
+  }
+}
+
+class _ItemSelectorDialog extends StatelessWidget {
+  static Future<String?> show(BuildContext context, GsBanner banner) {
+    return showDialog<String>(
+      context: context,
+      builder: (context) => _ItemSelectorDialog(banner),
+    );
+  }
+
+  final GsBanner banner;
+  const _ItemSelectorDialog(this.banner);
+
+  @override
+  Widget build(BuildContext context) {
+    bool featured(GsWish itemData) =>
+        banner.feature4.contains(itemData.id) ||
+        banner.feature5.contains(itemData.id);
+
+    final list = GsUtils.wishes
+        .getBannerItemsData(banner)
+        .map((e) => e.copyWith(featured: featured(e)))
+        .sorted();
+    if (list.isEmpty) return const GsNoResultsState();
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final max = constraints.biggest;
+        return Center(
+          child: Material(
+            type: .transparency,
+            child: InventoryBox(
+              padding: EdgeInsets.all(kSeparator8),
+              margin: EdgeInsets.all(kSeparator16),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: 300,
+                  minHeight: 200,
+                  maxWidth: (max.width / 1.3).coerceAtLeast(300),
+                  maxHeight: (max.height / 1.3).coerceAtLeast(200),
+                ),
+                child: Column(
+                  spacing: kSeparator6,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      context.labels.updateWish(),
+                      style: context.themeStyles.label16b,
+                    ),
+                    Flexible(
+                      child: GsGridView.builder(
+                        itemCount: list.length,
+                        itemBuilder: (context, index) {
+                          final item = list[index];
+                          return AddWishItemDataListItem(
+                            item: item,
+                            isItemFeatured: item.featured,
+                            onAdd: () =>
+                                Navigator.of(context).maybePop(item.id),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
