@@ -14,5 +14,5 @@ class GiEnvisagedEcho({@override final String id = ''})
       _$GiEnvisagedEchoFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiEnvisagedEchoToJson(this);
+  JsonMap toJson() => _$GiEnvisagedEchoToJson(this);
 }

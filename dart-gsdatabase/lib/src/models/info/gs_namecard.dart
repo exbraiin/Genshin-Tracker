@@ -23,7 +23,7 @@ class GsNamecard({
   factory GsNamecard.fromJson(JsonMap json) => _$GsNamecardFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsNamecardToJson(this);
+  JsonMap toJson() => _$GsNamecardToJson(this);
 
   @override
   Iterable<Comparable Function(GsNamecard e)> get sorters => [

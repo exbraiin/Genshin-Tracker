@@ -19,5 +19,5 @@ class GiCharacter({
   factory GiCharacter.fromJson(JsonMap json) => _$GiCharacterFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiCharacterToJson(this);
+  JsonMap toJson() => _$GiCharacterToJson(this);
 }

@@ -16,5 +16,5 @@ class GiSereniteaSet({
       _$GiSereniteaSetFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiSereniteaSetToJson(this);
+  JsonMap toJson() => _$GiSereniteaSetToJson(this);
 }

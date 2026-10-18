@@ -24,7 +24,7 @@ class GsSereniteaSet({
       _$GsSereniteaSetFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsSereniteaSetToJson(this);
+  JsonMap toJson() => _$GsSereniteaSetToJson(this);
 
   @override
   Iterable<Comparable Function(GsSereniteaSet e)> get sorters => [

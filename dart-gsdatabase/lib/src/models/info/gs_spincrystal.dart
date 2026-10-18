@@ -22,7 +22,7 @@ class GsSpincrystal({
   factory GsSpincrystal.fromJson(JsonMap json) => _$GsSpincrystalFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsSpincrystalToJson(this);
+  JsonMap toJson() => _$GsSpincrystalToJson(this);
 
   @override
   Iterable<Comparable Function(GsSpincrystal e)> get sorters => [

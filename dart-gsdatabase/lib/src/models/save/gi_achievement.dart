@@ -13,5 +13,5 @@ class GiAchievement({@override final String id = '', final int obtained = 0})
   factory GiAchievement.fromJson(JsonMap json) => _$GiAchievementFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiAchievementToJson(this);
+  JsonMap toJson() => _$GiAchievementToJson(this);
 }

@@ -21,5 +21,5 @@ class GsEnvisagedEcho({
       _$GsEnvisagedEchoFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsEnvisagedEchoToJson(this);
+  JsonMap toJson() => _$GsEnvisagedEchoToJson(this);
 }

@@ -22,5 +22,5 @@ class GsAchievementGroup({
       _$GsAchievementGroupFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsAchievementGroupToJson(this);
+  JsonMap toJson() => _$GsAchievementGroupToJson(this);
 }

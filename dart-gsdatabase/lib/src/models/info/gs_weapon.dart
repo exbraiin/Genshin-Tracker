@@ -36,7 +36,7 @@ class GsWeapon({
   factory GsWeapon.fromJson(JsonMap json) => _$GsWeaponFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsWeaponToJson(this);
+  JsonMap toJson() => _$GsWeaponToJson(this);
 
   @override
   Iterable<Comparable Function(GsWeapon e)> get sorters => [(e) => e.rarity];

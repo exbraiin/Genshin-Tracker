@@ -17,5 +17,5 @@ class GiEventRewards({
       _$GiEventRewardsFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiEventRewardsToJson(this);
+  JsonMap toJson() => _$GiEventRewardsToJson(this);
 }

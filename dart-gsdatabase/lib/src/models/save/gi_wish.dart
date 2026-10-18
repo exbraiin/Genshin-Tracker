@@ -19,7 +19,7 @@ class GiWish({
   factory GiWish.fromJson(JsonMap json) => _$GiWishFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiWishToJson(this);
+  JsonMap toJson() => _$GiWishToJson(this);
 
   @override
   Iterable<Comparable Function(GiWish a)> get sorters => [

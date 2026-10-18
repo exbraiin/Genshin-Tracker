@@ -22,7 +22,7 @@ class GsBattlepass({
   factory GsBattlepass.fromJson(JsonMap json) => _$GsBattlepassFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsBattlepassToJson(this);
+  JsonMap toJson() => _$GsBattlepassToJson(this);
 
   @override
   Iterable<Comparable Function(GsBattlepass e)> get sorters => [

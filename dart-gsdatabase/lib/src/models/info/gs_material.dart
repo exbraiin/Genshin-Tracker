@@ -30,7 +30,7 @@ class GsMaterial({
   factory GsMaterial.fromJson(JsonMap json) => _$GsMaterialFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsMaterialToJson(this);
+  JsonMap toJson() => _$GsMaterialToJson(this);
 
   @override
   Iterable<Comparable Function(GsMaterial e)> get sorters => [

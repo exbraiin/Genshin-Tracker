@@ -26,7 +26,7 @@ class GsFurnitureChest({
       _$GsFurnitureChestFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsFurnitureChestToJson(this);
+  JsonMap toJson() => _$GsFurnitureChestToJson(this);
 
   @override
   Iterable<Comparable Function(GsFurnitureChest e)> get sorters => [

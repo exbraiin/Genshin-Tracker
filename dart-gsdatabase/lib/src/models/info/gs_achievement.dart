@@ -22,7 +22,7 @@ class GsAchievement({
   factory GsAchievement.fromJson(JsonMap json) => _$GsAchievementFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsAchievementToJson(this);
+  JsonMap toJson() => _$GsAchievementToJson(this);
 
   @override
   Iterable<Comparable Function(GsAchievement e)> get sorters => [
@@ -41,5 +41,5 @@ class GsAchievementPhase({
       _$GsAchievementPhaseFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsAchievementPhaseToJson(this);
+  JsonMap toJson() => _$GsAchievementPhaseToJson(this);
 }

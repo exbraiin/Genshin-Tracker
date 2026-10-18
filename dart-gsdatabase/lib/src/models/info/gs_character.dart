@@ -59,7 +59,7 @@ class GsCharacter({
   factory GsCharacter.fromJson(JsonMap json) => _$GsCharacterFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsCharacterToJson(this);
+  JsonMap toJson() => _$GsCharacterToJson(this);
 
   @override
   Iterable<Comparable Function(GsCharacter e)> get sorters => [(e) => e.rarity];

@@ -19,7 +19,7 @@ class GsLunarArcana({
   factory GsLunarArcana.fromJson(JsonMap json) => _$GsLunarArcanaFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsLunarArcanaToJson(this);
+  JsonMap toJson() => _$GsLunarArcanaToJson(this);
 
   @override
   Iterable<Comparable Function(GsLunarArcana a)> get sorters => [

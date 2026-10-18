@@ -14,5 +14,5 @@ class GiThespianTrick({@override final String id = ''})
       _$GiThespianTrickFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiThespianTrickToJson(this);
+  JsonMap toJson() => _$GiThespianTrickToJson(this);
 }

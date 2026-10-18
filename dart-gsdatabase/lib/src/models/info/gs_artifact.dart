@@ -26,7 +26,7 @@ class GsArtifact({
   factory GsArtifact.fromJson(JsonMap json) => _$GsArtifactFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsArtifactToJson(this);
+  JsonMap toJson() => _$GsArtifactToJson(this);
 
   @override
   Iterable<Comparable Function(GsArtifact e)> get sorters => [
@@ -50,5 +50,5 @@ class GsArtifactPiece({
       _$GsArtifactPieceFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsArtifactPieceToJson(this);
+  JsonMap toJson() => _$GsArtifactPieceToJson(this);
 }

@@ -14,5 +14,5 @@ class GiFurnitureChest({@override final String id = ''})
       _$GiFurnitureChestFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiFurnitureChestToJson(this);
+  JsonMap toJson() => _$GiFurnitureChestToJson(this);
 }

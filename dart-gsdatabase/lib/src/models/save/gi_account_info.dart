@@ -17,5 +17,5 @@ class GiAccountInfo({
   factory GiAccountInfo.fromJson(JsonMap json) => _$GiAccountInfoFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiAccountInfoToJson(this);
+  JsonMap toJson() => _$GiAccountInfoToJson(this);
 }

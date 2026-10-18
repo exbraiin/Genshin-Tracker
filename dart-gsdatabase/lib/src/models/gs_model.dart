@@ -9,8 +9,7 @@ String modelDateToJson(DateTime value) => value.toString();
 
 abstract class GsModel<T extends GsModel<T>> implements Comparable<T> {
   String get id;
-  JsonMap toMap();
-  JsonMap toJson() => toMap();
+  JsonMap toJson();
 
   @override
   int compareTo(T other) {
@@ -24,15 +23,4 @@ abstract class GsModel<T extends GsModel<T>> implements Comparable<T> {
 
 mixin GsVersionable<T extends GsModel<T>> on GsModel<T> {
   String get version;
-}
-
-class BuilderGenerator {
-  const BuilderGenerator();
-}
-
-class BuilderWire<T> {
-  final String wire;
-  final bool fullDate;
-  final T? value;
-  const BuilderWire(this.wire, {this.value, this.fullDate = false});
 }

@@ -28,7 +28,7 @@ class GsRecipe({
   factory GsRecipe.fromJson(JsonMap json) => _$GsRecipeFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsRecipeToJson(this);
+  JsonMap toJson() => _$GsRecipeToJson(this);
 
   @override
   Iterable<Comparable Function(GsRecipe e)> get sorters => [
@@ -44,7 +44,7 @@ class GsIngredient({@override final String id = '', final int amount = 0})
   factory GsIngredient.fromJson(JsonMap json) => _$GsIngredientFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsIngredientToJson(this);
+  JsonMap toJson() => _$GsIngredientToJson(this);
 }
 
 extension GsRecipeExt on GsRecipe {

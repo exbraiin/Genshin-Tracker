@@ -13,5 +13,5 @@ class GiRecipe({@override final String id = '', final int proficiency = 0})
   factory GiRecipe.fromJson(JsonMap json) => _$GiRecipeFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiRecipeToJson(this);
+  JsonMap toJson() => _$GiRecipeToJson(this);
 }

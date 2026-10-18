@@ -13,5 +13,5 @@ class GiMaterial({@override final String id = '', final int amount = 0})
   factory GiMaterial.fromJson(JsonMap json) => _$GiMaterialFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiMaterialToJson(this);
+  JsonMap toJson() => _$GiMaterialToJson(this);
 }

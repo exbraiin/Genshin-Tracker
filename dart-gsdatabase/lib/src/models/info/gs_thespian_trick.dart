@@ -21,7 +21,7 @@ class GsThespianTrick({
       _$GsThespianTrickFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsThespianTrickToJson(this);
+  JsonMap toJson() => _$GsThespianTrickToJson(this);
 
   @override
   Iterable<Comparable Function(GsThespianTrick a)> get sorters => [

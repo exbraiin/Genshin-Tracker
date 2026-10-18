@@ -26,7 +26,7 @@ class GsWish extends GsModel<GsWish> with GsVersionable {
   GsWish.fromCharacter(this.character) : weapon = null, featured = false;
 
   @override
-  JsonMap toMap() => weapon?.toMap() ?? character?.toMap() ?? {};
+  JsonMap toJson() => weapon?.toJson() ?? character?.toJson() ?? {};
 
   GsWish copyWith({bool? featured}) => GsWish._(
     weapon: weapon,

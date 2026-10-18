@@ -27,7 +27,7 @@ class GsBanner({
   factory GsBanner.fromJson(JsonMap json) => _$GsBannerFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsBannerToJson(this);
+  JsonMap toJson() => _$GsBannerToJson(this);
 
   @override
   Iterable<Comparable Function(GsBanner e)> get sorters => [

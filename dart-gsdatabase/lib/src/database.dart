@@ -182,7 +182,7 @@ final class Items<T extends GsModel<T>> {
   }
 
   void _save(JsonMap map) {
-    final items = _data.map((k, v) => MapEntry(k, v.toMap()..remove('id')));
+    final items = _data.map((k, v) => MapEntry(k, v.toJson()..remove('id')));
     map[collectionId] = items;
   }
 }

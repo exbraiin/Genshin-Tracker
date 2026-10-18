@@ -27,7 +27,7 @@ class GsEvent({
   factory GsEvent.fromJson(JsonMap json) => _$GsEventFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsEventToJson(this);
+  JsonMap toJson() => _$GsEventToJson(this);
 
   @override
   Iterable<Comparable Function(GsEvent e)> get sorters => [

@@ -13,5 +13,5 @@ class GiSpincrystal({@override final String id = ''})
   factory GiSpincrystal.fromJson(JsonMap json) => _$GiSpincrystalFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiSpincrystalToJson(this);
+  JsonMap toJson() => _$GiSpincrystalToJson(this);
 }

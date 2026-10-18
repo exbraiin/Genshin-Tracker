@@ -13,5 +13,5 @@ class GiFurnishing({@override final String id = '', final int amount = 0})
   factory GiFurnishing.fromJson(JsonMap json) => _$GiFurnishingFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiFurnishingToJson(this);
+  JsonMap toJson() => _$GiFurnishingToJson(this);
 }

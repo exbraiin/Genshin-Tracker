@@ -19,7 +19,7 @@ class GsVersion({
   factory GsVersion.fromJson(JsonMap json) => _$GsVersionFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsVersionToJson(this);
+  JsonMap toJson() => _$GsVersionToJson(this);
 
   @override
   Iterable<Comparable Function(GsVersion e)> get sorters => [

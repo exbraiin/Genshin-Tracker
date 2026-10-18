@@ -31,5 +31,5 @@ class GiPlayerInfo({
   factory GiPlayerInfo.fromJson(JsonMap json) => _$GiPlayerInfoFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiPlayerInfoToJson(this);
+  JsonMap toJson() => _$GiPlayerInfoToJson(this);
 }

@@ -13,5 +13,5 @@ class GiLunarArcana({@override final String id = ''})
   factory GiLunarArcana.fromJson(JsonMap json) => _$GiLunarArcanaFromJson(json);
 
   @override
-  JsonMap toMap() => _$GiLunarArcanaToJson(this);
+  JsonMap toJson() => _$GiLunarArcanaToJson(this);
 }

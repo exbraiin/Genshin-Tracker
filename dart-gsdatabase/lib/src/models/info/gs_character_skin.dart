@@ -22,5 +22,5 @@ class GsCharacterSkin({
       _$GsCharacterSkinFromJson(json);
 
   @override
-  JsonMap toMap() => _$GsCharacterSkinToJson(this);
+  JsonMap toJson() => _$GsCharacterSkinToJson(this);
 }
