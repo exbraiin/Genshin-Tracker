@@ -20,6 +20,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
   flutter::DartProject project(L"data");
+  
+  // TEMPORARY: Flutter 3.47 Windows Impeller startup
+  // regression: https://github.com/flutter/flutter/issues/191860
+  // Re-test when upgrading Flutter.
+  project.set_impeller_switch(flutter::ImpellerSwitch::Disabled);
 
   std::vector<std::string> command_line_arguments =
       GetCommandLineArguments();
