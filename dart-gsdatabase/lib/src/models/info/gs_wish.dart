@@ -10,7 +10,7 @@ class GsWish extends GsModel<GsWish> with GsVersionable {
   @override
   String get id => weapon?.id ?? character?.id ?? '';
   @override
-  String get version => weapon?.id ?? character?.id ?? '';
+  String get version => weapon?.version ?? character?.version ?? '';
 
   String get name => weapon?.name ?? character?.name ?? '';
   String get image => weapon?.image ?? character?.image ?? '';
@@ -28,8 +28,7 @@ class GsWish extends GsModel<GsWish> with GsVersionable {
   @override
   JsonMap toMap() => weapon?.toMap() ?? character?.toMap() ?? {};
 
-  @override
-  GsWish copyWith({String? id, bool? featured}) => GsWish._(
+  GsWish copyWith({bool? featured}) => GsWish._(
     weapon: weapon,
     character: character,
     featured: featured ?? this.featured,

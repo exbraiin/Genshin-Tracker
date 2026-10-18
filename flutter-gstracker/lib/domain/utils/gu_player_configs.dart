@@ -1,4 +1,4 @@
-import 'package:gsdatabase/gsdatabase.dart' show GiPlayerInfo;
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/domain/utils/gs_collections.dart';
 
 final class GuPlayerConfigs {

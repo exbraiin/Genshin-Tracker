@@ -1,77 +1,65 @@
-import 'package:gsdatabase/gsdatabase.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:gsdatabase/src/enums/ge_character_asc_stat_type.dart';
+import 'package:gsdatabase/src/enums/ge_element_type.dart';
+import 'package:gsdatabase/src/enums/ge_item_source_type.dart';
+import 'package:gsdatabase/src/enums/ge_region_type.dart';
+import 'package:gsdatabase/src/enums/ge_weapon_type.dart';
 import 'package:gsdatabase/src/models/gs_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'gs_character.g.dart';
 
-@BuilderGenerator()
-abstract class _GsCharacter extends GsModel<GsCharacter> with GsVersionable {
-  @BuilderWire('enka_id')
-  String get enkaId;
-  @BuilderWire('name')
-  String get name;
-  @BuilderWire('namecard_id')
-  String get namecardId;
-  @BuilderWire('title')
-  String get title;
-  @BuilderWire('rarity')
-  int get rarity;
-  @BuilderWire('region')
-  GeRegionType get region;
-  @BuilderWire('weapon')
-  GeWeaponType get weapon;
-  @BuilderWire('element')
-  GeElementType get element;
+@CopyWith(skipFields: true)
+@JsonSerializable(explicitToJson: true)
+class GsCharacter({
+  @override final String id = '',
+  @override final String version = '',
+  final String enkaId = '',
+  final String name = '',
+  final String namecardId = '',
+  final String title = '',
+  final int rarity = 0,
+  @JsonKey(unknownEnumValue: GeRegionType.none)
+  final GeRegionType region = GeRegionType.none,
+  @JsonKey(unknownEnumValue: GeWeaponType.none)
+  final GeWeaponType weapon = GeWeaponType.none,
+  @JsonKey(unknownEnumValue: GeElementType.none)
+  final GeElementType element = GeElementType.none,
+  @JsonKey(unknownEnumValue: GeItemSourceType.none)
+  final GeItemSourceType source = GeItemSourceType.none,
+  final String description = '',
+  final String constellation = '',
+  final String affiliation = '',
+  final String specialDish = '',
+  @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
+  required final DateTime birthday,
+  @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
+  required final DateTime releaseDate,
+  final String image = '',
+  final String fullImage = '',
+  final String constellationImage = '',
+  final String gemMaterial = '',
+  final String bossMaterial = '',
+  final String commonMaterial = '',
+  final String regionMaterial = '',
+  final String talentMaterial = '',
+  final String weeklyMaterial = '',
+  @JsonKey(unknownEnumValue: GeCharacterAscStatType.none)
+  final GeCharacterAscStatType ascStatType = GeCharacterAscStatType.none,
+  final int ascHpValue = 0,
+  final int ascAtkValue = 0,
+  final int ascDefValue = 0,
+  final double ascStatValue = 0,
+  final int talentAConstellation = -1,
+  final int talentEConstellation = -1,
+  final int talentQConstellation = -1,
+}) extends GsModel<GsCharacter> with GsVersionable {
+  static const kTableKey = 'characters';
+
+  factory GsCharacter.fromJson(JsonMap json) => _$GsCharacterFromJson(json);
+
   @override
-  @BuilderWire('version')
-  String get version;
-  @BuilderWire('source')
-  GeItemSourceType get source;
-  @BuilderWire('description')
-  String get description;
-  @BuilderWire('constellation')
-  String get constellation;
-  @BuilderWire('affiliation')
-  String get affiliation;
-  @BuilderWire('special_dish')
-  String get specialDish;
-  @BuilderWire('birthday')
-  DateTime get birthday;
-  @BuilderWire('release_date')
-  DateTime get releaseDate;
-  @BuilderWire('image')
-  String get image;
-  @BuilderWire('full_image')
-  String get fullImage;
-  @BuilderWire('constellation_image')
-  String get constellationImage;
-  @BuilderWire('mat_gem')
-  String get gemMaterial;
-  @BuilderWire('mat_boss')
-  String get bossMaterial;
-  @BuilderWire('mat_common')
-  String get commonMaterial;
-  @BuilderWire('mat_region')
-  String get regionMaterial;
-  @BuilderWire('mat_talent')
-  String get talentMaterial;
-  @BuilderWire('mat_weekly')
-  String get weeklyMaterial;
-  @BuilderWire('asc_stat_type')
-  GeCharacterAscStatType get ascStatType;
-  @BuilderWire('asc_hp_value')
-  int get ascHpValue;
-  @BuilderWire('asc_atk_value')
-  int get ascAtkValue;
-  @BuilderWire('asc_def_value')
-  int get ascDefValue;
-  @BuilderWire('asc_stat_value')
-  double get ascStatValue;
-  @BuilderWire('tal_a_const', value: -1)
-  int get talentAConstellation;
-  @BuilderWire('tal_e_const', value: -1)
-  int get talentEConstellation;
-  @BuilderWire('tal_q_const', value: -1)
-  int get talentQConstellation;
+  JsonMap toMap() => _$GsCharacterToJson(this);
 
   @override
   Iterable<Comparable Function(GsCharacter e)> get sorters => [(e) => e.rarity];

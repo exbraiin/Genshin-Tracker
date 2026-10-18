@@ -1,17 +1,25 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:gsdatabase/src/models/gs_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'gi_wish.g.dart';
 
-@BuilderGenerator()
-abstract class _GiWish extends GsModel<GiWish> {
-  @BuilderWire('number')
-  int get number;
-  @BuilderWire('item')
-  String get itemId;
-  @BuilderWire('banner')
-  String get bannerId;
-  @BuilderWire('date')
-  DateTime get date;
+@CopyWith(skipFields: true)
+@JsonSerializable(explicitToJson: true)
+class GiWish({
+  @override final String id = '',
+  final int number = 0,
+  final String itemId = '',
+  final String bannerId = '',
+  @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
+  required final DateTime date,
+}) extends GsModel<GiWish> {
+  static const kTableKey = 'wishes';
+
+  factory GiWish.fromJson(JsonMap json) => _$GiWishFromJson(json);
+
+  @override
+  JsonMap toMap() => _$GiWishToJson(this);
 
   @override
   Iterable<Comparable Function(GiWish a)> get sorters => [

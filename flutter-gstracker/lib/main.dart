@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,11 @@ import 'package:tracker/theme/gs_assets.dart';
 import 'package:tracker/theme/windows_bar.dart';
 
 void main() {
-  runApp(const MyApp());
+  Widget app = const MyApp();
+  if (Platform.isWindows) {
+    app = ExcludeSemantics(child: app);
+  }
+  runApp(app);
 }
 
 class MyApp extends StatelessWidget {

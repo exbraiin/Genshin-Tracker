@@ -1,5 +1,7 @@
 import 'package:gsdatabase/src/enums/ge_enum.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+@JsonEnum(valueField: 'id')
 enum GeArtifactPieceType implements GeEnum {
   flowerOfLife('flower_of_life'),
   plumeOfDeath('plume_of_death'),

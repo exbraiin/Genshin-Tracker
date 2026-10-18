@@ -80,8 +80,8 @@ class GsRecipeExt extends GsModelExt<GsRecipe> {
         (item) => vdBaseRecipes.filters,
         (item, value) {
           final base = Database.i.of<GsRecipe>().getItem(value);
-          final type = base != null ? GeRecipeType.permanent : null;
-          final ingredients = base?.ingredients.toList();
+          final type = base != null ? GeRecipeType.permanent : item.type;
+          final ingredients = base?.ingredients.toList() ?? item.ingredients;
           return item.copyWith(
             baseRecipe: value,
             type: type,

@@ -3,86 +3,126 @@
 part of 'gs_achievement_group.dart';
 
 // **************************************************************************
-// Generator: BuilderGeneratorGen
+// CopyWithGenerator
 // **************************************************************************
 
-class GsAchievementGroup extends _GsAchievementGroup {
-  @override
-  final String id;
-  @override
-  final String name;
-  @override
-  final String icon;
-  @override
-  final String version;
-  @override
-  final String namecard;
-  @override
-  final int order;
-  @override
-  final int rewards;
-  @override
-  final int achievements;
-
-  /// Creates a new [GsAchievementGroup] instance.
-  GsAchievementGroup({
-    required this.id,
-    required this.name,
-    required this.icon,
-    required this.version,
-    required this.namecard,
-    required this.order,
-    required this.rewards,
-    required this.achievements,
+abstract class _$GsAchievementGroupCWProxy {
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsAchievementGroup(...).copyWith(id: 12, name: "My name")
+  /// ```
+  GsAchievementGroup call({
+    String id,
+    String version,
+    String name,
+    String icon,
+    String namecard,
+    int order,
+    int rewards,
+    int achievements,
   });
+}
 
-  /// Creates a new [GsAchievementGroup] instance from the given map.
-  GsAchievementGroup.fromJson(JsonMap m)
-    : id = m['id'] as String? ?? '',
-      name = m['name'] as String? ?? '',
-      icon = m['icon'] as String? ?? '',
-      version = m['version'] as String? ?? '',
-      namecard = m['namecard'] as String? ?? '',
-      order = m['order'] as int? ?? 0,
-      rewards = m['rewards'] as int? ?? 0,
-      achievements = m['achievements'] as int? ?? 0;
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfGsAchievementGroup.copyWith(...)`.
+class _$GsAchievementGroupCWProxyImpl implements _$GsAchievementGroupCWProxy {
+  const _$GsAchievementGroupCWProxyImpl(this._value);
 
-  /// Copies this model with the given parameters.
+  final GsAchievementGroup _value;
+
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsAchievementGroup(...).copyWith(id: 12, name: "My name")
+  /// ```
   @override
-  GsAchievementGroup copyWith({
-    String? id,
-    String? name,
-    String? icon,
-    String? version,
-    String? namecard,
-    int? order,
-    int? rewards,
-    int? achievements,
+  GsAchievementGroup call({
+    Object? id = const $CopyWithPlaceholder(),
+    Object? version = const $CopyWithPlaceholder(),
+    Object? name = const $CopyWithPlaceholder(),
+    Object? icon = const $CopyWithPlaceholder(),
+    Object? namecard = const $CopyWithPlaceholder(),
+    Object? order = const $CopyWithPlaceholder(),
+    Object? rewards = const $CopyWithPlaceholder(),
+    Object? achievements = const $CopyWithPlaceholder(),
   }) {
     return GsAchievementGroup(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      icon: icon ?? this.icon,
-      version: version ?? this.version,
-      namecard: namecard ?? this.namecard,
-      order: order ?? this.order,
-      rewards: rewards ?? this.rewards,
-      achievements: achievements ?? this.achievements,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      version: version == const $CopyWithPlaceholder() || version == null
+          ? _value.version
+          // ignore: cast_nullable_to_non_nullable
+          : version as String,
+      name: name == const $CopyWithPlaceholder() || name == null
+          ? _value.name
+          // ignore: cast_nullable_to_non_nullable
+          : name as String,
+      icon: icon == const $CopyWithPlaceholder() || icon == null
+          ? _value.icon
+          // ignore: cast_nullable_to_non_nullable
+          : icon as String,
+      namecard: namecard == const $CopyWithPlaceholder() || namecard == null
+          ? _value.namecard
+          // ignore: cast_nullable_to_non_nullable
+          : namecard as String,
+      order: order == const $CopyWithPlaceholder() || order == null
+          ? _value.order
+          // ignore: cast_nullable_to_non_nullable
+          : order as int,
+      rewards: rewards == const $CopyWithPlaceholder() || rewards == null
+          ? _value.rewards
+          // ignore: cast_nullable_to_non_nullable
+          : rewards as int,
+      achievements:
+          achievements == const $CopyWithPlaceholder() || achievements == null
+          ? _value.achievements
+          // ignore: cast_nullable_to_non_nullable
+          : achievements as int,
     );
   }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'icon': icon,
-      'version': version,
-      'namecard': namecard,
-      'order': order,
-      'rewards': rewards,
-      'achievements': achievements,
-    };
-  }
 }
+
+extension $GsAchievementGroupCopyWith on GsAchievementGroup {
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfGsAchievementGroup.copyWith(...)`.
+  // ignore: library_private_types_in_public_api
+  _$GsAchievementGroupCWProxy get copyWith =>
+      _$GsAchievementGroupCWProxyImpl(this);
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GsAchievementGroup _$GsAchievementGroupFromJson(Map<String, dynamic> json) =>
+    GsAchievementGroup(
+      id: json['id'] as String? ?? '',
+      version: json['version'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      icon: json['icon'] as String? ?? '',
+      namecard: json['namecard'] as String? ?? '',
+      order: (json['order'] as num?)?.toInt() ?? 0,
+      rewards: (json['rewards'] as num?)?.toInt() ?? 0,
+      achievements: (json['achievements'] as num?)?.toInt() ?? 0,
+    );
+
+Map<String, dynamic> _$GsAchievementGroupToJson(GsAchievementGroup instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'version': instance.version,
+      'name': instance.name,
+      'icon': instance.icon,
+      'namecard': instance.namecard,
+      'order': instance.order,
+      'rewards': instance.rewards,
+      'achievements': instance.achievements,
+    };

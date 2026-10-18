@@ -1,28 +1,26 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:gsdatabase/src/models/gs_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'gs_achievement_group.g.dart';
 
-@BuilderGenerator()
-abstract class _GsAchievementGroup extends GsModel<GsAchievementGroup>
-    with GsVersionable {
-  @BuilderWire('name')
-  String get name;
-  @BuilderWire('icon')
-  String get icon;
-  @override
-  @BuilderWire('version')
-  String get version;
-  @BuilderWire('namecard')
-  String get namecard;
-  @BuilderWire('order')
-  int get order;
-  @BuilderWire('rewards')
-  int get rewards;
-  @BuilderWire('achievements')
-  int get achievements;
+@CopyWith(skipFields: true)
+@JsonSerializable(explicitToJson: true)
+class GsAchievementGroup({
+  @override final String id = '',
+  @override final String version = '',
+  final String name = '',
+  final String icon = '',
+  final String namecard = '',
+  final int order = 0,
+  final int rewards = 0,
+  final int achievements = 0,
+}) extends GsModel<GsAchievementGroup> with GsVersionable {
+  static const kTableKey = 'achievement_categories';
+
+  factory GsAchievementGroup.fromJson(JsonMap json) =>
+      _$GsAchievementGroupFromJson(json);
 
   @override
-  Iterable<Comparable Function(GsAchievementGroup a)> get sorters => [
-    (a) => a.order,
-  ];
+  JsonMap toMap() => _$GsAchievementGroupToJson(this);
 }

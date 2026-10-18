@@ -2,72 +2,88 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:gsdatabase/src/database_schema.dart';
 import 'package:gsdatabase/src/exporter.dart';
 import 'package:gsdatabase/src/utils/async.dart';
 
 Iterable<Items> get _infoCollections {
-  const kCategories = 'achievement_categories';
   return [
-    Items<GsAchievement>('achievements', GsAchievement.fromJson),
-    Items<GsAchievementGroup>(kCategories, GsAchievementGroup.fromJson),
-    Items<GsArtifact>('artifacts', GsArtifact.fromJson),
-    Items<GsBanner>('banners', GsBanner.fromJson),
-    Items<GsBattlepass>('battlepass', GsBattlepass.fromJson),
-    Items<GsCharacter>('characters', GsCharacter.fromJson),
-    Items<GsCharacterSkin>('characters_outfits', GsCharacterSkin.fromJson),
-    Items<GsEvent>('events', GsEvent.fromJson),
-    Items<GsEnvisagedEcho>('echos', GsEnvisagedEcho.fromJson),
-    Items<GsThespianTrick>('thespian', GsThespianTrick.fromJson),
-    Items<GsMaterial>('materials', GsMaterial.fromJson),
-    Items<GsNamecard>('namecards', GsNamecard.fromJson),
-    Items<GsRecipe>('recipes', GsRecipe.fromJson),
-    Items<GsFurnitureChest>('remarkable_chests', GsFurnitureChest.fromJson),
-    Items<GsLunarArcana>('lunar_arcana', GsLunarArcana.fromJson),
-    Items<GsSereniteaSet>('serenitea_sets', GsSereniteaSet.fromJson),
-    Items<GsSpincrystal>('spincrystals', GsSpincrystal.fromJson),
-    Items<GsVersion>('versions', GsVersion.fromJson),
-    Items<GsWeapon>('weapons', GsWeapon.fromJson),
+    Items<GsAchievement>(GsAchievement.kTableKey, GsAchievement.fromJson),
+    Items<GsAchievementGroup>(
+      GsAchievementGroup.kTableKey,
+      GsAchievementGroup.fromJson,
+    ),
+    Items<GsArtifact>(GsArtifact.kTableKey, GsArtifact.fromJson),
+    Items<GsBanner>(GsBanner.kTableKey, GsBanner.fromJson),
+    Items<GsBattlepass>(GsBattlepass.kTableKey, GsBattlepass.fromJson),
+    Items<GsCharacter>(GsCharacter.kTableKey, GsCharacter.fromJson),
+    Items<GsCharacterSkin>(GsCharacterSkin.kTableKey, GsCharacterSkin.fromJson),
+    Items<GsEvent>(GsEvent.kTableKey, GsEvent.fromJson),
+    Items<GsEnvisagedEcho>(GsEnvisagedEcho.kTableKey, GsEnvisagedEcho.fromJson),
+    Items<GsThespianTrick>(GsThespianTrick.kTableKey, GsThespianTrick.fromJson),
+    Items<GsMaterial>(GsMaterial.kTableKey, GsMaterial.fromJson),
+    Items<GsNamecard>(GsNamecard.kTableKey, GsNamecard.fromJson),
+    Items<GsRecipe>(GsRecipe.kTableKey, GsRecipe.fromJson),
+    Items<GsFurnitureChest>(
+      GsFurnitureChest.kTableKey,
+      GsFurnitureChest.fromJson,
+    ),
+    Items<GsLunarArcana>(GsLunarArcana.kTableKey, GsLunarArcana.fromJson),
+    Items<GsSereniteaSet>(GsSereniteaSet.kTableKey, GsSereniteaSet.fromJson),
+    Items<GsSpincrystal>(GsSpincrystal.kTableKey, GsSpincrystal.fromJson),
+    Items<GsVersion>(GsVersion.kTableKey, GsVersion.fromJson),
+    Items<GsWeapon>(GsWeapon.kTableKey, GsWeapon.fromJson),
   ];
 }
 
 Iterable<Items> get _saveCollections {
   return [
-    Items<GiAccountInfo>('account', GiAccountInfo.fromJson),
-    Items<GiAchievement>('achievements', GiAchievement.fromJson),
-    Items<GiWish>('wishes', GiWish.fromJson),
-    Items<GiRecipe>('recipes', GiRecipe.fromJson),
-    Items<GiMaterial>('materials', GiMaterial.fromJson),
-    Items<GiEnvisagedEcho>('echoes', GiEnvisagedEcho.fromJson),
-    Items<GiThespianTrick>('thespian', GiThespianTrick.fromJson),
-    Items<GiFurnitureChest>('remarkable_chests', GiFurnitureChest.fromJson),
-    Items<GiLunarArcana>('lunar_arcana', GiLunarArcana.fromJson),
-    Items<GiCharacter>('characters', GiCharacter.fromJson),
-    Items<GiSereniteaSet>('serenitea_sets', GiSereniteaSet.fromJson),
-    Items<GiSpincrystal>('spincrystals', GiSpincrystal.fromJson),
-    Items<GiPlayerInfo>('user_configs', GiPlayerInfo.fromJson),
-    Items<GiFurnishing>('furnishing', GiFurnishing.fromJson),
-    Items<GiEventRewards>('event_rewards', GiEventRewards.fromJson),
+    Items<GiAccountInfo>(GiAccountInfo.kTableKey, GiAccountInfo.fromJson),
+    Items<GiAchievement>(GiAchievement.kTableKey, GiAchievement.fromJson),
+    Items<GiWish>(GiWish.kTableKey, GiWish.fromJson),
+    Items<GiRecipe>(GiRecipe.kTableKey, GiRecipe.fromJson),
+    Items<GiMaterial>(GiMaterial.kTableKey, GiMaterial.fromJson),
+    Items<GiEnvisagedEcho>(GiEnvisagedEcho.kTableKey, GiEnvisagedEcho.fromJson),
+    Items<GiThespianTrick>(GiThespianTrick.kTableKey, GiThespianTrick.fromJson),
+    Items<GiFurnitureChest>(
+      GiFurnitureChest.kTableKey,
+      GiFurnitureChest.fromJson,
+    ),
+    Items<GiLunarArcana>(GiLunarArcana.kTableKey, GiLunarArcana.fromJson),
+    Items<GiCharacter>(GiCharacter.kTableKey, GiCharacter.fromJson),
+    Items<GiSereniteaSet>(GiSereniteaSet.kTableKey, GiSereniteaSet.fromJson),
+    Items<GiSpincrystal>(GiSpincrystal.kTableKey, GiSpincrystal.fromJson),
+    Items<GiPlayerInfo>(GiPlayerInfo.kTableKey, GiPlayerInfo.fromJson),
+    Items<GiFurnishing>(GiFurnishing.kTableKey, GiFurnishing.fromJson),
+    Items<GiEventRewards>(GiEventRewards.kTableKey, GiEventRewards.fromJson),
   ];
 }
 
-enum OperationType { insert, delete }
+enum OperationType { upsert, delete }
 
 class Operation<T extends GsModel<T>> {
   final T? item;
   final OperationType operation;
-  Operation.insert(this.item) : operation = .insert;
+  Operation.upsert(this.item) : operation = .upsert;
   Operation.delete(this.item) : operation = .delete;
 }
 
 final class GsDatabase {
+  static const kSchemaVersion = kCurrentDatabaseSchemaVersion;
+
   final Iterable<Items> _collections;
+  final JsonMap Function(JsonMap) _databaseMigrator;
   late final Stream<Operation<GsModel>> didUpdate =
       mergeStreams<Operation<GsModel>>(
         _collections.map((e) => e.onItemUpdated.cast<Operation<GsModel>>()),
       );
 
-  GsDatabase.info() : _collections = _infoCollections;
-  GsDatabase.save() : _collections = _saveCollections;
+  GsDatabase.info()
+    : _collections = _infoCollections,
+      _databaseMigrator = infoDatabaseMigrator;
+  GsDatabase.save()
+    : _collections = _saveCollections,
+      _databaseMigrator = saveDatabaseMigrator;
 
   Items<T> of<T extends GsModel<T>>() =>
       _collections.firstWhere((e) => e is Items<T>) as Items<T>;
@@ -84,13 +100,21 @@ final class GsDatabase {
         jsonMap = jsonDecode(string);
       }
     }
-    await _collections.map((e) => e._load(jsonMap)).wait;
+    final migrated = _databaseMigrator(jsonMap);
+    final deferred = _collections
+        .map((collection) => collection._load(migrated))
+        .toList();
+    for (final replace in deferred) {
+      replace();
+    }
   }
 
   Future<void> save({required String path, bool encoded = false}) async {
     final file = File(path);
-    final map = <String, dynamic>{};
-    await Future.wait(_collections.map((e) => e._save(map)));
+    final map = <String, dynamic>{kSchemaVersionKey: kSchemaVersion};
+    for (final collection in _collections) {
+      collection._save(map);
+    }
 
     if (encoded) {
       final bytes = _encodeJsonMapToBytes(map);
@@ -136,7 +160,7 @@ final class Items<T extends GsModel<T>> {
   /// Replaces the item with the given one based on the id.
   void setItem(T item) {
     _data[item.id] = item;
-    _notifier.add(Operation.insert(item));
+    _notifier.add(Operation.upsert(item));
   }
 
   /// Removes the item with the given id from db.
@@ -145,22 +169,19 @@ final class Items<T extends GsModel<T>> {
     _notifier.add(Operation.delete(item));
   }
 
-  /// Edits the item, if the item does not exists a new one is created.
-  /// * If the callback returns null, the item is removed.
-  void editItem(String id, T? Function(T item) edit) {
-    final item = getItem(id) ?? parser({'id': id});
-    final edited = edit(item)?.copyWith(id: id);
-    return edited != null ? setItem(edited) : removeItem(id);
-  }
-
-  Future<void> _load(JsonMap map) async {
+  // Parse immediately; defer replacement until every collection has parsed.
+  void Function() _load(JsonMap map) {
     final items = (map[collectionId] as JsonMap? ?? {}).map(
-      (k, v) => MapEntry(k, parser({'id': k, ...v})),
+      (k, v) => MapEntry(k, parser({...v, 'id': k})),
     );
-    _data.addAll(items);
+    return () {
+      _data
+        ..clear()
+        ..addAll(items);
+    };
   }
 
-  Future<void> _save(JsonMap map) async {
+  void _save(JsonMap map) {
     final items = _data.map((k, v) => MapEntry(k, v.toMap()..remove('id')));
     map[collectionId] = items;
   }

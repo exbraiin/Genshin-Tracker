@@ -691,15 +691,12 @@ final class YattaImporter implements ImportApi {
       _ => null,
     };
 
-    return (other ?? GsSereniteaSet.fromJson({})).copyWith(
-      id: name?.toDbId(),
-      name: name,
-      version: null,
-      category: category,
-      image: null,
+    final item = other ?? GsSereniteaSet.fromJson({});
+    return item.copyWith(
+      id: name?.toDbId() ?? item.id,
+      name: name ?? item.name,
+      category: category ?? item.category,
       rarity: 4,
-      energy: null,
-      chars: null,
     );
   }
 

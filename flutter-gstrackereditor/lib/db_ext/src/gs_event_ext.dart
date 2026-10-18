@@ -44,7 +44,7 @@ class GsEventExt extends GsModelExt<GsEvent> {
           type: value,
           dateEnd: value == GeEventType.permanent
               ? GsModelExt.kPermanentDate
-              : null,
+              : item.dateEnd,
         ),
         invalid: [GeEventType.none],
       ),
@@ -56,8 +56,8 @@ class GsEventExt extends GsModelExt<GsEvent> {
           final dates = vdVersion.getDates(item.version);
           return item.copyWith(
             version: value,
-            dateStart: dates?.$1,
-            dateEnd: dates?.$2,
+            dateStart: dates?.$1 ?? item.dateStart,
+            dateEnd: dates?.$2 ?? item.dateEnd,
           );
         },
         validator: (item) => vdVersion.validate(item.version),

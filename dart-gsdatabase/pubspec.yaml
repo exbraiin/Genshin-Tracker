@@ -8,7 +8,8 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  # dartx: ^1.2.0
+  copy_with_extension: ^18.0.0
+  json_annotation: ^4.12.0
 
 dev_dependencies:
   lints: ^6.0.0
@@ -16,3 +17,5 @@ dev_dependencies:
   source_gen: ^4.0.1
   analyzer: ^14.4.0
   build_runner: ^2.4.7
+  json_serializable: ^6.14.1
+  copy_with_extension_gen: ^18.0.0

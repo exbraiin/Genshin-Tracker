@@ -87,7 +87,9 @@ class _ItemEditScreenState<T extends GsModel<T>>
               onPressed: () => context.pushWidgetReplacement(
                 ItemEditScreen<T>(
                   item: null,
-                  duplicated: _notifier.value.copyWith(),
+                  duplicated: widget.collection.parser(
+                    _notifier.value.toJson(),
+                  ),
                   title: widget.title,
                   collection: widget.collection,
                   modelExt: widget.modelExt,

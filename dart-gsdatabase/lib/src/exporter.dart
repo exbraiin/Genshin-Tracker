@@ -20,39 +20,75 @@ export 'enums/ge_weekday_type.dart';
 export 'models/gs_model.dart'
     show GsModel, ListGsEnumExt, GeEnum, JsonMap, GsVersionable;
 // --- DATA MODELS ---
-export 'models/info/gs_achievement.dart' show GsAchievement, GsAchievementPhase;
-export 'models/info/gs_achievement_group.dart' show GsAchievementGroup;
-export 'models/info/gs_artifact.dart' show GsArtifact, GsArtifactPiece;
-export 'models/info/gs_banner.dart' show GsBanner;
-export 'models/info/gs_battlepass.dart' show GsBattlepass;
-export 'models/info/gs_character.dart' show GsCharacter;
-export 'models/info/gs_character_skin.dart' show GsCharacterSkin;
-export 'models/info/gs_envisaged_echo.dart' show GsEnvisagedEcho;
-export 'models/info/gs_event.dart' show GsEvent;
-export 'models/info/gs_furniture_chest.dart' show GsFurnitureChest;
-export 'models/info/gs_lunar_arcana.dart' show GsLunarArcana;
-export 'models/info/gs_material.dart' show GsMaterial;
-export 'models/info/gs_namecard.dart' show GsNamecard;
-export 'models/info/gs_recipe.dart' show GsRecipe, GsIngredient, GsRecipeExt;
-export 'models/info/gs_serenitea_set.dart' show GsSereniteaSet;
-export 'models/info/gs_spincrystal.dart' show GsSpincrystal, GsSpincrystalExt;
-export 'models/info/gs_thespian_trick.dart' show GsThespianTrick;
-export 'models/info/gs_version.dart' show GsVersion;
-export 'models/info/gs_weapon.dart' show GsWeapon;
+export 'models/info/gs_achievement.dart'
+    show
+        GsAchievement,
+        GsAchievementPhase,
+        $GsAchievementCopyWith,
+        $GsAchievementPhaseCopyWith;
+export 'models/info/gs_achievement_group.dart'
+    show GsAchievementGroup, $GsAchievementGroupCopyWith;
+export 'models/info/gs_artifact.dart'
+    show
+        GsArtifact,
+        GsArtifactPiece,
+        $GsArtifactCopyWith,
+        $GsArtifactPieceCopyWith;
+export 'models/info/gs_banner.dart' show GsBanner, $GsBannerCopyWith;
+export 'models/info/gs_battlepass.dart'
+    show GsBattlepass, $GsBattlepassCopyWith;
+export 'models/info/gs_character.dart' show GsCharacter, $GsCharacterCopyWith;
+export 'models/info/gs_character_skin.dart'
+    show GsCharacterSkin, $GsCharacterSkinCopyWith;
+export 'models/info/gs_envisaged_echo.dart'
+    show GsEnvisagedEcho, $GsEnvisagedEchoCopyWith;
+export 'models/info/gs_event.dart' show GsEvent, $GsEventCopyWith;
+export 'models/info/gs_furniture_chest.dart'
+    show GsFurnitureChest, $GsFurnitureChestCopyWith;
+export 'models/info/gs_lunar_arcana.dart'
+    show GsLunarArcana, $GsLunarArcanaCopyWith;
+export 'models/info/gs_material.dart' show GsMaterial, $GsMaterialCopyWith;
+export 'models/info/gs_namecard.dart' show GsNamecard, $GsNamecardCopyWith;
+export 'models/info/gs_recipe.dart'
+    show
+        GsRecipe,
+        GsIngredient,
+        GsRecipeExt,
+        $GsRecipeCopyWith,
+        $GsIngredientCopyWith;
+export 'models/info/gs_serenitea_set.dart'
+    show GsSereniteaSet, $GsSereniteaSetCopyWith;
+export 'models/info/gs_spincrystal.dart'
+    show GsSpincrystal, GsSpincrystalExt, $GsSpincrystalCopyWith;
+export 'models/info/gs_thespian_trick.dart'
+    show GsThespianTrick, $GsThespianTrickCopyWith;
+export 'models/info/gs_version.dart' show GsVersion, $GsVersionCopyWith;
+export 'models/info/gs_weapon.dart' show GsWeapon, $GsWeaponCopyWith;
 export 'models/info/gs_wish.dart' show GsWish;
 // --- SAVE MODELS ---
-export 'models/save/gi_account_info.dart' show GiAccountInfo;
-export 'models/save/gi_achievement.dart' show GiAchievement;
-export 'models/save/gi_character.dart' show GiCharacter;
-export 'models/save/gi_envisaged_echo.dart' show GiEnvisagedEcho;
-export 'models/save/gi_event_rewards.dart' show GiEventRewards;
-export 'models/save/gi_furnishing.dart' show GiFurnishing;
-export 'models/save/gi_furniture_chest.dart' show GiFurnitureChest;
-export 'models/save/gi_lunar_arcana.dart' show GiLunarArcana;
-export 'models/save/gi_material.dart' show GiMaterial;
-export 'models/save/gi_player_info.dart' show GiPlayerInfo;
-export 'models/save/gi_recipe.dart' show GiRecipe;
-export 'models/save/gi_serenitea_set.dart' show GiSereniteaSet;
-export 'models/save/gi_spincrystal.dart' show GiSpincrystal;
-export 'models/save/gi_thespian_trick.dart' show GiThespianTrick;
-export 'models/save/gi_wish.dart' show GiWish, GiWishExt;
+export 'models/save/gi_account_info.dart'
+    show GiAccountInfo, $GiAccountInfoCopyWith;
+export 'models/save/gi_achievement.dart'
+    show GiAchievement, $GiAchievementCopyWith;
+export 'models/save/gi_character.dart' show GiCharacter, $GiCharacterCopyWith;
+export 'models/save/gi_envisaged_echo.dart'
+    show GiEnvisagedEcho, $GiEnvisagedEchoCopyWith;
+export 'models/save/gi_event_rewards.dart'
+    show GiEventRewards, $GiEventRewardsCopyWith;
+export 'models/save/gi_furnishing.dart'
+    show GiFurnishing, $GiFurnishingCopyWith;
+export 'models/save/gi_furniture_chest.dart'
+    show GiFurnitureChest, $GiFurnitureChestCopyWith;
+export 'models/save/gi_lunar_arcana.dart'
+    show GiLunarArcana, $GiLunarArcanaCopyWith;
+export 'models/save/gi_material.dart' show GiMaterial, $GiMaterialCopyWith;
+export 'models/save/gi_player_info.dart'
+    show GiPlayerInfo, $GiPlayerInfoCopyWith;
+export 'models/save/gi_recipe.dart' show GiRecipe, $GiRecipeCopyWith;
+export 'models/save/gi_serenitea_set.dart'
+    show GiSereniteaSet, $GiSereniteaSetCopyWith;
+export 'models/save/gi_spincrystal.dart'
+    show GiSpincrystal, $GiSpincrystalCopyWith;
+export 'models/save/gi_thespian_trick.dart'
+    show GiThespianTrick, $GiThespianTrickCopyWith;
+export 'models/save/gi_wish.dart' show GiWish, GiWishExt, $GiWishCopyWith;

@@ -3,86 +3,124 @@
 part of 'gs_character_skin.dart';
 
 // **************************************************************************
-// Generator: BuilderGeneratorGen
+// CopyWithGenerator
 // **************************************************************************
 
-class GsCharacterSkin extends _GsCharacterSkin {
-  @override
-  final String id;
-  @override
-  final int rarity;
-  @override
-  final String name;
-  @override
-  final String image;
-  @override
-  final String version;
-  @override
-  final String character;
-  @override
-  final String sideImage;
-  @override
-  final String fullImage;
-
-  /// Creates a new [GsCharacterSkin] instance.
-  GsCharacterSkin({
-    required this.id,
-    required this.rarity,
-    required this.name,
-    required this.image,
-    required this.version,
-    required this.character,
-    required this.sideImage,
-    required this.fullImage,
+abstract class _$GsCharacterSkinCWProxy {
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsCharacterSkin(...).copyWith(id: 12, name: "My name")
+  /// ```
+  GsCharacterSkin call({
+    String id,
+    String version,
+    int rarity,
+    String name,
+    String image,
+    String character,
+    String sideImage,
+    String fullImage,
   });
+}
 
-  /// Creates a new [GsCharacterSkin] instance from the given map.
-  GsCharacterSkin.fromJson(JsonMap m)
-    : id = m['id'] as String? ?? '',
-      rarity = m['rarity'] as int? ?? 0,
-      name = m['name'] as String? ?? '',
-      image = m['image'] as String? ?? '',
-      version = m['version'] as String? ?? '',
-      character = m['character'] as String? ?? '',
-      sideImage = m['side_image'] as String? ?? '',
-      fullImage = m['full_image'] as String? ?? '';
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfGsCharacterSkin.copyWith(...)`.
+class _$GsCharacterSkinCWProxyImpl implements _$GsCharacterSkinCWProxy {
+  const _$GsCharacterSkinCWProxyImpl(this._value);
 
-  /// Copies this model with the given parameters.
+  final GsCharacterSkin _value;
+
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsCharacterSkin(...).copyWith(id: 12, name: "My name")
+  /// ```
   @override
-  GsCharacterSkin copyWith({
-    String? id,
-    int? rarity,
-    String? name,
-    String? image,
-    String? version,
-    String? character,
-    String? sideImage,
-    String? fullImage,
+  GsCharacterSkin call({
+    Object? id = const $CopyWithPlaceholder(),
+    Object? version = const $CopyWithPlaceholder(),
+    Object? rarity = const $CopyWithPlaceholder(),
+    Object? name = const $CopyWithPlaceholder(),
+    Object? image = const $CopyWithPlaceholder(),
+    Object? character = const $CopyWithPlaceholder(),
+    Object? sideImage = const $CopyWithPlaceholder(),
+    Object? fullImage = const $CopyWithPlaceholder(),
   }) {
     return GsCharacterSkin(
-      id: id ?? this.id,
-      rarity: rarity ?? this.rarity,
-      name: name ?? this.name,
-      image: image ?? this.image,
-      version: version ?? this.version,
-      character: character ?? this.character,
-      sideImage: sideImage ?? this.sideImage,
-      fullImage: fullImage ?? this.fullImage,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      version: version == const $CopyWithPlaceholder() || version == null
+          ? _value.version
+          // ignore: cast_nullable_to_non_nullable
+          : version as String,
+      rarity: rarity == const $CopyWithPlaceholder() || rarity == null
+          ? _value.rarity
+          // ignore: cast_nullable_to_non_nullable
+          : rarity as int,
+      name: name == const $CopyWithPlaceholder() || name == null
+          ? _value.name
+          // ignore: cast_nullable_to_non_nullable
+          : name as String,
+      image: image == const $CopyWithPlaceholder() || image == null
+          ? _value.image
+          // ignore: cast_nullable_to_non_nullable
+          : image as String,
+      character: character == const $CopyWithPlaceholder() || character == null
+          ? _value.character
+          // ignore: cast_nullable_to_non_nullable
+          : character as String,
+      sideImage: sideImage == const $CopyWithPlaceholder() || sideImage == null
+          ? _value.sideImage
+          // ignore: cast_nullable_to_non_nullable
+          : sideImage as String,
+      fullImage: fullImage == const $CopyWithPlaceholder() || fullImage == null
+          ? _value.fullImage
+          // ignore: cast_nullable_to_non_nullable
+          : fullImage as String,
     );
   }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {
-      'id': id,
-      'rarity': rarity,
-      'name': name,
-      'image': image,
-      'version': version,
-      'character': character,
-      'side_image': sideImage,
-      'full_image': fullImage,
-    };
-  }
 }
+
+extension $GsCharacterSkinCopyWith on GsCharacterSkin {
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfGsCharacterSkin.copyWith(...)`.
+  // ignore: library_private_types_in_public_api
+  _$GsCharacterSkinCWProxy get copyWith => _$GsCharacterSkinCWProxyImpl(this);
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GsCharacterSkin _$GsCharacterSkinFromJson(Map<String, dynamic> json) =>
+    GsCharacterSkin(
+      id: json['id'] as String? ?? '',
+      version: json['version'] as String? ?? '',
+      rarity: (json['rarity'] as num?)?.toInt() ?? 0,
+      name: json['name'] as String? ?? '',
+      image: json['image'] as String? ?? '',
+      character: json['character'] as String? ?? '',
+      sideImage: json['sideImage'] as String? ?? '',
+      fullImage: json['fullImage'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$GsCharacterSkinToJson(GsCharacterSkin instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'version': instance.version,
+      'rarity': instance.rarity,
+      'name': instance.name,
+      'image': instance.image,
+      'character': instance.character,
+      'sideImage': instance.sideImage,
+      'fullImage': instance.fullImage,
+    };

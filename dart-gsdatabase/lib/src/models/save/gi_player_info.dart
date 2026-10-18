@@ -1,41 +1,35 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:gsdatabase/src/models/gs_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'gi_player_info.g.dart';
 
-@BuilderGenerator()
-abstract class _GiPlayerInfo extends GsModel<GiPlayerInfo> {
-  @BuilderWire('uid')
-  String get uid;
-  @BuilderWire('avatar_id')
-  String get avatarId;
-  @BuilderWire('nickname')
-  String get nickname;
-  @BuilderWire('signature')
-  String get signature;
-  @BuilderWire('level')
-  int get level;
-  @BuilderWire('world_level')
-  int get worldLevel;
-  @BuilderWire('namecard')
-  int get namecardId;
-  @BuilderWire('achievements')
-  int get achievements;
-  @BuilderWire('tower_floor')
-  int get towerFloor;
-  @BuilderWire('tower_chamber')
-  int get towerChamber;
-  @BuilderWire('tower_stars')
-  int get towerStars;
-  @BuilderWire('theater_act')
-  int get theaterAct;
-  @BuilderWire('theater_mode')
-  int get theaterMode;
-  @BuilderWire('theater_stars')
-  int get theaterStars;
-  @BuilderWire('stygian_index')
-  int get stygianIndex;
-  @BuilderWire('stygian_seconds')
-  int get stygianSeconds;
-  @BuilderWire('avatars')
-  Map<String, int> get avatars;
+@CopyWith(skipFields: true)
+@JsonSerializable(explicitToJson: true)
+class GiPlayerInfo({
+  @override final String id = '',
+  final String uid = '',
+  final String avatarId = '',
+  final String nickname = '',
+  final String signature = '',
+  final int level = 0,
+  final int worldLevel = 0,
+  final int namecardId = 0,
+  final int achievements = 0,
+  final int towerFloor = 0,
+  final int towerChamber = 0,
+  final int towerStars = 0,
+  final int theaterAct = 0,
+  final int theaterMode = 0,
+  final int theaterStars = 0,
+  final int stygianIndex = 0,
+  final int stygianSeconds = 0,
+  final Map<String, int> avatars = const {},
+}) extends GsModel<GiPlayerInfo> {
+  static const kTableKey = 'user_configs';
+
+  factory GiPlayerInfo.fromJson(JsonMap json) => _$GiPlayerInfoFromJson(json);
+
+  @override
+  JsonMap toMap() => _$GiPlayerInfoToJson(this);
 }

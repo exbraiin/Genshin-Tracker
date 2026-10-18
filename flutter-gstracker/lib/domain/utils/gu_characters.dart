@@ -1,5 +1,5 @@
 import 'package:dartx/dartx.dart';
-import 'package:gsdatabase/gsdatabase.dart' show GsCharacter, GiCharacter;
+import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
 import 'package:tracker/domain/utils/gs_collections.dart';
 

@@ -3,53 +3,96 @@
 part of 'gi_event_rewards.dart';
 
 // **************************************************************************
-// Generator: BuilderGeneratorGen
+// CopyWithGenerator
 // **************************************************************************
 
-class GiEventRewards extends _GiEventRewards {
-  @override
-  final String id;
-  @override
-  final List<String> obtainedWeapons;
-  @override
-  final List<String> obtainedCharacters;
-
-  /// Creates a new [GiEventRewards] instance.
-  GiEventRewards({
-    required this.id,
-    required this.obtainedWeapons,
-    required this.obtainedCharacters,
+abstract class _$GiEventRewardsCWProxy {
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GiEventRewards(...).copyWith(id: 12, name: "My name")
+  /// ```
+  GiEventRewards call({
+    String id,
+    List<String> obtainedWeapons,
+    List<String> obtainedCharacters,
   });
+}
 
-  /// Creates a new [GiEventRewards] instance from the given map.
-  GiEventRewards.fromJson(JsonMap m)
-    : id = m['id'] as String? ?? '',
-      obtainedWeapons = (m['obtained_weapons'] as List? ?? const [])
-          .cast<String>(),
-      obtainedCharacters = (m['obtained_characters'] as List? ?? const [])
-          .cast<String>();
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfGiEventRewards.copyWith(...)`.
+class _$GiEventRewardsCWProxyImpl implements _$GiEventRewardsCWProxy {
+  const _$GiEventRewardsCWProxyImpl(this._value);
 
-  /// Copies this model with the given parameters.
+  final GiEventRewards _value;
+
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GiEventRewards(...).copyWith(id: 12, name: "My name")
+  /// ```
   @override
-  GiEventRewards copyWith({
-    String? id,
-    List<String>? obtainedWeapons,
-    List<String>? obtainedCharacters,
+  GiEventRewards call({
+    Object? id = const $CopyWithPlaceholder(),
+    Object? obtainedWeapons = const $CopyWithPlaceholder(),
+    Object? obtainedCharacters = const $CopyWithPlaceholder(),
   }) {
     return GiEventRewards(
-      id: id ?? this.id,
-      obtainedWeapons: obtainedWeapons ?? this.obtainedWeapons,
-      obtainedCharacters: obtainedCharacters ?? this.obtainedCharacters,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      obtainedWeapons:
+          obtainedWeapons == const $CopyWithPlaceholder() ||
+              obtainedWeapons == null
+          ? _value.obtainedWeapons
+          // ignore: cast_nullable_to_non_nullable
+          : obtainedWeapons as List<String>,
+      obtainedCharacters:
+          obtainedCharacters == const $CopyWithPlaceholder() ||
+              obtainedCharacters == null
+          ? _value.obtainedCharacters
+          // ignore: cast_nullable_to_non_nullable
+          : obtainedCharacters as List<String>,
     );
   }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {
-      'id': id,
-      'obtained_weapons': obtainedWeapons,
-      'obtained_characters': obtainedCharacters,
-    };
-  }
 }
+
+extension $GiEventRewardsCopyWith on GiEventRewards {
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfGiEventRewards.copyWith(...)`.
+  // ignore: library_private_types_in_public_api
+  _$GiEventRewardsCWProxy get copyWith => _$GiEventRewardsCWProxyImpl(this);
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GiEventRewards _$GiEventRewardsFromJson(Map<String, dynamic> json) =>
+    GiEventRewards(
+      id: json['id'] as String? ?? '',
+      obtainedWeapons:
+          (json['obtainedWeapons'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      obtainedCharacters:
+          (json['obtainedCharacters'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$GiEventRewardsToJson(GiEventRewards instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'obtainedWeapons': instance.obtainedWeapons,
+      'obtainedCharacters': instance.obtainedCharacters,
+    };

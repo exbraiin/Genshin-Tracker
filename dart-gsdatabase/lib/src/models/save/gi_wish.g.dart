@@ -3,65 +3,98 @@
 part of 'gi_wish.dart';
 
 // **************************************************************************
-// Generator: BuilderGeneratorGen
+// CopyWithGenerator
 // **************************************************************************
 
-class GiWish extends _GiWish {
-  @override
-  final String id;
-  @override
-  final int number;
-  @override
-  final String itemId;
-  @override
-  final String bannerId;
-  @override
-  final DateTime date;
-
-  /// Creates a new [GiWish] instance.
-  GiWish({
-    required this.id,
-    required this.number,
-    required this.itemId,
-    required this.bannerId,
-    required this.date,
+abstract class _$GiWishCWProxy {
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GiWish(...).copyWith(id: 12, name: "My name")
+  /// ```
+  GiWish call({
+    String id,
+    int number,
+    String itemId,
+    String bannerId,
+    DateTime date,
   });
+}
 
-  /// Creates a new [GiWish] instance from the given map.
-  GiWish.fromJson(JsonMap m)
-    : id = m['id'] as String? ?? '',
-      number = m['number'] as int? ?? 0,
-      itemId = m['item'] as String? ?? '',
-      bannerId = m['banner'] as String? ?? '',
-      date = DateTime.tryParse(m['date'].toString()) ?? DateTime(0);
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfGiWish.copyWith(...)`.
+class _$GiWishCWProxyImpl implements _$GiWishCWProxy {
+  const _$GiWishCWProxyImpl(this._value);
 
-  /// Copies this model with the given parameters.
+  final GiWish _value;
+
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GiWish(...).copyWith(id: 12, name: "My name")
+  /// ```
   @override
-  GiWish copyWith({
-    String? id,
-    int? number,
-    String? itemId,
-    String? bannerId,
-    DateTime? date,
+  GiWish call({
+    Object? id = const $CopyWithPlaceholder(),
+    Object? number = const $CopyWithPlaceholder(),
+    Object? itemId = const $CopyWithPlaceholder(),
+    Object? bannerId = const $CopyWithPlaceholder(),
+    Object? date = const $CopyWithPlaceholder(),
   }) {
     return GiWish(
-      id: id ?? this.id,
-      number: number ?? this.number,
-      itemId: itemId ?? this.itemId,
-      bannerId: bannerId ?? this.bannerId,
-      date: date ?? this.date,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      number: number == const $CopyWithPlaceholder() || number == null
+          ? _value.number
+          // ignore: cast_nullable_to_non_nullable
+          : number as int,
+      itemId: itemId == const $CopyWithPlaceholder() || itemId == null
+          ? _value.itemId
+          // ignore: cast_nullable_to_non_nullable
+          : itemId as String,
+      bannerId: bannerId == const $CopyWithPlaceholder() || bannerId == null
+          ? _value.bannerId
+          // ignore: cast_nullable_to_non_nullable
+          : bannerId as String,
+      date: date == const $CopyWithPlaceholder() || date == null
+          ? _value.date
+          // ignore: cast_nullable_to_non_nullable
+          : date as DateTime,
     );
   }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {
-      'id': id,
-      'number': number,
-      'item': itemId,
-      'banner': bannerId,
-      'date': date.toString(),
-    };
-  }
 }
+
+extension $GiWishCopyWith on GiWish {
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfGiWish.copyWith(...)`.
+  // ignore: library_private_types_in_public_api
+  _$GiWishCWProxy get copyWith => _$GiWishCWProxyImpl(this);
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GiWish _$GiWishFromJson(Map<String, dynamic> json) => GiWish(
+  id: json['id'] as String? ?? '',
+  number: (json['number'] as num?)?.toInt() ?? 0,
+  itemId: json['itemId'] as String? ?? '',
+  bannerId: json['bannerId'] as String? ?? '',
+  date: modelDateFromJson(json['date']),
+);
+
+Map<String, dynamic> _$GiWishToJson(GiWish instance) => <String, dynamic>{
+  'id': instance.id,
+  'number': instance.number,
+  'itemId': instance.itemId,
+  'bannerId': instance.bannerId,
+  'date': modelDateToJson(instance.date),
+};

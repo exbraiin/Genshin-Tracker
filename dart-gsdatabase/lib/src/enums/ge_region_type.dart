@@ -1,5 +1,7 @@
 import 'package:gsdatabase/src/enums/ge_enum.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+@JsonEnum(valueField: 'id')
 enum GeRegionType implements GeEnum {
   none('none'),
   mondstadt('mondstadt'),

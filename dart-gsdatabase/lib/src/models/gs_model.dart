@@ -2,11 +2,15 @@ export 'package:gsdatabase/src/enums/ge_enum.dart';
 
 typedef JsonMap = Map<String, dynamic>;
 
+DateTime modelDateFromJson(dynamic value) =>
+    DateTime.tryParse(value.toString()) ?? DateTime(0);
+
+String modelDateToJson(DateTime value) => value.toString();
+
 abstract class GsModel<T extends GsModel<T>> implements Comparable<T> {
-  @BuilderWire('id')
   String get id;
-  T copyWith({String? id});
   JsonMap toMap();
+  JsonMap toJson() => toMap();
 
   @override
   int compareTo(T other) {

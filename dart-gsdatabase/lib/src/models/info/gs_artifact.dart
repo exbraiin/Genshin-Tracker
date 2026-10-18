@@ -1,29 +1,32 @@
-import 'package:gsdatabase/gsdatabase.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:gsdatabase/src/enums/ge_artifact_piece_type.dart';
+import 'package:gsdatabase/src/enums/ge_region_type.dart';
 import 'package:gsdatabase/src/models/gs_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'gs_artifact.g.dart';
 
-@BuilderGenerator()
-abstract class _GsArtifact extends GsModel<GsArtifact> with GsVersionable {
-  @BuilderWire('name')
-  String get name;
-  @BuilderWire('region')
-  GeRegionType get region;
+@CopyWith(skipFields: true)
+@JsonSerializable(explicitToJson: true)
+class GsArtifact({
+  @override final String id = '',
+  @override final String version = '',
+  final String name = '',
+  @JsonKey(unknownEnumValue: GeRegionType.none)
+  final GeRegionType region = GeRegionType.none,
+  final int rarity = 0,
+  final String pc1 = '',
+  final String pc2 = '',
+  final String pc4 = '',
+  final String domain = '',
+  final List<GsArtifactPiece> pieces = const [],
+}) extends GsModel<GsArtifact> with GsVersionable {
+  static const kTableKey = 'artifacts';
+
+  factory GsArtifact.fromJson(JsonMap json) => _$GsArtifactFromJson(json);
+
   @override
-  @BuilderWire('version')
-  String get version;
-  @BuilderWire('rarity')
-  int get rarity;
-  @BuilderWire('1pc')
-  String get pc1;
-  @BuilderWire('2pc')
-  String get pc2;
-  @BuilderWire('4pc')
-  String get pc4;
-  @BuilderWire('domain')
-  String get domain;
-  @BuilderWire('list_pieces')
-  List<_GsArtifactPiece> get pieces;
+  JsonMap toMap() => _$GsArtifactToJson(this);
 
   @override
   Iterable<Comparable Function(GsArtifact e)> get sorters => [
@@ -33,14 +36,19 @@ abstract class _GsArtifact extends GsModel<GsArtifact> with GsVersionable {
   ];
 }
 
-@BuilderGenerator()
-abstract class _GsArtifactPiece extends GsModel<GsArtifactPiece> {
-  @BuilderWire('name')
-  String get name;
-  @BuilderWire('icon')
-  String get icon;
-  @BuilderWire('desc')
-  String get desc;
-  @BuilderWire('type')
-  GeArtifactPieceType get type;
+@CopyWith(skipFields: true)
+@JsonSerializable(explicitToJson: true)
+class GsArtifactPiece({
+  @override final String id = '',
+  final String name = '',
+  final String icon = '',
+  final String desc = '',
+  @JsonKey(unknownEnumValue: GeArtifactPieceType.flowerOfLife)
+  final GeArtifactPieceType type = GeArtifactPieceType.flowerOfLife,
+}) extends GsModel<GsArtifactPiece> {
+  factory GsArtifactPiece.fromJson(JsonMap json) =>
+      _$GsArtifactPieceFromJson(json);
+
+  @override
+  JsonMap toMap() => _$GsArtifactPieceToJson(this);
 }

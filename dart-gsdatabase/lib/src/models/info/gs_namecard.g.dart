@@ -3,86 +3,140 @@
 part of 'gs_namecard.dart';
 
 // **************************************************************************
-// Generator: BuilderGeneratorGen
+// CopyWithGenerator
 // **************************************************************************
 
-class GsNamecard extends _GsNamecard {
-  @override
-  final String id;
-  @override
-  final String name;
-  @override
-  final int rarity;
-  @override
-  final GeNamecardType type;
-  @override
-  final String version;
-  @override
-  final String image;
-  @override
-  final String fullImage;
-  @override
-  final String desc;
-
-  /// Creates a new [GsNamecard] instance.
-  GsNamecard({
-    required this.id,
-    required this.name,
-    required this.rarity,
-    required this.type,
-    required this.version,
-    required this.image,
-    required this.fullImage,
-    required this.desc,
+abstract class _$GsNamecardCWProxy {
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsNamecard(...).copyWith(id: 12, name: "My name")
+  /// ```
+  GsNamecard call({
+    String id,
+    String version,
+    String name,
+    int rarity,
+    GeNamecardType type,
+    String image,
+    String fullImage,
+    String desc,
   });
+}
 
-  /// Creates a new [GsNamecard] instance from the given map.
-  GsNamecard.fromJson(JsonMap m)
-    : id = m['id'] as String? ?? '',
-      name = m['name'] as String? ?? '',
-      rarity = m['rarity'] as int? ?? 0,
-      type = GeNamecardType.values.fromId(m['type']),
-      version = m['version'] as String? ?? '',
-      image = m['image'] as String? ?? '',
-      fullImage = m['full_image'] as String? ?? '',
-      desc = m['desc'] as String? ?? '';
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfGsNamecard.copyWith(...)`.
+class _$GsNamecardCWProxyImpl implements _$GsNamecardCWProxy {
+  const _$GsNamecardCWProxyImpl(this._value);
 
-  /// Copies this model with the given parameters.
+  final GsNamecard _value;
+
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsNamecard(...).copyWith(id: 12, name: "My name")
+  /// ```
   @override
-  GsNamecard copyWith({
-    String? id,
-    String? name,
-    int? rarity,
-    GeNamecardType? type,
-    String? version,
-    String? image,
-    String? fullImage,
-    String? desc,
+  GsNamecard call({
+    Object? id = const $CopyWithPlaceholder(),
+    Object? version = const $CopyWithPlaceholder(),
+    Object? name = const $CopyWithPlaceholder(),
+    Object? rarity = const $CopyWithPlaceholder(),
+    Object? type = const $CopyWithPlaceholder(),
+    Object? image = const $CopyWithPlaceholder(),
+    Object? fullImage = const $CopyWithPlaceholder(),
+    Object? desc = const $CopyWithPlaceholder(),
   }) {
     return GsNamecard(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      rarity: rarity ?? this.rarity,
-      type: type ?? this.type,
-      version: version ?? this.version,
-      image: image ?? this.image,
-      fullImage: fullImage ?? this.fullImage,
-      desc: desc ?? this.desc,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      version: version == const $CopyWithPlaceholder() || version == null
+          ? _value.version
+          // ignore: cast_nullable_to_non_nullable
+          : version as String,
+      name: name == const $CopyWithPlaceholder() || name == null
+          ? _value.name
+          // ignore: cast_nullable_to_non_nullable
+          : name as String,
+      rarity: rarity == const $CopyWithPlaceholder() || rarity == null
+          ? _value.rarity
+          // ignore: cast_nullable_to_non_nullable
+          : rarity as int,
+      type: type == const $CopyWithPlaceholder() || type == null
+          ? _value.type
+          // ignore: cast_nullable_to_non_nullable
+          : type as GeNamecardType,
+      image: image == const $CopyWithPlaceholder() || image == null
+          ? _value.image
+          // ignore: cast_nullable_to_non_nullable
+          : image as String,
+      fullImage: fullImage == const $CopyWithPlaceholder() || fullImage == null
+          ? _value.fullImage
+          // ignore: cast_nullable_to_non_nullable
+          : fullImage as String,
+      desc: desc == const $CopyWithPlaceholder() || desc == null
+          ? _value.desc
+          // ignore: cast_nullable_to_non_nullable
+          : desc as String,
     );
   }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'rarity': rarity,
-      'type': type.id,
-      'version': version,
-      'image': image,
-      'full_image': fullImage,
-      'desc': desc,
-    };
-  }
 }
+
+extension $GsNamecardCopyWith on GsNamecard {
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfGsNamecard.copyWith(...)`.
+  // ignore: library_private_types_in_public_api
+  _$GsNamecardCWProxy get copyWith => _$GsNamecardCWProxyImpl(this);
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GsNamecard _$GsNamecardFromJson(Map<String, dynamic> json) => GsNamecard(
+  id: json['id'] as String? ?? '',
+  version: json['version'] as String? ?? '',
+  name: json['name'] as String? ?? '',
+  rarity: (json['rarity'] as num?)?.toInt() ?? 0,
+  type:
+      $enumDecodeNullable(
+        _$GeNamecardTypeEnumMap,
+        json['type'],
+        unknownValue: GeNamecardType.none,
+      ) ??
+      GeNamecardType.none,
+  image: json['image'] as String? ?? '',
+  fullImage: json['fullImage'] as String? ?? '',
+  desc: json['desc'] as String? ?? '',
+);
+
+Map<String, dynamic> _$GsNamecardToJson(GsNamecard instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'version': instance.version,
+      'name': instance.name,
+      'rarity': instance.rarity,
+      'type': _$GeNamecardTypeEnumMap[instance.type]!,
+      'image': instance.image,
+      'fullImage': instance.fullImage,
+      'desc': instance.desc,
+    };
+
+const _$GeNamecardTypeEnumMap = {
+  GeNamecardType.none: 'none',
+  GeNamecardType.achievement: 'achievement',
+  GeNamecardType.battlepass: 'battlepass',
+  GeNamecardType.character: 'character',
+  GeNamecardType.defaults: 'default',
+  GeNamecardType.event: 'event',
+  GeNamecardType.offering: 'offering',
+  GeNamecardType.reputation: 'reputation',
+};

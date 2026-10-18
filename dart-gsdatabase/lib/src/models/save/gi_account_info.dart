@@ -1,13 +1,21 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:gsdatabase/src/models/gs_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'gi_account_info.g.dart';
 
-@BuilderGenerator()
-abstract class _GiAccountInfo extends GsModel<GiAccountInfo> {
-  @BuilderWire('mon_thu_char', value: '')
-  String get monThuChar;
-  @BuilderWire('tue_fri_char', value: '')
-  String get tueFriChar;
-  @BuilderWire('wed_sat_char', value: '')
-  String get wedSatChar;
+@CopyWith(skipFields: true)
+@JsonSerializable(explicitToJson: true)
+class GiAccountInfo({
+  @override final String id = '',
+  final String monThuChar = '',
+  final String tueFriChar = '',
+  final String wedSatChar = '',
+}) extends GsModel<GiAccountInfo> {
+  static const kTableKey = 'account';
+
+  factory GiAccountInfo.fromJson(JsonMap json) => _$GiAccountInfoFromJson(json);
+
+  @override
+  JsonMap toMap() => _$GiAccountInfoToJson(this);
 }

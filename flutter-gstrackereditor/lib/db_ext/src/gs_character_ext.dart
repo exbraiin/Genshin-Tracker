@@ -77,7 +77,7 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
             ),
             selected: item.enkaId,
             onConfirm: (value) {
-              completer.complete(item.copyWith(enkaId: value));
+              completer.complete(item.copyWith(enkaId: value ?? item.enkaId));
             },
           ).show(context);
           return completer.future;

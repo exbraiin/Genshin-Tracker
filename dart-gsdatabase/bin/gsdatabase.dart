@@ -19,7 +19,7 @@ void main(List<String> arguments) async {
   final version = db.of<GsVersion>().items.firstOrNull;
   if (version != null) {
     print(version.releaseDate);
-    print(version.toMap()['release_date']);
+    print(version.toMap()['releaseDate']);
   }
 }
 

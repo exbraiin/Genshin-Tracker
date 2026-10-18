@@ -3,66 +3,99 @@
 part of 'gs_version.dart';
 
 // **************************************************************************
-// Generator: BuilderGeneratorGen
+// CopyWithGenerator
 // **************************************************************************
 
-class GsVersion extends _GsVersion {
-  @override
-  final String id;
-  @override
-  final String label;
-  @override
-  final String name;
-  @override
-  final String image;
-  @override
-  final DateTime releaseDate;
-
-  /// Creates a new [GsVersion] instance.
-  GsVersion({
-    required this.id,
-    required this.label,
-    required this.name,
-    required this.image,
-    required this.releaseDate,
+abstract class _$GsVersionCWProxy {
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsVersion(...).copyWith(id: 12, name: "My name")
+  /// ```
+  GsVersion call({
+    String id,
+    String label,
+    String name,
+    String image,
+    DateTime releaseDate,
   });
+}
 
-  /// Creates a new [GsVersion] instance from the given map.
-  GsVersion.fromJson(JsonMap m)
-    : id = m['id'] as String? ?? '',
-      label = m['label'] as String? ?? '',
-      name = m['name'] as String? ?? '',
-      image = m['image'] as String? ?? '',
-      releaseDate =
-          DateTime.tryParse(m['release_date'].toString()) ?? DateTime(0);
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfGsVersion.copyWith(...)`.
+class _$GsVersionCWProxyImpl implements _$GsVersionCWProxy {
+  const _$GsVersionCWProxyImpl(this._value);
 
-  /// Copies this model with the given parameters.
+  final GsVersion _value;
+
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsVersion(...).copyWith(id: 12, name: "My name")
+  /// ```
   @override
-  GsVersion copyWith({
-    String? id,
-    String? label,
-    String? name,
-    String? image,
-    DateTime? releaseDate,
+  GsVersion call({
+    Object? id = const $CopyWithPlaceholder(),
+    Object? label = const $CopyWithPlaceholder(),
+    Object? name = const $CopyWithPlaceholder(),
+    Object? image = const $CopyWithPlaceholder(),
+    Object? releaseDate = const $CopyWithPlaceholder(),
   }) {
     return GsVersion(
-      id: id ?? this.id,
-      label: label ?? this.label,
-      name: name ?? this.name,
-      image: image ?? this.image,
-      releaseDate: releaseDate ?? this.releaseDate,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      label: label == const $CopyWithPlaceholder() || label == null
+          ? _value.label
+          // ignore: cast_nullable_to_non_nullable
+          : label as String,
+      name: name == const $CopyWithPlaceholder() || name == null
+          ? _value.name
+          // ignore: cast_nullable_to_non_nullable
+          : name as String,
+      image: image == const $CopyWithPlaceholder() || image == null
+          ? _value.image
+          // ignore: cast_nullable_to_non_nullable
+          : image as String,
+      releaseDate:
+          releaseDate == const $CopyWithPlaceholder() || releaseDate == null
+          ? _value.releaseDate
+          // ignore: cast_nullable_to_non_nullable
+          : releaseDate as DateTime,
     );
   }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {
-      'id': id,
-      'label': label,
-      'name': name,
-      'image': image,
-      'release_date': releaseDate.toString(),
-    };
-  }
 }
+
+extension $GsVersionCopyWith on GsVersion {
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfGsVersion.copyWith(...)`.
+  // ignore: library_private_types_in_public_api
+  _$GsVersionCWProxy get copyWith => _$GsVersionCWProxyImpl(this);
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GsVersion _$GsVersionFromJson(Map<String, dynamic> json) => GsVersion(
+  id: json['id'] as String? ?? '',
+  label: json['label'] as String? ?? '',
+  name: json['name'] as String? ?? '',
+  image: json['image'] as String? ?? '',
+  releaseDate: modelDateFromJson(json['releaseDate']),
+);
+
+Map<String, dynamic> _$GsVersionToJson(GsVersion instance) => <String, dynamic>{
+  'id': instance.id,
+  'label': instance.label,
+  'name': instance.name,
+  'image': instance.image,
+  'releaseDate': modelDateToJson(instance.releaseDate),
+};

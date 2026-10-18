@@ -1,29 +1,33 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:gsdatabase/src/enums/ge_banner_type.dart';
 import 'package:gsdatabase/src/models/gs_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'gs_banner.g.dart';
 
-@BuilderGenerator()
-abstract class _GsBanner extends GsModel<GsBanner> with GsVersionable {
-  @BuilderWire('name')
-  String get name;
-  @BuilderWire('image')
-  String get image;
-  @BuilderWire('date_start')
-  DateTime get dateStart;
-  @BuilderWire('date_end')
-  DateTime get dateEnd;
+@CopyWith(skipFields: true)
+@JsonSerializable(explicitToJson: true)
+class GsBanner({
+  @override final String id = '',
+  @override final String version = '',
+  final String name = '',
+  final String image = '',
+  @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
+  required final DateTime dateStart,
+  @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
+  required final DateTime dateEnd,
+  @JsonKey(unknownEnumValue: GeBannerType.standard)
+  final GeBannerType type = GeBannerType.standard,
+  final int subtype = 0,
+  final List<String> feature4 = const [],
+  final List<String> feature5 = const [],
+}) extends GsModel<GsBanner> with GsVersionable {
+  static const kTableKey = 'banners';
+
+  factory GsBanner.fromJson(JsonMap json) => _$GsBannerFromJson(json);
+
   @override
-  @BuilderWire('version')
-  String get version;
-  @BuilderWire('type')
-  GeBannerType get type;
-  @BuilderWire('subtype')
-  int get subtype;
-  @BuilderWire('feature_4')
-  List<String> get feature4;
-  @BuilderWire('feature_5')
-  List<String> get feature5;
+  JsonMap toMap() => _$GsBannerToJson(this);
 
   @override
   Iterable<Comparable Function(GsBanner e)> get sorters => [

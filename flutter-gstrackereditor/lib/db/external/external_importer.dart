@@ -91,9 +91,9 @@ final class _ExternalImporterImpl implements ExternalImporter {
         final exist = tuple.dbGrps.firstOrNullWhere((t) => t.id == e.id);
         final items = tuple.dbAchs.where((t) => t.group == e.id);
         return e.copyWith(
-          icon: exist?.icon,
-          namecard: exist?.namecard,
-          version: items.minBy((t) => t.version)?.version,
+          icon: exist?.icon ?? e.icon,
+          namecard: exist?.namecard ?? e.namecard,
+          version: items.minBy((t) => t.version)?.version ?? e.version,
           rewards: items.sumBy((t) => t.reward),
           achievements: items.sumBy((t) => t.phases.length),
         );
@@ -174,19 +174,19 @@ final class _ExternalImporterImpl implements ExternalImporter {
     }
 
     return item.copyWith(
-      id: id,
-      name: name,
-      rarity: rarityInt,
-      title: title,
+      id: id ?? item.id,
+      name: name ?? item.name,
+      rarity: rarityInt ?? item.rarity,
+      title: title ?? item.title,
       region: GeRegionType.values.fromId(region?.toDbId()),
       weapon: GeWeaponType.values.fromId(weapon?.toDbId()),
       element: GeElementType.values.fromId(element.toDbId()),
-      releaseDate: release != null ? parseDate(release) : null,
-      constellation: constellation,
-      affiliation: affiliation,
-      specialDish: food?.toDbId(),
-      birthday: bday != null ? parseDate(bday) : null,
-      fullImage: wish,
+      releaseDate: release != null ? parseDate(release) : item.releaseDate,
+      constellation: constellation ?? item.constellation,
+      affiliation: affiliation ?? item.affiliation,
+      specialDish: food?.toDbId() ?? item.specialDish,
+      birthday: bday != null ? parseDate(bday) : item.birthday,
+      fullImage: wish ?? item.fullImage,
     );
   }
 
@@ -214,11 +214,11 @@ final class _ExternalImporterImpl implements ExternalImporter {
     final image = _processImage(imgSrc);
 
     return item.copyWith(
-      id: id,
-      name: name,
+      id: id ?? item.id,
+      name: name ?? item.name,
       image: image,
       number: number,
-      description: description,
+      description: description ?? item.description,
       version: '',
     );
   }
@@ -243,10 +243,10 @@ final class _ExternalImporterImpl implements ExternalImporter {
     final energyInt = int.tryParse(energy) ?? 0;
 
     return item.copyWith(
-      id: id,
-      name: name,
+      id: id ?? item.id,
+      name: name ?? item.name,
       image: _processImage(image),
-      rarity: rarityInt,
+      rarity: rarityInt ?? item.rarity,
       energy: energyInt,
     );
   }
@@ -300,7 +300,7 @@ final class _ExternalImporterImpl implements ExternalImporter {
       rarity: 4,
       season: season,
       image: _processImage(thumbSrc),
-      version: versionId,
+      version: versionId ?? item.version,
     );
   }
 }

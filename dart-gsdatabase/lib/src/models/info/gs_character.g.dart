@@ -3,269 +3,455 @@
 part of 'gs_character.dart';
 
 // **************************************************************************
-// Generator: BuilderGeneratorGen
+// CopyWithGenerator
 // **************************************************************************
 
-class GsCharacter extends _GsCharacter {
-  @override
-  final String id;
-  @override
-  final String enkaId;
-  @override
-  final String name;
-  @override
-  final String namecardId;
-  @override
-  final String title;
-  @override
-  final int rarity;
-  @override
-  final GeRegionType region;
-  @override
-  final GeWeaponType weapon;
-  @override
-  final GeElementType element;
-  @override
-  final String version;
-  @override
-  final GeItemSourceType source;
-  @override
-  final String description;
-  @override
-  final String constellation;
-  @override
-  final String affiliation;
-  @override
-  final String specialDish;
-  @override
-  final DateTime birthday;
-  @override
-  final DateTime releaseDate;
-  @override
-  final String image;
-  @override
-  final String fullImage;
-  @override
-  final String constellationImage;
-  @override
-  final String gemMaterial;
-  @override
-  final String bossMaterial;
-  @override
-  final String commonMaterial;
-  @override
-  final String regionMaterial;
-  @override
-  final String talentMaterial;
-  @override
-  final String weeklyMaterial;
-  @override
-  final GeCharacterAscStatType ascStatType;
-  @override
-  final int ascHpValue;
-  @override
-  final int ascAtkValue;
-  @override
-  final int ascDefValue;
-  @override
-  final double ascStatValue;
-  @override
-  final int talentAConstellation;
-  @override
-  final int talentEConstellation;
-  @override
-  final int talentQConstellation;
-
-  /// Creates a new [GsCharacter] instance.
-  GsCharacter({
-    required this.id,
-    required this.enkaId,
-    required this.name,
-    required this.namecardId,
-    required this.title,
-    required this.rarity,
-    required this.region,
-    required this.weapon,
-    required this.element,
-    required this.version,
-    required this.source,
-    required this.description,
-    required this.constellation,
-    required this.affiliation,
-    required this.specialDish,
-    required this.birthday,
-    required this.releaseDate,
-    required this.image,
-    required this.fullImage,
-    required this.constellationImage,
-    required this.gemMaterial,
-    required this.bossMaterial,
-    required this.commonMaterial,
-    required this.regionMaterial,
-    required this.talentMaterial,
-    required this.weeklyMaterial,
-    required this.ascStatType,
-    required this.ascHpValue,
-    required this.ascAtkValue,
-    required this.ascDefValue,
-    required this.ascStatValue,
-    this.talentAConstellation = -1,
-    this.talentEConstellation = -1,
-    this.talentQConstellation = -1,
+abstract class _$GsCharacterCWProxy {
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsCharacter(...).copyWith(id: 12, name: "My name")
+  /// ```
+  GsCharacter call({
+    String id,
+    String version,
+    String enkaId,
+    String name,
+    String namecardId,
+    String title,
+    int rarity,
+    GeRegionType region,
+    GeWeaponType weapon,
+    GeElementType element,
+    GeItemSourceType source,
+    String description,
+    String constellation,
+    String affiliation,
+    String specialDish,
+    DateTime birthday,
+    DateTime releaseDate,
+    String image,
+    String fullImage,
+    String constellationImage,
+    String gemMaterial,
+    String bossMaterial,
+    String commonMaterial,
+    String regionMaterial,
+    String talentMaterial,
+    String weeklyMaterial,
+    GeCharacterAscStatType ascStatType,
+    int ascHpValue,
+    int ascAtkValue,
+    int ascDefValue,
+    double ascStatValue,
+    int talentAConstellation,
+    int talentEConstellation,
+    int talentQConstellation,
   });
+}
 
-  /// Creates a new [GsCharacter] instance from the given map.
-  GsCharacter.fromJson(JsonMap m)
-    : id = m['id'] as String? ?? '',
-      enkaId = m['enka_id'] as String? ?? '',
-      name = m['name'] as String? ?? '',
-      namecardId = m['namecard_id'] as String? ?? '',
-      title = m['title'] as String? ?? '',
-      rarity = m['rarity'] as int? ?? 0,
-      region = GeRegionType.values.fromId(m['region']),
-      weapon = GeWeaponType.values.fromId(m['weapon']),
-      element = GeElementType.values.fromId(m['element']),
-      version = m['version'] as String? ?? '',
-      source = GeItemSourceType.values.fromId(m['source']),
-      description = m['description'] as String? ?? '',
-      constellation = m['constellation'] as String? ?? '',
-      affiliation = m['affiliation'] as String? ?? '',
-      specialDish = m['special_dish'] as String? ?? '',
-      birthday = DateTime.tryParse(m['birthday'].toString()) ?? DateTime(0),
-      releaseDate =
-          DateTime.tryParse(m['release_date'].toString()) ?? DateTime(0),
-      image = m['image'] as String? ?? '',
-      fullImage = m['full_image'] as String? ?? '',
-      constellationImage = m['constellation_image'] as String? ?? '',
-      gemMaterial = m['mat_gem'] as String? ?? '',
-      bossMaterial = m['mat_boss'] as String? ?? '',
-      commonMaterial = m['mat_common'] as String? ?? '',
-      regionMaterial = m['mat_region'] as String? ?? '',
-      talentMaterial = m['mat_talent'] as String? ?? '',
-      weeklyMaterial = m['mat_weekly'] as String? ?? '',
-      ascStatType = GeCharacterAscStatType.values.fromId(m['asc_stat_type']),
-      ascHpValue = m['asc_hp_value'] as int? ?? 0,
-      ascAtkValue = m['asc_atk_value'] as int? ?? 0,
-      ascDefValue = m['asc_def_value'] as int? ?? 0,
-      ascStatValue = m['asc_stat_value'] as double? ?? 0,
-      talentAConstellation = m['tal_a_const'] as int? ?? -1,
-      talentEConstellation = m['tal_e_const'] as int? ?? -1,
-      talentQConstellation = m['tal_q_const'] as int? ?? -1;
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfGsCharacter.copyWith(...)`.
+class _$GsCharacterCWProxyImpl implements _$GsCharacterCWProxy {
+  const _$GsCharacterCWProxyImpl(this._value);
 
-  /// Copies this model with the given parameters.
+  final GsCharacter _value;
+
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GsCharacter(...).copyWith(id: 12, name: "My name")
+  /// ```
   @override
-  GsCharacter copyWith({
-    String? id,
-    String? enkaId,
-    String? name,
-    String? namecardId,
-    String? title,
-    int? rarity,
-    GeRegionType? region,
-    GeWeaponType? weapon,
-    GeElementType? element,
-    String? version,
-    GeItemSourceType? source,
-    String? description,
-    String? constellation,
-    String? affiliation,
-    String? specialDish,
-    DateTime? birthday,
-    DateTime? releaseDate,
-    String? image,
-    String? fullImage,
-    String? constellationImage,
-    String? gemMaterial,
-    String? bossMaterial,
-    String? commonMaterial,
-    String? regionMaterial,
-    String? talentMaterial,
-    String? weeklyMaterial,
-    GeCharacterAscStatType? ascStatType,
-    int? ascHpValue,
-    int? ascAtkValue,
-    int? ascDefValue,
-    double? ascStatValue,
-    int? talentAConstellation,
-    int? talentEConstellation,
-    int? talentQConstellation,
+  GsCharacter call({
+    Object? id = const $CopyWithPlaceholder(),
+    Object? version = const $CopyWithPlaceholder(),
+    Object? enkaId = const $CopyWithPlaceholder(),
+    Object? name = const $CopyWithPlaceholder(),
+    Object? namecardId = const $CopyWithPlaceholder(),
+    Object? title = const $CopyWithPlaceholder(),
+    Object? rarity = const $CopyWithPlaceholder(),
+    Object? region = const $CopyWithPlaceholder(),
+    Object? weapon = const $CopyWithPlaceholder(),
+    Object? element = const $CopyWithPlaceholder(),
+    Object? source = const $CopyWithPlaceholder(),
+    Object? description = const $CopyWithPlaceholder(),
+    Object? constellation = const $CopyWithPlaceholder(),
+    Object? affiliation = const $CopyWithPlaceholder(),
+    Object? specialDish = const $CopyWithPlaceholder(),
+    Object? birthday = const $CopyWithPlaceholder(),
+    Object? releaseDate = const $CopyWithPlaceholder(),
+    Object? image = const $CopyWithPlaceholder(),
+    Object? fullImage = const $CopyWithPlaceholder(),
+    Object? constellationImage = const $CopyWithPlaceholder(),
+    Object? gemMaterial = const $CopyWithPlaceholder(),
+    Object? bossMaterial = const $CopyWithPlaceholder(),
+    Object? commonMaterial = const $CopyWithPlaceholder(),
+    Object? regionMaterial = const $CopyWithPlaceholder(),
+    Object? talentMaterial = const $CopyWithPlaceholder(),
+    Object? weeklyMaterial = const $CopyWithPlaceholder(),
+    Object? ascStatType = const $CopyWithPlaceholder(),
+    Object? ascHpValue = const $CopyWithPlaceholder(),
+    Object? ascAtkValue = const $CopyWithPlaceholder(),
+    Object? ascDefValue = const $CopyWithPlaceholder(),
+    Object? ascStatValue = const $CopyWithPlaceholder(),
+    Object? talentAConstellation = const $CopyWithPlaceholder(),
+    Object? talentEConstellation = const $CopyWithPlaceholder(),
+    Object? talentQConstellation = const $CopyWithPlaceholder(),
   }) {
     return GsCharacter(
-      id: id ?? this.id,
-      enkaId: enkaId ?? this.enkaId,
-      name: name ?? this.name,
-      namecardId: namecardId ?? this.namecardId,
-      title: title ?? this.title,
-      rarity: rarity ?? this.rarity,
-      region: region ?? this.region,
-      weapon: weapon ?? this.weapon,
-      element: element ?? this.element,
-      version: version ?? this.version,
-      source: source ?? this.source,
-      description: description ?? this.description,
-      constellation: constellation ?? this.constellation,
-      affiliation: affiliation ?? this.affiliation,
-      specialDish: specialDish ?? this.specialDish,
-      birthday: birthday ?? this.birthday,
-      releaseDate: releaseDate ?? this.releaseDate,
-      image: image ?? this.image,
-      fullImage: fullImage ?? this.fullImage,
-      constellationImage: constellationImage ?? this.constellationImage,
-      gemMaterial: gemMaterial ?? this.gemMaterial,
-      bossMaterial: bossMaterial ?? this.bossMaterial,
-      commonMaterial: commonMaterial ?? this.commonMaterial,
-      regionMaterial: regionMaterial ?? this.regionMaterial,
-      talentMaterial: talentMaterial ?? this.talentMaterial,
-      weeklyMaterial: weeklyMaterial ?? this.weeklyMaterial,
-      ascStatType: ascStatType ?? this.ascStatType,
-      ascHpValue: ascHpValue ?? this.ascHpValue,
-      ascAtkValue: ascAtkValue ?? this.ascAtkValue,
-      ascDefValue: ascDefValue ?? this.ascDefValue,
-      ascStatValue: ascStatValue ?? this.ascStatValue,
-      talentAConstellation: talentAConstellation ?? this.talentAConstellation,
-      talentEConstellation: talentEConstellation ?? this.talentEConstellation,
-      talentQConstellation: talentQConstellation ?? this.talentQConstellation,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      version: version == const $CopyWithPlaceholder() || version == null
+          ? _value.version
+          // ignore: cast_nullable_to_non_nullable
+          : version as String,
+      enkaId: enkaId == const $CopyWithPlaceholder() || enkaId == null
+          ? _value.enkaId
+          // ignore: cast_nullable_to_non_nullable
+          : enkaId as String,
+      name: name == const $CopyWithPlaceholder() || name == null
+          ? _value.name
+          // ignore: cast_nullable_to_non_nullable
+          : name as String,
+      namecardId:
+          namecardId == const $CopyWithPlaceholder() || namecardId == null
+          ? _value.namecardId
+          // ignore: cast_nullable_to_non_nullable
+          : namecardId as String,
+      title: title == const $CopyWithPlaceholder() || title == null
+          ? _value.title
+          // ignore: cast_nullable_to_non_nullable
+          : title as String,
+      rarity: rarity == const $CopyWithPlaceholder() || rarity == null
+          ? _value.rarity
+          // ignore: cast_nullable_to_non_nullable
+          : rarity as int,
+      region: region == const $CopyWithPlaceholder() || region == null
+          ? _value.region
+          // ignore: cast_nullable_to_non_nullable
+          : region as GeRegionType,
+      weapon: weapon == const $CopyWithPlaceholder() || weapon == null
+          ? _value.weapon
+          // ignore: cast_nullable_to_non_nullable
+          : weapon as GeWeaponType,
+      element: element == const $CopyWithPlaceholder() || element == null
+          ? _value.element
+          // ignore: cast_nullable_to_non_nullable
+          : element as GeElementType,
+      source: source == const $CopyWithPlaceholder() || source == null
+          ? _value.source
+          // ignore: cast_nullable_to_non_nullable
+          : source as GeItemSourceType,
+      description:
+          description == const $CopyWithPlaceholder() || description == null
+          ? _value.description
+          // ignore: cast_nullable_to_non_nullable
+          : description as String,
+      constellation:
+          constellation == const $CopyWithPlaceholder() || constellation == null
+          ? _value.constellation
+          // ignore: cast_nullable_to_non_nullable
+          : constellation as String,
+      affiliation:
+          affiliation == const $CopyWithPlaceholder() || affiliation == null
+          ? _value.affiliation
+          // ignore: cast_nullable_to_non_nullable
+          : affiliation as String,
+      specialDish:
+          specialDish == const $CopyWithPlaceholder() || specialDish == null
+          ? _value.specialDish
+          // ignore: cast_nullable_to_non_nullable
+          : specialDish as String,
+      birthday: birthday == const $CopyWithPlaceholder() || birthday == null
+          ? _value.birthday
+          // ignore: cast_nullable_to_non_nullable
+          : birthday as DateTime,
+      releaseDate:
+          releaseDate == const $CopyWithPlaceholder() || releaseDate == null
+          ? _value.releaseDate
+          // ignore: cast_nullable_to_non_nullable
+          : releaseDate as DateTime,
+      image: image == const $CopyWithPlaceholder() || image == null
+          ? _value.image
+          // ignore: cast_nullable_to_non_nullable
+          : image as String,
+      fullImage: fullImage == const $CopyWithPlaceholder() || fullImage == null
+          ? _value.fullImage
+          // ignore: cast_nullable_to_non_nullable
+          : fullImage as String,
+      constellationImage:
+          constellationImage == const $CopyWithPlaceholder() ||
+              constellationImage == null
+          ? _value.constellationImage
+          // ignore: cast_nullable_to_non_nullable
+          : constellationImage as String,
+      gemMaterial:
+          gemMaterial == const $CopyWithPlaceholder() || gemMaterial == null
+          ? _value.gemMaterial
+          // ignore: cast_nullable_to_non_nullable
+          : gemMaterial as String,
+      bossMaterial:
+          bossMaterial == const $CopyWithPlaceholder() || bossMaterial == null
+          ? _value.bossMaterial
+          // ignore: cast_nullable_to_non_nullable
+          : bossMaterial as String,
+      commonMaterial:
+          commonMaterial == const $CopyWithPlaceholder() ||
+              commonMaterial == null
+          ? _value.commonMaterial
+          // ignore: cast_nullable_to_non_nullable
+          : commonMaterial as String,
+      regionMaterial:
+          regionMaterial == const $CopyWithPlaceholder() ||
+              regionMaterial == null
+          ? _value.regionMaterial
+          // ignore: cast_nullable_to_non_nullable
+          : regionMaterial as String,
+      talentMaterial:
+          talentMaterial == const $CopyWithPlaceholder() ||
+              talentMaterial == null
+          ? _value.talentMaterial
+          // ignore: cast_nullable_to_non_nullable
+          : talentMaterial as String,
+      weeklyMaterial:
+          weeklyMaterial == const $CopyWithPlaceholder() ||
+              weeklyMaterial == null
+          ? _value.weeklyMaterial
+          // ignore: cast_nullable_to_non_nullable
+          : weeklyMaterial as String,
+      ascStatType:
+          ascStatType == const $CopyWithPlaceholder() || ascStatType == null
+          ? _value.ascStatType
+          // ignore: cast_nullable_to_non_nullable
+          : ascStatType as GeCharacterAscStatType,
+      ascHpValue:
+          ascHpValue == const $CopyWithPlaceholder() || ascHpValue == null
+          ? _value.ascHpValue
+          // ignore: cast_nullable_to_non_nullable
+          : ascHpValue as int,
+      ascAtkValue:
+          ascAtkValue == const $CopyWithPlaceholder() || ascAtkValue == null
+          ? _value.ascAtkValue
+          // ignore: cast_nullable_to_non_nullable
+          : ascAtkValue as int,
+      ascDefValue:
+          ascDefValue == const $CopyWithPlaceholder() || ascDefValue == null
+          ? _value.ascDefValue
+          // ignore: cast_nullable_to_non_nullable
+          : ascDefValue as int,
+      ascStatValue:
+          ascStatValue == const $CopyWithPlaceholder() || ascStatValue == null
+          ? _value.ascStatValue
+          // ignore: cast_nullable_to_non_nullable
+          : ascStatValue as double,
+      talentAConstellation:
+          talentAConstellation == const $CopyWithPlaceholder() ||
+              talentAConstellation == null
+          ? _value.talentAConstellation
+          // ignore: cast_nullable_to_non_nullable
+          : talentAConstellation as int,
+      talentEConstellation:
+          talentEConstellation == const $CopyWithPlaceholder() ||
+              talentEConstellation == null
+          ? _value.talentEConstellation
+          // ignore: cast_nullable_to_non_nullable
+          : talentEConstellation as int,
+      talentQConstellation:
+          talentQConstellation == const $CopyWithPlaceholder() ||
+              talentQConstellation == null
+          ? _value.talentQConstellation
+          // ignore: cast_nullable_to_non_nullable
+          : talentQConstellation as int,
     );
   }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {
-      'id': id,
-      'enka_id': enkaId,
-      'name': name,
-      'namecard_id': namecardId,
-      'title': title,
-      'rarity': rarity,
-      'region': region.id,
-      'weapon': weapon.id,
-      'element': element.id,
-      'version': version,
-      'source': source.id,
-      'description': description,
-      'constellation': constellation,
-      'affiliation': affiliation,
-      'special_dish': specialDish,
-      'birthday': birthday.toString(),
-      'release_date': releaseDate.toString(),
-      'image': image,
-      'full_image': fullImage,
-      'constellation_image': constellationImage,
-      'mat_gem': gemMaterial,
-      'mat_boss': bossMaterial,
-      'mat_common': commonMaterial,
-      'mat_region': regionMaterial,
-      'mat_talent': talentMaterial,
-      'mat_weekly': weeklyMaterial,
-      'asc_stat_type': ascStatType.id,
-      'asc_hp_value': ascHpValue,
-      'asc_atk_value': ascAtkValue,
-      'asc_def_value': ascDefValue,
-      'asc_stat_value': ascStatValue,
-      'tal_a_const': talentAConstellation,
-      'tal_e_const': talentEConstellation,
-      'tal_q_const': talentQConstellation,
-    };
-  }
 }
+
+extension $GsCharacterCopyWith on GsCharacter {
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfGsCharacter.copyWith(...)`.
+  // ignore: library_private_types_in_public_api
+  _$GsCharacterCWProxy get copyWith => _$GsCharacterCWProxyImpl(this);
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GsCharacter _$GsCharacterFromJson(Map<String, dynamic> json) => GsCharacter(
+  id: json['id'] as String? ?? '',
+  version: json['version'] as String? ?? '',
+  enkaId: json['enkaId'] as String? ?? '',
+  name: json['name'] as String? ?? '',
+  namecardId: json['namecardId'] as String? ?? '',
+  title: json['title'] as String? ?? '',
+  rarity: (json['rarity'] as num?)?.toInt() ?? 0,
+  region:
+      $enumDecodeNullable(
+        _$GeRegionTypeEnumMap,
+        json['region'],
+        unknownValue: GeRegionType.none,
+      ) ??
+      GeRegionType.none,
+  weapon:
+      $enumDecodeNullable(
+        _$GeWeaponTypeEnumMap,
+        json['weapon'],
+        unknownValue: GeWeaponType.none,
+      ) ??
+      GeWeaponType.none,
+  element:
+      $enumDecodeNullable(
+        _$GeElementTypeEnumMap,
+        json['element'],
+        unknownValue: GeElementType.none,
+      ) ??
+      GeElementType.none,
+  source:
+      $enumDecodeNullable(
+        _$GeItemSourceTypeEnumMap,
+        json['source'],
+        unknownValue: GeItemSourceType.none,
+      ) ??
+      GeItemSourceType.none,
+  description: json['description'] as String? ?? '',
+  constellation: json['constellation'] as String? ?? '',
+  affiliation: json['affiliation'] as String? ?? '',
+  specialDish: json['specialDish'] as String? ?? '',
+  birthday: modelDateFromJson(json['birthday']),
+  releaseDate: modelDateFromJson(json['releaseDate']),
+  image: json['image'] as String? ?? '',
+  fullImage: json['fullImage'] as String? ?? '',
+  constellationImage: json['constellationImage'] as String? ?? '',
+  gemMaterial: json['gemMaterial'] as String? ?? '',
+  bossMaterial: json['bossMaterial'] as String? ?? '',
+  commonMaterial: json['commonMaterial'] as String? ?? '',
+  regionMaterial: json['regionMaterial'] as String? ?? '',
+  talentMaterial: json['talentMaterial'] as String? ?? '',
+  weeklyMaterial: json['weeklyMaterial'] as String? ?? '',
+  ascStatType:
+      $enumDecodeNullable(
+        _$GeCharacterAscStatTypeEnumMap,
+        json['ascStatType'],
+        unknownValue: GeCharacterAscStatType.none,
+      ) ??
+      GeCharacterAscStatType.none,
+  ascHpValue: (json['ascHpValue'] as num?)?.toInt() ?? 0,
+  ascAtkValue: (json['ascAtkValue'] as num?)?.toInt() ?? 0,
+  ascDefValue: (json['ascDefValue'] as num?)?.toInt() ?? 0,
+  ascStatValue: (json['ascStatValue'] as num?)?.toDouble() ?? 0,
+  talentAConstellation: (json['talentAConstellation'] as num?)?.toInt() ?? -1,
+  talentEConstellation: (json['talentEConstellation'] as num?)?.toInt() ?? -1,
+  talentQConstellation: (json['talentQConstellation'] as num?)?.toInt() ?? -1,
+);
+
+Map<String, dynamic> _$GsCharacterToJson(GsCharacter instance) =>
+    <String, dynamic>{
+      'constellation': instance.constellation,
+      'version': instance.version,
+      'enkaId': instance.enkaId,
+      'name': instance.name,
+      'namecardId': instance.namecardId,
+      'title': instance.title,
+      'rarity': instance.rarity,
+      'region': _$GeRegionTypeEnumMap[instance.region]!,
+      'weapon': _$GeWeaponTypeEnumMap[instance.weapon]!,
+      'element': _$GeElementTypeEnumMap[instance.element]!,
+      'source': _$GeItemSourceTypeEnumMap[instance.source]!,
+      'description': instance.description,
+      'id': instance.id,
+      'affiliation': instance.affiliation,
+      'specialDish': instance.specialDish,
+      'birthday': modelDateToJson(instance.birthday),
+      'releaseDate': modelDateToJson(instance.releaseDate),
+      'image': instance.image,
+      'fullImage': instance.fullImage,
+      'constellationImage': instance.constellationImage,
+      'gemMaterial': instance.gemMaterial,
+      'bossMaterial': instance.bossMaterial,
+      'talentQConstellation': instance.talentQConstellation,
+      'regionMaterial': instance.regionMaterial,
+      'talentMaterial': instance.talentMaterial,
+      'weeklyMaterial': instance.weeklyMaterial,
+      'ascStatType': _$GeCharacterAscStatTypeEnumMap[instance.ascStatType]!,
+      'ascHpValue': instance.ascHpValue,
+      'ascAtkValue': instance.ascAtkValue,
+      'ascDefValue': instance.ascDefValue,
+      'ascStatValue': instance.ascStatValue,
+      'talentAConstellation': instance.talentAConstellation,
+      'talentEConstellation': instance.talentEConstellation,
+      'commonMaterial': instance.commonMaterial,
+    };
+
+const _$GeRegionTypeEnumMap = {
+  GeRegionType.none: 'none',
+  GeRegionType.mondstadt: 'mondstadt',
+  GeRegionType.liyue: 'liyue',
+  GeRegionType.inazuma: 'inazuma',
+  GeRegionType.sumeru: 'sumeru',
+  GeRegionType.fontaine: 'fontaine',
+  GeRegionType.natlan: 'natlan',
+  GeRegionType.nodkrai: 'nodkrai',
+  GeRegionType.snezhnaya: 'snezhnaya',
+};
+
+const _$GeWeaponTypeEnumMap = {
+  GeWeaponType.none: 'none',
+  GeWeaponType.bow: 'bow',
+  GeWeaponType.sword: 'sword',
+  GeWeaponType.polearm: 'polearm',
+  GeWeaponType.catalyst: 'catalyst',
+  GeWeaponType.claymore: 'claymore',
+};
+
+const _$GeElementTypeEnumMap = {
+  GeElementType.none: 'none',
+  GeElementType.anemo: 'anemo',
+  GeElementType.geo: 'geo',
+  GeElementType.electro: 'electro',
+  GeElementType.dendro: 'dendro',
+  GeElementType.hydro: 'hydro',
+  GeElementType.pyro: 'pyro',
+  GeElementType.cryo: 'cryo',
+};
+
+const _$GeItemSourceTypeEnumMap = {
+  GeItemSourceType.none: 'none',
+  GeItemSourceType.shop: 'shop',
+  GeItemSourceType.event: 'event',
+  GeItemSourceType.fishing: 'fishing',
+  GeItemSourceType.forging: 'forging',
+  GeItemSourceType.battlepass: 'battlepass',
+  GeItemSourceType.exploration: 'exploration',
+  GeItemSourceType.wishesStandard: 'wishes_standard',
+  GeItemSourceType.wishesWeaponBanner: 'wishes_weapon_banner',
+  GeItemSourceType.wishesCharacterBanner: 'wishes_character_banner',
+};
+
+const _$GeCharacterAscStatTypeEnumMap = {
+  GeCharacterAscStatType.none: 'none',
+  GeCharacterAscStatType.anemoDmgBonus: 'anemoDmgBonus',
+  GeCharacterAscStatType.geoDmgBonus: 'geoDmgBonus',
+  GeCharacterAscStatType.electroDmgBonus: 'electroDmgBonus',
+  GeCharacterAscStatType.dendroDmgBonus: 'dendroDmgBonus',
+  GeCharacterAscStatType.hydroDmgBonus: 'hydroDmgBonus',
+  GeCharacterAscStatType.pyroDmgBonus: 'pyroDmgBonus',
+  GeCharacterAscStatType.cryoDmgBonus: 'cryoDmgBonus',
+  GeCharacterAscStatType.hpPercent: 'hpPercent',
+  GeCharacterAscStatType.atkPercent: 'atkPercent',
+  GeCharacterAscStatType.defPercent: 'defPercent',
+  GeCharacterAscStatType.critDmg: 'critDmg',
+  GeCharacterAscStatType.critRate: 'critRate',
+  GeCharacterAscStatType.healing: 'healing',
+  GeCharacterAscStatType.physicalDmg: 'physicalDmg',
+  GeCharacterAscStatType.energyRecharge: 'energyRecharge',
+  GeCharacterAscStatType.elementalMastery: 'elementalMastery',
+};

@@ -3,35 +3,72 @@
 part of 'gi_recipe.dart';
 
 // **************************************************************************
-// Generator: BuilderGeneratorGen
+// CopyWithGenerator
 // **************************************************************************
 
-class GiRecipe extends _GiRecipe {
-  @override
-  final String id;
-  @override
-  final int proficiency;
+abstract class _$GiRecipeCWProxy {
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GiRecipe(...).copyWith(id: 12, name: "My name")
+  /// ```
+  GiRecipe call({String id, int proficiency});
+}
 
-  /// Creates a new [GiRecipe] instance.
-  GiRecipe({required this.id, required this.proficiency});
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfGiRecipe.copyWith(...)`.
+class _$GiRecipeCWProxyImpl implements _$GiRecipeCWProxy {
+  const _$GiRecipeCWProxyImpl(this._value);
 
-  /// Creates a new [GiRecipe] instance from the given map.
-  GiRecipe.fromJson(JsonMap m)
-    : id = m['id'] as String? ?? '',
-      proficiency = m['proficiency'] as int? ?? 0;
+  final GiRecipe _value;
 
-  /// Copies this model with the given parameters.
+  /// Creates a new instance with the provided field values.
+  /// Omitted fields keep their values; explicit `null` clears nullable fields.
+  /// The public API rejects `null` for non-nullable fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// GiRecipe(...).copyWith(id: 12, name: "My name")
+  /// ```
   @override
-  GiRecipe copyWith({String? id, int? proficiency}) {
+  GiRecipe call({
+    Object? id = const $CopyWithPlaceholder(),
+    Object? proficiency = const $CopyWithPlaceholder(),
+  }) {
     return GiRecipe(
-      id: id ?? this.id,
-      proficiency: proficiency ?? this.proficiency,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      proficiency:
+          proficiency == const $CopyWithPlaceholder() || proficiency == null
+          ? _value.proficiency
+          // ignore: cast_nullable_to_non_nullable
+          : proficiency as int,
     );
   }
-
-  /// Creates a [JsonMap] from this model.
-  @override
-  JsonMap toMap() {
-    return {'id': id, 'proficiency': proficiency};
-  }
 }
+
+extension $GiRecipeCopyWith on GiRecipe {
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfGiRecipe.copyWith(...)`.
+  // ignore: library_private_types_in_public_api
+  _$GiRecipeCWProxy get copyWith => _$GiRecipeCWProxyImpl(this);
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GiRecipe _$GiRecipeFromJson(Map<String, dynamic> json) => GiRecipe(
+  id: json['id'] as String? ?? '',
+  proficiency: (json['proficiency'] as num?)?.toInt() ?? 0,
+);
+
+Map<String, dynamic> _$GiRecipeToJson(GiRecipe instance) => <String, dynamic>{
+  'id': instance.id,
+  'proficiency': instance.proficiency,
+};
