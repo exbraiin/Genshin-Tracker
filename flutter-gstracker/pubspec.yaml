@@ -17,12 +17,15 @@ dependencies:
   rxdart: ^0.28.0
   gsdatabase:
     path: ../dart-gsdatabase
-  intl: ^0.20.2
+  intl: ^0.20.3
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
+  build_runner: ^2.17.1
+  dt_ex_gen:
+    git: https://github.com/exbraiin/dt_ex_gen.git
   flutter_lints: ^6.0.0
-  asset_gen:
-    path: ../packages/asset_gen
 
 flutter:
   uses-material-design: true

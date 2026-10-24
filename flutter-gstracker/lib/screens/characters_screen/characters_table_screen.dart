@@ -356,30 +356,6 @@ class _AllMats extends StatelessWidget {
             return child;
           },
         ),
-        /*
-            Wrap(
-              spacing: kSeparator4,
-              runSpacing: kSeparator4,
-              alignment: WrapAlignment.start,
-              children: mats.map((info) {
-                return ItemGridWidget.material(
-                  info.mat,
-                  size: size,
-                  disabled: !info.isFarmableToday,
-                  labelWidget: _materialAmountLabel(
-                    context,
-                    info.mat,
-                    info.amount,
-                  ),
-                  onTap: (context, item) => MaterialDetailsCard(
-                    item,
-                    allowEditing:
-                        info.mat.group == GeMaterialType.weeklyBossDrops,
-                  ).show(context),
-                );
-              }).toList(),
-            ),
-            */
       ),
     );
   }

@@ -9,11 +9,8 @@
             "command": "dart",
             "args": [
                 "run",
-                "asset_gen",
-                "run",
-                "-g",
-                "-t",
-                "${workspaceFolder}/tasks_example.yaml"
+                "build_runner",
+                "build",
             ],
             "problemMatcher": []
         }

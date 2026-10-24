@@ -1,0 +1,18 @@
+targets:
+  $default:
+    builders:
+      dt_ex_gen:dt_ex:
+        options:
+          assets:
+            AppAssets:
+              output: lib/theme/gs_assets.g.dart
+              directories:
+                - assets/image
+            AppLangs:
+              output: lib/theme/gs_langs.g.dart
+              directories:
+                - assets/lang
+          localizations:
+            AppLocalization:
+              output: lib/common/lang/lang.dart
+              asset: assets/lang/en.json
