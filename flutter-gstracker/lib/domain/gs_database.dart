@@ -17,7 +17,9 @@ const _kVersPath = 'data/db/vers.json';
 const _kGit = 'https://raw.githubusercontent.com/exbraiin';
 const _kGitDataUrl = '$_kGit/Genshin-Tracker/main/release/db/gsdatab';
 const _kGitVersionUrl = '$_kGit/Genshin-Tracker/main/release/db/gsversion';
-const _kImagesDirectory = kDebugMode ? '../runner/images' : '../images';
+const _kImagesDirectory = kDebugMode
+    ? '../runner/Tracker/data/db_images'
+    : 'data/db_images';
 
 class Database {
   static final instance = Database._();
