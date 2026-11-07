@@ -4,8 +4,8 @@ import 'package:gsdatabase/gsdatabase.dart';
 
 var _base = '';
 
-void initializeImageDatabase(String path) {
-  _base = path;
+void initializeImageDatabase(Directory directory) {
+  _base = directory.absolute.path;
 }
 
 extension GsModelImageExt<T extends GsModel<T>> on T {

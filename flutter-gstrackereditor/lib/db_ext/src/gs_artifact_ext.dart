@@ -5,7 +5,6 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
-
 class GsArtifactExt extends GsModelExt<GsArtifact> {
   const GsArtifactExt();
 
@@ -86,10 +85,7 @@ class GsArtifactExt extends GsModelExt<GsArtifact> {
             (item) => item.name,
             (item, value) => item.copyWith(name: value),
           ),
-          DataField.validateFile(
-            'Icon',
-            (item) => item.image,
-          ),
+          DataField.validateFile('Icon', (piece) => piece.getIcon(item)),
           DataField.textField(
             'Desc',
             (item) => item.desc,

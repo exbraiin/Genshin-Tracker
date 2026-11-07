@@ -25,16 +25,14 @@ class _SwapWidgetsState extends State<SwapWidgets>
     animation = TweenSequence<double>([
       TweenSequenceItem(tween: ConstantTween(1), weight: 1),
       TweenSequenceItem(
-        tween: CurveTween(
-          curve: Curves.easeOut,
-        ).chain(Tween(begin: 1.0, end: 0.0)),
+        tween: CurveTween(curve: Curves.easeOut)
+            .chain(Tween(begin: 1.0, end: 0.0)),
         weight: 1,
       ),
       TweenSequenceItem(tween: ConstantTween(0), weight: 1),
       TweenSequenceItem(
-        tween: CurveTween(
-          curve: Curves.easeOut,
-        ).chain(Tween(begin: 0.0, end: 1.0)),
+        tween: CurveTween(curve: Curves.easeOut)
+            .chain(Tween(begin: 0.0, end: 1.0)),
         weight: 1,
       ),
     ]).animate(controller);

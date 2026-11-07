@@ -22,27 +22,6 @@ abstract final class AppAssets {
   /// assets/image/backgrounds/pyro.gif
   static const backgroundsPyro = 'assets/image/backgrounds/pyro.gif';
 
-  /// assets/image/backgrounds/static/anemo.gif
-  static const staticAnemo = 'assets/image/backgrounds/static/anemo.gif';
-
-  /// assets/image/backgrounds/static/cryo.gif
-  static const staticCryo = 'assets/image/backgrounds/static/cryo.gif';
-
-  /// assets/image/backgrounds/static/dendro.gif
-  static const staticDendro = 'assets/image/backgrounds/static/dendro.gif';
-
-  /// assets/image/backgrounds/static/electro.gif
-  static const staticElectro = 'assets/image/backgrounds/static/electro.gif';
-
-  /// assets/image/backgrounds/static/geo.gif
-  static const staticGeo = 'assets/image/backgrounds/static/geo.gif';
-
-  /// assets/image/backgrounds/static/hydro.gif
-  static const staticHydro = 'assets/image/backgrounds/static/hydro.gif';
-
-  /// assets/image/backgrounds/static/pyro.gif
-  static const staticPyro = 'assets/image/backgrounds/static/pyro.gif';
-
   /// assets/image/element/anemo.png
   static const elementAnemo = 'assets/image/element/anemo.png';
 

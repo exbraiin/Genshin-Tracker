@@ -2,8 +2,11 @@
 
 import 'package:flutter/widgets.dart';
 
-typedef HoverCallback =
-    Widget Function(BuildContext context, bool hover, Widget? child);
+typedef HoverCallback = Widget Function(
+  BuildContext context,
+  bool hover,
+  Widget? child,
+);
 
 class MouseButton extends StatefulWidget {
   final Widget? child;

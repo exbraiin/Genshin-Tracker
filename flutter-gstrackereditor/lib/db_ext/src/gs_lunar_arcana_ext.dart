@@ -3,7 +3,6 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
-
 class GsLunarArcanaExt extends GsModelExt<GsLunarArcana> {
   const GsLunarArcanaExt();
 
@@ -34,10 +33,7 @@ class GsLunarArcanaExt extends GsModelExt<GsLunarArcana> {
         (item, value) => item.copyWith(number: value),
         range: (1, null),
       ),
-      DataField.validateFile(
-        'Image',
-        (item) => item.image,
-      ),
+      DataField.validateFile('Image', (item) => item.image),
       DataField.textEditor(
         'Desc',
         (item) => item.description,

@@ -3,7 +3,6 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
-
 class GsThespianTrickExt extends GsModelExt<GsThespianTrick> {
   const GsThespianTrickExt();
 
@@ -47,10 +46,7 @@ class GsThespianTrickExt extends GsModelExt<GsThespianTrick> {
         (item, value) => item.copyWith(character: value),
         validator: (item) => vdCharacters.validate(item.character),
       ),
-      DataField.validateFile(
-        'Image',
-        (item) => item.image,
-      ),
+      DataField.validateFile('Image', (item) => item.image),
       DataField.singleSelect(
         'Version',
         (item) => item.version,

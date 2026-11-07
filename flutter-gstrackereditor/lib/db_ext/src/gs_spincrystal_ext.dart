@@ -5,7 +5,6 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
-
 class GsSpincrystalExt extends GsModelExt<GsSpincrystal> {
   const GsSpincrystalExt();
 
@@ -43,10 +42,7 @@ class GsSpincrystalExt extends GsModelExt<GsSpincrystal> {
         (item, value) => item.copyWith(source: value),
         empty: GsValidLevel.warn2,
       ),
-      DataField.validateFile(
-        'Source Image',
-        (item) => item.image,
-      ),
+      DataField.validateFile('Source Image', (item) => item.image),
       DataField.singleEnum(
         'Region',
         GeRegionType.values.toChips(),

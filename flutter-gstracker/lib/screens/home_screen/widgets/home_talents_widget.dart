@@ -72,9 +72,9 @@ class _HomeTalentsWidgetState extends State<HomeTalentsWidget> {
                   IconButton(
                     padding: EdgeInsets.all(2),
                     constraints: BoxConstraints.tightFor(),
-                    onPressed: () => Navigator.of(
-                      context,
-                    ).pushNamed(CharactersTableScreen.id),
+                    onPressed: () =>
+                        Navigator.of(context)
+                            .pushNamed(CharactersTableScreen.id),
                     icon: const Icon(Icons.list),
                     color: Colors.white.withValues(alpha: 0.5),
                   ),

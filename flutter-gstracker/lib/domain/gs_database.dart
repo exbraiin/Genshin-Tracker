@@ -44,7 +44,7 @@ class Database {
         .where((event) => event)
         .debounceTime(const Duration(seconds: 2))
         .listen((event) => _saveAll());
-    initializeImageDatabase(_kImagesDirectory);
+    initializeImageDatabase(Directory(_kImagesDirectory));
   }
 
   Future<void> _load() async {

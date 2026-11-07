@@ -19,12 +19,13 @@ final class Database {
 
   var _loaded = false;
   final _db = GsDatabase.info();
+  final imagesDirectory = Directory(_kImagesDirectory);
 
   final modified = PublishSubject<void>();
   Database._();
 
   void init() {
-    initializeImageDatabase(_kImagesDirectory);
+    initializeImageDatabase(imagesDirectory);
   }
 
   Items<T> of<T extends GsModel<T>>() => _db.of<T>();

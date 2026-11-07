@@ -5,7 +5,6 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
-
 class GsEventExt extends GsModelExt<GsEvent> {
   const GsEventExt();
 
@@ -32,10 +31,7 @@ class GsEventExt extends GsModelExt<GsEvent> {
         (item) => item.name,
         (item, value) => item.copyWith(name: value),
       ),
-      DataField.validateFile(
-        'Image',
-        (item) => item.image,
-      ),
+      DataField.validateFile('Image', (item) => item.image),
       DataField.singleEnum<GsEvent, GeEventType>(
         'Type',
         GeEventType.values.toChips(),

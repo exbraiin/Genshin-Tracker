@@ -6,7 +6,6 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
-
 class GsRecipeExt extends GsModelExt<GsRecipe> {
   const GsRecipeExt();
 
@@ -52,10 +51,7 @@ class GsRecipeExt extends GsModelExt<GsRecipe> {
         (item, value) => item.copyWith(version: value),
         validator: (item) => vdVersion.validate(item.version),
       ),
-      DataField.validateFile(
-        'Image',
-        (item) => item.image,
-      ),
+      DataField.validateFile('Image', (item) => item.image),
       DataField.singleEnum(
         'Effect',
         GeRecipeEffectType.values.toChips(),

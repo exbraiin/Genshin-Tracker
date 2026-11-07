@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/configs.dart';
 import 'package:data_editor/db/database.dart';
@@ -56,7 +58,7 @@ class DataValidator {
   Future<void> checkItems<T extends GsModel<T>>() {
     final models = Database.i.of<T>().items.toList();
     final validator = _GsValidator.of<T>();
-    final data = _ComputeData(models.toList(), validator);
+    final data = _ComputeData(models, validator, Database.i.imagesDirectory);
     return compute(
       _validateModels<T>,
       data,
@@ -94,6 +96,7 @@ class DataValidator {
 Map<String, GsValidLevel> _validateModels<T extends GsModel<T>>(
   _ComputeData<T> data,
 ) {
+  initializeImageDatabase(data.imagesDirectory);
   final valid = <String, GsValidLevel>{};
   for (final item in data.models) {
     valid[item.id] = data.validator.validate(item);
@@ -103,9 +106,10 @@ Map<String, GsValidLevel> _validateModels<T extends GsModel<T>>(
 
 class _ComputeData<T extends GsModel<T>> {
   final Iterable<T> models;
+  final Directory imagesDirectory;
   final _GsValidator validator;
 
-  _ComputeData(this.models, this.validator);
+  _ComputeData(this.models, this.validator, this.imagesDirectory);
 }
 
 class _GsValidator<T extends GsModel<T>> {

@@ -5,7 +5,6 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
-
 class GsBannerExt extends GsModelExt<GsBanner> {
   const GsBannerExt();
 
@@ -32,10 +31,7 @@ class GsBannerExt extends GsModelExt<GsBanner> {
         (item) => item.name,
         (item, value) => item.copyWith(name: value),
       ),
-      DataField.validateFile(
-        'Image',
-        (item) => item.image,
-      ),
+      DataField.validateFile('Image', (item) => item.image),
       DataField.dateTime(
         'Date Start',
         (item) => item.dateStart,
