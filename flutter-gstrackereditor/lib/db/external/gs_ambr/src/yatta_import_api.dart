@@ -75,7 +75,6 @@ final class YattaImporter implements ImportApi {
 
       return GsArtifactPiece(
         id: type.id,
-        type: type,
         name: data.getString('name'),
         desc: data.getString('description'),
       );

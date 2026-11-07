@@ -42,9 +42,9 @@ class GsArtifactPiece({
   @override final String id = '',
   final String name = '',
   final String desc = '',
-  @JsonKey(unknownEnumValue: GeArtifactPieceType.flowerOfLife)
-  final GeArtifactPieceType type = GeArtifactPieceType.flowerOfLife,
 }) extends GsModel<GsArtifactPiece> {
+  final type = GeArtifactPieceType.values.fromId(id);
+
   factory GsArtifactPiece.fromJson(JsonMap json) =>
       _$GsArtifactPieceFromJson(json);
 

@@ -118,12 +118,7 @@ abstract class _$GsArtifactPieceCWProxy {
   /// ```dart
   /// GsArtifactPiece(...).copyWith(id: 12, name: "My name")
   /// ```
-  GsArtifactPiece call({
-    String id,
-    String name,
-    String desc,
-    GeArtifactPieceType type,
-  });
+  GsArtifactPiece call({String id, String name, String desc});
 }
 
 /// Callable proxy for `copyWith` functionality.
@@ -146,7 +141,6 @@ class _$GsArtifactPieceCWProxyImpl implements _$GsArtifactPieceCWProxy {
     Object? id = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? desc = const $CopyWithPlaceholder(),
-    Object? type = const $CopyWithPlaceholder(),
   }) {
     return GsArtifactPiece(
       id: id == const $CopyWithPlaceholder() || id == null
@@ -161,10 +155,6 @@ class _$GsArtifactPieceCWProxyImpl implements _$GsArtifactPieceCWProxy {
           ? _value.desc
           // ignore: cast_nullable_to_non_nullable
           : desc as String,
-      type: type == const $CopyWithPlaceholder() || type == null
-          ? _value.type
-          // ignore: cast_nullable_to_non_nullable
-          : type as GeArtifactPieceType,
     );
   }
 }
@@ -234,13 +224,6 @@ GsArtifactPiece _$GsArtifactPieceFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String? ?? '',
       name: json['name'] as String? ?? '',
       desc: json['desc'] as String? ?? '',
-      type:
-          $enumDecodeNullable(
-            _$GeArtifactPieceTypeEnumMap,
-            json['type'],
-            unknownValue: GeArtifactPieceType.flowerOfLife,
-          ) ??
-          GeArtifactPieceType.flowerOfLife,
     );
 
 Map<String, dynamic> _$GsArtifactPieceToJson(GsArtifactPiece instance) =>
@@ -248,13 +231,4 @@ Map<String, dynamic> _$GsArtifactPieceToJson(GsArtifactPiece instance) =>
       'id': instance.id,
       'name': instance.name,
       'desc': instance.desc,
-      'type': _$GeArtifactPieceTypeEnumMap[instance.type]!,
     };
-
-const _$GeArtifactPieceTypeEnumMap = {
-  GeArtifactPieceType.flowerOfLife: 'flower_of_life',
-  GeArtifactPieceType.plumeOfDeath: 'plume_of_death',
-  GeArtifactPieceType.sandsOfEon: 'sands_of_eon',
-  GeArtifactPieceType.gobletOfEonothem: 'goblet_of_eonothem',
-  GeArtifactPieceType.circletOfLogos: 'circlet_of_logos',
-};
