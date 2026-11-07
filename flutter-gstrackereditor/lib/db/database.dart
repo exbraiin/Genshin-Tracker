@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:rxdart/rxdart.dart';
 
-const _kFilePath = '.data/gsdata';
-const _kFilePathEncoded = '.data/gsdatab';
+const _kFilePath = 'data/db/gsdata';
+const _kFilePathEncoded = 'data/db/gsdatab';
 const _kFilePathDebug = '../runner/TrackerEditor/data/db/gsdata';
 const _kImagesDirectory = kDebugMode
     ? '../runner/Tracker/data/db_images'
