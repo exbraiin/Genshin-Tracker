@@ -29,7 +29,11 @@ class GsVersionExt extends GsModelExt<GsVersion> {
         (item) => item.name,
         (item, value) => item.copyWith(name: value),
       ),
-      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile(
+        'Image',
+        (item) => item.image,
+        expectedSize: (1280, 730),
+      ),
       DataField.dateTime(
         'Release Date',
         (item) => item.releaseDate,

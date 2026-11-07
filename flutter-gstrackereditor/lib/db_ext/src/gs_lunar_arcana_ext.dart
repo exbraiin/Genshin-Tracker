@@ -33,7 +33,11 @@ class GsLunarArcanaExt extends GsModelExt<GsLunarArcana> {
         (item, value) => item.copyWith(number: value),
         range: (1, null),
       ),
-      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile(
+        'Image',
+        (item) => item.image,
+        expectedSize: (684, 1024),
+      ),
       DataField.textEditor(
         'Desc',
         (item) => item.description,

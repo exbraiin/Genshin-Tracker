@@ -70,7 +70,11 @@ class GsMaterialExt extends GsModelExt<GsMaterial> {
         (item, value) => item.copyWith(version: value),
         validator: (item) => vdVersion.validate(item.version),
       ),
-      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile(
+        'Image',
+        (item) => item.image,
+        expectedSize: (256, 256),
+      ),
       DataField.multiEnum<GsMaterial, GeWeekdayType>(
         'Weekdays',
         (item) => item.weekdays,

@@ -1,4 +1,3 @@
-import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:data_editor/db_ext/datafield.dart';
@@ -121,47 +120,55 @@ class _ItemEditScreenState<T extends GsModel<T>>
               child: ValueListenableBuilder(
                 valueListenable: _notifier,
                 builder: (context, value, child) {
-                  final valid =
-                      fields
-                          .map((e) => e.validator(value))
-                          .whereNotNull()
-                          .maxBy((element) => element.index) !=
-                      GsValidLevel.error;
+                  return ValidationBuilder(
+                    validation: maxValidationLevel(
+                      fields.map((e) => e.validator(value)),
+                    ),
+                    builder: (context, level, pending) {
+                      final valid = !pending && level != GsValidLevel.error;
 
-                  void onSave() {
-                    if (widget.item?.id != value.id) {
-                      // Id changed we need to delete the previous item
-                      widget.collection.delete(widget.item?.id);
-                    }
-                    widget.collection.updateItem(value);
-                    Navigator.of(context).maybePop();
-                  }
+                      void onSave() {
+                        if (widget.item?.id != value.id) {
+                          // Id changed we need to delete the previous item
+                          widget.collection.delete(widget.item?.id);
+                        }
+                        widget.collection.updateItem(value);
+                        Navigator.of(context).maybePop();
+                      }
 
-                  void onDelete() {
-                    widget.collection.delete(value.id);
-                    Navigator.of(context).maybePop();
-                  }
+                      void onDelete() {
+                        widget.collection.delete(value.id);
+                        Navigator.of(context).maybePop();
+                      }
 
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Opacity(
-                        opacity: widget.item != null ? 1 : 0.2,
-                        child: FloatingDeleteButton(
-                          onPressed: widget.item != null ? onDelete : null,
-                          child: const Icon(Icons.delete, color: Colors.white),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Opacity(
-                        opacity: valid ? 1 : 0.2,
-                        child: FloatingActionButton(
-                          heroTag: 'save',
-                          onPressed: valid ? onSave : null,
-                          child: const Icon(Icons.save, color: Colors.white),
-                        ),
-                      ),
-                    ],
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Opacity(
+                            opacity: widget.item != null ? 1 : 0.2,
+                            child: FloatingDeleteButton(
+                              onPressed: widget.item != null ? onDelete : null,
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Opacity(
+                            opacity: valid ? 1 : 0.2,
+                            child: FloatingActionButton(
+                              heroTag: 'save',
+                              onPressed: valid ? onSave : null,
+                              child: const Icon(
+                                Icons.save,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
               ),

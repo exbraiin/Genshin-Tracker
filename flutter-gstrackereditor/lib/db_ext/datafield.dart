@@ -3,15 +3,19 @@ import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/db_ext/data_validator.dart';
+import 'package:data_editor/db_ext/image_file_validator.dart';
 import 'package:data_editor/style/style.dart';
 import 'package:data_editor/widgets/gs_selector/gs_selector.dart';
 import 'package:data_editor/widgets/gs_text_editor_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gsdatabase/gsdatabase.dart';
+import 'package:path/path.dart' as p;
 
 typedef DEdit<T extends GsModel<T>> = void Function(T v);
-typedef DValidator<T extends GsModel<T>> = GsValidLevel Function(T item);
+typedef DValidator<T extends GsModel<T>> = FutureOr<GsValidLevel> Function(
+  T item,
+);
 typedef DUpdate<T extends GsModel<T>> = T Function(T item);
 typedef DBuilder<T extends GsModel<T>> = Widget Function(
   BuildContext context,
@@ -34,33 +38,31 @@ class DataField<T extends GsModel<T>> {
 
   DataField._(this.label, this.builder, {required this.validator});
 
-  DataField.validateFile(this.label, File? Function(T item) content)
-    : builder = ((context, item, edit, level) {
-        final file = content(item);
-        return InkWell(
-          onTap: Platform.isWindows && file != null
-              ? () async {
-                  try {
-                    await _openFileInWindows(file);
-                  } catch (error) {
-                    if (!context.mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Could not open folder: $error')),
-                    );
-                  }
-                }
-              : null,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            constraints: const BoxConstraints(minHeight: 36),
-            alignment: Alignment.centerLeft,
-            child: Text('${file?.path.replaceAll('\\', '/')}'),
-          ),
-        );
-      }),
-      validator = ((item) => (content(item)?.existsSync() ?? false)
-          ? GsValidLevel.good
-          : GsValidLevel.warn2);
+  DataField.validateFile(
+    this.label,
+    File? Function(T item) content, {
+    (int width, int height)? expectedSize,
+  }) : assert(
+         expectedSize == null || (expectedSize.$1 > 0 && expectedSize.$2 > 0),
+       ),
+       builder = ((context, item, edit, level) {
+         final file = content(item);
+         final path = file != null
+             ? p.relative(file.absolute.path).replaceAll('\\', '/')
+             : null;
+         return InkWell(
+           onTap: Platform.isWindows && file != null
+               ? () => _openFileInWindows(file)
+               : null,
+           child: Container(
+             padding: const EdgeInsets.symmetric(vertical: 8),
+             constraints: const BoxConstraints(minHeight: 36),
+             alignment: Alignment.centerLeft,
+             child: Text('$expectedSize - $path'),
+           ),
+         );
+       }),
+       validator = ((item) => validateImageFile(content(item), expectedSize));
 
   DataField.text(
     this.label,
@@ -578,10 +580,10 @@ class DataField<T extends GsModel<T>> {
     : builder = ((context, item, edit, level) =>
           getTableForFields(context, item, fields(item), edit)),
       validator = ((item) {
-        return fields(item)
-                .map((e) => e.validator(item))
-                .maxBy((e) => e.index) ??
-            GsValidLevel.none;
+        return maxValidationLevel(
+          fields(item).map((e) => e.validator(item)),
+          emptyLevel: GsValidLevel.none,
+        );
       });
 
   static DataField<T> build<T extends GsModel<T>, C extends GsModel<C>>(
@@ -625,10 +627,10 @@ class DataField<T extends GsModel<T>> {
         );
       },
       validator: (item) {
-        return values(item)
-                .map((e) => build(item, e).validator(e))
-                .maxBy((element) => element.index) ??
-            emptyLevel;
+        return maxValidationLevel(
+          values(item).map((e) => build(item, e).validator(e)),
+          emptyLevel: emptyLevel,
+        );
       },
     );
   }
@@ -688,14 +690,15 @@ class DataField<T extends GsModel<T>> {
         );
       },
       validator: (item) {
-        final level = values(item)
-            .mapIndexed((i, e) {
-              final list = build(i, item, e);
-              final l = list.map((n) => n.validator(e)).maxBy((e) => e.index);
-              return l ?? emptyLevel;
-            })
-            .maxBy((e) => e.index);
-        return level ?? emptyLevel;
+        return maxValidationLevel(
+          values(item).mapIndexed(
+            (i, e) => maxValidationLevel(
+              build(i, item, e).map((n) => n.validator(e)),
+              emptyLevel: emptyLevel,
+            ),
+          ),
+          emptyLevel: emptyLevel,
+        );
       },
     );
   }
@@ -741,43 +744,51 @@ TableRow _getFieldTableRow<T extends GsModel<T>>(
   void Function(T item) edit, {
   Widget Function(Color? color)? trailing,
 }) {
-  final level = field.validator.call(value);
-  final color = level.color;
+  final validation = field.validator.call(value);
+  Widget validated(Widget Function(GsValidLevel level) builder) =>
+      ValidationBuilder(
+        validation: validation,
+        builder: (context, level, pending) => builder(level),
+      );
   return TableRow(
     children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(8, 4, 16, 4),
-        child: Row(
-          children: [
-            Text(
-              field.label,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: color,
+      validated(
+        (level) => Padding(
+          padding: const EdgeInsets.fromLTRB(8, 4, 16, 4),
+          child: Row(
+            children: [
+              Text(
+                field.label,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: level.color,
+                ),
               ),
-            ),
-            Opacity(
-              opacity: color != null ? 1 : 0,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Icon(Icons.info_outline_rounded, color: color),
+              Opacity(
+                opacity: level.color != null ? 1 : 0,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Icon(Icons.info_outline_rounded, color: level.color),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          children: [
-            Expanded(child: field.builder(context, value, edit, level)),
-            if (trailing != null)
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: trailing(color),
-              ),
-          ],
+      validated(
+        (level) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            children: [
+              Expanded(child: field.builder(context, value, edit, level)),
+              if (trailing != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: trailing(level.color),
+                ),
+            ],
+          ),
         ),
       ),
     ],

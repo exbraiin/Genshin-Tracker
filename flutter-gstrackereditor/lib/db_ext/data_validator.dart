@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/configs.dart';
 import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db_ext/datafield.dart';
+import 'package:data_editor/db_ext/image_file_validator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
@@ -53,21 +55,30 @@ class DataValidator {
 
   final _levels = <Type, Map<String, GsValidLevel>>{};
 
+  final _requests = <Type, Map<String, Object>>{};
+
   DataValidator._();
 
   Future<void> checkItems<T extends GsModel<T>>() {
     final models = Database.i.of<T>().items.toList();
     final validator = _GsValidator.of<T>();
     final data = _ComputeData(models, validator, Database.i.imagesDirectory);
-    return compute(
-      _validateModels<T>,
-      data,
-    ).then((value) => _levels[T] = value);
+    final requests = Map<String, Object>.of(_requests[T] ?? {});
+    return compute(_validateModels<T>, data).then((value) {
+      final levels = _levels[T] ??= {};
+      for (final entry in value.entries) {
+        if (_requests[T]?[entry.key] == requests[entry.key]) {
+          levels[entry.key] = entry.value;
+        }
+      }
+    });
   }
 
   Future<void> checkAll() async {
     final configs = GsConfigs.getAllConfigs();
-    await Future.wait(configs.map((e) => e.checkItems(this)));
+    for (final config in configs) {
+      await config.checkItems(this);
+    }
   }
 
   /// Gets the level for the given [id].
@@ -82,24 +93,33 @@ class DataValidator {
   /// Checks the level for the given [id].
   /// * If [model] is null, it is removed from the levels list.
   /// * Otherwise it updates its level value and returns it.
-  GsValidLevel checkLevel<T extends GsModel<T>>(String id, T? model) {
+  Future<GsValidLevel> checkLevel<T extends GsModel<T>>(
+    String id,
+    T? model,
+  ) async {
+    final request = Object();
+    (_requests[T] ??= {})[id] = request;
     if (model == null) {
       _levels[T]?.remove(id);
     } else {
       final validator = _GsValidator.of<T>();
-      (_levels[T] ??= {})[model.id] = validator.validate(model);
+      final level = await validator.validate(model);
+      if (_requests[T]?[id] == request) {
+        (_levels[T] ??= {})[model.id] = level;
+      }
     }
     return getLevel<T>(id);
   }
 }
 
-Map<String, GsValidLevel> _validateModels<T extends GsModel<T>>(
+Future<Map<String, GsValidLevel>> _validateModels<T extends GsModel<T>>(
   _ComputeData<T> data,
-) {
+) async {
+  imageValidationInWorker = true;
   initializeImageDatabase(data.imagesDirectory);
   final valid = <String, GsValidLevel>{};
   for (final item in data.models) {
-    valid[item.id] = data.validator.validate(item);
+    valid[item.id] = await data.validator.validate(item);
   }
   return valid;
 }
@@ -123,10 +143,47 @@ class _GsValidator<T extends GsModel<T>> {
     return _GsValidator._(fields.map((e) => e.validator));
   }
 
-  GsValidLevel validate(T item) {
-    return _validators
-            .map((element) => element.call(item))
-            .maxBy((element) => element.index) ??
-        GsValidLevel.good;
+  Future<GsValidLevel> validate(T item) =>
+      maxValidationLevel(_validators.map((validator) => validator(item)));
+}
+
+Future<GsValidLevel> maxValidationLevel(
+  Iterable<FutureOr<GsValidLevel>> validations, {
+  GsValidLevel emptyLevel = GsValidLevel.good,
+}) async {
+  var level = emptyLevel;
+  var hasValue = false;
+  for (final validation in validations) {
+    final next = await validation;
+    if (!hasValue || next.index > level.index) level = next;
+    hasValue = true;
+  }
+  return level;
+}
+
+class ValidationBuilder extends StatelessWidget {
+  final FutureOr<GsValidLevel> validation;
+  final Widget Function(BuildContext, GsValidLevel, bool pending) builder;
+
+  const ValidationBuilder({
+    super.key,
+    required this.validation,
+    required this.builder,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final result = validation;
+    if (result is GsValidLevel) return builder(context, result, false);
+    return FutureBuilder<GsValidLevel>(
+      future: result,
+      builder: (context, snapshot) => builder(
+        context,
+        snapshot.hasError
+            ? GsValidLevel.error
+            : snapshot.data ?? GsValidLevel.none,
+        snapshot.connectionState != ConnectionState.done,
+      ),
+    );
   }
 }

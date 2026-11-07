@@ -102,13 +102,15 @@ final class Database {
 extension ItemsExt<T extends GsModel<T>> on Items<T> {
   void updateItem(T item) {
     setItem(item);
-    DataValidator.i.checkLevel<T>(item.id, item);
+    DataValidator.i
+        .checkLevel<T>(item.id, item)
+        .then((_) => Database.i.modified.add(null));
     Database.i.modified.add(null);
   }
 
   void updateAll(Iterable<T> items) {
     items.forEach(setItem);
-    DataValidator.i.checkItems<T>();
+    DataValidator.i.checkItems<T>().then((_) => Database.i.modified.add(null));
     Database.i.modified.add(null);
   }
 
@@ -121,7 +123,7 @@ extension ItemsExt<T extends GsModel<T>> on Items<T> {
 
   void deleteAll(Iterable<String> ids) {
     ids.forEach(removeItem);
-    DataValidator.i.checkItems<T>();
+    DataValidator.i.checkItems<T>().then((_) => Database.i.modified.add(null));
     Database.i.modified.add(null);
   }
 }

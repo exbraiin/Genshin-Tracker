@@ -42,7 +42,11 @@ class GsSpincrystalExt extends GsModelExt<GsSpincrystal> {
         (item, value) => item.copyWith(source: value),
         empty: GsValidLevel.warn2,
       ),
-      DataField.validateFile('Source Image', (item) => item.image),
+      DataField.validateFile(
+        'Source Image',
+        (item) => item.image,
+        expectedSize: (512, 512),
+      ),
       DataField.singleEnum(
         'Region',
         GeRegionType.values.toChips(),

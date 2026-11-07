@@ -33,7 +33,11 @@ class GsEnvisagedEchoExt extends GsModelExt<GsEnvisagedEcho> {
         (item) => item.description,
         (item, value) => item.copyWith(description: value),
       ),
-      DataField.validateFile('Icon', (item) => item.image),
+      DataField.validateFile(
+        'Icon',
+        (item) => item.image,
+        expectedSize: (256, 256),
+      ),
       DataField.selectRarity(
         'Rarity',
         (item) => item.rarity,

@@ -185,11 +185,20 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
         validator: (item) =>
             vdVersion.validateDates(item.version, item.releaseDate),
       ),
-      DataField.validateFile('Image', (item) => item.image),
-      DataField.validateFile('Full Image', (item) => item.fullart),
+      DataField.validateFile(
+        'Image',
+        (item) => item.image,
+        expectedSize: (256, 256),
+      ),
+      DataField.validateFile(
+        'Full Image',
+        (item) => item.fullart,
+        expectedSize: (1024, 1024),
+      ),
       DataField.validateFile(
         'Constellation Image',
         (item) => item.constellationImage,
+        expectedSize: (512, 512),
       ),
       DataField.singleSelect(
         'Material Gem',

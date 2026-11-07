@@ -49,7 +49,11 @@ class GsSereniteaSetExt extends GsModelExt<GsSereniteaSet> {
         (item, value) => item.copyWith(category: value),
         invalid: [GeSereniteaSetType.none],
       ),
-      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile(
+        'Image',
+        (item) => item.image,
+        expectedSize: (640, 320),
+      ),
       DataField.intField(
         'Energy',
         (item) => item.energy,

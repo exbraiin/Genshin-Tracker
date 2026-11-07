@@ -35,7 +35,11 @@ class GsBattlepassExt extends GsModelExt<GsBattlepass> {
         (item) => item.name,
         (item, value) => item.copyWith(name: value),
       ),
-      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile(
+        'Image',
+        (item) => item.image,
+        expectedSize: (1080, 390),
+      ),
       DataField.singleSelect(
         'Version',
         (item) => item.version,

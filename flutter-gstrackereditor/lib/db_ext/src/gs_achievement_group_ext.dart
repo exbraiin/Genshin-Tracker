@@ -36,7 +36,11 @@ class GsAchievementGroupExt extends GsModelExt<GsAchievementGroup> {
         (item) => item.name,
         (item, value) => item.copyWith(name: value),
       ),
-      DataField.validateFile('Icon', (item) => item.image),
+      DataField.validateFile(
+        'Icon',
+        (item) => item.image,
+        expectedSize: (256, 256),
+      ),
       DataField.intField(
         'Order',
         (item) => item.order,

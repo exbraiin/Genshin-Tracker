@@ -31,7 +31,11 @@ class GsEventExt extends GsModelExt<GsEvent> {
         (item) => item.name,
         (item, value) => item.copyWith(name: value),
       ),
-      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile(
+        'Image',
+        (item) => item.image,
+        expectedSize: (1080, 390),
+      ),
       DataField.singleEnum<GsEvent, GeEventType>(
         'Type',
         GeEventType.values.toChips(),
