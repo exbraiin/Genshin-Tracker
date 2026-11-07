@@ -103,17 +103,19 @@ Future<void> cutImageToExpectedSize(File? file, (int, int) expectedSize) async {
   }
   final bytes = await file.readAsBytes();
   final output = await compute(_fitImageToSize, (bytes, expectedSize));
+  if (output == null) return;
   await file.writeAsBytes(output, flush: true);
   final path = file.absolute.path;
   _dimensions.remove(path);
   _results.removeWhere((key, _) => key.$1 == path);
 }
 
-List<int> _fitImageToSize((Uint8List, (int, int)) request) {
+List<int>? _fitImageToSize((Uint8List, (int, int)) request) {
   final decoded = img.decodeImage(request.$1);
   if (decoded == null) throw const FormatException('Cannot decode image');
   final source = img.bakeOrientation(decoded);
   final (width, height) = request.$2;
+  if (source.width == width && source.height == height) return null;
   final scale = math.min(width / source.width, height / source.height);
   final resized = img.copyResize(
     source,

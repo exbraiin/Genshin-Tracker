@@ -67,7 +67,7 @@ String? _getImagePath<T extends GsModel<T>>(T? model) {
     final GsBanner item => _getPath(GsBanner.kTableKey, item.id),
     final GsBattlepass item => _getPath(GsBattlepass.kTableKey, item.id),
     final GsCharacter item => _getPath(GsCharacter.kTableKey, item.id),
-    final GsCharacterSkin item => _getPath(GsCharacter.kTableKey, item.id),
+    final GsCharacterSkin item => _getPath(GsCharacterSkin.kTableKey, item.id),
     final GsEvent item => _getPath(GsEvent.kTableKey, item.id),
     final GsEnvisagedEcho item => _getPath(GsEnvisagedEcho.kTableKey, item.id),
     final GsThespianTrick item => _getPath(GsThespianTrick.kTableKey, item.id),

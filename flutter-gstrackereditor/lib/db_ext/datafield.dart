@@ -51,6 +51,7 @@ class DataField<T extends GsModel<T>> {
          final path = file != null
              ? p.relative(file.absolute.path).replaceAll('\\', '/')
              : null;
+         final hasFile = file?.existsSync() ?? false;
          return Row(
            children: [
              Expanded(
@@ -66,7 +67,7 @@ class DataField<T extends GsModel<T>> {
                  ),
                ),
              ),
-             if (expectedSize != null)
+             if (expectedSize != null && hasFile)
                BusyWidget(
                  message: 'Resize and cut the image!',
                  icon: Icons.cut_rounded,
