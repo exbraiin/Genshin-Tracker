@@ -25,7 +25,7 @@ class LunarArcanaListItem extends StatelessWidget {
       disable: !owned,
       selected: selected,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
-      imageUrlPath: item.image,
+      imageFile: item.image,
     );
   }
 }

@@ -121,7 +121,7 @@ class HomePlayerInfoWidget extends StatelessWidget {
                       child: ItemGridWidget(
                         rarity: 0,
                         size: kSize70,
-                        urlImage: snapshot.data ?? '',
+                        networkImage: snapshot.data ?? '',
                       ),
                     );
                   },

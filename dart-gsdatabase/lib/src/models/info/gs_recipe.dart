@@ -15,7 +15,6 @@ class GsRecipe({
   @JsonKey(unknownEnumValue: GeRecipeType.none)
   final GeRecipeType type = GeRecipeType.none,
   final int rarity = 0,
-  final String image = '',
   @JsonKey(unknownEnumValue: GeRecipeEffectType.none)
   final GeRecipeEffectType effect = GeRecipeEffectType.none,
   final String desc = '',

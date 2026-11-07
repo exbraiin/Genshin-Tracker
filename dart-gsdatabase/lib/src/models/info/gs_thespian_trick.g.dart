@@ -22,7 +22,6 @@ abstract class _$GsThespianTrickCWProxy {
     int rarity,
     int season,
     String character,
-    String image,
   });
 }
 
@@ -49,7 +48,6 @@ class _$GsThespianTrickCWProxyImpl implements _$GsThespianTrickCWProxy {
     Object? rarity = const $CopyWithPlaceholder(),
     Object? season = const $CopyWithPlaceholder(),
     Object? character = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
   }) {
     return GsThespianTrick(
       id: id == const $CopyWithPlaceholder() || id == null
@@ -76,10 +74,6 @@ class _$GsThespianTrickCWProxyImpl implements _$GsThespianTrickCWProxy {
           ? _value.character
           // ignore: cast_nullable_to_non_nullable
           : character as String,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
     );
   }
 }
@@ -103,7 +97,6 @@ GsThespianTrick _$GsThespianTrickFromJson(Map<String, dynamic> json) =>
       rarity: (json['rarity'] as num?)?.toInt() ?? 0,
       season: (json['season'] as num?)?.toInt() ?? 0,
       character: json['character'] as String? ?? '',
-      image: json['image'] as String? ?? '',
     );
 
 Map<String, dynamic> _$GsThespianTrickToJson(GsThespianTrick instance) =>
@@ -114,5 +107,4 @@ Map<String, dynamic> _$GsThespianTrickToJson(GsThespianTrick instance) =>
       'rarity': instance.rarity,
       'season': instance.season,
       'character': instance.character,
-      'image': instance.image,
     };

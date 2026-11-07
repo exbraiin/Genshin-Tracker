@@ -69,10 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: child,
                   );
                 },
-                child: CachedImageWidget(
+                child: GsFileImage(
                   GsUtils.versions.getCurrentVersion()?.image,
                   fit: BoxFit.cover,
-                  scaleToSize: false,
                   showPlaceholder: false,
                 ),
               ),

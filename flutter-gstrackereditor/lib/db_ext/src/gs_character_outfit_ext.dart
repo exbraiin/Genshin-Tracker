@@ -47,21 +47,7 @@ class GsCharacterSkinExt extends GsModelExt<GsCharacterSkin> {
         (item, value) => item.copyWith(character: value),
         validator: (item) => vdCharacters.validate(item.character),
       ),
-      DataField.textImage(
-        'Image',
-        (item) => item.image,
-        (item, value) => item.copyWith(image: value),
-      ),
-      DataField.textImage(
-        'Side Image',
-        (item) => item.sideImage,
-        (item, value) => item.copyWith(sideImage: value),
-      ),
-      DataField.textImage(
-        'Full Image',
-        (item) => item.fullImage,
-        (item, value) => item.copyWith(fullImage: value),
-      ),
+      DataField.validateFile('Image', (item) => item.image),
     ];
   }
 }

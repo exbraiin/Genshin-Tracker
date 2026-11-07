@@ -20,10 +20,7 @@ abstract class _$GsCharacterSkinCWProxy {
     String version,
     int rarity,
     String name,
-    String image,
     String character,
-    String sideImage,
-    String fullImage,
   });
 }
 
@@ -48,10 +45,7 @@ class _$GsCharacterSkinCWProxyImpl implements _$GsCharacterSkinCWProxy {
     Object? version = const $CopyWithPlaceholder(),
     Object? rarity = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
     Object? character = const $CopyWithPlaceholder(),
-    Object? sideImage = const $CopyWithPlaceholder(),
-    Object? fullImage = const $CopyWithPlaceholder(),
   }) {
     return GsCharacterSkin(
       id: id == const $CopyWithPlaceholder() || id == null
@@ -70,22 +64,10 @@ class _$GsCharacterSkinCWProxyImpl implements _$GsCharacterSkinCWProxy {
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
       character: character == const $CopyWithPlaceholder() || character == null
           ? _value.character
           // ignore: cast_nullable_to_non_nullable
           : character as String,
-      sideImage: sideImage == const $CopyWithPlaceholder() || sideImage == null
-          ? _value.sideImage
-          // ignore: cast_nullable_to_non_nullable
-          : sideImage as String,
-      fullImage: fullImage == const $CopyWithPlaceholder() || fullImage == null
-          ? _value.fullImage
-          // ignore: cast_nullable_to_non_nullable
-          : fullImage as String,
     );
   }
 }
@@ -107,10 +89,7 @@ GsCharacterSkin _$GsCharacterSkinFromJson(Map<String, dynamic> json) =>
       version: json['version'] as String? ?? '',
       rarity: (json['rarity'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
-      image: json['image'] as String? ?? '',
       character: json['character'] as String? ?? '',
-      sideImage: json['sideImage'] as String? ?? '',
-      fullImage: json['fullImage'] as String? ?? '',
     );
 
 Map<String, dynamic> _$GsCharacterSkinToJson(GsCharacterSkin instance) =>
@@ -119,8 +98,5 @@ Map<String, dynamic> _$GsCharacterSkinToJson(GsCharacterSkin instance) =>
       'version': instance.version,
       'rarity': instance.rarity,
       'name': instance.name,
-      'image': instance.image,
       'character': instance.character,
-      'sideImage': instance.sideImage,
-      'fullImage': instance.fullImage,
     };

@@ -24,7 +24,7 @@ class BannerListItem extends StatelessWidget {
       selected: selected,
       banner: GsItemBanner.version(context, item.version),
       disable: disabled,
-      imageUrlPath: item.image,
+      imageFile: item.image,
     );
   }
 }

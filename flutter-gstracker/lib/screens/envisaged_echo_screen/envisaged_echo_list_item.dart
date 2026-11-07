@@ -36,14 +36,14 @@ class EnvisagedEchoListItem extends StatelessWidget {
       onTap: onTap,
       selected: selected,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
-      imageUrlPath: item.icon,
+      imageFile: item.image,
       child: Stack(
         children: [
           Positioned(
             right: kSeparator2,
             bottom: kSeparator2,
             child: ItemCircleWidget(
-              image: char?.image ?? '',
+              image: char?.image,
               rarity: char?.rarity ?? 1,
               padding: EdgeInsets.zero,
             ),

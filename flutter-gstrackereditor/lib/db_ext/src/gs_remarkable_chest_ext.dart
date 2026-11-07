@@ -5,6 +5,7 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
+
 class GsFurnitureChestExt extends GsModelExt<GsFurnitureChest> {
   const GsFurnitureChestExt();
 
@@ -36,10 +37,9 @@ class GsFurnitureChestExt extends GsModelExt<GsFurnitureChest> {
         (item, value) => item.copyWith(type: value),
         invalid: [GeSereniteaSetType.none],
       ),
-      DataField.textImage(
+      DataField.validateFile(
         'Image',
         (item) => item.image,
-        (item, value) => item.copyWith(image: value),
       ),
       DataField.selectRarity(
         'Rarity',

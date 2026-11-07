@@ -30,11 +30,6 @@ There can be some not translated string in the app.
 
 The save is written to a json file, so better keep that file safe somewhere.
 
-## How to install
-
-You can just download the [ZIP](release/Tracker.zip) file, extract the content, and run `tracker.exe`<br>
-Because the dynamic backgrounds are too large for the upload, I had to remove the animation manually. If you want you can download and replace them in the assets folder.
-
 ## Disclaimer
 
 The player widget in the main page uses the [Enka](https://github.com/yuko1101/enka-network-api) public api.

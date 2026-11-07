@@ -9,9 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:rxdart/rxdart.dart';
 
-const _kFilePath = 'gsdata';
-const _kFFilePathDebug = '../runner/TrackerEditor/gsdata';
-const _kFilePathEncoded = 'gsdatab';
+const _kFilePath = '.data/gsdata';
+const _kFilePathEncoded = '.data/gsdatab';
+const _kFilePathDebug = '../runner/TrackerEditor/gsdata';
+const _kImagesDirectory = kDebugMode ? '../runner/images' : '../images';
 
 final class Database {
   static final i = Database._();
@@ -22,13 +23,17 @@ final class Database {
   final modified = PublishSubject<void>();
   Database._();
 
+  void init() {
+    initializeImageDatabase(_kImagesDirectory);
+  }
+
   Items<T> of<T extends GsModel<T>>() => _db.of<T>();
 
   Future<bool> load() async {
     if (_loaded) return _loaded;
     _loaded = true;
     if (kDebugMode) {
-      await File(_kFFilePathDebug).copy(_kFilePath);
+      await File(_kFilePathDebug).copy(_kFilePath);
       print('Copied Release/gsdata!');
     }
     await _db.load(path: _kFilePath);

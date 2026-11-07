@@ -33,9 +33,6 @@ abstract class _$GsCharacterCWProxy {
     String specialDish,
     DateTime birthday,
     DateTime releaseDate,
-    String image,
-    String fullImage,
-    String constellationImage,
     String gemMaterial,
     String bossMaterial,
     String commonMaterial,
@@ -87,9 +84,6 @@ class _$GsCharacterCWProxyImpl implements _$GsCharacterCWProxy {
     Object? specialDish = const $CopyWithPlaceholder(),
     Object? birthday = const $CopyWithPlaceholder(),
     Object? releaseDate = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
-    Object? fullImage = const $CopyWithPlaceholder(),
-    Object? constellationImage = const $CopyWithPlaceholder(),
     Object? gemMaterial = const $CopyWithPlaceholder(),
     Object? bossMaterial = const $CopyWithPlaceholder(),
     Object? commonMaterial = const $CopyWithPlaceholder(),
@@ -180,20 +174,6 @@ class _$GsCharacterCWProxyImpl implements _$GsCharacterCWProxy {
           ? _value.releaseDate
           // ignore: cast_nullable_to_non_nullable
           : releaseDate as DateTime,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
-      fullImage: fullImage == const $CopyWithPlaceholder() || fullImage == null
-          ? _value.fullImage
-          // ignore: cast_nullable_to_non_nullable
-          : fullImage as String,
-      constellationImage:
-          constellationImage == const $CopyWithPlaceholder() ||
-              constellationImage == null
-          ? _value.constellationImage
-          // ignore: cast_nullable_to_non_nullable
-          : constellationImage as String,
       gemMaterial:
           gemMaterial == const $CopyWithPlaceholder() || gemMaterial == null
           ? _value.gemMaterial
@@ -328,9 +308,6 @@ GsCharacter _$GsCharacterFromJson(Map<String, dynamic> json) => GsCharacter(
   specialDish: json['specialDish'] as String? ?? '',
   birthday: modelDateFromJson(json['birthday']),
   releaseDate: modelDateFromJson(json['releaseDate']),
-  image: json['image'] as String? ?? '',
-  fullImage: json['fullImage'] as String? ?? '',
-  constellationImage: json['constellationImage'] as String? ?? '',
   gemMaterial: json['gemMaterial'] as String? ?? '',
   bossMaterial: json['bossMaterial'] as String? ?? '',
   commonMaterial: json['commonMaterial'] as String? ?? '',
@@ -355,7 +332,7 @@ GsCharacter _$GsCharacterFromJson(Map<String, dynamic> json) => GsCharacter(
 
 Map<String, dynamic> _$GsCharacterToJson(GsCharacter instance) =>
     <String, dynamic>{
-      'constellation': instance.constellation,
+      'id': instance.id,
       'version': instance.version,
       'enkaId': instance.enkaId,
       'name': instance.name,
@@ -367,17 +344,14 @@ Map<String, dynamic> _$GsCharacterToJson(GsCharacter instance) =>
       'element': _$GeElementTypeEnumMap[instance.element]!,
       'source': _$GeItemSourceTypeEnumMap[instance.source]!,
       'description': instance.description,
-      'id': instance.id,
+      'constellation': instance.constellation,
       'affiliation': instance.affiliation,
       'specialDish': instance.specialDish,
       'birthday': modelDateToJson(instance.birthday),
       'releaseDate': modelDateToJson(instance.releaseDate),
-      'image': instance.image,
-      'fullImage': instance.fullImage,
-      'constellationImage': instance.constellationImage,
       'gemMaterial': instance.gemMaterial,
       'bossMaterial': instance.bossMaterial,
-      'talentQConstellation': instance.talentQConstellation,
+      'commonMaterial': instance.commonMaterial,
       'regionMaterial': instance.regionMaterial,
       'talentMaterial': instance.talentMaterial,
       'weeklyMaterial': instance.weeklyMaterial,
@@ -388,7 +362,7 @@ Map<String, dynamic> _$GsCharacterToJson(GsCharacter instance) =>
       'ascStatValue': instance.ascStatValue,
       'talentAConstellation': instance.talentAConstellation,
       'talentEConstellation': instance.talentEConstellation,
-      'commonMaterial': instance.commonMaterial,
+      'talentQConstellation': instance.talentQConstellation,
     };
 
 const _$GeRegionTypeEnumMap = {

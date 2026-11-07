@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/db_ext/data_validator.dart';
@@ -12,13 +13,12 @@ import 'package:gsdatabase/gsdatabase.dart';
 typedef DEdit<T extends GsModel<T>> = void Function(T v);
 typedef DValidator<T extends GsModel<T>> = GsValidLevel Function(T item);
 typedef DUpdate<T extends GsModel<T>> = T Function(T item);
-typedef DBuilder<T extends GsModel<T>> =
-    Widget Function(
-      BuildContext context,
-      T item,
-      DEdit<T> edit,
-      GsValidLevel level,
-    );
+typedef DBuilder<T extends GsModel<T>> = Widget Function(
+  BuildContext context,
+  T item,
+  DEdit<T> edit,
+  GsValidLevel level,
+);
 
 class DataButton<T extends GsModel<T>> {
   final Widget? icon;
@@ -33,6 +33,17 @@ class DataField<T extends GsModel<T>> {
   final DValidator<T> validator;
 
   DataField._(this.label, this.builder, {required this.validator});
+
+  DataField.validateFile(this.label, File? Function(T item) content)
+    : builder = ((context, item, edit, level) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        constraints: const BoxConstraints(minHeight: 36),
+        alignment: Alignment.centerLeft,
+        child: Text('${content(item)}'),
+      )),
+      validator = ((item) => (content(item)?.existsSync() ?? false)
+          ? GsValidLevel.good
+          : GsValidLevel.warn2);
 
   DataField.text(
     this.label,
@@ -323,9 +334,8 @@ class DataField<T extends GsModel<T>> {
                  onTap: () =>
                      showDatePicker(
                        context: context,
-                       initialDate: content(
-                         item,
-                       ).clamp(min: srcDate, max: dstDate),
+                       initialDate: content(item)
+                           .clamp(min: srcDate, max: dstDate),
                        firstDate: srcDate,
                        lastDate: dstDate,
                      ).then((value) {
@@ -551,9 +561,9 @@ class DataField<T extends GsModel<T>> {
     : builder = ((context, item, edit, level) =>
           getTableForFields(context, item, fields(item), edit)),
       validator = ((item) {
-        return fields(
-              item,
-            ).map((e) => e.validator(item)).maxBy((e) => e.index) ??
+        return fields(item)
+                .map((e) => e.validator(item))
+                .maxBy((e) => e.index) ??
             GsValidLevel.none;
       });
 

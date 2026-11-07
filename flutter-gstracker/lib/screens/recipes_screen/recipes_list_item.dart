@@ -43,7 +43,7 @@ class RecipesListItem extends StatelessWidget {
       selected: selected,
       disable: savedRecipe == null && !hasSpecial,
       banner: GsItemBanner.isNewOrUpcoming(context, recipe.version),
-      imageUrlPath: recipe.image,
+      imageFile: recipe.image,
       onTap: onTap,
       child: Stack(
         children: [
@@ -53,7 +53,7 @@ class RecipesListItem extends StatelessWidget {
               right: kSeparator2,
               bottom: kSeparator2,
               child: ItemCircleWidget(
-                image: char?.image ?? '',
+                image: char?.image,
                 rarity: char?.rarity ?? 1,
                 padding: EdgeInsets.zero,
               ),

@@ -47,7 +47,7 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           rarity: item.rarity,
           image: item.image,
           version: item.version,
-          bgImage: namecard?.fullImage,
+          bgImage: namecard?.background,
           contentImage: DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage(item.element.assetBgPath),
@@ -92,14 +92,13 @@ class CharacterDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
           ),
           child: Stack(
             children: [
-              if (item.constellationImage.isNotEmpty)
+              if (item.constellationImage != null)
                 Positioned.fill(
                   bottom: null,
-                  child: CachedImageWidget(
+                  child: GsFileImage(
                     item.constellationImage,
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.center,
-                    scaleToSize: false,
                     showPlaceholder: false,
                   ),
                 ),

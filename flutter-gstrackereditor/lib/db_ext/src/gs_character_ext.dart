@@ -71,7 +71,7 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
               (e) => GsSelectItem(
                 e.id,
                 e.id.toTitle(),
-                image: e.icon,
+                imageUrl: e.icon,
                 color: GsStyle.getRarityColor(e.rarity),
               ),
             ),
@@ -185,20 +185,11 @@ class GsCharacterExt extends GsModelExt<GsCharacter> {
         validator: (item) =>
             vdVersion.validateDates(item.version, item.releaseDate),
       ),
-      DataField.textImage(
-        'Image',
-        (item) => item.image,
-        (item, value) => item.copyWith(image: value),
-      ),
-      DataField.textImage(
-        'Full Image',
-        (item) => item.fullImage,
-        (item, value) => item.copyWith(fullImage: value),
-      ),
-      DataField.textImage(
+      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile('Full Image', (item) => item.fullart),
+      DataField.validateFile(
         'Constellation Image',
         (item) => item.constellationImage,
-        (item, value) => item.copyWith(constellationImage: value),
       ),
       DataField.singleSelect(
         'Material Gem',

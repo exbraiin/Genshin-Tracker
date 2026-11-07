@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:dartx/dartx.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tracker/common/utils/logger.dart';
@@ -16,6 +17,7 @@ const _kVersPath = 'data/db/vers.json';
 const _kGit = 'https://raw.githubusercontent.com/exbraiin';
 const _kGitDataUrl = '$_kGit/Genshin-Tracker/main/release/db/gsdatab';
 const _kGitVersionUrl = '$_kGit/Genshin-Tracker/main/release/db/gsversion';
+const _kImagesDirectory = kDebugMode ? '../runner/images' : '../images';
 
 class Database {
   static final instance = Database._();
@@ -42,6 +44,7 @@ class Database {
         .where((event) => event)
         .debounceTime(const Duration(seconds: 2))
         .listen((event) => _saveAll());
+    initializeImageDatabase(_kImagesDirectory);
   }
 
   Future<void> _load() async {

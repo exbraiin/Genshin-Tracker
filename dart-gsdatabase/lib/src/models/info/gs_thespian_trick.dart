@@ -13,7 +13,6 @@ class GsThespianTrick({
   final int rarity = 0,
   final int season = 0,
   final String character = '',
-  final String image = '',
 }) extends GsModel<GsThespianTrick> with GsVersionable {
   static const kTableKey = 'thespian';
 

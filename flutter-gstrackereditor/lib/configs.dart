@@ -58,7 +58,7 @@ class GsConfigs<T extends GsModel<T>> {
           label: '${item.achievements} (${item.rewards}✦)\n${item.name}',
           version: item.version,
           rarity: 4,
-          image: item.icon,
+          image: item.image,
           child: GsOrderOrb(item.order.toString()),
         );
       },
@@ -68,12 +68,11 @@ class GsConfigs<T extends GsModel<T>> {
       title: 'Achievement',
       pageBuilder: const vd.GsAchievementExt(),
       itemDecoration: (item) {
-        final cat = Database.i.of<GsAchievementGroup>().getItem(item.group);
         return GsItemDecor.rarity(
           label: '${item.name}\n(${item.reward}✦)',
           version: item.version,
           rarity: 4,
-          image: cat?.icon,
+          image: item.image,
         );
       },
       filters: [
@@ -93,7 +92,7 @@ class GsConfigs<T extends GsModel<T>> {
         label: item.name,
         version: item.version,
         rarity: item.rarity,
-        image: item.pieces.firstOrNull?.icon,
+        image: item.image,
         regionColor: GsStyle.getRegionElementColor(item.region),
       ),
       import: [
@@ -115,9 +114,10 @@ class GsConfigs<T extends GsModel<T>> {
       itemDecoration: (item) {
         final data = item.feature5.firstOrNull;
         final image = data != null
-            ? Database.i.of<GsCharacter>().getItem(data)?.image ??
-                  Database.i.of<GsWeapon>().getItem(data)?.image
+            ? (Database.i.of<GsCharacter>().getItem(data)?.image ??
+                  Database.i.of<GsWeapon>().getItem(data)?.image)
             : null;
+
         return GsItemDecor.color(
           label: '${item.dateStart.toString().split(' ').first}\n${item.name}',
           version: item.version,
@@ -348,7 +348,7 @@ class GsConfigs<T extends GsModel<T>> {
       pageBuilder: const vd.GsEnvisagedEchoExt(),
       itemDecoration: (item) => GsItemDecor.color(
         label: item.name,
-        image: item.icon,
+        image: item.image,
         version: item.version,
         color: GsStyle.getRarityColor(4),
       ),

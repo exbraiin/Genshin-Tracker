@@ -85,10 +85,7 @@ class SpincrystalDetailsCard extends StatelessWidget
                               ),
                             ),
                           ),
-                          child: CachedImageWidget(
-                            item.imageSource,
-                            fit: BoxFit.cover,
-                          ),
+                          child: GsFileImage(item.image, fit: BoxFit.cover),
                         ),
                       ),
                     ),

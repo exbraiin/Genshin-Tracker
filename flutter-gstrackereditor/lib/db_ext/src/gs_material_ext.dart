@@ -6,6 +6,7 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
+
 class GsMaterialExt extends GsModelExt<GsMaterial> {
   const GsMaterialExt();
 
@@ -70,10 +71,9 @@ class GsMaterialExt extends GsModelExt<GsMaterial> {
         (item, value) => item.copyWith(version: value),
         validator: (item) => vdVersion.validate(item.version),
       ),
-      DataField.textImage(
+      DataField.validateFile(
         'Image',
         (item) => item.image,
-        (item, value) => item.copyWith(image: value),
       ),
       DataField.multiEnum<GsMaterial, GeWeekdayType>(
         'Weekdays',

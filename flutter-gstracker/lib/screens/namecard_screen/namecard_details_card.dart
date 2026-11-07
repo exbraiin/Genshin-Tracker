@@ -16,7 +16,7 @@ class NamecardDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
     return ItemDetailsCard(
       name: item.name,
       rarity: item.rarity,
-      fgImage: item.fullImage,
+      fgImage: item.background,
       version: item.version,
       info: Align(
         alignment: Alignment.topLeft,

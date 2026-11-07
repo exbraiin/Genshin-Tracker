@@ -20,8 +20,6 @@ abstract class _$GsWeaponCWProxy {
     String version,
     String name,
     int rarity,
-    String image,
-    String imageAsc,
     GeWeaponType type,
     GeWeaponAscStatType statType,
     String desc,
@@ -57,8 +55,6 @@ class _$GsWeaponCWProxyImpl implements _$GsWeaponCWProxy {
     Object? version = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? rarity = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
-    Object? imageAsc = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
     Object? statType = const $CopyWithPlaceholder(),
     Object? desc = const $CopyWithPlaceholder(),
@@ -88,14 +84,6 @@ class _$GsWeaponCWProxyImpl implements _$GsWeaponCWProxy {
           ? _value.rarity
           // ignore: cast_nullable_to_non_nullable
           : rarity as int,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
-      imageAsc: imageAsc == const $CopyWithPlaceholder() || imageAsc == null
-          ? _value.imageAsc
-          // ignore: cast_nullable_to_non_nullable
-          : imageAsc as String,
       type: type == const $CopyWithPlaceholder() || type == null
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
@@ -164,8 +152,6 @@ GsWeapon _$GsWeaponFromJson(Map<String, dynamic> json) => GsWeapon(
   version: json['version'] as String? ?? '',
   name: json['name'] as String? ?? '',
   rarity: (json['rarity'] as num?)?.toInt() ?? 0,
-  image: json['image'] as String? ?? '',
-  imageAsc: json['imageAsc'] as String? ?? '',
   type:
       $enumDecodeNullable(
         _$GeWeaponTypeEnumMap,
@@ -202,8 +188,6 @@ Map<String, dynamic> _$GsWeaponToJson(GsWeapon instance) => <String, dynamic>{
   'version': instance.version,
   'name': instance.name,
   'rarity': instance.rarity,
-  'image': instance.image,
-  'imageAsc': instance.imageAsc,
   'type': _$GeWeaponTypeEnumMap[instance.type]!,
   'statType': _$GeWeaponAscStatTypeEnumMap[instance.statType]!,
   'desc': instance.desc,

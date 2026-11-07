@@ -10,7 +10,6 @@ class GsAchievementGroup({
   @override final String id = '',
   @override final String version = '',
   final String name = '',
-  final String icon = '',
   final String namecard = '',
   final int order = 0,
   final int rewards = 0,

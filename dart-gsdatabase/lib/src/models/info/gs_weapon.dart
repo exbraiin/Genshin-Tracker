@@ -14,8 +14,6 @@ class GsWeapon({
   @override final String version = '',
   final String name = '',
   final int rarity = 0,
-  final String image = '',
-  final String imageAsc = '',
   @JsonKey(unknownEnumValue: GeWeaponType.none)
   final GeWeaponType type = GeWeaponType.none,
   @JsonKey(unknownEnumValue: GeWeaponAscStatType.none)

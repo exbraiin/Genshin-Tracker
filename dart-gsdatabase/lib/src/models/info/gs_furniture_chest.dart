@@ -14,7 +14,6 @@ class GsFurnitureChest({
   final String name = '',
   @JsonKey(unknownEnumValue: GeSereniteaSetType.none)
   final GeSereniteaSetType type = GeSereniteaSetType.none,
-  final String image = '',
   final int rarity = 0,
   final int energy = 0,
   @JsonKey(unknownEnumValue: GeRegionType.none)

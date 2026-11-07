@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/theme/gs_assets.g.dart';
 
@@ -8,20 +8,16 @@ final _emptyPixelBytes = base64Decode(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
 );
 
-class CachedImageWidget extends StatelessWidget {
+class GsFileImage extends StatelessWidget {
   final BoxFit fit;
-  final String? imageUrl;
+  final File? image;
   final Alignment alignment;
-  final bool scaleToSize;
   final bool showPlaceholder;
-  final double? imageAspectRatio;
 
-  const CachedImageWidget(
-    this.imageUrl, {
+  const GsFileImage(
+    this.image, {
     super.key,
-    this.scaleToSize = true,
     this.showPlaceholder = true,
-    this.imageAspectRatio,
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
   });
@@ -31,44 +27,18 @@ class CachedImageWidget extends StatelessWidget {
     late final placeholder = showPlaceholder
         ? Image.asset(AppAssets.missingIcon, fit: BoxFit.contain)
         : SizedBox();
-    if (imageUrl == null || imageUrl!.isEmpty) return placeholder;
+    if (image == null) return placeholder;
 
-    return LayoutBuilder(
-      builder: (context, layout) {
-        final url = _getScaleUrl(layout.biggest);
-        return FadeInImage(
-          image: CachedNetworkImageProvider(url).resizeIfNeeded(),
-          placeholder: showPlaceholder
-              ? AssetImage(AppAssets.missingIcon).resizeIfNeeded()
-              : MemoryImage(_emptyPixelBytes),
-          fit: fit,
-          alignment: alignment,
-          placeholderFit: BoxFit.contain,
-          imageErrorBuilder: (context, error, stackTrace) => placeholder,
-        );
-      },
+    return FadeInImage(
+      image: FileImage(image!).resizeIfNeeded(),
+      placeholder: showPlaceholder
+          ? AssetImage(AppAssets.missingIcon).resizeIfNeeded()
+          : MemoryImage(_emptyPixelBytes),
+      fit: fit,
+      alignment: alignment,
+      placeholderFit: BoxFit.contain,
+      imageErrorBuilder: (context, error, stackTrace) => placeholder,
     );
-  }
-
-  int? _getCacheSize(Size size) {
-    late final width = size.width;
-    late final height = size.height;
-    late final useW = width.isFinite && (width >= height || height.isInfinite);
-    late final useH = height.isFinite && (height >= width || width.isInfinite);
-    late final toCacheWidth = useW ? width.toInt() : null;
-    late final toCacheHeight = useH ? height.toInt() : null;
-    return toCacheWidth ?? toCacheHeight;
-  }
-
-  String _getScaleUrl(Size size) {
-    final url = imageUrl ?? '';
-    if (!scaleToSize) return url;
-    if (!url.startsWith('https://static.wikia.')) return url;
-    final s = _getCacheSize(size);
-    if (s == null) return url;
-    final ratio = imageAspectRatio ?? 0;
-    final ns = (ratio > 0 ? s * ratio : s).toInt();
-    return '$url/revision/latest/scale-to-width-down/$ns';
   }
 }
 

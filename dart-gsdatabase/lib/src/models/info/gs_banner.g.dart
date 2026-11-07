@@ -19,7 +19,6 @@ abstract class _$GsBannerCWProxy {
     String id,
     String version,
     String name,
-    String image,
     DateTime dateStart,
     DateTime dateEnd,
     GeBannerType type,
@@ -49,7 +48,6 @@ class _$GsBannerCWProxyImpl implements _$GsBannerCWProxy {
     Object? id = const $CopyWithPlaceholder(),
     Object? version = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
     Object? dateStart = const $CopyWithPlaceholder(),
     Object? dateEnd = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
@@ -70,10 +68,6 @@ class _$GsBannerCWProxyImpl implements _$GsBannerCWProxy {
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
       dateStart: dateStart == const $CopyWithPlaceholder() || dateStart == null
           ? _value.dateStart
           // ignore: cast_nullable_to_non_nullable
@@ -117,7 +111,6 @@ GsBanner _$GsBannerFromJson(Map<String, dynamic> json) => GsBanner(
   id: json['id'] as String? ?? '',
   version: json['version'] as String? ?? '',
   name: json['name'] as String? ?? '',
-  image: json['image'] as String? ?? '',
   dateStart: modelDateFromJson(json['dateStart']),
   dateEnd: modelDateFromJson(json['dateEnd']),
   type:
@@ -140,7 +133,6 @@ Map<String, dynamic> _$GsBannerToJson(GsBanner instance) => <String, dynamic>{
   'id': instance.id,
   'version': instance.version,
   'name': instance.name,
-  'image': instance.image,
   'dateStart': modelDateToJson(instance.dateStart),
   'dateEnd': modelDateToJson(instance.dateEnd),
   'type': _$GeBannerTypeEnumMap[instance.type]!,

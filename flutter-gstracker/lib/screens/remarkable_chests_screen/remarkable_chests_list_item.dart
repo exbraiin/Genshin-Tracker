@@ -29,7 +29,7 @@ class RemarkableChestListItem extends StatelessWidget {
       onTap: onTap,
       selected: selected,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
-      imageUrlPath: item.image,
+      imageFile: item.image,
       child: Stack(
         children: [
           ItemIconWidget.asset(GsAssets.iconSetType(item.type)),

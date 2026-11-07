@@ -1,4 +1,5 @@
-import 'package:data_editor/style/utils.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class GsSelectItem<T> {
@@ -6,13 +7,17 @@ class GsSelectItem<T> {
   final Color color;
   final String label;
   final String asset;
-  final String? image;
+  final bool forceImage;
+  final File? imageFile;
+  final String? imageUrl;
 
   const GsSelectItem(
     this.value,
     this.label, {
     this.asset = '',
-    this.image,
+    this.imageUrl,
+    this.imageFile,
+    this.forceImage = false,
     this.color = Colors.grey,
   });
 }
@@ -37,7 +42,11 @@ class GsSelectChip<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final child = Opacity(
       opacity: hide ? 0.2 : 1,
-      child: item.image != null && !disableImage
+      child:
+          (item.imageFile != null ||
+                  item.imageUrl != null ||
+                  item.forceImage) &&
+              !disableImage
           ? _selectBox(context)
           : _selectChip(context),
     );
@@ -81,8 +90,10 @@ class GsSelectChip<T> extends StatelessWidget {
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: item.image!.isNotEmpty
-                ? Image.network(item.image!.toFandom(46))
+            child: item.imageFile != null
+                ? Image.file(item.imageFile!, width: 46, height: 46)
+                : item.imageUrl != null
+                ? Image.network(item.imageUrl!, width: 46, height: 46)
                 : const Icon(Icons.question_mark_rounded),
           ),
           Text(

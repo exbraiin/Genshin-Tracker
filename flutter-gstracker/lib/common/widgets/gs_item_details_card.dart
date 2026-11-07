@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -15,9 +17,9 @@ class ItemDetailsCard extends StatelessWidget {
   final bool showRarityStars;
   final Widget? info;
   final String? asset;
-  final String? image;
-  final String? fgImage;
-  final String? bgImage;
+  final File? image;
+  final File? fgImage;
+  final File? bgImage;
   final String version;
   final Widget? child;
 
@@ -176,7 +178,7 @@ class ItemDetailsCard extends StatelessWidget {
                     ),
                     child: Opacity(
                       opacity: kDisableOpacity * 2,
-                      child: CachedImageWidget(
+                      child: GsFileImage(
                         bgImage,
                         showPlaceholder: false,
                         fit: BoxFit.cover,
@@ -193,7 +195,7 @@ class ItemDetailsCard extends StatelessWidget {
                   if (image != null) {
                     return AspectRatio(
                       aspectRatio: 1,
-                      child: CachedImageWidget(image!),
+                      child: GsFileImage(image!),
                     );
                   }
                   return const SizedBox();
@@ -201,7 +203,7 @@ class ItemDetailsCard extends StatelessWidget {
               ),
               if (fgImage != null)
                 Positioned.fill(
-                  child: CachedImageWidget(
+                  child: GsFileImage(
                     fgImage,
                     showPlaceholder: false,
                     fit: BoxFit.cover,

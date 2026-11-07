@@ -131,7 +131,7 @@ class EventsScrollView extends StatelessWidget {
                                         ).createShader(rect);
                                       },
                                       blendMode: BlendMode.dstOut,
-                                      child: CachedImageWidget(
+                                      child: GsFileImage(
                                         e.image,
                                         fit: BoxFit.cover,
                                         alignment: Alignment.centerLeft,

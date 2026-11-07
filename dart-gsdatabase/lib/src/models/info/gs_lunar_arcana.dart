@@ -11,7 +11,6 @@ class GsLunarArcana({
   @override final String version = '',
   final String name = '',
   final int number = 0,
-  final String image = '',
   final String description = '',
 }) extends GsModel<GsLunarArcana> with GsVersionable {
   static const kTableKey = 'lunar_arcana';

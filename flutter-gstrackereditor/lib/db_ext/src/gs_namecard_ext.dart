@@ -48,16 +48,8 @@ class GsNamecardExt extends GsModelExt<GsNamecard> {
         (item, value) => item.copyWith(version: value),
         validator: (item) => vdVersion.validate(item.version),
       ),
-      DataField.textImage(
-        'Image',
-        (item) => item.image,
-        (item, value) => item.copyWith(image: value),
-      ),
-      DataField.textImage(
-        'Background',
-        (item) => item.fullImage,
-        (item, value) => item.copyWith(fullImage: value),
-      ),
+      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile('Background', (item) => item.background),
       DataField.textField(
         'Desc',
         (item) => item.desc,

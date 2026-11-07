@@ -39,16 +39,8 @@ class GsWeaponExt extends GsModelExt<GsWeapon> {
         (item) => item.rarity,
         (item, value) => item.copyWith(rarity: value),
       ),
-      DataField.textImage(
-        'Image',
-        (item) => item.image,
-        (item, value) => item.copyWith(image: value),
-      ),
-      DataField.textImage(
-        'Asc Image',
-        (item) => item.imageAsc,
-        (item, value) => item.copyWith(imageAsc: value),
-      ),
+      DataField.validateFile('Image', (item) => item.image),
+      DataField.validateFile('Asc Image', (item) => item.imageAsc),
       DataField.singleEnum(
         'Type',
         GeWeaponType.values.toChips(),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db/model_ext.dart';
@@ -40,13 +42,20 @@ class ValidateModels<T extends GsModel<T>> {
         e.id,
         decorator?.label?.call(e) ?? e.id,
         color: decorator?.color?.call(e) ?? Colors.grey,
-        image: decorator?.image?.call(e),
+        imageFile: decorator?.image?.call(e),
       );
     });
     if (noneId != null) {
       ids = [noneId, ...ids];
-      final image = decorator.image != null ? '' : null;
-      filters = [GsSelectItem(noneId, 'None', image: image), ...filters];
+      filters = [
+        GsSelectItem(
+          noneId,
+          'None',
+          imageFile: null,
+          forceImage: decorator.image != null,
+        ),
+        ...filters,
+      ];
     }
 
     return ValidateModels._(
@@ -249,53 +258,52 @@ extension VeMaterials on ValidateModels<GsMaterial> {
 
 class GsModelDecorator<T extends GsModel<T>> {
   final Func<String, T>? label;
-  final Func<String, T>? image;
+  final Func<File?, T>? image;
   final Func<Color, T>? color;
 
   GsModelDecorator({this.label, this.image, this.color});
   static GsModelDecorator<E> of<E extends GsModel<E>>() {
     return switch (E) {
-          const (GsWish) => GsModelDecorator<GsWish>(
-            label: (i) => i.name,
-            image: (i) => i.image,
-            color: (i) => GsStyle.getRarityColor(i.rarity),
-          ),
-          const (GsAchievementGroup) => GsModelDecorator<GsAchievementGroup>(
-            label: (item) => item.name,
-            color: (item) => GsStyle.getRarityColor(4),
-          ),
-          const (GsCharacter) => GsModelDecorator<GsCharacter>(
-            label: (item) => item.name,
-            image: (item) => item.image,
-            color: (item) => GsStyle.getRarityColor(item.rarity),
-          ),
-          const (GsVersion) => GsModelDecorator<GsVersion>(
-            label: (item) => item.label,
-            color: (item) => GsStyle.getVersionColor(item.id),
-          ),
-          const (GsMaterial) => GsModelDecorator<GsMaterial>(
-            label: (item) => item.name,
-            image: (item) => item.image,
-            color: (item) => GsStyle.getRarityColor(item.rarity),
-          ),
-          const (GsNamecard) => GsModelDecorator<GsNamecard>(
-            label: (i) => i.name,
-            image: (i) => i.image,
-            color: (i) => GsStyle.getRarityColor(i.rarity),
-          ),
-          const (GsRecipe) => GsModelDecorator<GsRecipe>(
-            label: (item) => item.name,
-            image: (item) => item.image,
-            color: (i) => GsStyle.getRarityColor(i.rarity),
-          ),
-          const (GsWeapon) => GsModelDecorator<GsWeapon>(
-            label: (item) => item.name,
-            image: (item) => item.image,
-            color: (item) => GsStyle.getRarityColor(item.rarity),
-          ),
-          _ => GsModelDecorator<E>(),
-        }
-        as GsModelDecorator<E>;
+      const (GsWish) => GsModelDecorator<GsWish>(
+        label: (i) => i.name,
+        image: (item) => item.image,
+        color: (i) => GsStyle.getRarityColor(i.rarity),
+      ),
+      const (GsAchievementGroup) => GsModelDecorator<GsAchievementGroup>(
+        label: (item) => item.name,
+        color: (item) => GsStyle.getRarityColor(4),
+      ),
+      const (GsCharacter) => GsModelDecorator<GsCharacter>(
+        label: (item) => item.name,
+        image: (item) => item.image,
+        color: (item) => GsStyle.getRarityColor(item.rarity),
+      ),
+      const (GsVersion) => GsModelDecorator<GsVersion>(
+        label: (item) => item.label,
+        color: (item) => GsStyle.getVersionColor(item.id),
+      ),
+      const (GsMaterial) => GsModelDecorator<GsMaterial>(
+        label: (item) => item.name,
+        image: (item) => item.image,
+        color: (item) => GsStyle.getRarityColor(item.rarity),
+      ),
+      const (GsNamecard) => GsModelDecorator<GsNamecard>(
+        label: (i) => i.name,
+        image: (item) => item.image,
+        color: (i) => GsStyle.getRarityColor(i.rarity),
+      ),
+      const (GsRecipe) => GsModelDecorator<GsRecipe>(
+        label: (item) => item.name,
+        image: (item) => item.image,
+        color: (i) => GsStyle.getRarityColor(i.rarity),
+      ),
+      const (GsWeapon) => GsModelDecorator<GsWeapon>(
+        label: (item) => item.name,
+        image: (item) => item.image,
+        color: (item) => GsStyle.getRarityColor(item.rarity),
+      ),
+      _ => GsModelDecorator<E>(),
+    } as GsModelDecorator<E>;
   }
 }
 

@@ -19,7 +19,6 @@ abstract class _$GsAchievementGroupCWProxy {
     String id,
     String version,
     String name,
-    String icon,
     String namecard,
     int order,
     int rewards,
@@ -47,7 +46,6 @@ class _$GsAchievementGroupCWProxyImpl implements _$GsAchievementGroupCWProxy {
     Object? id = const $CopyWithPlaceholder(),
     Object? version = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
-    Object? icon = const $CopyWithPlaceholder(),
     Object? namecard = const $CopyWithPlaceholder(),
     Object? order = const $CopyWithPlaceholder(),
     Object? rewards = const $CopyWithPlaceholder(),
@@ -66,10 +64,6 @@ class _$GsAchievementGroupCWProxyImpl implements _$GsAchievementGroupCWProxy {
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String,
-      icon: icon == const $CopyWithPlaceholder() || icon == null
-          ? _value.icon
-          // ignore: cast_nullable_to_non_nullable
-          : icon as String,
       namecard: namecard == const $CopyWithPlaceholder() || namecard == null
           ? _value.namecard
           // ignore: cast_nullable_to_non_nullable
@@ -108,7 +102,6 @@ GsAchievementGroup _$GsAchievementGroupFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String? ?? '',
       version: json['version'] as String? ?? '',
       name: json['name'] as String? ?? '',
-      icon: json['icon'] as String? ?? '',
       namecard: json['namecard'] as String? ?? '',
       order: (json['order'] as num?)?.toInt() ?? 0,
       rewards: (json['rewards'] as num?)?.toInt() ?? 0,
@@ -120,7 +113,6 @@ Map<String, dynamic> _$GsAchievementGroupToJson(GsAchievementGroup instance) =>
       'id': instance.id,
       'version': instance.version,
       'name': instance.name,
-      'icon': instance.icon,
       'namecard': instance.namecard,
       'order': instance.order,
       'rewards': instance.rewards,

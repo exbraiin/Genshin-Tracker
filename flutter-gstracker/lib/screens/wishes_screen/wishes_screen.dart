@@ -110,11 +110,10 @@ class _WishesScreenScreenState extends State<WishesScreen>
                 child: Stack(
                   fit: .expand,
                   children: [
-                    CachedImageWidget(
+                    GsFileImage(
                       banner?.image,
                       fit: BoxFit.cover,
                       alignment: Alignment.bottomCenter,
-                      imageAspectRatio: 2,
                     ),
                     Positioned.fill(
                       top: null,

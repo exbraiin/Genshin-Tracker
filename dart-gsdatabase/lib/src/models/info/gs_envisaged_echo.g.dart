@@ -22,7 +22,6 @@ abstract class _$GsEnvisagedEchoCWProxy {
     String description,
     String character,
     int rarity,
-    String icon,
   });
 }
 
@@ -49,7 +48,6 @@ class _$GsEnvisagedEchoCWProxyImpl implements _$GsEnvisagedEchoCWProxy {
     Object? description = const $CopyWithPlaceholder(),
     Object? character = const $CopyWithPlaceholder(),
     Object? rarity = const $CopyWithPlaceholder(),
-    Object? icon = const $CopyWithPlaceholder(),
   }) {
     return GsEnvisagedEcho(
       id: id == const $CopyWithPlaceholder() || id == null
@@ -77,10 +75,6 @@ class _$GsEnvisagedEchoCWProxyImpl implements _$GsEnvisagedEchoCWProxy {
           ? _value.rarity
           // ignore: cast_nullable_to_non_nullable
           : rarity as int,
-      icon: icon == const $CopyWithPlaceholder() || icon == null
-          ? _value.icon
-          // ignore: cast_nullable_to_non_nullable
-          : icon as String,
     );
   }
 }
@@ -104,7 +98,6 @@ GsEnvisagedEcho _$GsEnvisagedEchoFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String? ?? '',
       character: json['character'] as String? ?? '',
       rarity: (json['rarity'] as num?)?.toInt() ?? 0,
-      icon: json['icon'] as String? ?? '',
     );
 
 Map<String, dynamic> _$GsEnvisagedEchoToJson(GsEnvisagedEcho instance) =>
@@ -115,5 +108,4 @@ Map<String, dynamic> _$GsEnvisagedEchoToJson(GsEnvisagedEcho instance) =>
       'description': instance.description,
       'character': instance.character,
       'rarity': instance.rarity,
-      'icon': instance.icon,
     };

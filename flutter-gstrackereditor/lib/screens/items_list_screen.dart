@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db/ge_enums.dart';
@@ -249,7 +251,7 @@ class GsItemDecor {
   final Color? color;
   final String label;
   final String version;
-  final String? image;
+  final File? image;
   final Duration? duration;
   final Color? regionColor;
   final Widget? child;

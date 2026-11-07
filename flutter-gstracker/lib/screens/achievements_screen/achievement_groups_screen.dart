@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
@@ -133,9 +132,8 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(
-                      kSeparator8,
-                    ).copyWith(bottom: kSeparator4),
+                    padding: const EdgeInsets.all(kSeparator8)
+                        .copyWith(bottom: kSeparator4),
                     child: TextField(
                       style: const TextStyle(fontSize: 16),
                       maxLines: 1,
@@ -205,6 +203,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
     final percentage = saved / total.coerceAtLeast(1);
     final namecards = Database.instance.infoOf<GsNamecard>();
     final namecard = namecards.getItem(item.namecard);
+    final namecardBackground = namecard?.background;
     return AnimatedContainer(
       height: 86,
       duration: const Duration(milliseconds: 400),
@@ -212,14 +211,12 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
       padding: const EdgeInsets.all(kSeparator4).copyWith(right: kSeparator16),
       decoration: BoxDecoration(
         color: selected ? context.themeColors.mainColor1 : Colors.transparent,
-        image: namecard != null && namecard.fullImage.isNotEmpty
+        image: namecard != null && namecardBackground != null
             ? DecorationImage(
                 fit: BoxFit.cover,
                 opacity: 0.4,
                 alignment: Alignment.centerRight,
-                image: CachedNetworkImageProvider(
-                  namecard.fullImage,
-                ).resizeIfNeeded(),
+                image: FileImage(namecardBackground).resizeIfNeeded(),
               )
             : DecorationImage(
                 fit: BoxFit.cover,
@@ -242,7 +239,7 @@ class _AchievementGroupsScreenState extends State<AchievementGroupsScreen> {
         onTap: select,
         child: Row(
           children: [
-            SizedBox(width: 82, child: CachedImageWidget(item.icon)),
+            SizedBox(width: 82, child: GsFileImage(item.image)),
             const SizedBox(width: kSeparator8),
             Expanded(
               child: Column(

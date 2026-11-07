@@ -35,9 +35,6 @@ class GsCharacter({
   required final DateTime birthday,
   @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
   required final DateTime releaseDate,
-  final String image = '',
-  final String fullImage = '',
-  final String constellationImage = '',
   final String gemMaterial = '',
   final String bossMaterial = '',
   final String commonMaterial = '',

@@ -3,6 +3,7 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
+
 class GsEnvisagedEchoExt extends GsModelExt<GsEnvisagedEcho> {
   const GsEnvisagedEchoExt();
 
@@ -33,10 +34,9 @@ class GsEnvisagedEchoExt extends GsModelExt<GsEnvisagedEcho> {
         (item) => item.description,
         (item, value) => item.copyWith(description: value),
       ),
-      DataField.textImage(
+      DataField.validateFile(
         'Icon',
-        (item) => item.icon,
-        (item, value) => item.copyWith(icon: value),
+        (item) => item.image,
       ),
       DataField.selectRarity(
         'Rarity',

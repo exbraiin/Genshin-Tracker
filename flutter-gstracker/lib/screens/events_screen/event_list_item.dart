@@ -21,7 +21,7 @@ class EventListItem extends StatelessWidget {
       label: item.name,
       selected: selected,
       banner: GsItemBanner.version(context, item.version),
-      imageUrlPath: item.image,
+      imageFile: item.image,
     );
   }
 }

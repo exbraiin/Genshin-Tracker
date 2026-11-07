@@ -20,7 +20,6 @@ abstract class _$GsSereniteaSetCWProxy {
     String version,
     String name,
     GeSereniteaSetType category,
-    String image,
     int rarity,
     int energy,
     List<String> chars,
@@ -48,7 +47,6 @@ class _$GsSereniteaSetCWProxyImpl implements _$GsSereniteaSetCWProxy {
     Object? version = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? category = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
     Object? rarity = const $CopyWithPlaceholder(),
     Object? energy = const $CopyWithPlaceholder(),
     Object? chars = const $CopyWithPlaceholder(),
@@ -70,10 +68,6 @@ class _$GsSereniteaSetCWProxyImpl implements _$GsSereniteaSetCWProxy {
           ? _value.category
           // ignore: cast_nullable_to_non_nullable
           : category as GeSereniteaSetType,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
       rarity: rarity == const $CopyWithPlaceholder() || rarity == null
           ? _value.rarity
           // ignore: cast_nullable_to_non_nullable
@@ -113,7 +107,6 @@ GsSereniteaSet _$GsSereniteaSetFromJson(Map<String, dynamic> json) =>
             unknownValue: GeSereniteaSetType.none,
           ) ??
           GeSereniteaSetType.none,
-      image: json['image'] as String? ?? '',
       rarity: (json['rarity'] as num?)?.toInt() ?? 0,
       energy: (json['energy'] as num?)?.toInt() ?? 0,
       chars:
@@ -127,7 +120,6 @@ Map<String, dynamic> _$GsSereniteaSetToJson(GsSereniteaSet instance) =>
       'version': instance.version,
       'name': instance.name,
       'category': _$GeSereniteaSetTypeEnumMap[instance.category]!,
-      'image': instance.image,
       'rarity': instance.rarity,
       'energy': instance.energy,
       'chars': instance.chars,

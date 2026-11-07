@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:data_editor/db/database.dart';
 import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:data_editor/screens/items_list_screen.dart';
 import 'package:data_editor/style/style.dart';
-import 'package:data_editor/style/utils.dart';
 import 'package:data_editor/widgets/auto_size_text.dart';
 import 'package:data_editor/widgets/mouse_button.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class GsGridItem extends StatelessWidget {
   final Color? color;
   final Color? circleColor;
   final String label;
-  final String image;
+  final File? image;
   final String version;
   final Widget? child;
   final Duration? duration;
@@ -27,7 +28,7 @@ class GsGridItem extends StatelessWidget {
     this.duration,
     this.circleColor,
     this.rarity = 1,
-    this.image = '',
+    this.image,
     this.version = '',
     this.validLevel = GsValidLevel.none,
     required this.color,
@@ -42,7 +43,7 @@ class GsGridItem extends StatelessWidget {
     this.validLevel = GsValidLevel.none,
   }) : circleColor = decor.regionColor,
        rarity = decor.rarity,
-       image = decor.image ?? '',
+       image = decor.image,
        version = decor.version,
        duration = decor.duration,
        color = decor.color,
@@ -93,12 +94,12 @@ class GsGridItem extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          if (image.isNotEmpty)
+          if (image != null)
             Positioned(
               right: 0,
               bottom: 0,
-              child: Image.network(
-                image.toFandom(46),
+              child: Image.file(
+                image!,
                 width: 46,
                 height: 46,
                 fit: BoxFit.contain,

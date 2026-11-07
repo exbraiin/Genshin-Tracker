@@ -21,7 +21,6 @@ abstract class _$GsRecipeCWProxy {
     String name,
     GeRecipeType type,
     int rarity,
-    String image,
     GeRecipeEffectType effect,
     String desc,
     String effectDesc,
@@ -52,7 +51,6 @@ class _$GsRecipeCWProxyImpl implements _$GsRecipeCWProxy {
     Object? name = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
     Object? rarity = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
     Object? effect = const $CopyWithPlaceholder(),
     Object? desc = const $CopyWithPlaceholder(),
     Object? effectDesc = const $CopyWithPlaceholder(),
@@ -80,10 +78,6 @@ class _$GsRecipeCWProxyImpl implements _$GsRecipeCWProxy {
           ? _value.rarity
           // ignore: cast_nullable_to_non_nullable
           : rarity as int,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
       effect: effect == const $CopyWithPlaceholder() || effect == null
           ? _value.effect
           // ignore: cast_nullable_to_non_nullable
@@ -186,7 +180,6 @@ GsRecipe _$GsRecipeFromJson(Map<String, dynamic> json) => GsRecipe(
       ) ??
       GeRecipeType.none,
   rarity: (json['rarity'] as num?)?.toInt() ?? 0,
-  image: json['image'] as String? ?? '',
   effect:
       $enumDecodeNullable(
         _$GeRecipeEffectTypeEnumMap,
@@ -210,7 +203,6 @@ Map<String, dynamic> _$GsRecipeToJson(GsRecipe instance) => <String, dynamic>{
   'name': instance.name,
   'type': _$GeRecipeTypeEnumMap[instance.type]!,
   'rarity': instance.rarity,
-  'image': instance.image,
   'effect': _$GeRecipeEffectTypeEnumMap[instance.effect]!,
   'desc': instance.desc,
   'effectDesc': instance.effectDesc,

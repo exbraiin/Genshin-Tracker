@@ -22,7 +22,6 @@ abstract class _$GsMaterialCWProxy {
     String desc,
     int rarity,
     GeMaterialType group,
-    String image,
     GeRegionType region,
     int subgroup,
     bool ingredient,
@@ -53,7 +52,6 @@ class _$GsMaterialCWProxyImpl implements _$GsMaterialCWProxy {
     Object? desc = const $CopyWithPlaceholder(),
     Object? rarity = const $CopyWithPlaceholder(),
     Object? group = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
     Object? region = const $CopyWithPlaceholder(),
     Object? subgroup = const $CopyWithPlaceholder(),
     Object? ingredient = const $CopyWithPlaceholder(),
@@ -84,10 +82,6 @@ class _$GsMaterialCWProxyImpl implements _$GsMaterialCWProxy {
           ? _value.group
           // ignore: cast_nullable_to_non_nullable
           : group as GeMaterialType,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
       region: region == const $CopyWithPlaceholder() || region == null
           ? _value.region
           // ignore: cast_nullable_to_non_nullable
@@ -133,7 +127,6 @@ GsMaterial _$GsMaterialFromJson(Map<String, dynamic> json) => GsMaterial(
         unknownValue: GeMaterialType.none,
       ) ??
       GeMaterialType.none,
-  image: json['image'] as String? ?? '',
   region:
       $enumDecodeNullable(
         _$GeRegionTypeEnumMap,
@@ -165,7 +158,6 @@ Map<String, dynamic> _$GsMaterialToJson(
   'desc': instance.desc,
   'rarity': instance.rarity,
   'group': _$GeMaterialTypeEnumMap[instance.group]!,
-  'image': instance.image,
   'region': _$GeRegionTypeEnumMap[instance.region]!,
   'subgroup': instance.subgroup,
   'ingredient': instance.ingredient,

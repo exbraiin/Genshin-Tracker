@@ -20,7 +20,6 @@ abstract class _$GsEventCWProxy {
     String version,
     String name,
     GeEventType type,
-    String image,
     DateTime dateStart,
     DateTime dateEnd,
     String rewardsOther,
@@ -50,7 +49,6 @@ class _$GsEventCWProxyImpl implements _$GsEventCWProxy {
     Object? version = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
     Object? dateStart = const $CopyWithPlaceholder(),
     Object? dateEnd = const $CopyWithPlaceholder(),
     Object? rewardsOther = const $CopyWithPlaceholder(),
@@ -74,10 +72,6 @@ class _$GsEventCWProxyImpl implements _$GsEventCWProxy {
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as GeEventType,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
       dateStart: dateStart == const $CopyWithPlaceholder() || dateStart == null
           ? _value.dateStart
           // ignore: cast_nullable_to_non_nullable
@@ -129,7 +123,6 @@ GsEvent _$GsEventFromJson(Map<String, dynamic> json) => GsEvent(
         unknownValue: GeEventType.none,
       ) ??
       GeEventType.none,
-  image: json['image'] as String? ?? '',
   dateStart: modelDateFromJson(json['dateStart']),
   dateEnd: modelDateFromJson(json['dateEnd']),
   rewardsOther: json['rewardsOther'] as String? ?? '',
@@ -150,7 +143,6 @@ Map<String, dynamic> _$GsEventToJson(GsEvent instance) => <String, dynamic>{
   'version': instance.version,
   'name': instance.name,
   'type': _$GeEventTypeEnumMap[instance.type]!,
-  'image': instance.image,
   'dateStart': modelDateToJson(instance.dateStart),
   'dateEnd': modelDateToJson(instance.dateEnd),
   'rewardsOther': instance.rewardsOther,

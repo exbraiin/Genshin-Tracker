@@ -129,7 +129,7 @@ class WishListItem extends StatelessWidget {
                   Container(
                     width: 44,
                     margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
-                    child: CachedImageWidget(item.image, fit: BoxFit.cover),
+                    child: GsFileImage(item.image, fit: BoxFit.cover),
                   ),
                   const SizedBox(width: 8),
                   Expanded(child: Text(item.name)),

@@ -21,8 +21,6 @@ abstract class _$GsNamecardCWProxy {
     String name,
     int rarity,
     GeNamecardType type,
-    String image,
-    String fullImage,
     String desc,
   });
 }
@@ -49,8 +47,6 @@ class _$GsNamecardCWProxyImpl implements _$GsNamecardCWProxy {
     Object? name = const $CopyWithPlaceholder(),
     Object? rarity = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
-    Object? fullImage = const $CopyWithPlaceholder(),
     Object? desc = const $CopyWithPlaceholder(),
   }) {
     return GsNamecard(
@@ -74,14 +70,6 @@ class _$GsNamecardCWProxyImpl implements _$GsNamecardCWProxy {
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as GeNamecardType,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
-      fullImage: fullImage == const $CopyWithPlaceholder() || fullImage == null
-          ? _value.fullImage
-          // ignore: cast_nullable_to_non_nullable
-          : fullImage as String,
       desc: desc == const $CopyWithPlaceholder() || desc == null
           ? _value.desc
           // ignore: cast_nullable_to_non_nullable
@@ -113,8 +101,6 @@ GsNamecard _$GsNamecardFromJson(Map<String, dynamic> json) => GsNamecard(
         unknownValue: GeNamecardType.none,
       ) ??
       GeNamecardType.none,
-  image: json['image'] as String? ?? '',
-  fullImage: json['fullImage'] as String? ?? '',
   desc: json['desc'] as String? ?? '',
 );
 
@@ -125,8 +111,6 @@ Map<String, dynamic> _$GsNamecardToJson(GsNamecard instance) =>
       'name': instance.name,
       'rarity': instance.rarity,
       'type': _$GeNamecardTypeEnumMap[instance.type]!,
-      'image': instance.image,
-      'fullImage': instance.fullImage,
       'desc': instance.desc,
     };
 

@@ -11,10 +11,7 @@ class GsCharacterSkin({
   @override final String version = '',
   final int rarity = 0,
   final String name = '',
-  final String image = '',
   final String character = '',
-  final String sideImage = '',
-  final String fullImage = '',
 }) extends GsModel<GsCharacterSkin> with GsVersionable {
   static const kTableKey = 'characters_outfits';
 

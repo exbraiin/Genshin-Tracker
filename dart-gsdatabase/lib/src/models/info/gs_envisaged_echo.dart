@@ -13,7 +13,6 @@ class GsEnvisagedEcho({
   final String description = '',
   final String character = '',
   final int rarity = 0,
-  final String icon = '',
 }) extends GsModel<GsEnvisagedEcho> with GsVersionable {
   static const kTableKey = 'echos';
 

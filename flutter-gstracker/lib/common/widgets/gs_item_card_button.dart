@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tracker/common/lang/lang.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
@@ -53,8 +55,8 @@ class GsItemCardButton extends StatelessWidget {
   final double? height;
   final Widget? subChild;
   final Widget? child;
-  final String? imageUrlPath;
-  final String? imageAssetPath;
+  final File? imageFile;
+  final String? imageAsset;
   final double? imageAspectRatio;
   final VoidCallback? onTap;
 
@@ -69,8 +71,8 @@ class GsItemCardButton extends StatelessWidget {
     this.banner = const GsItemBanner(text: ''),
     this.subChild,
     this.maxLines = 1,
-    this.imageUrlPath,
-    this.imageAssetPath,
+    this.imageFile,
+    this.imageAsset,
     this.imageAspectRatio,
     this.shadow = false,
     this.disable = false,
@@ -137,17 +139,13 @@ class GsItemCardButton extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  if (imageUrlPath != null)
+                  if (imageFile != null)
                     Positioned.fill(
-                      child: CachedImageWidget(
-                        imageUrlPath!,
-                        fit: BoxFit.cover,
-                        imageAspectRatio: imageAspectRatio,
-                      ),
+                      child: GsFileImage(imageFile!, fit: BoxFit.cover),
                     ),
-                  if (imageAssetPath != null && imageAssetPath!.isNotEmpty)
+                  if (imageAsset != null && imageAsset!.isNotEmpty)
                     Positioned.fill(
-                      child: Image.asset(imageAssetPath!, fit: BoxFit.cover),
+                      child: Image.asset(imageAsset!, fit: BoxFit.cover),
                     ),
                   if (banner.text.isNotEmpty)
                     Positioned.fill(

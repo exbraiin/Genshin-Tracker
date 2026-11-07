@@ -41,7 +41,6 @@ class GsArtifact({
 class GsArtifactPiece({
   @override final String id = '',
   final String name = '',
-  final String icon = '',
   final String desc = '',
   @JsonKey(unknownEnumValue: GeArtifactPieceType.flowerOfLife)
   final GeArtifactPieceType type = GeArtifactPieceType.flowerOfLife,

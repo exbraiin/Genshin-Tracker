@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
@@ -36,8 +38,9 @@ class ItemGridWidget extends StatelessWidget {
   final bool disabled;
   final String label;
   final Widget? labelWidget;
-  final String urlImage;
+  final File? fileImage;
   final String assetImage;
+  final String networkImage;
   final void Function(BuildContext ctx)? onTap;
   final void Function(BuildContext ctx)? onAdd;
   final void Function(BuildContext ctx)? onRemove;
@@ -48,8 +51,9 @@ class ItemGridWidget extends StatelessWidget {
     this.label = '',
     this.labelWidget,
     this.rarity = 1,
-    this.urlImage = '',
+    this.fileImage,
     this.assetImage = '',
+    this.networkImage = '',
     this.disabled = false,
     this.onTap,
     this.onAdd,
@@ -67,8 +71,9 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsMaterial>? onTap = _callMaterial,
   }) : rarity = info.rarity,
-       urlImage = info.image,
+       fileImage = info.image,
        assetImage = '',
+       networkImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.recipe(
@@ -82,8 +87,9 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsRecipe>? onTap = _callRecipe,
   }) : rarity = info.rarity,
-       urlImage = info.image,
+       fileImage = info.image,
        assetImage = '',
+       networkImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.weapon(
@@ -97,8 +103,9 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsWeapon>? onTap = _callWeapon,
   }) : rarity = info.rarity,
-       urlImage = info.image,
+       fileImage = info.image,
        assetImage = '',
+       networkImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.character(
@@ -112,8 +119,9 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsCharacter>? onTap = _callCharacter,
   }) : rarity = info.rarity,
-       urlImage = info.image,
+       fileImage = info.image,
        assetImage = '',
+       networkImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.serenitea(
@@ -127,8 +135,9 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsSereniteaSet>? onTap = _callSerenitea,
   }) : rarity = info.rarity,
-       urlImage = info.image,
+       fileImage = info.image,
        assetImage = '',
+       networkImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.remarkableChest(
@@ -142,8 +151,9 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsFurnitureChest>? onTap = _callFurnitureChest,
   }) : rarity = info.rarity,
-       urlImage = info.image,
+       fileImage = info.image,
        assetImage = '',
+       networkImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   ItemGridWidget.namecard(
@@ -157,14 +167,17 @@ class ItemGridWidget extends StatelessWidget {
     this.onRemove,
     ContextCallback<GsNamecard>? onTap = _callNamecard,
   }) : rarity = info.rarity,
-       urlImage = info.image,
+       fileImage = info.image,
        assetImage = '',
+       networkImage = '',
        onTap = onTap != null ? ((ctx) => onTap(ctx, info)) : null;
 
   @override
   Widget build(BuildContext context) {
-    var child = urlImage.isNotEmpty
-        ? CachedImageWidget(urlImage)
+    var child = fileImage != null
+        ? GsFileImage(fileImage)
+        : networkImage.isNotEmpty
+        ? Image.network(networkImage)
         : assetImage.isNotEmpty
         ? Image.asset(assetImage)
         : const SizedBox();
@@ -315,7 +328,7 @@ class ItemCircleWidget extends StatelessWidget {
   final Widget? child;
   final String label;
   final String tooltip;
-  final String image;
+  final File? image;
   final String asset;
   final EdgeInsetsGeometry padding;
 
@@ -328,7 +341,7 @@ class ItemCircleWidget extends StatelessWidget {
     this.rarity = 0,
     this.label = '',
     this.tooltip = '',
-    this.image = '',
+    this.image,
     this.asset = '',
   });
 
@@ -350,8 +363,8 @@ class ItemCircleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var child = image.isNotEmpty
-        ? CachedImageWidget(image)
+    var child = image != null
+        ? GsFileImage(image)
         : asset.isNotEmpty
         ? Image.asset(asset)
         : const SizedBox();

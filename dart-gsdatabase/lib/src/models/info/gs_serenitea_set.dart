@@ -13,7 +13,6 @@ class GsSereniteaSet({
   final String name = '',
   @JsonKey(unknownEnumValue: GeSereniteaSetType.none)
   final GeSereniteaSetType category = GeSereniteaSetType.none,
-  final String image = '',
   final int rarity = 0,
   final int energy = 0,
   final List<String> chars = const [],

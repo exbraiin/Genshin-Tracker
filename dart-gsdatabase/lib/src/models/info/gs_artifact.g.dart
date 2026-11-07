@@ -121,7 +121,6 @@ abstract class _$GsArtifactPieceCWProxy {
   GsArtifactPiece call({
     String id,
     String name,
-    String icon,
     String desc,
     GeArtifactPieceType type,
   });
@@ -146,7 +145,6 @@ class _$GsArtifactPieceCWProxyImpl implements _$GsArtifactPieceCWProxy {
   GsArtifactPiece call({
     Object? id = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
-    Object? icon = const $CopyWithPlaceholder(),
     Object? desc = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
   }) {
@@ -159,10 +157,6 @@ class _$GsArtifactPieceCWProxyImpl implements _$GsArtifactPieceCWProxy {
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String,
-      icon: icon == const $CopyWithPlaceholder() || icon == null
-          ? _value.icon
-          // ignore: cast_nullable_to_non_nullable
-          : icon as String,
       desc: desc == const $CopyWithPlaceholder() || desc == null
           ? _value.desc
           // ignore: cast_nullable_to_non_nullable
@@ -239,7 +233,6 @@ GsArtifactPiece _$GsArtifactPieceFromJson(Map<String, dynamic> json) =>
     GsArtifactPiece(
       id: json['id'] as String? ?? '',
       name: json['name'] as String? ?? '',
-      icon: json['icon'] as String? ?? '',
       desc: json['desc'] as String? ?? '',
       type:
           $enumDecodeNullable(
@@ -254,7 +247,6 @@ Map<String, dynamic> _$GsArtifactPieceToJson(GsArtifactPiece instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'icon': instance.icon,
       'desc': instance.desc,
       'type': _$GeArtifactPieceTypeEnumMap[instance.type]!,
     };

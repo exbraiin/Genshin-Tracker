@@ -13,7 +13,6 @@ class GsEvent({
   final String name = '',
   @JsonKey(unknownEnumValue: GeEventType.none)
   final GeEventType type = GeEventType.none,
-  final String image = '',
   @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
   required final DateTime dateStart,
   @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)

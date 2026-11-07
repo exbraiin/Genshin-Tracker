@@ -6,7 +6,6 @@ extension GsAchievementGroupExt on GsAchievementGroup {
     if (this == other) return true;
     return id == other.id &&
         name == other.name &&
-        icon == other.icon &&
         version == other.version &&
         namecard == other.namecard &&
         order == other.order &&

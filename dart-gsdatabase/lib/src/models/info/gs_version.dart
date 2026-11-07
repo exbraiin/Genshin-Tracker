@@ -10,7 +10,6 @@ class GsVersion({
   @override final String id = '',
   final String label = '',
   final String name = '',
-  final String image = '',
   @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
   required final DateTime releaseDate,
 }) extends GsModel<GsVersion> {

@@ -27,7 +27,7 @@ class SereniteaSetListItem extends StatelessWidget {
       selected: selected,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
       imageAspectRatio: 2,
-      imageUrlPath: item.image,
+      imageFile: item.image,
       onTap: onTap,
       child: Stack(
         children: [

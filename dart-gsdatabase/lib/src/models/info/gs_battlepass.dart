@@ -10,7 +10,6 @@ class GsBattlepass({
   @override final String id = '',
   @override final String version = '',
   final String name = '',
-  final String image = '',
   final String namecardId = '',
   @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
   required final DateTime dateStart,

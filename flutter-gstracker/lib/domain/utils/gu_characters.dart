@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 import 'package:tracker/common/extensions/extensions.dart';
@@ -147,8 +149,8 @@ final class CharInfo {
   final int ascension;
   final int friendship;
   final int totalConstellations;
-  final String iconImage;
-  final String wishImage;
+  final File? iconImage;
+  final File? wishImage;
   final CharTalents? talents;
 
   bool get isMaxAscension => ascension >= 6;
@@ -166,7 +168,7 @@ final class CharInfo {
     required this.isOwned,
     required this.totalConstellations,
   }) : iconImage = item.image,
-       wishImage = item.fullImage,
+       wishImage = item.fullart,
        ascension = info.ascension.clamp(0, 6),
        friendship = info.friendship.clamp(1, 10),
        talents = isOwned ? CharTalents(item, info, totalConstellations) : null;

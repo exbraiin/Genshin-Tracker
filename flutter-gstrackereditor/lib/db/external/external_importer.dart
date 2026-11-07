@@ -91,7 +91,6 @@ final class _ExternalImporterImpl implements ExternalImporter {
         final exist = tuple.dbGrps.firstOrNullWhere((t) => t.id == e.id);
         final items = tuple.dbAchs.where((t) => t.group == e.id);
         return e.copyWith(
-          icon: exist?.icon ?? e.icon,
           namecard: exist?.namecard ?? e.namecard,
           version: items.minBy((t) => t.version)?.version ?? e.version,
           rewards: items.sumBy((t) => t.reward),
@@ -186,7 +185,6 @@ final class _ExternalImporterImpl implements ExternalImporter {
       affiliation: affiliation ?? item.affiliation,
       specialDish: food?.toDbId() ?? item.specialDish,
       birthday: bday != null ? parseDate(bday) : item.birthday,
-      fullImage: wish ?? item.fullImage,
     );
   }
 
@@ -209,14 +207,9 @@ final class _ExternalImporterImpl implements ExternalImporter {
         ?.nextElementSibling;
     final description = descElm?.innerHtml.replaceAll('<br>', '\n').trim();
 
-    final imgElm = document.querySelector('figure[data-source="image"] img');
-    final imgSrc = imgElm?.attributes['src'] ?? '';
-    final image = _processImage(imgSrc);
-
     return item.copyWith(
       id: id ?? item.id,
       name: name ?? item.name,
-      image: image,
       number: number,
       description: description ?? item.description,
       version: '',
@@ -231,9 +224,6 @@ final class _ExternalImporterImpl implements ExternalImporter {
     final name = document.querySelector(nameSel)?.text;
     final id = name?.toDbId();
 
-    const imageSel = 'figure[data-source="image"] img';
-    final image = document.querySelector(imageSel)?.attributes['src'] ?? '';
-
     const raritySel = 'div[data-source="quality"] img';
     final rarity = document.querySelector(raritySel)?.attributes['title'] ?? '';
     final rarityInt = int.tryParse(rarity.split(' ').first);
@@ -245,7 +235,6 @@ final class _ExternalImporterImpl implements ExternalImporter {
     return item.copyWith(
       id: id ?? item.id,
       name: name ?? item.name,
-      image: _processImage(image),
       rarity: rarityInt ?? item.rarity,
       energy: energyInt,
     );
@@ -277,9 +266,6 @@ final class _ExternalImporterImpl implements ExternalImporter {
             .firstOrNull ??
         0;
 
-    final thumb = document.querySelector('img.pi-image-thumbnail');
-    final thumbSrc = thumb?.attributes['src'] ?? '';
-
     final versionEl = document.querySelector('div.change-history-header > div');
     final exp = RegExp(r'version(.+)', caseSensitive: false);
     final match = exp.firstMatch(versionEl?.text ?? '');
@@ -299,7 +285,6 @@ final class _ExternalImporterImpl implements ExternalImporter {
       character: character,
       rarity: 4,
       season: season,
-      image: _processImage(thumbSrc),
       version: versionId ?? item.version,
     );
   }

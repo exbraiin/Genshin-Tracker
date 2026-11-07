@@ -73,13 +73,10 @@ final class YattaImporter implements ImportApi {
         _ => GeArtifactPieceType.flowerOfLife,
       };
 
-      final fall = other?.pieces.firstOrNullWhere((e) => e.id == id);
-
       return GsArtifactPiece(
         id: type.id,
         type: type,
         name: data.getString('name'),
-        icon: fall?.icon ?? '',
         desc: data.getString('description'),
       );
     }).toList();
@@ -275,9 +272,6 @@ final class YattaImporter implements ImportApi {
           : info.getJsonMap('specialFood').getString('name').toDbId(),
       birthday: birthday,
       releaseDate: release,
-      image: other?.image ?? '',
-      fullImage: other?.fullImage ?? '',
-      constellationImage: other?.constellationImage ?? '',
       gemMaterial: getMat(GeMaterialType.ascensionGems),
       bossMaterial: getMat(GeMaterialType.normalBossDrops),
       commonMaterial: getMat(GeMaterialType.normalDrops),
@@ -334,8 +328,6 @@ final class YattaImporter implements ImportApi {
       rarity: rank,
       type: type,
       version: other?.version ?? '',
-      image: other?.image ?? '',
-      fullImage: other?.fullImage ?? '',
       desc: data.getString('description').replaceAll('Namecard style.\n', ''),
     );
   }
@@ -402,7 +394,6 @@ final class YattaImporter implements ImportApi {
       type: GeRecipeType.none,
       rarity: data.getInt('rank'),
       version: other?.version ?? '',
-      image: other?.image ?? '',
       effect: effect,
       desc: data.getString('description'),
       effectDesc: effectDesc,
@@ -564,8 +555,6 @@ final class YattaImporter implements ImportApi {
       id: name.toDbId(),
       name: name,
       rarity: rank,
-      image: other?.image ?? '',
-      imageAsc: other?.imageAsc ?? '',
       type: type,
       statType: statType,
       ascAtkValue: getStatValue<int>('FIGHT_PROP_BASE_ATTACK'),
@@ -644,7 +633,6 @@ final class YattaImporter implements ImportApi {
       desc: desc,
       rarity: rank,
       group: group,
-      image: other?.image ?? '',
       region: region,
       subgroup: other?.subgroup ?? 0,
       version: other?.version ?? '',
@@ -711,7 +699,6 @@ final class YattaImporter implements ImportApi {
       id: name.toDbId(),
       name: name,
       type: other?.type ?? GeSereniteaSetType.none,
-      image: other?.image ?? '',
       rarity: data.getInt('rank'),
       energy: data.getInt('comfort'),
       region: other?.region ?? GeRegionType.none,

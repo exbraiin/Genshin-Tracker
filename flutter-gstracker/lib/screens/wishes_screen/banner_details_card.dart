@@ -47,7 +47,7 @@ class BannerDetailsCard extends StatelessWidget {
           Positioned.fill(
             child: Opacity(
               opacity: 0.6,
-              child: CachedImageWidget(
+              child: GsFileImage(
                 item.image,
                 fit: BoxFit.cover,
                 alignment: Alignment.topCenter,
@@ -114,9 +114,9 @@ class BannerDetailsCard extends StatelessWidget {
                   GsButton(
                     color: context.themeColors.mainColor1,
                     borderRadius: GsSpacing.kListRadius,
-                    onPressed: () => Navigator.of(
-                      context,
-                    ).pushNamed(AddWishScreen.id, arguments: item),
+                    onPressed: () =>
+                        Navigator.of(context)
+                            .pushNamed(AddWishScreen.id, arguments: item),
                     child: Text(context.labels.addWishes()),
                   ),
                 ],
@@ -236,9 +236,9 @@ class BannerDetailsCard extends StatelessWidget {
               ),
               const SizedBox(height: kSeparator8),
               GsIconButton.add(
-                onPressed: () => Navigator.of(
-                  context,
-                ).pushNamed(AddWishScreen.id, arguments: item),
+                onPressed: () =>
+                    Navigator.of(context)
+                        .pushNamed(AddWishScreen.id, arguments: item),
               ),
             ],
           ),

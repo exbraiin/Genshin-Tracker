@@ -22,7 +22,7 @@ class NamecardListItem extends StatelessWidget {
       label: item.name,
       rarity: item.rarity,
       selected: selected,
-      imageUrlPath: item.image,
+      imageFile: item.image,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
       onTap: onTap,
       child: Stack(

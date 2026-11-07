@@ -13,7 +13,6 @@ class GsSpincrystal({
   final String name = '',
   final int number = 0,
   final String source = '',
-  final String imageSource = '',
   @JsonKey(unknownEnumValue: GeRegionType.none)
   final GeRegionType region = GeRegionType.none,
 }) extends GsModel<GsSpincrystal> with GsVersionable {

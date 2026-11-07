@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
 import 'package:gsdatabase/gsdatabase.dart';
@@ -121,7 +123,7 @@ class _ImagesTooltip extends StatelessWidget {
   final Size size;
   final Widget child;
   final String? message;
-  final Iterable<String> images;
+  final Iterable<File> images;
 
   const _ImagesTooltip({
     this.message,
@@ -160,13 +162,13 @@ class _ImagesTooltip extends StatelessWidget {
               if (image0 != null && image1 == null)
                 Positioned.fill(
                   bottom: null,
-                  child: CachedImageWidget(image0, fit: BoxFit.fitWidth),
+                  child: GsFileImage(image0, fit: BoxFit.fitWidth),
                 ),
               if (image0 != null && image1 != null)
                 Positioned.fill(
                   child: SwapWidgets(
-                    child0: CachedImageWidget(image0, fit: BoxFit.cover),
-                    child1: CachedImageWidget(image1, fit: BoxFit.cover),
+                    child0: GsFileImage(image0, fit: BoxFit.cover),
+                    child1: GsFileImage(image1, fit: BoxFit.cover),
                   ),
                 ),
               if (message != null)
@@ -311,7 +313,7 @@ class _CalendarDay extends StatelessWidget {
                       image: AssetImage(GsAssets.getRarityBgImage(e.rarity)),
                     ),
                   ),
-                  child: CachedImageWidget(e.image),
+                  child: GsFileImage(e.image),
                 ),
               ),
             );
@@ -327,7 +329,7 @@ class _CalendarDay extends StatelessWidget {
             right: end ? _kItemSize / 2 + 4 : 0,
             bottom: 5,
             child: _ImagesTooltip(
-              images: [info.image],
+              images: [info.image].whereNotNull(),
               message: msg,
               size: const Size(150, 54),
               child: Container(
@@ -357,7 +359,7 @@ class _CalendarDay extends StatelessWidget {
             left: src ? _kItemSize / 2 + 4 : 0,
             right: end ? _kItemSize / 2 + 4 : 0,
             child: _ImagesTooltip(
-              images: list.map((e) => e.image),
+              images: list.map((e) => e.image).whereNotNull(),
               message: message,
               child: Container(
                 height: 4,

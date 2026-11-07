@@ -11,7 +11,6 @@ class GsBanner({
   @override final String id = '',
   @override final String version = '',
   final String name = '',
-  final String image = '',
   @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)
   required final DateTime dateStart,
   @JsonKey(fromJson: modelDateFromJson, toJson: modelDateToJson)

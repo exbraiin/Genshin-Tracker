@@ -77,7 +77,7 @@ class ThespianTrickDetailsCard extends StatelessWidget
                           ),
                         ),
                       ),
-                      child: CachedImageWidget(item.image, fit: BoxFit.cover),
+                      child: GsFileImage(item.image, fit: BoxFit.cover),
                     ),
                   ),
                 ),

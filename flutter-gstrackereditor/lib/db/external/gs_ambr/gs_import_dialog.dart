@@ -135,6 +135,6 @@ final class GsImportDialog {
 extension on ImportItem {
   GsSelectItem<String> toSelect() {
     final color = GsStyle.getRarityColor(level);
-    return GsSelectItem<String>(id, name, image: icon, color: color);
+    return GsSelectItem<String>(id, name, imageUrl: icon, color: color);
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tracker/common/widgets/static/cached_image_widget.dart';
 import 'package:tracker/common/widgets/static/hover_detector.dart';
@@ -7,7 +9,7 @@ class GsRarityItemCard extends StatelessWidget {
   final int rarity;
   final double size;
   final String asset;
-  final String image;
+  final File? image;
   final VoidCallback? onTap;
   final Widget? header;
   final Widget? footer;
@@ -17,7 +19,7 @@ class GsRarityItemCard extends StatelessWidget {
     super.key,
     this.size = 64,
     this.asset = '',
-    this.image = '',
+    this.image,
     this.rarity = 1,
     this.onTap,
     this.header,
@@ -29,7 +31,7 @@ class GsRarityItemCard extends StatelessWidget {
     super.key,
     this.size = 64,
     this.asset = '',
-    this.image = '',
+    this.image,
     this.rarity = 1,
     this.onTap,
     this.fit = BoxFit.contain,
@@ -76,8 +78,7 @@ class GsRarityItemCard extends StatelessWidget {
       children: [
         if (asset.isNotEmpty)
           Positioned.fill(child: Image.asset(asset, fit: fit)),
-        if (image.isNotEmpty)
-          Positioned.fill(child: CachedImageWidget(image, fit: fit)),
+        if (image != null) Positioned.fill(child: GsFileImage(image, fit: fit)),
         if (header != null)
           Positioned.fill(
             bottom: null,

@@ -17,7 +17,7 @@ class EnvisagedEchoDetailsCard extends StatelessWidget {
     final char = db.infoOf<GsCharacter>().getItem(item.character);
     return ItemDetailsCard(
       name: item.name,
-      image: item.icon,
+      image: item.image,
       rarity: item.rarity,
       version: item.version,
       info: Column(

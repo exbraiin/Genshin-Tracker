@@ -21,7 +21,6 @@ abstract class _$GsSpincrystalCWProxy {
     String name,
     int number,
     String source,
-    String imageSource,
     GeRegionType region,
   });
 }
@@ -48,7 +47,6 @@ class _$GsSpincrystalCWProxyImpl implements _$GsSpincrystalCWProxy {
     Object? name = const $CopyWithPlaceholder(),
     Object? number = const $CopyWithPlaceholder(),
     Object? source = const $CopyWithPlaceholder(),
-    Object? imageSource = const $CopyWithPlaceholder(),
     Object? region = const $CopyWithPlaceholder(),
   }) {
     return GsSpincrystal(
@@ -72,11 +70,6 @@ class _$GsSpincrystalCWProxyImpl implements _$GsSpincrystalCWProxy {
           ? _value.source
           // ignore: cast_nullable_to_non_nullable
           : source as String,
-      imageSource:
-          imageSource == const $CopyWithPlaceholder() || imageSource == null
-          ? _value.imageSource
-          // ignore: cast_nullable_to_non_nullable
-          : imageSource as String,
       region: region == const $CopyWithPlaceholder() || region == null
           ? _value.region
           // ignore: cast_nullable_to_non_nullable
@@ -103,7 +96,6 @@ GsSpincrystal _$GsSpincrystalFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String? ?? '',
       number: (json['number'] as num?)?.toInt() ?? 0,
       source: json['source'] as String? ?? '',
-      imageSource: json['imageSource'] as String? ?? '',
       region:
           $enumDecodeNullable(
             _$GeRegionTypeEnumMap,
@@ -120,7 +112,6 @@ Map<String, dynamic> _$GsSpincrystalToJson(GsSpincrystal instance) =>
       'name': instance.name,
       'number': instance.number,
       'source': instance.source,
-      'imageSource': instance.imageSource,
       'region': _$GeRegionTypeEnumMap[instance.region]!,
     };
 

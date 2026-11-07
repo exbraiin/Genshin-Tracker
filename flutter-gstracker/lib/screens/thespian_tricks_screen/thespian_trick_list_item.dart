@@ -33,7 +33,7 @@ class ThespianTrickListItem extends StatelessWidget {
       disable: !owned,
       selected: selected,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
-      imageUrlPath: character?.image,
+      imageFile: character?.image,
       child: Stack(
         children: [
           Positioned(

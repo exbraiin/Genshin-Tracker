@@ -5,6 +5,7 @@ import 'package:data_editor/db_ext/datafields_util.dart';
 import 'package:data_editor/db_ext/src/abstract/gs_model_ext.dart';
 import 'package:gsdatabase/gsdatabase.dart';
 
+
 class GsSereniteaSetExt extends GsModelExt<GsSereniteaSet> {
   const GsSereniteaSetExt();
 
@@ -49,10 +50,9 @@ class GsSereniteaSetExt extends GsModelExt<GsSereniteaSet> {
         (item, value) => item.copyWith(category: value),
         invalid: [GeSereniteaSetType.none],
       ),
-      DataField.textImage(
+      DataField.validateFile(
         'Image',
         (item) => item.image,
-        (item, value) => item.copyWith(image: value),
       ),
       DataField.intField(
         'Energy',

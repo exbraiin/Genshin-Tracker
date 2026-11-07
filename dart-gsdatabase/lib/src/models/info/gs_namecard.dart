@@ -14,8 +14,6 @@ class GsNamecard({
   final int rarity = 0,
   @JsonKey(unknownEnumValue: GeNamecardType.none)
   final GeNamecardType type = GeNamecardType.none,
-  final String image = '',
-  final String fullImage = '',
   final String desc = '',
 }) extends GsModel<GsNamecard> with GsVersionable {
   static const kTableKey = 'namecards';

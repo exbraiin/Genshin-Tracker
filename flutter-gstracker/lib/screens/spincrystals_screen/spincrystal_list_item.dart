@@ -29,7 +29,7 @@ class SpincrystalListItem extends StatelessWidget {
       disable: !owned,
       selected: selected,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
-      imageAssetPath: AppAssets.spincrystal,
+      imageAsset: AppAssets.spincrystal,
       child: Stack(
         children: [
           Positioned(

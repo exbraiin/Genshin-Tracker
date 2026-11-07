@@ -15,7 +15,7 @@ class ArtifactDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
   Widget build(BuildContext context) {
     return ItemDetailsCard(
       name: item.name,
-      image: item.pieces.firstOrNull?.icon,
+      image: item.image,
       info: Text(item.domain),
       rarity: item.rarity,
       version: item.version,
@@ -51,7 +51,7 @@ class ArtifactDetailsCard extends StatelessWidget with GsDetailedDialogMixin {
                       width: 64,
                       height: 64,
                       margin: const EdgeInsets.only(right: kSeparator8),
-                      child: CachedImageWidget(e.icon),
+                      child: GsFileImage(e.getIcon(item)),
                     ),
                     Expanded(
                       child: ConstrainedBox(

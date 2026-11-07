@@ -20,7 +20,6 @@ abstract class _$GsFurnitureChestCWProxy {
     String version,
     String name,
     GeSereniteaSetType type,
-    String image,
     int rarity,
     int energy,
     GeRegionType region,
@@ -48,7 +47,6 @@ class _$GsFurnitureChestCWProxyImpl implements _$GsFurnitureChestCWProxy {
     Object? version = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
     Object? rarity = const $CopyWithPlaceholder(),
     Object? energy = const $CopyWithPlaceholder(),
     Object? region = const $CopyWithPlaceholder(),
@@ -70,10 +68,6 @@ class _$GsFurnitureChestCWProxyImpl implements _$GsFurnitureChestCWProxy {
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as GeSereniteaSetType,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
       rarity: rarity == const $CopyWithPlaceholder() || rarity == null
           ? _value.rarity
           // ignore: cast_nullable_to_non_nullable
@@ -113,7 +107,6 @@ GsFurnitureChest _$GsFurnitureChestFromJson(Map<String, dynamic> json) =>
             unknownValue: GeSereniteaSetType.none,
           ) ??
           GeSereniteaSetType.none,
-      image: json['image'] as String? ?? '',
       rarity: (json['rarity'] as num?)?.toInt() ?? 0,
       energy: (json['energy'] as num?)?.toInt() ?? 0,
       region:
@@ -131,7 +124,6 @@ Map<String, dynamic> _$GsFurnitureChestToJson(GsFurnitureChest instance) =>
       'version': instance.version,
       'name': instance.name,
       'type': _$GeSereniteaSetTypeEnumMap[instance.type]!,
-      'image': instance.image,
       'rarity': instance.rarity,
       'energy': instance.energy,
       'region': _$GeRegionTypeEnumMap[instance.region]!,

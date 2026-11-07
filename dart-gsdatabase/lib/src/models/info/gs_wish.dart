@@ -13,7 +13,6 @@ class GsWish extends GsModel<GsWish> with GsVersionable {
   String get version => weapon?.version ?? character?.version ?? '';
 
   String get name => weapon?.name ?? character?.name ?? '';
-  String get image => weapon?.image ?? character?.image ?? '';
   int get rarity => weapon?.rarity ?? character?.rarity ?? 1;
 
   bool get isWeapon => weapon != null;

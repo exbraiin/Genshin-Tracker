@@ -20,7 +20,6 @@ abstract class _$GsLunarArcanaCWProxy {
     String version,
     String name,
     int number,
-    String image,
     String description,
   });
 }
@@ -46,7 +45,6 @@ class _$GsLunarArcanaCWProxyImpl implements _$GsLunarArcanaCWProxy {
     Object? version = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? number = const $CopyWithPlaceholder(),
-    Object? image = const $CopyWithPlaceholder(),
     Object? description = const $CopyWithPlaceholder(),
   }) {
     return GsLunarArcana(
@@ -66,10 +64,6 @@ class _$GsLunarArcanaCWProxyImpl implements _$GsLunarArcanaCWProxy {
           ? _value.number
           // ignore: cast_nullable_to_non_nullable
           : number as int,
-      image: image == const $CopyWithPlaceholder() || image == null
-          ? _value.image
-          // ignore: cast_nullable_to_non_nullable
-          : image as String,
       description:
           description == const $CopyWithPlaceholder() || description == null
           ? _value.description
@@ -96,7 +90,6 @@ GsLunarArcana _$GsLunarArcanaFromJson(Map<String, dynamic> json) =>
       version: json['version'] as String? ?? '',
       name: json['name'] as String? ?? '',
       number: (json['number'] as num?)?.toInt() ?? 0,
-      image: json['image'] as String? ?? '',
       description: json['description'] as String? ?? '',
     );
 
@@ -106,6 +99,5 @@ Map<String, dynamic> _$GsLunarArcanaToJson(GsLunarArcana instance) =>
       'version': instance.version,
       'name': instance.name,
       'number': instance.number,
-      'image': instance.image,
       'description': instance.description,
     };

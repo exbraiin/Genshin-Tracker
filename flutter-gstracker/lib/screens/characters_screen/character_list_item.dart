@@ -35,7 +35,7 @@ class CharacterListItem extends StatelessWidget {
       disable: charConsTotal == null,
       selected: selected,
       banner: GsItemBanner.isNewOrUpcoming(context, item.version),
-      imageUrlPath: item.image,
+      imageFile: item.image,
       child: _child(context, charConsTotal, friend, ascension),
     );
   }

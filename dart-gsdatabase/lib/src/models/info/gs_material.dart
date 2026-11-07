@@ -17,7 +17,6 @@ class GsMaterial({
   final int rarity = 0,
   @JsonKey(unknownEnumValue: GeMaterialType.none)
   final GeMaterialType group = GeMaterialType.none,
-  final String image = '',
   @JsonKey(unknownEnumValue: GeRegionType.none)
   final GeRegionType region = GeRegionType.none,
   final int subgroup = 0,
