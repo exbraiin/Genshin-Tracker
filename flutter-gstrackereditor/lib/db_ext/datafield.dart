@@ -35,12 +35,29 @@ class DataField<T extends GsModel<T>> {
   DataField._(this.label, this.builder, {required this.validator});
 
   DataField.validateFile(this.label, File? Function(T item) content)
-    : builder = ((context, item, edit, level) => Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        constraints: const BoxConstraints(minHeight: 36),
-        alignment: Alignment.centerLeft,
-        child: Text('${content(item)}'),
-      )),
+    : builder = ((context, item, edit, level) {
+        final file = content(item);
+        return InkWell(
+          onTap: Platform.isWindows && file != null
+              ? () async {
+                  try {
+                    await _openFileInWindows(file);
+                  } catch (error) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Could not open folder: $error')),
+                    );
+                  }
+                }
+              : null,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            constraints: const BoxConstraints(minHeight: 36),
+            alignment: Alignment.centerLeft,
+            child: Text('${file?.path.replaceAll('\\', '/')}'),
+          ),
+        );
+      }),
       validator = ((item) => (content(item)?.existsSync() ?? false)
           ? GsValidLevel.good
           : GsValidLevel.warn2);
@@ -688,6 +705,12 @@ Future<String?> _getClipboardText() async {
   const type = Clipboard.kTextPlain;
   final data = await Clipboard.getData(type);
   return data?.text?.trim();
+}
+
+Future<void> _openFileInWindows(File? file) async {
+  if (file == null) return;
+  final folderPath = await file.absolute.parent.resolveSymbolicLinks();
+  await Process.start('explorer.exe', [folderPath.replaceAll('/', '\\')]);
 }
 
 Widget getTableForFields<T extends GsModel<T>>(

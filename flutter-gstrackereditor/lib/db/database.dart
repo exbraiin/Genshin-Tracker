@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 
 const _kFilePath = '.data/gsdata';
 const _kFilePathEncoded = '.data/gsdatab';
-const _kFilePathDebug = '../runner/TrackerEditor/gsdata';
+const _kFilePathDebug = '../runner/TrackerEditor/.data/gsdata';
 const _kImagesDirectory = kDebugMode ? '../runner/images' : '../images';
 
 final class Database {
