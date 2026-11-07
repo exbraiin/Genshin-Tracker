@@ -39,12 +39,12 @@ class GsWeaponExt extends GsModelExt<GsWeapon> {
         (item) => item.rarity,
         (item, value) => item.copyWith(rarity: value),
       ),
-      DataField.validateFile(
+      DataField.validateFileImage(
         'Image',
         (item) => item.image,
         expectedSize: (256, 256),
       ),
-      DataField.validateFile(
+      DataField.validateFileImage(
         'Asc Image',
         (item) => item.imageAsc,
         expectedSize: (256, 256),

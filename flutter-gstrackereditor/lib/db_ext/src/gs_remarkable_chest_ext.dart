@@ -36,7 +36,7 @@ class GsFurnitureChestExt extends GsModelExt<GsFurnitureChest> {
         (item, value) => item.copyWith(type: value),
         invalid: [GeSereniteaSetType.none],
       ),
-      DataField.validateFile(
+      DataField.validateFileImage(
         'Image',
         (item) => item.image,
         expectedSize: (256, 256),

@@ -5,6 +5,7 @@ import 'package:dartx/dartx.dart';
 import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:data_editor/db_ext/image_file_validator.dart';
 import 'package:data_editor/style/style.dart';
+import 'package:data_editor/widgets/busy_widget.dart';
 import 'package:data_editor/widgets/gs_selector/gs_selector.dart';
 import 'package:data_editor/widgets/gs_text_editor_dialog.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class DataField<T extends GsModel<T>> {
 
   DataField._(this.label, this.builder, {required this.validator});
 
-  DataField.validateFile(
+  DataField.validateFileImage(
     this.label,
     File? Function(T item) content, {
     (int width, int height)? expectedSize,
@@ -50,16 +51,32 @@ class DataField<T extends GsModel<T>> {
          final path = file != null
              ? p.relative(file.absolute.path).replaceAll('\\', '/')
              : null;
-         return InkWell(
-           onTap: Platform.isWindows && file != null
-               ? () => _openFileInWindows(file)
-               : null,
-           child: Container(
-             padding: const EdgeInsets.symmetric(vertical: 8),
-             constraints: const BoxConstraints(minHeight: 36),
-             alignment: Alignment.centerLeft,
-             child: Text('$expectedSize - $path'),
-           ),
+         return Row(
+           children: [
+             Expanded(
+               child: InkWell(
+                 onTap: Platform.isWindows && file != null
+                     ? () => _openFileInWindows(file)
+                     : null,
+                 child: Container(
+                   padding: const EdgeInsets.symmetric(vertical: 8),
+                   constraints: const BoxConstraints(minHeight: 36),
+                   alignment: Alignment.centerLeft,
+                   child: Text('$expectedSize - $path'),
+                 ),
+               ),
+             ),
+             if (expectedSize != null)
+               BusyWidget(
+                 message: 'Resize and cut the image!',
+                 icon: Icons.cut_rounded,
+                 onPressed: () async {
+                   await cutImageToExpectedSize(file, expectedSize);
+                   if (!context.mounted) return;
+                   edit(item);
+                 },
+               ),
+           ],
          );
        }),
        validator = ((item) => validateImageFile(content(item), expectedSize));

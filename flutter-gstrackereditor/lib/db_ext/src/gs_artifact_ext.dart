@@ -85,7 +85,7 @@ class GsArtifactExt extends GsModelExt<GsArtifact> {
             (item) => item.name,
             (item, value) => item.copyWith(name: value),
           ),
-          DataField.validateFile(
+          DataField.validateFileImage(
             'Icon',
             (piece) => piece.getIcon(item),
             expectedSize: (256, 256),

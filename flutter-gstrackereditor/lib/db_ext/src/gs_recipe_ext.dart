@@ -51,7 +51,7 @@ class GsRecipeExt extends GsModelExt<GsRecipe> {
         (item, value) => item.copyWith(version: value),
         validator: (item) => vdVersion.validate(item.version),
       ),
-      DataField.validateFile(
+      DataField.validateFileImage(
         'Image',
         (item) => item.image,
         expectedSize: (256, 256),

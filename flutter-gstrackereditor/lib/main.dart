@@ -4,11 +4,11 @@ import 'package:data_editor/db/external/external_importer.dart';
 import 'package:data_editor/screens/info_screen.dart';
 import 'package:data_editor/style/style.dart';
 import 'package:data_editor/style/utils.dart';
+import 'package:data_editor/widgets/busy_widget.dart';
 import 'package:data_editor/widgets/gs_grid_view.dart';
 import 'package:data_editor/widgets/gs_progress_indicator.dart';
 import 'package:data_editor/widgets/mouse_listener.dart';
 import 'package:data_editor/widgets/text_style_parser.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -77,7 +77,7 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Data Editor'),
         actions: [
-          _BusyWidget(
+          BusyWidget(
             message: 'Import Achievements from Paimon.moe',
             icon: Icons.download_rounded,
             onPressed: () => _onImportAchievements(context),
@@ -88,7 +88,7 @@ class Home extends StatelessWidget {
             onPressed: () => context.pushWidget(const InfoScreen()),
           ),
           const SizedBox(width: 8),
-          _BusyWidget(
+          BusyWidget(
             message: 'Save',
             icon: Icons.save_rounded,
             onPressed: Database.i.save,
@@ -165,60 +165,5 @@ class Home extends StatelessWidget {
         ),
       );
     }
-  }
-}
-
-class _BusyWidget extends StatefulWidget {
-  final IconData icon;
-  final String? message;
-  final AsyncCallback onPressed;
-
-  const _BusyWidget({
-    this.message,
-    required this.icon,
-    required this.onPressed,
-  });
-
-  @override
-  State<_BusyWidget> createState() => _BusyWidgetState();
-}
-
-class _BusyWidgetState extends State<_BusyWidget> {
-  final notifier = ValueNotifier(false);
-
-  @override
-  void dispose() {
-    notifier.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: notifier,
-      builder: (context, value, child) {
-        if (value) {
-          return const Center(
-            child: IconButton(icon: GsProgressIndicator(), onPressed: null),
-          );
-        }
-
-        final button = IconButton(
-          icon: Icon(widget.icon),
-          onPressed: () async {
-            notifier.value = true;
-            await widget.onPressed();
-            if (!mounted) return;
-            notifier.value = false;
-          },
-        );
-
-        if (widget.message != null) {
-          return Tooltip(message: widget.message, child: button);
-        }
-
-        return button;
-      },
-    );
   }
 }

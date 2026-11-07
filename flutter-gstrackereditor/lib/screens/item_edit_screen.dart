@@ -50,7 +50,15 @@ class _ItemEditScreenState<T extends GsModel<T>>
   @override
   Widget build(BuildContext context) {
     final fields = widget.modelExt.getFields(widget.item?.id);
-    void edit(T value) => _notifier.value = value;
+    void edit(T value) {
+      if (!mounted) return;
+      if (_notifier.value == value) {
+        // Files can change without changing the model itself.
+        setState(() {});
+      } else {
+        _notifier.value = value;
+      }
+    }
     final iconSize = IconTheme.of(context).size;
     return Scaffold(
       appBar: AppBar(

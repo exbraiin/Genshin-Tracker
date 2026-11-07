@@ -47,7 +47,7 @@ class GsCharacterSkinExt extends GsModelExt<GsCharacterSkin> {
         (item, value) => item.copyWith(character: value),
         validator: (item) => vdCharacters.validate(item.character),
       ),
-      DataField.validateFile(
+      DataField.validateFileImage(
         'Image',
         (item) => item.image,
         expectedSize: (256, 256),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:data_editor/db_ext/data_validator.dart';
 import 'package:flutter/foundation.dart';
@@ -93,3 +94,39 @@ Future<GsValidLevel> validateImageFile(
 
 GsValidLevel _validateImageRequest((String, (int, int)?) request) =>
     _validateImageFileSync(File(request.$1), request.$2);
+
+Future<void> cutImageToExpectedSize(File? file, (int, int) expectedSize) async {
+  if (file == null) return;
+  final (width, height) = expectedSize;
+  if (width <= 0 || height <= 0) {
+    throw ArgumentError.value(expectedSize, 'expectedSize', 'Must be positive');
+  }
+  final bytes = await file.readAsBytes();
+  final output = await compute(_fitImageToSize, (bytes, expectedSize));
+  await file.writeAsBytes(output, flush: true);
+  final path = file.absolute.path;
+  _dimensions.remove(path);
+  _results.removeWhere((key, _) => key.$1 == path);
+}
+
+List<int> _fitImageToSize((Uint8List, (int, int)) request) {
+  final decoded = img.decodeImage(request.$1);
+  if (decoded == null) throw const FormatException('Cannot decode image');
+  final source = img.bakeOrientation(decoded);
+  final (width, height) = request.$2;
+  final scale = math.min(width / source.width, height / source.height);
+  final resized = img.copyResize(
+    source,
+    width: (source.width * scale).round().clamp(1, width),
+    height: (source.height * scale).round().clamp(1, height),
+    interpolation: img.Interpolation.linear,
+  );
+  final canvas = img.Image(width: width, height: height, numChannels: 4);
+  img.compositeImage(
+    canvas,
+    resized,
+    dstX: (width - resized.width) ~/ 2,
+    dstY: (height - resized.height) ~/ 2,
+  );
+  return img.encodePng(canvas);
+}

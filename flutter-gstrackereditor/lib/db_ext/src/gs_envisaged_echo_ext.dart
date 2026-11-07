@@ -33,7 +33,7 @@ class GsEnvisagedEchoExt extends GsModelExt<GsEnvisagedEcho> {
         (item) => item.description,
         (item, value) => item.copyWith(description: value),
       ),
-      DataField.validateFile(
+      DataField.validateFileImage(
         'Icon',
         (item) => item.image,
         expectedSize: (256, 256),
