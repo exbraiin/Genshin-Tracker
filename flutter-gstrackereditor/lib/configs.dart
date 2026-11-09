@@ -472,18 +472,16 @@ class GsConfigs<T extends GsModel<T>> {
 
   Widget toGridItem(BuildContext context) {
     final level = vd.DataValidator.i.getMaxLevel<T>();
-    final version =
-        collection.items
-            .map((e) => itemDecoration(e).version)
-            .toSet()
-            .sortedBy((element) => element)
-            .lastOrNull ??
-        '';
+    final version = collection.items
+        .map((e) => itemDecoration(e).version)
+        .toSet()
+        .sortedBy((element) => element)
+        .lastOrNull;
 
     return GsGridItem(
       color: Colors.grey,
       label: title,
-      version: version,
+      version: version ?? '',
       validLevel: level,
       onTap: () => openListScreen(context),
     );
