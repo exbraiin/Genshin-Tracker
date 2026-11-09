@@ -120,7 +120,9 @@ class _SelectDialogState<T> extends State<SelectDialog<T>> {
                     builder: (context, controller, child) {
                       final items = _filterItems(controller.text);
 
-                      final hasImage = items.any((e) => e.imageFile != null);
+                      final hasImage = items.any(
+                        (e) => e.imageFile != null || e.imageUrl != null,
+                      );
                       if (!hasImage) {
                         return Wrap(
                           spacing: 8,

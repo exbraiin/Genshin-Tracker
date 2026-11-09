@@ -92,7 +92,7 @@ class GsSelectChip<T> extends StatelessWidget {
             ),
             child: item.imageFile != null
                 ? Image.file(item.imageFile!, width: 46, height: 46)
-                : item.imageUrl != null
+                : (item.imageUrl?.isNotEmpty ?? false)
                 ? Image.network(item.imageUrl!, width: 46, height: 46)
                 : const Icon(Icons.question_mark_rounded),
           ),

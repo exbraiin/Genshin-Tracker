@@ -710,22 +710,23 @@ final class YattaImporter implements ImportApi {
     final data = await _fetchPage('furniture');
     final items = data['items'] as Map<String, dynamic>;
     const url = '$_kBaseUrl/assets/UI';
+    const kInvalid = {'mainBuilding', 'companion', 'animal'};
 
-    return items.values.cast<JsonMap>().map((e) {
-      final categories = e.getList<String>('categories');
-      final iconName = e.getString('icon');
-
-      final icon = switch (true) {
-        _ when categories.contains('companion') => '$url/$iconName.png',
-        _ when categories.contains('animal') => '$url/monster/$iconName.png',
-        _ => '$url/furniture/$iconName.png',
-      };
-
-      final id = e.getInt('id').toString();
-      final name = e.getString('route');
-      final level = e.getInt('rank');
-      return ImportItem(id, name, icon, level);
-    }).toList();
+    return items.values
+        .cast<JsonMap>()
+        .where((e) {
+          final categories = e.getList<String>('categories');
+          return !categories.containsAny(kInvalid);
+        })
+        .map((e) {
+          final iconName = e.getString('icon');
+          final icon = '$url/furniture/$iconName.png';
+          final id = e.getInt('id').toString();
+          final name = e.getString('route');
+          final level = e.getInt('rank');
+          return ImportItem(id, name, icon, level);
+        })
+        .toList();
   }
 }
 
